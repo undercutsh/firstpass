@@ -146,4 +146,19 @@ node src/main.js --compare testing/results/run-a.json testing/results/run-b.json
 
 ---
 
+## Internal docs (business model, roadmap, pricing)
+
+For maintainers and agent threads: the **business model, pricing/paid-plan
+status, product roadmap, PRD, and marketing material** live in
+[`docs/`](docs/README.md). Start there before making claims about the product
+or its monetization — the public README and site are the *user-facing* view;
+`docs/` is the *internal* plan.
+
+- [`docs/business/business-model.md`](docs/business/business-model.md) — how it makes money (free MIT today; paid plan is a placeholder)
+- [`docs/business/roadmap.md`](docs/business/roadmap.md) — what's next, in priority order
+- [`docs/business/PRD.md`](docs/business/PRD.md) — what/why/who
+- [`docs/marketing/`](docs/marketing/) — landing copy, design notes, naming, research
+
+---
+
 MIT · founded by [Justin Winter](https://iamjustinwinter.com) · [getundercut.sh](https://getundercut.sh)
