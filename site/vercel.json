@@ -1,5 +1,8 @@
 {
   "cleanUrls": true,
+  "redirects": [
+    { "source": "/:path*", "has": [{ "type": "host", "value": "www.getundercut.sh" }], "destination": "https://getundercut.sh/:path*", "permanent": true }
+  ],
   "headers": [
     {
       "source": "/(.*)",
