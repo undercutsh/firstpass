@@ -11,3 +11,4 @@ evals/results/*.json
 PRD.md
 landing-page.md
 landing-page-research.txt
+.vercel
