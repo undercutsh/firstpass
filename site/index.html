@@ -41,11 +41,11 @@
 
 <nav style="position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 14px 32px; background: rgba(245,243,238,0.94); backdrop-filter: blur(8px); border-bottom: 1px solid #DFDAD0">
   <a href="#top" style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 17px; letter-spacing: -0.02em; text-decoration: none">undercut</a>
-  <div style="display: flex; align-items: center; gap: 26px; font-size: 14px">
-    <a href="#how" style="text-decoration: none; color: #4a4e57">How it works</a>
-    <a href="#benchmarks" style="text-decoration: none; color: #4a4e57">Benchmarks</a>
+  <div style="display: flex; align-items: center; gap: 24px; font-size: 14px">
+    <a href="#calculator" style="text-decoration: none; color: #4a4e57">Savings calculator</a>
     <a href="#teams" style="text-decoration: none; color: #4a4e57">Teams</a>
-    <a href="#install" style="text-decoration: none; color: #4a4e57">Install</a>
+    <a href="#pricing" style="text-decoration: none; color: #4a4e57">Pricing</a>
+    <a href="#benchmarks" style="text-decoration: none; color: #4a4e57">Benchmarks</a>
     <a href="https://github.com/undercutsh/firstpass" style="text-decoration: none; color: #4a4e57; font-family: 'JetBrains Mono', monospace; font-size: 13px">GitHub ↗</a>
     <button onClick="{{ copyInstall }}" style="font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; background: #15171C; color: #F5F3EE; border: none; padding: 9px 18px; cursor: pointer" style-hover="background: #2A2D35">{{ navCopyLabel }}</button>
   </div>
@@ -54,17 +54,20 @@
 <header id="top" data-screen-label="Hero" style="background: #15171C; color: #F5F3EE; padding: 88px 32px 96px">
   <div style="max-width: 1160px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr)); gap: 64px; align-items: center">
     <div>
-      <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #8A8F98; margin: 0 0 28px; text-transform: uppercase">MIT · open-source · works with any agent that reads a SKILL.md</p>
-      <h1 style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: clamp(40px, 4.6vw, 66px); line-height: 1.05; letter-spacing: -0.03em; margin: 0 0 24px; text-wrap: balance">Undercut the top-tier model. Never the quality bar.</h1>
-      <p style="font-size: 18px; line-height: 1.55; color: #b9bcc2; margin: 0 0 20px; max-width: 56ch">Undercut is a SKILL.md your coding agent follows at dispatch time. Six-flag rubric assigns a base tier. Objective evidence — not self-reported confidence — is the only thing allowed to escalate it.</p>
-      <p style="font-size: 16px; line-height: 1.55; margin: 0 0 28px; padding: 14px 18px; border-left: 2px solid #2E9E5B; background: rgba(46,158,91,0.08); max-width: 60ch">Measured on public benchmarks, official test cases, deterministic graders: <strong style="color: #2E9E5B">up to −95% cost on HumanEval, up to −71% on GSM8K — equal-or-better pass rate.</strong> <a href="#benchmarks" style="color: #F5F3EE">Raw results →</a></p>
-      <sc-if value="{{ showUrgency }}" hint-placeholder-val="{{ true }}">
-        <p style="font-size: 14px; line-height: 1.6; color: #8A8F98; margin: 0 0 32px; max-width: 62ch">Every session your agent runs on all-standard routing between now and whenever you install this, it's paying top-tier prices for work a cheap tier could have passed. That's not a countdown timer — it's just what the token bill already does.</p>
-      </sc-if>
-      <div style="display: flex; align-items: stretch; gap: 14px; flex-wrap: wrap">
-        <button onClick="{{ copyInstall }}" style="display: flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 14px; background: #F5F3EE; color: #15171C; border: none; padding: 14px 20px; cursor: pointer; font-weight: 500" style-hover="background: #ffffff"><span style="font-weight: 800">{{ heroCopyLabel }}</span><span style="color: #4a4e57">npx skills add undercutsh/firstpass</span></button>
-        <a href="#benchmarks" style="display: flex; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #F5F3EE; text-decoration: none; border: 1px solid #2A2D35; padding: 14px 20px" style-hover="border-color: #8A8F98">Read the benchmarks</a>
+      <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #8A8F98; margin: 0 0 22px; text-transform: uppercase">Free for individuals, forever · MIT · Team plan in development</p>
+      <h1 style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: clamp(40px, 5vw, 72px); line-height: 1.02; letter-spacing: -0.03em; margin: 0 0 20px; text-wrap: balance">Cut your AI coding bill up to <span style="color: #2E9E5B">71%</span>. Not your pass rate.</h1>
+      <p style="font-size: 17px; line-height: 1.5; color: #b9bcc2; margin: 0 0 24px; max-width: 54ch">A routing policy your coding agent follows — cheap tier first, escalate only on evidence, never on a vibe. Measured on public benchmarks, not promised.</p>
+      <div style="display: flex; align-items: stretch; gap: 14px; flex-wrap: wrap; margin: 0 0 28px">
+        <button onClick="{{ copyInstall }}" style="display: flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 14px; background: #F5F3EE; color: #15171C; border: none; padding: 14px 20px; cursor: pointer; font-weight: 500" style-hover="background: #ffffff"><span style="font-weight: 800">{{ heroCopyLabel }}</span><span style="color: #4a4e57">Free for individuals</span></button>
+        <a href="#pricing" style="display: flex; align-items: center; gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #F5F3EE; text-decoration: none; border: 1px solid #2E9E5B; padding: 14px 20px" style-hover="background: rgba(46,158,91,0.12)"><span style="font-weight: 800">Get team early access</span><span style="color: #8A8F98">14-day trial</span></a>
       </div>
+      <div style="display: flex; gap: 28px; flex-wrap: wrap">
+        <div><div style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 26px; color: #2E9E5B">−71%</div><div style="font-size: 12.5px; color: #8A8F98">GSM8K cost, OpenAI</div></div>
+        <div><div style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 26px; color: #2E9E5B">−95%</div><div style="font-size: 12.5px; color: #8A8F98">HumanEval cost, Gemini</div></div>
+        <div><div style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 26px; color: #2E9E5B">−68%</div><div style="font-size: 12.5px; color: #8A8F98">avg. blended cost, Anthropic</div></div>
+        <div><div style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 26px; color: #F5F3EE">=</div><div style="font-size: 12.5px; color: #8A8F98">pass rate, every cell</div></div>
+      </div>
+      <p style="font-size: 12.5px; color: #8A8F98; margin: 20px 0 0"><a href="#benchmarks" style="color: #8A8F98">Raw, reproducible results →</a></p>
     </div>
     <div style="border: 1px solid #2A2D35; background: #101216; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 2.1">
       <div style="display: flex; align-items: center; gap: 8px; padding: 10px 16px; border-bottom: 1px solid #2A2D35; color: #8A8F98; font-size: 11px">
@@ -96,6 +99,78 @@
       <span style="display: flex; align-items: center; gap: 9px; color: #8A8F98; filter: grayscale(1); opacity: 0.75; transition: all 0.15s" style-hover="color: #15171C; filter: grayscale(0); opacity: 1"><img src="https://cdn.simpleicons.org/githubcopilot" width="16" height="16" style="display: block" alt="">Copilot</span>
       <span style="display: flex; align-items: center; gap: 9px; color: #8A8F98; opacity: 0.85" style-hover="color: #15171C; opacity: 1"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.4"></rect><path d="M4.5 5.5 L7 8 L4.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M8.5 10.5 H11.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path></svg>OpenCode</span>
     </div>
+  </div>
+</section>
+
+<section id="calculator" data-screen-label="Savings calculator" style="padding: 88px 32px; border-bottom: 1px solid #DFDAD0; background: #FBFAF7">
+  <div style="max-width: 1160px; margin: 0 auto">
+    <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #8A8F98; margin: 0 0 14px">Savings calculator</p>
+    <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 34px; letter-spacing: -0.02em; margin: 0 0 14px; max-width: 26ch; text-wrap: balance">What's tiered routing actually worth to you — or your team?</h2>
+    <p style="font-size: 15.5px; line-height: 1.6; color: #4a4e57; margin: 0 0 40px; max-width: 68ch">The savings % below comes from the blended code/reasoning/mechanical results in <a href="https://github.com/undercutsh/firstpass/blob/main/RESULTS.md">RESULTS.md</a>, not a marketing multiplier. Plug in real spend to see it in dollars.</p>
+    <div style="border: 1px solid #15171C; background: #FFFFFF; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr))">
+      <div style="padding: 32px; border-right: 1px solid #DFDAD0; border-bottom: 1px solid #DFDAD0; display: grid; gap: 26px; align-content: start">
+        <div>
+          <label style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #8A8F98; margin: 0 0 10px">Who's this for?</label>
+          <div style="display: flex; border: 1px solid #15171C">
+            <button onClick="{{ setCalcModeIndividual }}" style="flex: 1; padding: 11px; font-family: 'JetBrains Mono', monospace; font-size: 13.5px; font-weight: 700; cursor: pointer; border: none; background: {{ calcModeIndividualBg }}; color: {{ calcModeIndividualFg }}">Individual</button>
+            <button onClick="{{ setCalcModeTeam }}" style="flex: 1; padding: 11px; font-family: 'JetBrains Mono', monospace; font-size: 13.5px; font-weight: 700; cursor: pointer; border: none; border-left: 1px solid #15171C; background: {{ calcModeTeamBg }}; color: {{ calcModeTeamFg }}">Team</button>
+          </div>
+        </div>
+        <sc-if value="{{ calcIsTeam }}">
+          <div>
+            <label style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #8A8F98; margin: 0 0 10px">Seats</label>
+            <input type="number" min="1" step="1" value="{{ calcSeats }}" onChange="{{ setCalcSeats }}" style="width: 100%; box-sizing: border-box; padding: 11px 14px; border: 1px solid #DFDAD0; font-family: 'JetBrains Mono', monospace; font-size: 15px" />
+          </div>
+        </sc-if>
+        <div>
+          <label style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #8A8F98; margin: 0 0 10px">Current monthly AI spend{{ calcSpendLabelSuffix }}</label>
+          <div style="display: flex; align-items: center; border: 1px solid #DFDAD0">
+            <span style="padding: 0 0 0 14px; font-family: 'JetBrains Mono', monospace; color: #8A8F98">$</span>
+            <input type="number" min="0" step="10" value="{{ calcSpend }}" onChange="{{ setCalcSpend }}" style="flex: 1; width: 100%; box-sizing: border-box; padding: 11px 14px 11px 6px; border: none; font-family: 'JetBrains Mono', monospace; font-size: 15px" />
+          </div>
+        </div>
+        <div>
+          <label style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #8A8F98; margin: 0 0 10px">Primary model vendor</label>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap">
+            <sc-for list="{{ calcVendorButtons }}" as="v" hint-placeholder-count="3">
+              <button onClick="{{ v.onClick }}" style="padding: 9px 16px; font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; cursor: pointer; border: 1px solid {{ v.border }}; background: {{ v.bg }}; color: {{ v.fg }}">{{ v.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      <div style="padding: 32px; display: grid; gap: 22px; align-content: start">
+        <div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: #8A8F98; margin: 0 0 8px">Estimated savings{{ calcSpendLabelSuffix }}</div>
+          <div style="display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap">
+            <span style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 44px; letter-spacing: -0.02em; color: #15171C">${{ calcSavingsAmountFmt }}<span style="font-size: 20px; color: #8A8F98">/mo</span></span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 18px; color: #2E9E5B">−{{ calcSavingsPctFmt }}%</span>
+          </div>
+          <div style="font-size: 13.5px; color: #8A8F98; margin-top: 6px">≈ ${{ calcSavingsAnnualFmt }}/yr back in the budget</div>
+        </div>
+        <div style="display: grid; gap: 10px">
+          <div>
+            <div style="display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #4a4e57; margin-bottom: 5px"><span>Without Undercut</span><span>${{ calcCurrentTotalFmt }}/mo</span></div>
+            <div style="height: 16px; border: 1px solid #DFDAD0"><div style="height: 100%; width: 100%; background: #C77D2E"></div></div>
+          </div>
+          <div>
+            <div style="display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #4a4e57; margin-bottom: 5px"><span>With Undercut</span><span>${{ calcWithUndercutFmt }}/mo</span></div>
+            <div style="height: 16px; border: 1px solid #DFDAD0"><div style="height: 100%; width: {{ calcBarWithPct }}; background: #2E9E5B"></div></div>
+          </div>
+        </div>
+        <div style="border-top: 1px solid #DFDAD0; padding-top: 18px">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: #8A8F98; margin: 0 0 10px">Same spend, other vendors</div>
+          <div style="display: grid; gap: 8px">
+            <sc-for list="{{ calcVendorComparison }}" as="v" hint-placeholder-count="3">
+              <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 8px 10px; border: 1px solid {{ v.border }}; background: {{ v.bg }}">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: {{ v.weight }}">{{ v.label }}{{ v.activeTag }}</span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #2E9E5B; font-weight: 700">−{{ v.pctLabel }}% · ${{ v.savingsFmt }}/mo</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size: 12px; line-height: 1.6; color: #8A8F98; margin: 16px 0 0; max-width: 76ch">Estimate, not a quote. Built from the 30-task blended suite in <code style="font-family: 'JetBrains Mono', monospace">RESULTS.md</code> (5 seeds, deterministic graders). Real workloads escalate more than benchmarks, so treat this as a ceiling, not a guarantee — and it assumes Team-tier enforcement so the policy actually applies to every seat, not just the devs who opted in.</p>
   </div>
 </section>
 
@@ -338,30 +413,119 @@
   </div>
 </section>
 
-<section id="teams" data-screen-label="For teams" style="background: #15171C; color: #F5F3EE; padding: 88px 32px">
-  <div style="max-width: 880px; margin: 0 auto">
-    <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #8A8F98; margin: 0 0 14px">For teams</p>
-    <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 34px; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 24px; text-wrap: balance">The skill is a policy. Enforcement is a product.</h2>
-    <p style="font-size: 16px; line-height: 1.65; color: #b9bcc2; margin: 0 0 36px; max-width: 68ch">Undercut is free and MIT — it routes the developer who installs it. But a team can't rely on every dev opting in. <strong style="color: #F5F3EE">Undercut for Teams</strong> enforces the routing policy across every account in your org, meters the savings, and gives you a verifiable ledger of every escalation. Available at launch.</p>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 24px; margin: 0 0 40px">
-      <div style="border: 1px solid #2A2D35; padding: 20px 22px">
-        <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; margin: 0 0 10px; color: #F5F3EE">Org-wide enforcement</h3>
-        <p style="font-size: 14px; line-height: 1.6; color: #b9bcc2; margin: 0">One policy, applied to every member's agent. No one can silently route to the top tier.</p>
+<section id="teams" data-screen-label="Teams" style="padding: 88px 32px; border-bottom: 1px solid #DFDAD0">
+  <div style="max-width: 1160px; margin: 0 auto">
+    <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; margin: 0 0 14px">
+      <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #8A8F98; margin: 0">For teams — the launch tier</p>
+      <span style="display: flex; gap: 8px">
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #2E9E5B; border: 1px solid #2E9E5B; padding: 4px 10px">Available at launch</span>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #8A8F98; border: 1px solid #8A8F98; padding: 4px 10px">Enterprise — contact us</span>
+      </span>
+    </div>
+    <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 34px; letter-spacing: -0.02em; margin: 0 0 20px; max-width: 30ch; text-wrap: balance">One skill is a habit. A team needs a policy.</h2>
+    <p style="font-size: 16px; line-height: 1.65; color: #4a4e57; margin: 0 0 48px; max-width: 72ch">The free skill only saves what every individual dev remembers to install and follow. Teams turns the same rubric into something the org can point to, measure, and rely on — without adding a network-layer gateway.</p>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 1px; background: #DFDAD0; border: 1px solid #DFDAD0; margin: 0 0 32px">
+      <div style="background: #FBFAF7; padding: 26px 24px">
+        <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 10px">Org-wide policy enforcement</h3>
+        <p style="font-size: 14.5px; line-height: 1.6; color: #4a4e57; margin: 0">The rubric and escalation ladder apply to every seat by default — savings stop depending on which devs happened to opt in.</p>
       </div>
-      <div style="border: 1px solid #2A2D35; padding: 20px 22px">
-        <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; margin: 0 0 10px; color: #F5F3EE">Signed savings ledger</h3>
-        <p style="font-size: 14px; line-height: 1.6; color: #b9bcc2; margin: 0">Every routing decision is recorded and verifiable. You see per-account savings, not a vendor's internal number.</p>
+      <div style="background: #FBFAF7; padding: 26px 24px">
+        <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 10px">Per-account savings metering</h3>
+        <p style="font-size: 14.5px; line-height: 1.6; color: #4a4e57; margin: 0">Cost and quality rolled up by seat and by project, so finance sees the delta in dollars — not just a policy file in a repo.</p>
       </div>
-      <div style="border: 1px solid #2A2D35; padding: 20px 22px">
-        <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; margin: 0 0 10px; color: #F5F3EE">SSO &amp; directory sync</h3>
-        <p style="font-size: 14px; line-height: 1.6; color: #b9bcc2; margin: 0">Provision and de-provision seats automatically. Governance, not a shared config file.</p>
+      <div style="background: #FBFAF7; padding: 26px 24px">
+        <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 10px">Verifiable escalation ledger</h3>
+        <p style="font-size: 14.5px; line-height: 1.6; color: #4a4e57; margin: 0">Every tier-up decision — why, on what evidence — is logged and auditable. "Trust the routing" becomes "verify the routing."</p>
+      </div>
+      <div style="background: #FBFAF7; padding: 26px 24px">
+        <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 10px">Always-updated tier→model map</h3>
+        <p style="font-size: 14.5px; line-height: 1.6; color: #4a4e57; margin: 0">The tier→model ladder is re-validated against new releases with the same evidence-backed harness in <code style="font-family: 'JetBrains Mono', monospace">testing/</code>, so it doesn't go stale as models ship.</p>
+      </div>
+      <div style="background: #FBFAF7; padding: 26px 24px">
+        <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 10px">SSO / directory sync</h3>
+        <p style="font-size: 14.5px; line-height: 1.6; color: #4a4e57; margin: 0">Provision and de-provision seats through the identity provider you already run — no separate account system to babysit.</p>
+      </div>
+      <div style="background: #15171C; padding: 26px 24px; display: flex; flex-direction: column; justify-content: center">
+        <p style="font-size: 14.5px; line-height: 1.6; color: #F5F3EE; margin: 0 0 16px">Free for individuals stays free. Teams is the paid layer above it, not a gate in front of it.</p>
+        <a href="#pricing" style="font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: #2E9E5B; text-decoration: none">See Teams pricing →</a>
       </div>
     </div>
-    <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap">
-      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #2E9E5B; border: 1px solid #2E9E5B; padding: 7px 14px">Teams — available at launch</span>
-      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #8A8F98; border: 1px solid #2A2D35; padding: 7px 14px">Enterprise — contact us</span>
-      <a href="https://github.com/undercutsh/firstpass/issues" style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #F5F3EE; text-decoration: none; border: 1px solid #2A2D35; padding: 12px 18px" style-hover="border-color: #8A8F98">Talk to us about Teams</a>
+    <p style="font-size: 13px; line-height: 1.6; color: #8A8F98; margin: 0; max-width: 74ch">Still not a proxy. Teams enforces the policy through org-wide configuration and the escalation ledger above — not by sitting on the network path between your agent and its model calls. It composes with whatever gateway you already run.</p>
+  </div>
+</section>
+
+<section id="pricing" data-screen-label="Pricing" style="padding: 88px 32px; border-bottom: 1px solid #DFDAD0; background: #FBFAF7">
+  <div style="max-width: 1160px; margin: 0 auto">
+    <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #8A8F98; margin: 0 0 14px">Pricing</p>
+    <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 34px; letter-spacing: -0.02em; margin: 0 0 14px; max-width: 28ch; text-wrap: balance">Free for individuals, forever. Teams and Enterprise ship at launch.</h2>
+    <p style="font-size: 15.5px; line-height: 1.6; color: #4a4e57; margin: 0 0 48px; max-width: 70ch">Nothing below is live yet — the skill is; Teams and Enterprise are what we're building toward, priced honestly ahead of shipping instead of dropped on you at launch.</p>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 0; border: 1px solid #15171C; margin: 0 0 56px">
+      <div style="padding: 32px 28px; border-right: 1px solid #DFDAD0; display: flex; flex-direction: column">
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #8A8F98; margin: 0 0 16px">Free</span>
+        <div style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 38px; margin: 0 0 4px">$0</div>
+        <div style="font-size: 13px; color: #8A8F98; margin: 0 0 24px">forever, per individual</div>
+        <ul style="font-size: 14px; line-height: 1.7; color: #4a4e57; margin: 0 0 28px; padding-left: 18px; flex: 1">
+          <li>The full 6-flag rubric &amp; escalation ladder (SKILL.md)</li>
+          <li>Works with Claude Code, Codex, Cursor, Copilot, OpenCode</li>
+          <li>MIT licensed — audit it, fork it, keep it forever</li>
+          <li>Community support via GitHub issues</li>
+        </ul>
+        <button onClick="{{ copyInstall }}" style="font-family: 'JetBrains Mono', monospace; font-size: 13.5px; font-weight: 700; background: #15171C; color: #F5F3EE; border: none; padding: 13px 18px; cursor: pointer" style-hover="background: #2A2D35">{{ blockCopyLabel }}</button>
+      </div>
+      <div style="padding: 32px 28px; border-right: 1px solid #DFDAD0; display: flex; flex-direction: column; position: relative; background: #FFFFFF">
+        <span style="position: absolute; top: 0; right: 0; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #F5F3EE; background: #C77D2E; padding: 5px 10px">In development</span>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #8A8F98; margin: 0 0 16px">Teams</span>
+        <div style="display: flex; align-items: baseline; gap: 6px; margin: 0 0 4px"><span style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 38px">$29</span><span style="font-size: 13px; color: #8A8F98">/ user / mo</span></div>
+        <div style="font-size: 13px; color: #8A8F98; margin: 0 0 24px">14-day trial at launch, billed monthly</div>
+        <ul style="font-size: 14px; line-height: 1.7; color: #4a4e57; margin: 0 0 28px; padding-left: 18px; flex: 1">
+          <li>Everything in Free, for every seat</li>
+          <li>Org-wide routing policy enforcement</li>
+          <li>Per-account savings metering &amp; reporting</li>
+          <li>Verifiable escalation ledger</li>
+          <li>Always-updated tier→model mapping</li>
+          <li>SSO / directory sync</li>
+        </ul>
+        <a href="https://github.com/undercutsh/firstpass/issues" style="text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 13.5px; font-weight: 700; background: #15171C; color: #F5F3EE; border: none; padding: 13px 18px; cursor: pointer; text-decoration: none" style-hover="background: #2A2D35">Get early access</a>
+        <p style="font-size: 11.5px; color: #8A8F98; margin: 10px 0 0">Opens a GitHub issue — Teams isn't live yet, this puts you on the list.</p>
+      </div>
+      <div style="padding: 32px 28px; display: flex; flex-direction: column">
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #8A8F98; margin: 0 0 16px">Enterprise</span>
+        <div style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 30px; margin: 0 0 4px">Contact us</div>
+        <div style="font-size: 13px; color: #8A8F98; margin: 0 0 24px">no public pricing, sales-led</div>
+        <ul style="font-size: 14px; line-height: 1.7; color: #4a4e57; margin: 0 0 28px; padding-left: 18px; flex: 1">
+          <li>Everything in Teams</li>
+          <li>On-prem / self-hosted deployment option</li>
+          <li>Compliance path: SOC 2, data residency</li>
+          <li>Dedicated support &amp; onboarding</li>
+          <li>Custom integrations</li>
+        </ul>
+        <a href="https://github.com/undercutsh/firstpass/issues" style="text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 13.5px; font-weight: 700; background: transparent; color: #15171C; border: 1px solid #15171C; padding: 13px 18px; cursor: pointer; text-decoration: none" style-hover="background: #15171C; color: #F5F3EE">Contact sales</a>
+      </div>
     </div>
+    <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 700; margin: 0 0 24px">Compare in detail</h3>
+    <div style="overflow-x: auto; margin: 0 0 8px">
+      <table style="font-size: 14px; min-width: 640px">
+        <thead>
+          <tr style="border-bottom: 1px solid #15171C">
+            <th style="text-align: left; padding: 12px 14px 12px 0; font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: #8A8F98">Feature</th>
+            <th style="text-align: center; padding: 12px 14px; font-family: 'JetBrains Mono', monospace; font-weight: 700">Free</th>
+            <th style="text-align: center; padding: 12px 14px; font-family: 'JetBrains Mono', monospace; font-weight: 700">Teams</th>
+            <th style="text-align: center; padding: 12px 14px; font-family: 'JetBrains Mono', monospace; font-weight: 700">Enterprise</th>
+          </tr>
+        </thead>
+        <tbody>
+          <sc-for list="{{ pricingGrid }}" as="row" hint-placeholder-count="12">
+            <tr style="border-bottom: 1px solid #DFDAD0">
+              <td style="padding: 12px 14px 12px 0; color: #15171C">{{ row.feature }}</td>
+              <td style="text-align: center; padding: 12px 14px; color: {{ row.freeColor }}">{{ row.free }}</td>
+              <td style="text-align: center; padding: 12px 14px; color: {{ row.teamColor }}">{{ row.team }}</td>
+              <td style="text-align: center; padding: 12px 14px; color: {{ row.entColor }}">{{ row.ent }}</td>
+            </tr>
+          </sc-for>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size: 12.5px; color: #8A8F98; margin: 16px 0 0">Pricing and feature scope for Teams/Enterprise are the current build target, not a signed rate card — see <code style="font-family: 'JetBrains Mono', monospace">docs/business/business-model.md</code> for the working plan. They'll firm up at launch.</p>
   </div>
 </section>
 
@@ -396,7 +560,7 @@
   </div>
 </section>
 
-<section id="faq" data-screen-label="FAQ" style="padding: 88px 32px; border-bottom: 1px solid #DFDAD0">
+<section data-screen-label="FAQ" style="padding: 88px 32px; border-bottom: 1px solid #DFDAD0">
   <div style="max-width: 880px; margin: 0 auto">
     <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; margin: 0 0 28px">FAQ</h2>
     <sc-for list="{{ faqs }}" as="faq" hint-placeholder-count="5">
@@ -420,42 +584,37 @@
   </div>
 </section>
 
-<footer aria-labelledby="footer-heading" style="padding: 64px 32px 44px">
-  <h2 id="footer-heading" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Footer</h2>
+<footer data-screen-label="Footer" style="padding: 64px 32px 48px">
   <div style="max-width: 1160px; margin: 0 auto">
     <div style="display: flex; justify-content: space-between; gap: 48px; flex-wrap: wrap; margin: 0 0 48px">
-      <div style="max-width: 260px">
-        <a href="#top" style="text-decoration: none; font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 17px; color: #15171C">undercut</a>
-        <p style="font-size: 13.5px; line-height: 1.6; color: #4a4e57; margin: 12px 0 14px">Runs every unit of work at the cheapest model that can pass verification. Escalate on evidence, not vibes.</p>
-        <p style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #8A8F98; margin: 0 0 4px">MIT License</p>
-        <p style="font-size: 12px; color: #4a4e57; margin: 0">Built and maintained by <a href="https://iamjustinwinter.com" style="color: #15171C">Justin Winter</a> · <a href="https://github.com/justinwinter" style="color: #15171C">GitHub</a></p>
+      <div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 17px; margin: 0 0 10px">undercut</div>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #8A8F98; margin: 0">MIT License · <a href="https://github.com/undercutsh/firstpass" style="color: #8A8F98">github.com/undercutsh/firstpass</a></p>
       </div>
-      <div style="display: flex; gap: 56px; flex-wrap: wrap; font-size: 14px">
-        <nav aria-label="Product" style="display: grid; gap: 10px; align-content: start">
-          <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #8A8F98; margin: 0">Product</h3>
+      <div style="display: flex; gap: 72px; flex-wrap: wrap; font-size: 14px">
+        <div style="display: grid; gap: 10px; align-content: start">
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #8A8F98">Product</span>
           <a href="#how" style="text-decoration: none; color: #4a4e57">How it works</a>
-          <a href="#benchmarks" style="text-decoration: none; color: #4a4e57">Benchmarks</a>
+          <a href="#calculator" style="text-decoration: none; color: #4a4e57">Savings calculator</a>
           <a href="#teams" style="text-decoration: none; color: #4a4e57">Teams</a>
+          <a href="#pricing" style="text-decoration: none; color: #4a4e57">Pricing</a>
           <a href="#install" style="text-decoration: none; color: #4a4e57">Install</a>
-          <a href="#faq" style="text-decoration: none; color: #4a4e57">FAQ</a>
-        </nav>
-        <nav aria-label="Proof" style="display: grid; gap: 10px; align-content: start">
-          <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #8A8F98; margin: 0">Proof</h3>
+        </div>
+        <div style="display: grid; gap: 10px; align-content: start">
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #8A8F98">Proof</span>
+          <a href="#benchmarks" style="text-decoration: none; color: #4a4e57">Benchmarks</a>
           <a href="https://github.com/undercutsh/firstpass/tree/main/testing/results" style="text-decoration: none; color: #4a4e57">Raw results</a>
           <a href="https://github.com/undercutsh/firstpass/blob/main/testing/README.md" style="text-decoration: none; color: #4a4e57">Methodology</a>
-          <a href="https://github.com/undercutsh/firstpass/tree/main/evals" style="text-decoration: none; color: #4a4e57">Eval harness</a>
-          <a href="https://github.com/undercutsh/firstpass/blob/main/testing/README.md" style="text-decoration: none; color: #4a4e57">Flagging study</a>
-        </nav>
-        <nav aria-label="Repository" style="display: grid; gap: 10px; align-content: start">
-          <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #8A8F98; margin: 0">Repository</h3>
+        </div>
+        <div style="display: grid; gap: 10px; align-content: start">
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #8A8F98">Repo</span>
           <a href="https://github.com/undercutsh/firstpass" style="text-decoration: none; color: #4a4e57">GitHub</a>
-          <a href="https://github.com/undercutsh/firstpass/releases" style="text-decoration: none; color: #4a4e57">Releases</a>
+          <a href="https://github.com/undercutsh/firstpass/releases" style="text-decoration: none; color: #4a4e57">Changelog</a>
           <a href="https://github.com/undercutsh/firstpass/issues" style="text-decoration: none; color: #4a4e57">Issues</a>
-          <a href="https://github.com/undercutsh/firstpass/blob/main/LICENSE" style="text-decoration: none; color: #4a4e57">License</a>
-        </nav>
+        </div>
       </div>
     </div>
-    <div style="border-top: 1px solid #DFDAD0; padding-top: 22px; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; font-size: 12.5px; color: #8A8F98">
+    <div style="border-top: 1px solid #DFDAD0; padding-top: 24px; display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-size: 12.5px; color: #8A8F98">
       <span style="display: flex; gap: 18px; flex-wrap: wrap; align-items: baseline">
         <span style="font-family: 'JetBrains Mono', monospace">© {{ copyrightYear }} Undercut · MIT</span>
         <span style="font-family: 'JetBrains Mono', monospace">Works with: Claude Code · Codex · Cursor · Copilot · OpenCode</span>
@@ -476,9 +635,18 @@
   </div>
 </footer>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;showUrgency&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Content&quot;},&quot;animateHero&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Hero&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;animateHero&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Hero&quot;}}">
+const SAVINGS_PCT = { anthropic: 0.68, gemini: 0.85, openai: 0.54 };
+const VENDOR_LABEL = { anthropic: 'Anthropic', openai: 'OpenAI', gemini: 'Gemini' };
+const fmt = (n) => Math.round(n).toLocaleString('en-US');
 class Component extends DCLogic {
-  state = { copied: false };
+  state = {
+    copied: false,
+    calcMode: 'individual',
+    calcVendor: 'anthropic',
+    calcSeats: 8,
+    calcSpend: 200
+  };
   copyTimer = null;
   renderVals() {
     const copy = () => {
@@ -489,6 +657,26 @@ class Component extends DCLogic {
       this.copyTimer = setTimeout(() => this.setState({ copied: false }), 1800);
     };
     const c = this.state.copied;
+
+    const { calcMode, calcVendor, calcSeats, calcSpend } = this.state;
+    const isTeam = calcMode === 'team';
+    const seats = isTeam ? Math.max(1, calcSeats || 1) : 1;
+    const spend = Math.max(0, calcSpend || 0);
+    const currentTotal = spend * seats;
+    const pct = SAVINGS_PCT[calcVendor];
+    const withUndercut = currentTotal * (1 - pct);
+    const savingsAmount = currentTotal - withUndercut;
+
+    const modeBtn = (key) => {
+      const active = calcMode === key;
+      return {
+        bg: active ? '#15171C' : '#FFFFFF',
+        fg: active ? '#F5F3EE' : '#15171C'
+      };
+    };
+    const individualBtn = modeBtn('individual');
+    const teamBtn = modeBtn('team');
+
     return {
       copyInstall: copy,
       copyrightYear: new Date().getFullYear(),
@@ -496,8 +684,66 @@ class Component extends DCLogic {
       heroCopyLabel: c ? 'Copied ✓' : 'Install',
       blockCopyLabel: c ? 'Copied ✓' : 'Copy',
       finalCopyLabel: c ? 'Copied ✓' : 'Install',
-      showUrgency: this.props.showUrgency ?? true,
       playState: (this.props.animateHero ?? true) ? 'running' : 'paused',
+
+      calcIsTeam: isTeam,
+      calcModeIndividualBg: individualBtn.bg,
+      calcModeIndividualFg: individualBtn.fg,
+      calcModeTeamBg: teamBtn.bg,
+      calcModeTeamFg: teamBtn.fg,
+      setCalcModeIndividual: () => this.setState({ calcMode: 'individual' }),
+      setCalcModeTeam: () => this.setState({ calcMode: 'team' }),
+      calcSeats: seats,
+      setCalcSeats: (e) => this.setState({ calcSeats: Math.max(1, parseInt(e.target.value, 10) || 1) }),
+      calcSpend: spend,
+      setCalcSpend: (e) => this.setState({ calcSpend: Math.max(0, parseFloat(e.target.value) || 0) }),
+      calcSpendLabelSuffix: isTeam ? ' per seat' : '',
+      calcVendorButtons: ['anthropic', 'openai', 'gemini'].map((key) => {
+        const active = calcVendor === key;
+        return {
+          label: VENDOR_LABEL[key],
+          active,
+          bg: active ? '#15171C' : '#FFFFFF',
+          fg: active ? '#F5F3EE' : '#15171C',
+          border: active ? '#15171C' : '#DFDAD0',
+          onClick: () => this.setState({ calcVendor: key })
+        };
+      }),
+      calcSavingsAmountFmt: fmt(savingsAmount),
+      calcSavingsPctFmt: Math.round(pct * 100),
+      calcSavingsAnnualFmt: fmt(savingsAmount * 12),
+      calcCurrentTotalFmt: fmt(currentTotal),
+      calcWithUndercutFmt: fmt(withUndercut),
+      calcBarWithPct: Math.round((1 - pct) * 100) + '%',
+      calcVendorComparison: ['anthropic', 'openai', 'gemini'].map((key) => {
+        const active = calcVendor === key;
+        const vPct = SAVINGS_PCT[key];
+        return {
+          label: VENDOR_LABEL[key],
+          activeTag: active ? ' — selected' : '',
+          pctLabel: Math.round(vPct * 100),
+          savingsFmt: fmt(currentTotal * vPct),
+          border: active ? '#2E9E5B' : '#DFDAD0',
+          bg: active ? 'rgba(46,158,91,0.08)' : 'transparent',
+          weight: active ? '700' : '500'
+        };
+      }),
+
+      pricingGrid: [
+        { feature: '6-flag rubric & escalation ladder (SKILL.md)', free: '✓', team: '✓', ent: '✓', freeColor: '#2E9E5B', teamColor: '#2E9E5B', entColor: '#2E9E5B' },
+        { feature: 'Claude Code, Codex, Cursor, Copilot, OpenCode', free: '✓', team: '✓', ent: '✓', freeColor: '#2E9E5B', teamColor: '#2E9E5B', entColor: '#2E9E5B' },
+        { feature: 'MIT licensed source', free: '✓', team: '✓', ent: '✓', freeColor: '#2E9E5B', teamColor: '#2E9E5B', entColor: '#2E9E5B' },
+        { feature: 'Org-wide routing policy enforcement', free: '—', team: '✓', ent: '✓', freeColor: '#8A8F98', teamColor: '#2E9E5B', entColor: '#2E9E5B' },
+        { feature: 'Per-account savings metering & reporting', free: '—', team: '✓', ent: '✓', freeColor: '#8A8F98', teamColor: '#2E9E5B', entColor: '#2E9E5B' },
+        { feature: 'Verifiable escalation ledger', free: '—', team: '✓', ent: '✓', freeColor: '#8A8F98', teamColor: '#2E9E5B', entColor: '#2E9E5B' },
+        { feature: 'Always-updated tier→model mapping', free: '—', team: '✓', ent: '✓', freeColor: '#8A8F98', teamColor: '#2E9E5B', entColor: '#2E9E5B' },
+        { feature: 'SSO / directory sync', free: '—', team: '✓', ent: '✓', freeColor: '#8A8F98', teamColor: '#2E9E5B', entColor: '#2E9E5B' },
+        { feature: 'On-prem / self-hosted deployment', free: '—', team: '—', ent: '✓', freeColor: '#8A8F98', teamColor: '#8A8F98', entColor: '#2E9E5B' },
+        { feature: 'SOC 2 path & data residency', free: '—', team: '—', ent: '✓', freeColor: '#8A8F98', teamColor: '#8A8F98', entColor: '#2E9E5B' },
+        { feature: 'Custom integrations', free: '—', team: '—', ent: '✓', freeColor: '#8A8F98', teamColor: '#8A8F98', entColor: '#2E9E5B' },
+        { feature: 'Support', free: 'Community', team: 'Email', ent: 'Dedicated', freeColor: '#4a4e57', teamColor: '#4a4e57', entColor: '#4a4e57' }
+      ],
+
       ladderRows: [
         { unit: 'unit 041', flags: '0 flags → cheap', result: '✓ pass', color: '#2E9E5B', delay: '0s' },
         { unit: 'unit 042', flags: '0 flags → cheap', result: '✓ pass', color: '#2E9E5B', delay: '0.9s' },
@@ -519,7 +765,12 @@ class Component extends DCLogic {
         { q: 'What if I\u2019m on an open-weight model?', a: 'Check your tier pricing first — some open-weight price ladders have cheap and standard inverted, which flips the cost math (quality still holds; see the caveats in the benchmark section).' },
         { q: 'Will this go stale when a new model ships?', a: 'The routing rules are about work properties, not specific models. The tier\u2192model mapping is versioned separately in models.md and updates on its own cadence.' },
         { q: 'Does this touch our network or data?', a: 'No — it\u2019s a policy file the agent reads locally. Nothing proxies traffic, nothing calls home.' },
-        { q: 'What does uninstalling look like?', a: 'Remove the skill and you\u2019re back to status quo. It\u2019s a policy your agent follows, not infrastructure — zero lock-in, nothing to migrate off.' }
+        { q: 'What does uninstalling look like?', a: 'Remove the skill and you\u2019re back to status quo. It\u2019s a policy your agent follows, not infrastructure — zero lock-in, nothing to migrate off.' },
+        { q: 'Is the free plan actually free forever?', a: 'Yes. The MIT skill is the product’s credibility, not a lead magnet for it — it stays free and full-featured for individual use indefinitely. Teams is an optional paid layer on top for orgs, not a bait-and-switch on what’s free today.' },
+        { q: 'What does Teams add that the free skill doesn’t?', a: 'The free skill only works if every developer installs it and follows it. Teams makes that structural: the same policy applies to every seat, plus per-account savings metering, a verifiable escalation ledger, an always-updated tier→model map, and SSO/directory sync.' },
+        { q: 'How is Teams priced, and is there a trial?', a: 'The plan is $29 per user per month with a 14-day trial once it ships. Teams is still in development — pricing and scope will firm up at launch; join early access on the pricing section above to get notified.' },
+        { q: 'What’s the difference between Teams and Enterprise?', a: 'Teams is self-serve for most orgs. Enterprise adds an on-prem/self-hosted option, a SOC 2 compliance path and data residency, dedicated support, and custom integrations — priced by contact, not listed, because those deployments vary too much for a flat rate.' },
+        { q: 'Does the paid plan turn this into a network-layer proxy?', a: 'No. Teams enforces the policy through org-wide configuration and the escalation ledger, not by sitting between your agent and its model calls. It still composes with whatever gateway you already run — see the Teams section above.' }
       ]
     };
   }
