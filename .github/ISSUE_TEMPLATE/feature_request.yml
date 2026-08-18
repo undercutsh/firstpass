@@ -1,0 +1,30 @@
+name: Feature request
+description: A new capability or an improvement
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: "Tell us what you're trying to do and why — the 'why' matters more than the 'how'."
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem are you solving?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed approach
+      description: Optional — how you'd imagine solving it.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Skill (SKILL.md / routing behavior)
+        - Eval harness (evals/)
+        - Docs / methodology
+        - Site (getundercut.sh)
+        - Other
+    validations:
+      required: true

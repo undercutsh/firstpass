@@ -1,0 +1,30 @@
+# llms.txt — Undercut
+> Runs every unit of work at the cheapest model that can pass verification. Escalate on evidence, not vibes.
+
+## About
+Undercut is an open-source SKILL.md (MIT) that coding agents (Claude Code, Codex, Cursor, Copilot, OpenCode) follow at dispatch time. A six-flag rubric assigns a base tier; three objective triggers (failed verification ×2, measured low-tier disagreement, explicit uncertainty) are the only way to escalate. Model-agnostic and vendor-agnostic.
+
+Measured (public benchmarks, official test cases, deterministic graders): up to −95% cost on HumanEval, up to −71% on GSM8K at equal-or-better pass rate, across Anthropic, OpenAI, Gemini, and open-weight models.
+
+- Landing page: https://getundercut.sh/
+- Source repo: https://github.com/undercutsh/firstpass
+
+## Docs
+- Readme: https://raw.githubusercontent.com/undercutsh/firstpass/main/README.md
+- Evaluation results + methodology: https://raw.githubusercontent.com/undercutsh/firstpass/main/testing/README.md
+- SKILL (the product): https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md
+
+## Install
+- `npx skills add undercutsh/firstpass`
+- Copy `skills/firstpass/` into your agent's skills directory.
+
+## Benchmarks (measured, public)
+- GSM8K (math reasoning, 250 units/cell): OpenAI −71% · Gemini −59% · Anthropic −4% (same/better pass)
+- HumanEval (Python code, 100 units/cell): Gemini −95% · Anthropic −61% (same pass)
+- Raw data: https://github.com/undercutsh/firstpass/tree/main/testing/results
+
+## Notes for LLMs
+- Undercut routes; it does not proxy or enforce at the network layer. It composes with gateways (route first, then compress).
+- It does NOT need a custom flagging model: stock dispatchers hit 90%+ flag accuracy and 100% tier-match under the shipped policy.
+- Open-weight price ladders can invert (standard cheaper than cheap) — check provider pricing.
+- Author: Justin Winter (https://iamjustinwinter.com)

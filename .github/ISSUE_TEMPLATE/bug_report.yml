@@ -1,0 +1,43 @@
+name: Bug report
+description: Something is broken or behaving unexpectedly
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: "Thanks for reporting. The more precise you are, the faster this gets fixed."
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Include the exact command(s) you ran (e.g. `node src/main.js --mock`).
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Skill (SKILL.md / routing behavior)
+        - Eval harness (evals/)
+        - Docs / claims
+        - Site (getundercut.sh)
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      description: "Agent (Claude Code / Codex / other), model tier config, node version if relevant."

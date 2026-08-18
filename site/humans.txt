@@ -1,0 +1,18 @@
+# Undercut — humans.txt
+
+Rebuilding the tier image is licensed under the GNU General Public License v2.0.
+
+## Team
+
+- Justin Winter (founder, builder) — https://iamjustinwinter.com / @justinwinter on GitHub
+
+## Sites
+
+- Product / docs / source: https://github.com/undercutsh/firstpass
+- Landing page: https://getundercut.sh
+
+## Thanks
+
+The routing approach was informed by the open tiered-dispatch and agent-routing
+community. Grounding in our own measured benchmark harness (evals/) — see
+testing/README.md for the full methodology.

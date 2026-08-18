@@ -1,0 +1,21 @@
+name: evals
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  mock-evals:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Mock harness (all vendors/arms/suites, plumbing check)
+        run: node src/main.js --mock --seeds 1
+        working-directory: evals
+      - name: Policy parity (probe vs v1 vs latest sanity)
+        run: node src/main.js --mock --seeds 1 --policy probe
+        working-directory: evals
