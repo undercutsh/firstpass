@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#F5F3EE"/>
+  <rect x="0" y="0" width="1200" height="6" fill="#2E9E5B"/>
+  <text x="60" y="120" font-family="Menlo, monospace" font-size="30" fill="#8A8F98" letter-spacing="6">UNDERCUT</text>
+  <text x="60" y="300" font-family="Menlo, monospace" font-size="64" font-weight="700" fill="#15171C">Undercut the top-tier model.</text>
+  <text x="60" y="380" font-family="Menlo, monospace" font-size="64" font-weight="700" fill="#15171C">Never the quality bar.</text>
+  <text x="60" y="470" font-family="Menlo, monospace" font-size="28" fill="#4a4e57">Runs every unit at the cheapest model that can pass verification.</text>
+  <text x="60" y="530" font-family="Menlo, monospace" font-size="28" fill="#2E9E5B">Measured: up to −95% cost on HumanEval · up to −71% on GSM8K</text>
+  <text x="60" y="590" font-family="Menlo, monospace" font-size="22" fill="#8A8F98">getundercut.sh · open source · MIT</text>
+</svg>
