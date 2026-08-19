@@ -1,10 +1,13 @@
 # Undercut — humans.txt
 
-Rebuilding the tier image is licensed under the GNU General Public License v2.0.
+MIT licensed. See LICENSE.
 
 ## Team
 
-- Justin Winter (founder, builder) — https://iamjustinwinter.com / @justinwinter on GitHub
+- Justin Winter (founder, builder) — https://iamjustinwinter.com
+  LinkedIn: https://www.linkedin.com/in/justincwinter
+  X: https://x.com/jcwinter
+  GitHub: https://github.com/justinwinter
 
 ## Sites
 

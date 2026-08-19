@@ -22,6 +22,31 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Undercut — Undercut the top-tier model. Never the quality bar.">
 <meta name="twitter:description" content="Runs every unit of work at the cheapest model that can pass verification. Measured up to −95% cost on public benchmarks.">
+<link rel="author" href="https://iamjustinwinter.com/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Undercut",
+  "alternateName": "tiered-dispatch",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "url": "https://getundercut.sh/",
+  "description": "Confidence-gated model routing for coding agents — a SKILL.md that runs every unit of work at the cheapest model that can pass verification.",
+  "license": "https://opensource.org/licenses/MIT",
+  "codeRepository": "https://github.com/undercutsh/firstpass",
+  "author": {
+    "@type": "Person",
+    "name": "Justin Winter",
+    "url": "https://iamjustinwinter.com/",
+    "sameAs": [
+      "https://www.linkedin.com/in/justincwinter",
+      "https://x.com/jcwinter",
+      "https://github.com/justinwinter"
+    ]
+  }
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -159,7 +184,7 @@
             <span style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 44px; letter-spacing: -0.02em; color: #15171C">${{ calcSavingsAmountFmt }}<span style="font-size: 20px; color: #8A8F98">/mo</span></span>
             <span style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 18px; color: #2E9E5B">−{{ calcSavingsPctFmt }}%</span>
           </div>
-          <div style="font-size: 13.5px; color: #8A8F98; margin-top: 6px">≈ ${{ calcSavingsAnnualFmt }}/yr back in the budget</div>
+          <div style="font-size: 13.5px; color: #8A8F98; margin-top: 6px">≈ ${{ calcSavingsAnnualFmt }}/yr back in the budget · ${{ calcSavingsDailyFmt }}/day, to the cent</div>
         </div>
         <div style="display: grid; gap: 10px">
           <div>
@@ -246,8 +271,8 @@
 <section data-screen-label="Vs cap-based routers" style="padding: 88px 32px; border-bottom: 1px solid #DFDAD0">
   <div style="max-width: 1160px; margin: 0 auto">
     <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #8A8F98; margin: 0 0 14px">vs. cap-based routers</p>
-    <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 34px; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 16px; text-wrap: balance">Caps throttle spend. Undercut routes work.</h2>
-    <p style="font-size: 16px; line-height: 1.65; color: #4a4e57; margin: 0 0 48px; max-width: 68ch">Most "cost control" tooling watches the meter: every unit still runs at the top tier until a budget cap stops the whole session. Undercut decides the tier per unit, before it runs — the cap never has to save you because the spend never happens.</p>
+    <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 34px; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 16px; text-wrap: balance">A cap never asks why the meter's spinning.</h2>
+    <p style="font-size: 16px; line-height: 1.65; color: #4a4e57; margin: 0 0 48px; max-width: 68ch">Most "cost control" tooling watches the meter: every unit still runs at the top tier until a budget cap stops the whole session — it throttles spend, it never questions it. Undercut decides the tier per unit, before it runs. The cap never has to save you, because the spend it would have capped never happens.</p>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(440px, 100%), 1fr)); gap: 32px; align-items: stretch">
       <div style="border: 1px solid #DFDAD0; background: #FBFAF7; display: flex; flex-direction: column">
         <div style="padding: 14px 20px; border-bottom: 1px solid #DFDAD0; display: flex; justify-content: space-between; align-items: baseline"><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: #8A8F98">Spend-cap router</span><span style="font-size: 12px; color: #8A8F98">reacts after the spend</span></div>
@@ -329,8 +354,12 @@
 
 <section id="how" data-screen-label="How it works" style="background: #15171C; color: #F5F3EE; padding: 88px 32px">
   <div style="max-width: 880px; margin: 0 auto">
-    <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #8A8F98; margin: 0 0 14px">How it works</p>
+    <div style="display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin: 0 0 14px">
+      <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #8A8F98; margin: 0">How it works</p>
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #8A8F98; border: 1px solid #2A2D35; padding: 3px 8px">The Undercut Rubric · v1</span>
+    </div>
     <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 34px; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 24px; text-wrap: balance">Six flags assign a tier. Three triggers are the only way up.</h2>
+    <p style="font-size: 13.5px; line-height: 1.6; color: #8A8F98; margin: 0 0 20px">This is a named, versioned spec — not internal logic we could quietly change. When the rubric changes (a new flag, a different cap), the version number moves and <a href="https://github.com/undercutsh/firstpass/blob/main/CHANGELOG.md" style="color: #8A8F98">the changelog</a> says why.</p>
     <p style="font-size: 16px; line-height: 1.65; color: #b9bcc2; margin: 0 0 28px">Every unit of work gets scored against six flags, then assigned the cheapest tier that can plausibly handle it. It only moves up a tier when something objective proves it needs to — a failed check, a measured disagreement, an explicit uncertainty flag. It never moves up on a guess, and it never moves back down mid-task.</p>
     <div style="border: 1px solid #2A2D35; background: #101216; padding: 28px 24px; margin: 0 0 28px; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; overflow-x: auto">
       <div style="display: flex; align-items: center; gap: 0; min-width: 640px">
@@ -439,11 +468,13 @@
       <li><strong style="color: #15171C">Doesn't help when the cheapest tier lacks the capability entirely</strong> (OpenAI + Python is the documented case — no headroom to save).</li>
       <li><strong style="color: #15171C">Doesn't replace the planning decision.</strong> Planning is separate from execution routing; this ladder is for execution units.</li>
       <li><strong style="color: #15171C">Doesn't promise a dollar figure for your workload.</strong> Savings are workload-dependent — real workloads escalate more than benchmarks and land below these numbers, not above.</li>
+      <li><strong style="color: #15171C">Doesn't prove your number until you run it.</strong> Every figure on this page is an observation from our tasks and our graders — a reproducible data point, not a guarantee about your codebase. Run the harness yourself; that's why it's public.</li>
     </ul>
-    <div style="border: 1px solid #15171C; padding: 24px 28px">
+    <div style="border: 1px solid #15171C; padding: 24px 28px; margin: 0 0 20px">
       <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; margin: 0 0 10px">For finance &amp; procurement</p>
       <p style="font-size: 15px; line-height: 1.65; color: #4a4e57; margin: 0">No new vendor contract to negotiate. No network-layer access — it's a policy file your agent reads, not a service that sits between your agent and its model calls. MIT licensed, free to run. Every cost and quality claim on this page traces to public, re-runnable benchmark data — not an internal vendor number you have to take on faith.</p>
     </div>
+    <p style="font-size: 13.5px; line-height: 1.6; color: #8A8F98; margin: 0; max-width: 74ch"><strong style="color: #4a4e57">Disclosure:</strong> Undercut sells Team and Enterprise (see <a href="#pricing" style="color: #8A8F98">pricing</a>). The rubric, the eval harness, and every benchmark on this page are identical whether you pay us or not — nothing in the free skill is held back to make the paid tier look better. We wrote the graders; verify them yourself instead of taking our word for it.</p>
   </div>
 </section>
 
@@ -633,6 +664,7 @@
       <div>
         <div style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 17px; margin: 0 0 10px">undercut</div>
         <p style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #8A8F98; margin: 0">MIT License · <a href="https://github.com/undercutsh/firstpass" style="color: #8A8F98">github.com/undercutsh/firstpass</a></p>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #8A8F98; margin: 6px 0 0">Built by <a rel="me author" href="https://iamjustinwinter.com/" style="color: #8A8F98">Justin Winter</a></p>
       </div>
       <div style="display: flex; gap: 72px; flex-wrap: wrap; font-size: 14px">
         <div style="display: grid; gap: 10px; align-content: start">
@@ -682,6 +714,7 @@
 const SAVINGS_PCT = { anthropic: 0.68, gemini: 0.85, openai: 0.54 };
 const VENDOR_LABEL = { anthropic: 'Anthropic', openai: 'OpenAI', gemini: 'Gemini' };
 const fmt = (n) => Math.round(n).toLocaleString('en-US');
+const fmtCents = (n) => n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 class Component extends DCLogic {
   state = {
     copied: false,
@@ -779,6 +812,7 @@ class Component extends DCLogic {
       calcSavingsAmountFmt: fmt(savingsAmount),
       calcSavingsPctFmt: Math.round(pct * 100),
       calcSavingsAnnualFmt: fmt(savingsAmount * 12),
+      calcSavingsDailyFmt: fmtCents(savingsAmount / 30),
       calcCurrentTotalFmt: fmt(currentTotal),
       calcWithUndercutFmt: fmt(withUndercut),
       calcBarWithPct: Math.round((1 - pct) * 100) + '%',
@@ -830,7 +864,7 @@ class Component extends DCLogic {
         { q: 'How do I measure what it\u2019s actually saving me?', a: 'Run the benchmark harness on your own tasks and diff any two saved runs with node src/main.js --compare a.json b.json. A mock run costs nothing; a live single-vendor smoke test is pennies.' },
         { q: 'Do I need to build a custom flagging model?', a: 'No. Stock dispatchers (Haiku, Sonnet) hit 90%+ flag agreement and 100% tier-match under the shipped policy.' },
         { q: 'What if I\u2019m on an open-weight model?', a: 'Check your tier pricing first — some open-weight price ladders have cheap and standard inverted, which flips the cost math (quality still holds; see the caveats in the benchmark section).' },
-        { q: 'Will this go stale when a new model ships?', a: 'The routing rules are about work properties, not specific models. The tier\u2192model mapping is versioned separately in models.md and updates on its own cadence.' },
+        { q: 'Will this go stale when a new model ships?', a: 'The routing rules are about work properties, not specific models \u2014 that\u2019s the Undercut Rubric, versioned (currently v1) so changes are visible in the changelog, not silent. The tier\u2192model mapping is versioned separately in models.md and updates on its own cadence.' },
         { q: 'Does this touch our network or data?', a: 'No — it\u2019s a policy file the agent reads locally. Nothing proxies traffic, nothing calls home.' },
         { q: 'What does uninstalling look like?', a: 'Remove the skill and you\u2019re back to status quo. It\u2019s a policy your agent follows, not infrastructure — zero lock-in, nothing to migrate off.' },
         { q: 'Is the free plan actually free forever?', a: 'Yes. The MIT skill is the product’s credibility, not a lead magnet for it — it stays free and full-featured for individual use indefinitely. Teams is an optional paid layer on top for orgs, not a bait-and-switch on what’s free today.' },

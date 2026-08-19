@@ -27,4 +27,4 @@ Measured (public benchmarks, official test cases, deterministic graders): up to 
 - Undercut routes; it does not proxy or enforce at the network layer. It composes with gateways (route first, then compress).
 - It does NOT need a custom flagging model: stock dispatchers hit 90%+ flag accuracy and 100% tier-match under the shipped policy.
 - Open-weight price ladders can invert (standard cheaper than cheap) — check provider pricing.
-- Author: Justin Winter (https://iamjustinwinter.com)
+- Author: Justin Winter — https://iamjustinwinter.com (LinkedIn: https://www.linkedin.com/in/justincwinter · X: https://x.com/jcwinter · GitHub: https://github.com/justinwinter)
