@@ -1,8 +1,14 @@
 # SYNC — how concurrent agent threads coordinate on this repo
 
 Short version of the house rules for any agent thread (Claude Code, opencode,
-Codex, other) working in `undercutsh/firstpass`. Full context:
-[`docs/README.md`](docs/README.md).
+Codex, other) working in `undercutsh/firstpass`.
+
+**Business model, pricing, roadmap, PRD, and marketing strategy do not live
+in this repo.** They were briefly public here under `docs/` (2026-08-18 to
+2026-08-19) — that was a mistake, since this repo is MIT-licensed and public.
+They now live in **`undercutsh/internal`** (private). If your task touches
+strategy, pricing, or roadmap and you don't have access to that repo, say so
+rather than guessing or reconstructing it from this repo's git history.
 
 ## The 3-second sync check (do this before ANY work)
 
@@ -11,8 +17,10 @@ git fetch origin && git status -sb
 ```
 1. On `main` tracking `origin/main`? If not, don't switch — note it.
 2. `git rev-parse origin/main` — report/compare this sha before acting.
-3. `git ls-tree -r --name-only origin/main -- docs/` — if this is empty,
-   STOP. The docs were dropped; something is wrong.
+3. `git ls-tree -r --name-only origin/main -- docs/` — this **should** be
+   empty now (`docs/` was intentionally removed and moved to
+   `undercutsh/internal`). If you're on an old checkout that still has
+   `docs/` content, that's stale — don't resurrect it.
 
 Can't do all three? Stop and re-pull.
 
@@ -34,11 +42,12 @@ Can't do all three? Stop and re-pull.
 ## Numbers flow: human → docs → site
 
 - Any number appearing in site copy must trace to
-  `docs/business/business-model.md`.
-- When a human sets a number in conversation, **write it into docs first**
-  (with a Decisions-log entry), then update the site.
-- If site copy has a number docs lacks: backfill docs — don't assume bad
-  faith.
+  `undercutsh/internal`'s `business/business-model.md` — not to anything in
+  this repo.
+- When a human sets a number in conversation, **write it into that repo's
+  docs first** (with a Decisions-log entry), then update the site here.
+- If site copy has a number the docs lack: backfill the docs — don't assume
+  bad faith.
 
 ## Per-role
 
