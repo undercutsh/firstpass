@@ -1,3 +1,10 @@
+---
+title: "Undercut — pricing"
+description: "Free for individuals, forever. Teams $29/user/month (in development). Enterprise contact-only (in development)."
+canonical: "https://getundercut.sh/pricing.md"
+last-updated: "2026-08-20"
+---
+
 # Undercut — pricing
 
 > Machine-readable pricing for agents comparing costs. Prose version with full feature comparison: https://getundercut.sh/#pricing

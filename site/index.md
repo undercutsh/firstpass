@@ -1,3 +1,10 @@
+---
+title: "Undercut — tiered dispatch for coding agents"
+description: "A routing policy your coding agent follows — cheap tier first, escalate only on evidence. Measured up to −95% cost on public benchmarks at equal-or-better pass rate."
+canonical: "https://getundercut.sh/"
+last-updated: "2026-08-20"
+---
+
 # Undercut — cut your AI coding bill up to 71%. Not your pass rate.
 
 > Markdown twin of https://getundercut.sh/ for agents and crawlers that don't execute JavaScript. The canonical page has the full interactive calculator, benchmark tables, and FAQ accordion; this is the same content in plain prose.
