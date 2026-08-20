@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About — Undercut</title>
+<meta name="description" content="Undercut is a free, MIT-licensed routing policy for coding agents. What it is, why it exists, who builds it, and how to verify the numbers yourself.">
+<link rel="canonical" href="https://getundercut.sh/about">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#F5F3EE;color:#15171C;font-family:'IBM Plex Sans',sans-serif;line-height:1.65}
+  .wrap{max-width:720px;margin:0 auto;padding:64px 24px 80px}
+  h1,h2{font-family:'JetBrains Mono',monospace}
+  h1{font-size:28px}h2{font-size:18px;margin-top:36px}
+  a{color:#15171C;text-underline-offset:3px}
+  .mono{font-family:'JetBrains Mono',monospace;font-size:12px;color:#8A8F98;text-transform:uppercase;letter-spacing:.08em}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="mono">About — Undercut</p>
+  <h1>A routing policy, not a company you need to trust blindly.</h1>
+  <p>Undercut is a free, MIT-licensed <code>SKILL.md</code> that coding agents (Claude Code, Codex, Cursor, Copilot, OpenCode) follow at dispatch time. A six-flag rubric assigns each unit of work a base model tier; three objective triggers — a failed verification, a measured disagreement between two cheap-tier attempts, or an explicit uncertainty flag — are the only things allowed to escalate it. Nothing escalates on a vibe or a self-reported confidence score.</p>
+  <p>It is not a proxy and does not sit on the network path between your agent and its model calls — it's a policy file your agent reads locally, composable with whatever gateway or compression layer you already run.</p>
+
+  <h2>What's measured, and how to check it</h2>
+  <p>Every cost and pass-rate claim on the <a href="/">landing page</a> traces to a public, reproducible benchmark harness (<code>evals/</code> in the source repo), run against official test cases with deterministic graders — no LLM judge, no cherry-picked runs. See <a href="https://github.com/undercutsh/firstpass/tree/main/testing">testing/README.md</a> for the full methodology and raw results, or run it yourself for free with <code>node src/main.js --mock</code>.</p>
+
+  <h2>Who builds it</h2>
+  <p><a href="https://iamjustinwinter.com">Justin Winter</a> — founder and builder. Contact links, source, and license are in <a href="https://raw.githubusercontent.com/undercutsh/firstpass/main/site/humans.txt">humans.txt</a>.</p>
+
+  <h2>What Undercut is not</h2>
+  <ul>
+    <li>Not a multi-provider gateway or compression proxy — it composes with those instead of competing with them.</li>
+    <li>Not a paid product with a free tier held back to make the paid tier look better — the rubric, the eval harness, and every benchmark are identical whether you pay us or not.</li>
+    <li>Not venture-scale infrastructure with an API to trust on faith — it's a single auditable file, MIT licensed, forkable, with the numbers behind it public.</li>
+  </ul>
+
+  <h2>Business model</h2>
+  <p>Free for individuals, forever. Teams (org-wide policy enforcement, savings metering, an escalation ledger, SSO) is a paid layer above the free skill, currently in development — see <a href="/#pricing">pricing</a>. Enterprise is contact-only.</p>
+
+  <p style="margin-top:40px;font-size:13px;color:#8A8F98">Updated 2026-08-20. <a href="/">Back to Undercut</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></p>
+</div>
+</body>
+</html>

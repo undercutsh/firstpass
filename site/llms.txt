@@ -6,13 +6,25 @@ Undercut is an open-source SKILL.md (MIT) that coding agents (Claude Code, Codex
 
 Measured (public benchmarks, official test cases, deterministic graders): up to −95% cost on HumanEval, up to −71% on GSM8K at equal-or-better pass rate, across Anthropic, OpenAI, Gemini, and open-weight models.
 
-- Landing page: https://getundercut.sh/
-- Source repo: https://github.com/undercutsh/firstpass
+- [Landing page](https://getundercut.sh/)
+- [Markdown twin of the landing page](https://getundercut.sh/index.md)
+- [Source repo](https://github.com/undercutsh/firstpass)
+- [About](https://getundercut.sh/about)
+
+## When to use this
+Reach for Undercut when an orchestrating agent is dispatching many small units of coding work (edits, mechanical refactors, test-writing, boilerplate) at a single fixed model tier for an entire session. It is a fit when:
+- You want per-task cost reduction without changing which model the user picked for the session.
+- You can mechanically verify a unit's output (tests, schema, diff, exact-match) — that verification is what gates trusting the cheap tier.
+- You do not want a network-layer proxy or gateway change — it's a policy file the agent reads, nothing intercepts traffic.
+
+It is not a fit when: the work can't be mechanically verified (open-ended design, ambiguous product decisions), or you're looking for token/context compression rather than model-tier selection — see [the landscape](https://getundercut.sh/#the-landscape) for how it compares to compression tools, multi-provider gateways, and spend-observability tools.
 
 ## Docs
-- Readme: https://raw.githubusercontent.com/undercutsh/firstpass/main/README.md
-- Evaluation results + methodology: https://raw.githubusercontent.com/undercutsh/firstpass/main/testing/README.md
-- SKILL (the product): https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md
+- [Readme](https://raw.githubusercontent.com/undercutsh/firstpass/main/README.md)
+- [Evaluation results + methodology](https://raw.githubusercontent.com/undercutsh/firstpass/main/testing/README.md)
+- [SKILL (the product)](https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md)
+- [Agent instructions for this codebase (AGENTS.md)](https://raw.githubusercontent.com/undercutsh/firstpass/main/AGENTS.md)
+- [Pricing (machine-readable)](https://getundercut.sh/pricing.md)
 
 ## Install
 - `npx skills add undercutsh/firstpass`
@@ -21,10 +33,11 @@ Measured (public benchmarks, official test cases, deterministic graders): up to 
 ## Benchmarks (measured, public)
 - GSM8K (math reasoning, 250 units/cell): OpenAI −71% · Gemini −59% · Anthropic −4% (same/better pass)
 - HumanEval (Python code, 100 units/cell): Gemini −95% · Anthropic −61% (same pass)
-- Raw data: https://github.com/undercutsh/firstpass/tree/main/testing/results
+- [Raw data](https://github.com/undercutsh/firstpass/tree/main/testing/results)
 
 ## Notes for LLMs
 - Undercut routes; it does not proxy or enforce at the network layer. It composes with gateways (route first, then compress).
 - It does NOT need a custom flagging model: stock dispatchers hit 90%+ flag accuracy and 100% tier-match under the shipped policy.
 - Open-weight price ladders can invert (standard cheaper than cheap) — check provider pricing.
+- No public API or MCP server exists yet — the free tier is this static skill file, not a running service.
 - Author: Justin Winter — https://iamjustinwinter.com (LinkedIn: https://www.linkedin.com/in/justincwinter · X: https://x.com/jcwinter · GitHub: https://github.com/justinwinter)

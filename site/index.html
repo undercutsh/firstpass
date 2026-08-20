@@ -1,8 +1,120 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Undercut — tiered dispatch for coding agents</title>
+<meta name="description" content="Undercut is a SKILL.md your coding agent follows at dispatch time. Six-flag rubric assigns a base tier. Objective evidence, not self-reported confidence, is the only thing allowed to escalate it. Measured up to −95% cost on public benchmarks at equal-or-better pass rate.">
+<link rel="canonical" href="https://getundercut.sh/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="alternate" type="text/markdown" href="https://getundercut.sh/index.md">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Undercut">
+<meta property="og:title" content="Undercut — Undercut the top-tier model. Never the quality bar.">
+<meta property="og:description" content="Runs every unit of work at the cheapest model that can pass verification. Measured up to −95% cost on public benchmarks at equal-or-better pass rate.">
+<meta property="og:url" content="https://getundercut.sh/">
+<meta property="og:image" content="https://getundercut.sh/og-image.svg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Undercut — Undercut the top-tier model. Never the quality bar.">
+<meta name="twitter:description" content="Runs every unit of work at the cheapest model that can pass verification. Measured up to −95% cost on public benchmarks.">
+<link rel="author" href="https://iamjustinwinter.com/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Undercut",
+  "alternateName": "tiered-dispatch",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "url": "https://getundercut.sh/",
+  "description": "Confidence-gated model routing for coding agents — a SKILL.md that runs every unit of work at the cheapest model that can pass verification.",
+  "license": "https://opensource.org/licenses/MIT",
+  "codeRepository": "https://github.com/undercutsh/firstpass",
+  "sameAs": [
+    "https://github.com/undercutsh/firstpass",
+    "https://github.com/undercutsh"
+  ],
+  "offers": [
+    {
+      "@type": "Offer",
+      "name": "Free",
+      "price": "0",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock",
+      "description": "The full six-flag rubric and escalation ladder as an MIT-licensed SKILL.md. Free for individuals, forever."
+    },
+    {
+      "@type": "Offer",
+      "name": "Teams",
+      "price": "29",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/PreOrder",
+      "description": "Org-wide routing policy enforcement, per-account savings metering, verifiable escalation ledger, always-updated tier-to-model map, SSO/directory sync. $29/user/month, 14-day trial. In development — not yet live; join the waitlist."
+    }
+  ],
+  "author": {
+    "@type": "Person",
+    "name": "Justin Winter",
+    "url": "https://iamjustinwinter.com/",
+    "sameAs": [
+      "https://www.linkedin.com/in/justincwinter",
+      "https://x.com/jcwinter",
+      "https://github.com/justinwinter"
+    ]
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://getundercut.sh/#webpage",
+  "url": "https://getundercut.sh/",
+  "name": "Undercut — tiered dispatch for coding agents",
+  "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": ["#hero-heading", "#hero-sub"]
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does this replace choosing a model per session?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No — it operates inside a session, per unit of work, underneath whatever top-level model choice you've already made." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can it quietly ship worse code?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Cheap-tier output only stands if it passes mechanical verification (tests, schema, diff). Work that can't be checked mechanically starts at a high tier by rule. In the published benchmarks, pass rate was equal or better in every cell." }
+    },
+    {
+      "@type": "Question",
+      "name": "Will it slow my agent down?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Most units resolve in one attempt at the cheap tier. Escalation is bounded: max one retry per tier, one tier up at a time, and anything unresolved goes to a single batched apex tie-break — never an unbounded loop." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the free plan actually free forever?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. The MIT skill stays free and full-featured for individual use indefinitely. Teams is an optional paid layer on top for orgs." }
+    },
+    {
+      "@type": "Question",
+      "name": "How is Teams priced, and is there a trial?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The plan is $29 per user per month with a 14-day trial once it ships. Teams is still in development — join early access on the pricing section to get notified." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this touch our network or data?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No — it's a policy file the agent reads locally. Nothing proxies traffic, nothing calls home." }
+    }
+  ]
+}
+</script>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -80,8 +192,8 @@
   <div style="max-width: 1160px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr)); gap: 64px; align-items: center">
     <div>
       <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #8A8F98; margin: 0 0 22px; text-transform: uppercase">Free for individuals, forever · MIT · Team plan in development</p>
-      <h1 style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: clamp(40px, 5vw, 72px); line-height: 1.02; letter-spacing: -0.03em; margin: 0 0 20px; text-wrap: balance">Cut your AI coding bill up to <span style="color: #2E9E5B">71%</span>. Not your pass rate.</h1>
-      <p style="font-size: 17px; line-height: 1.5; color: #b9bcc2; margin: 0 0 24px; max-width: 54ch">A routing policy your coding agent follows — cheap tier first, escalate only on evidence, never on a vibe. Measured on public benchmarks, not promised.</p>
+      <h1 id="hero-heading" style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: clamp(40px, 5vw, 72px); line-height: 1.02; letter-spacing: -0.03em; margin: 0 0 20px; text-wrap: balance">Cut your AI coding bill up to <span style="color: #2E9E5B">71%</span>. Not your pass rate.</h1>
+      <p id="hero-sub" style="font-size: 17px; line-height: 1.5; color: #b9bcc2; margin: 0 0 24px; max-width: 54ch">A routing policy your coding agent follows — cheap tier first, escalate only on evidence, never on a vibe. Measured on public benchmarks, not promised.</p>
       <sc-if value="{{ leadSubmitted }}" hint-placeholder-val="{{ false }}">
         <div style="display: flex; align-items: center; gap: 10px; padding: 14px 18px; border: 1px solid #2E9E5B; background: rgba(46,158,91,0.1); margin: 0 0 28px; max-width: 60ch">
           <span style="color: #2E9E5B; font-weight: 700">✓</span>
@@ -92,7 +204,7 @@
         <div style="margin: 0 0 28px">
           <div style="display: flex; align-items: stretch; gap: 10px; flex-wrap: wrap; margin: 0 0 8px">
             <input type="email" placeholder="you@company.com" value="{{ leadEmail }}" onChange="{{ setLeadEmail }}" style="flex: 1; min-width: 220px; box-sizing: border-box; padding: 14px 16px; border: 1px solid #2A2D35; background: #101216; color: #F5F3EE; font-family: 'IBM Plex Sans', sans-serif; font-size: 14.5px" />
-            <button onClick="{{ submitLead }}" style="display: flex; align-items: center; gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 14px; background: #2E9E5B; color: #101216; border: none; padding: 14px 20px; cursor: pointer; font-weight: 700" style-hover="background: #3AB56C"><span>Start my Team trial</span><span style="color: #0d3a20">14 days</span></button>
+            <button onClick="{{ submitLead }}" toolname="join_teams_waitlist" tooldescription="Join the Undercut Teams early-access waitlist by submitting an email address. Teams is not yet live." style="display: flex; align-items: center; gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 14px; background: #2E9E5B; color: #101216; border: none; padding: 14px 20px; cursor: pointer; font-weight: 700" style-hover="background: #3AB56C"><span>Start my Team trial</span><span style="color: #0d3a20">14 days</span></button>
           </div>
           <sc-if value="{{ leadError }}" hint-placeholder-val="{{ false }}">
             <p style="font-size: 12.5px; color: #C77D2E; margin: 0 0 8px">{{ leadError }}</p>
@@ -221,7 +333,7 @@
         <div style="display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 280px; align-items: flex-end">
           <div style="display: flex; gap: 10px; flex-wrap: wrap; width: 100%; justify-content: flex-end">
             <input type="email" placeholder="you@company.com" value="{{ leadEmail }}" onChange="{{ setLeadEmail }}" style="flex: 1; min-width: 200px; max-width: 320px; box-sizing: border-box; padding: 12px 16px; border: 1px solid #2A2D35; background: #101216; color: #F5F3EE; font-family: 'IBM Plex Sans', sans-serif; font-size: 14.5px" />
-            <button onClick="{{ submitLead }}" style="font-family: 'JetBrains Mono', monospace; font-size: 13.5px; font-weight: 700; background: #2E9E5B; color: #101216; border: none; padding: 12px 20px; cursor: pointer; white-space: nowrap" style-hover="background: #3AB56C">Email me my audit</button>
+            <button onClick="{{ submitLead }}" toolname="email_cost_audit" tooldescription="Email a free, individualized AI coding cost-savings audit to the given address, based on the calculator inputs (individual or team, seats, current spend)." style="font-family: 'JetBrains Mono', monospace; font-size: 13.5px; font-weight: 700; background: #2E9E5B; color: #101216; border: none; padding: 12px 20px; cursor: pointer; white-space: nowrap" style-hover="background: #3AB56C">Email me my audit</button>
           </div>
           <sc-if value="{{ leadError }}" hint-placeholder-val="{{ false }}">
             <p style="font-size: 12px; color: #C77D2E; margin: 0">{{ leadError }}</p>
@@ -304,7 +416,7 @@
   </div>
 </section>
 
-<section data-screen-label="The landscape" style="padding: 88px 32px; border-bottom: 1px solid #DFDAD0; background: #FBFAF7">
+<section id="the-landscape" data-screen-label="The landscape" style="padding: 88px 32px; border-bottom: 1px solid #DFDAD0; background: #FBFAF7">
   <div style="max-width: 1160px; margin: 0 auto">
     <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #8A8F98; margin: 0 0 14px">The landscape</p>
     <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 34px; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 16px; text-wrap: balance">Not every "cut your AI bill" tool is doing the same job.</h2>

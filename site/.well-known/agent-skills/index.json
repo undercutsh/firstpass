@@ -1,0 +1,12 @@
+{
+  "skills": [
+    {
+      "name": "Undercut — tiered dispatch",
+      "description": "Routes every unit of work at dispatch time to the cheapest model tier that passes objective, mechanical verification — escalating only on a failed check, a measured cheap-tier disagreement, or an explicit uncertainty flag, never on self-reported confidence. Model-agnostic and vendor-agnostic; free and MIT licensed.",
+      "url": "https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md",
+      "install": "npx skills add undercutsh/firstpass",
+      "license": "MIT",
+      "compatibleAgents": ["Claude Code", "Codex", "Cursor", "Copilot", "OpenCode"]
+    }
+  ]
+}

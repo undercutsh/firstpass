@@ -1,0 +1,31 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "Undercut",
+    "identifier": "getundercut.sh"
+  },
+  "entries": [
+    {
+      "identifier": "urn:ai:getundercut.sh:skill:tiered-dispatch",
+      "displayName": "Undercut — tiered dispatch",
+      "type": "text/markdown",
+      "url": "https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md",
+      "description": "A six-flag rubric and escalation ladder that a coding agent follows at dispatch time to route each unit of work to the cheapest model tier that passes objective verification. Free, MIT licensed. Install with `npx skills add undercutsh/firstpass`."
+    },
+    {
+      "identifier": "urn:ai:getundercut.sh:repo:firstpass",
+      "displayName": "undercutsh/firstpass (source)",
+      "type": "text/html",
+      "url": "https://github.com/undercutsh/firstpass",
+      "description": "Source repository: the skill, the vendor-constant deterministic eval harness (evals/), and the raw public benchmark results (testing/)."
+    },
+    {
+      "identifier": "urn:ai:getundercut.sh:index:llms-txt",
+      "displayName": "llms.txt",
+      "type": "text/plain",
+      "url": "https://getundercut.sh/llms.txt",
+      "description": "Agent-facing navigation index: what Undercut is, when to use it, benchmark summary, and links to docs."
+    }
+  ],
+  "notes": "No public API, MCP server, or agentic plugin exists yet — the free tier is a static policy file, not a running service. This catalog will grow when those ship; see https://getundercut.sh/#teams for what's in development."
+}
