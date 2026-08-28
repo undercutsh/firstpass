@@ -23,6 +23,7 @@ It is not a fit when: the work can't be mechanically verified (open-ended design
 - [Readme](https://raw.githubusercontent.com/undercutsh/firstpass/main/README.md)
 - [Evaluation results + methodology](https://raw.githubusercontent.com/undercutsh/firstpass/main/testing/README.md)
 - [SKILL (the product)](https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md)
+- [Developers (no public API/MCP server yet — what exists today)](https://getundercut.sh/developers)
 - [Agent instructions for this codebase (AGENTS.md)](https://raw.githubusercontent.com/undercutsh/firstpass/main/AGENTS.md)
 - [Pricing (machine-readable)](https://getundercut.sh/pricing.md)
 

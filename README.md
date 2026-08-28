@@ -120,6 +120,10 @@ with Claude Code, Codex, Cursor, Copilot, OpenCode — anything that reads a
 **For AI coding agents working in this repo:** see [`AGENTS.md`](AGENTS.md)
 for build/test commands and repo conventions.
 
+**For developers looking for an API or MCP server:** see
+[getundercut.sh/developers](https://getundercut.sh/developers) — there isn't
+one yet; here's what exists today and where to hear about it when it ships.
+
 ## What this is and isn't
 
 This is policy the orchestrating agent follows at dispatch time. It is not a

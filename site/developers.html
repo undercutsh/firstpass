@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Developers — Undercut</title>
+<meta name="description" content="There is no public Undercut API or MCP server yet. Here's what exists today — the SKILL.md and the source repo — and where to hear about an API when it ships.">
+<link rel="canonical" href="https://getundercut.sh/developers">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#F5F3EE;color:#15171C;font-family:'IBM Plex Sans',sans-serif;line-height:1.65}
+  .wrap{max-width:720px;margin:0 auto;padding:64px 24px 80px}
+  h1,h2{font-family:'JetBrains Mono',monospace}
+  h1{font-size:28px}h2{font-size:18px;margin-top:36px}
+  a{color:#15171C;text-underline-offset:3px}
+  .mono{font-family:'JetBrains Mono',monospace;font-size:12px;color:#8A8F98;text-transform:uppercase;letter-spacing:.08em}
+  code{background:#DFDAD0;padding:1px 5px;border-radius:3px;font-size:.92em}
+  .callout{border:1px solid #DFDAD0;border-radius:6px;padding:16px 18px;margin:20px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="mono">Developers — Undercut</p>
+  <h1>No public API or MCP server yet — here's what actually exists.</h1>
+
+  <div class="callout">
+    <p style="margin:0">Honest status: there is no hosted API, no MCP server, and no SDK. The free tier is <a href="https://github.com/undercutsh/firstpass/blob/main/skills/firstpass/SKILL.md"><code>SKILL.md</code></a> — a policy file your agent reads locally. There are no endpoints to call.</p>
+  </div>
+
+  <h2>What exists today</h2>
+  <p>Undercut ships as a single MIT-licensed skill file, not a service:</p>
+  <ul>
+    <li><a href="https://github.com/undercutsh/firstpass/blob/main/skills/firstpass/SKILL.md">skills/firstpass/SKILL.md</a> — the routing policy itself, plain text, readable by any agent that follows a <code>SKILL.md</code> convention (Claude Code, Codex, Cursor, Copilot, OpenCode).</li>
+    <li><a href="https://github.com/undercutsh/firstpass">github.com/undercutsh/firstpass</a> — the full source: the skill, the eval harness in <code>evals/</code>, raw benchmark data in <code>testing/results/</code>, and this site.</li>
+  </ul>
+  <p>Install it by copying the skill into your agent's skills directory, or:</p>
+  <pre style="background:#DFDAD0;padding:12px 14px;border-radius:6px;overflow-x:auto"><code>npx skills add undercutsh/firstpass</code></pre>
+  <p>That's it — no account, no API key, no network call to us. Nothing here phones home.</p>
+
+  <h2>What doesn't exist yet</h2>
+  <p>No hosted routing API. No MCP server. No SDK or client library. No webhook or telemetry endpoint. If you've seen something claiming to be an official Undercut API, it isn't ours — see the note about an unrelated third-party <code>@undercut/cli</code> package in the project's PR history for the kind of name collision that causes this confusion.</p>
+
+  <h2>What's planned</h2>
+  <p>Undercut's paid Teams tier — org-wide policy enforcement, savings metering, an escalation ledger, SSO — is currently in development and is the most likely place an API or MCP server would eventually live, since that's where server-side state (usage, ledgers, org policy) actually needs to exist. Nothing is built yet, and nothing here should be read as a commitment to a specific interface or timeline.</p>
+  <p>Want to hear when that ships? Join the <a href="https://getundercut.sh/#pricing">Teams waitlist</a>.</p>
+
+  <h2>In the meantime</h2>
+  <p>The most useful thing you can do as a developer today is read the policy file, run the eval harness yourself, or open an issue/PR against the repo:</p>
+  <ul>
+    <li><a href="https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md">Raw SKILL.md</a></li>
+    <li><a href="https://github.com/undercutsh/firstpass/tree/main/testing">Eval harness + methodology (testing/README.md)</a></li>
+    <li><a href="https://github.com/undercutsh/firstpass/blob/main/AGENTS.md">AGENTS.md</a> — build/test commands and repo conventions</li>
+    <li><a href="https://github.com/undercutsh/firstpass/issues">Issues</a></li>
+  </ul>
+
+  <p style="margin-top:40px;font-size:13px;color:#8A8F98">Updated 2026-08-28. <a href="/">Back to Undercut</a> · <a href="/about">About</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></p>
+</div>
+</body>
+</html>
