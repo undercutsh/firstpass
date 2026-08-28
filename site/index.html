@@ -99,12 +99,12 @@
     {
       "@type": "Question",
       "name": "Does this replace choosing a model per session?",
-      "acceptedAnswer": { "@type": "Answer", "text": "No — it operates inside a session, per unit of work, underneath whatever top-level model choice you've already made." }
+      "acceptedAnswer": { "@type": "Answer", "text": "No — it operates inside a session, per unit of work, underneath whatever top-level model choice you’ve already made." }
     },
     {
       "@type": "Question",
       "name": "Can it quietly ship worse code?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Cheap-tier output only stands if it passes mechanical verification (tests, schema, diff). Work that can't be checked mechanically starts at a high tier by rule. In the published benchmarks, pass rate was equal or better in every cell." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Cheap-tier output only stands if it passes mechanical verification (tests, schema, diff). Work that can’t be checked mechanically starts at a high tier by rule. In the published benchmarks, pass rate was equal or better in every cell." }
     },
     {
       "@type": "Question",
@@ -113,18 +113,63 @@
     },
     {
       "@type": "Question",
-      "name": "Is the free plan actually free forever?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Yes. The MIT skill stays free and full-featured for individual use indefinitely. Teams is an optional paid layer on top for orgs." }
+      "name": "What happens when it routes something wrong?",
+      "acceptedAnswer": { "@type": "Answer", "text": "A wrong flag only changes the ladder cap, never the base tier — worst case is one extra cheap attempt. It never de-escalates mid-task, so a run can’t thrash between tiers." }
     },
     {
       "@type": "Question",
-      "name": "How is Teams priced, and is there a trial?",
-      "acceptedAnswer": { "@type": "Answer", "text": "The plan is $29 per user per month with a 14-day trial once it ships. Teams is still in development — join early access on the pricing section to get notified." }
+      "name": "How do I measure what it’s actually saving me?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Run the benchmark harness on your own tasks and diff any two saved runs with node src/main.js --compare a.json b.json. A mock run costs nothing; a live single-vendor smoke test is pennies." }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need to build a custom flagging model?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. Stock dispatchers (Haiku, Sonnet) hit 90%+ flag agreement and 100% tier-match under the shipped policy." }
+    },
+    {
+      "@type": "Question",
+      "name": "What if I’m on an open-weight model?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Check your tier pricing first — some open-weight price ladders have cheap and standard inverted, which flips the cost math (quality still holds; see the caveats in the benchmark section)." }
+    },
+    {
+      "@type": "Question",
+      "name": "Will this go stale when a new model ships?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The routing rules are about work properties, not specific models — that’s the Undercut Rubric, versioned (currently v1) so changes are visible in the changelog, not silent. The tier→model mapping is versioned separately in models.md and updates on its own cadence." }
     },
     {
       "@type": "Question",
       "name": "Does this touch our network or data?",
-      "acceptedAnswer": { "@type": "Answer", "text": "No — it's a policy file the agent reads locally. Nothing proxies traffic, nothing calls home." }
+      "acceptedAnswer": { "@type": "Answer", "text": "No — it’s a policy file the agent reads locally. Nothing proxies traffic, nothing calls home." }
+    },
+    {
+      "@type": "Question",
+      "name": "What does uninstalling look like?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Remove the skill and you’re back to status quo. It’s a policy your agent follows, not infrastructure — zero lock-in, nothing to migrate off." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the free plan actually free forever?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. The MIT skill is the product’s credibility, not a lead magnet for it — it stays free and full-featured for individual use indefinitely. Teams is an optional paid layer on top for orgs, not a bait-and-switch on what’s free today." }
+    },
+    {
+      "@type": "Question",
+      "name": "What does Teams add that the free skill doesn’t?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The free skill only works if every developer installs it and follows it. Teams makes that structural: the same policy applies to every seat, plus per-account savings metering, a verifiable escalation ledger, an always-updated tier→model map, and SSO/directory sync." }
+    },
+    {
+      "@type": "Question",
+      "name": "How is Teams priced, and is there a trial?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The plan is $29 per user per month with a 14-day trial once it ships. Teams is still in development — pricing and scope will firm up at launch; join early access on the pricing section above to get notified." }
+    },
+    {
+      "@type": "Question",
+      "name": "What’s the difference between Teams and Enterprise?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Teams is self-serve for most orgs. Enterprise adds an on-prem/self-hosted option, a SOC 2 compliance path and data residency, dedicated support, and custom integrations — priced by contact, not listed, because those deployments vary too much for a flat rate." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the paid plan turn this into a network-layer proxy?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. Teams enforces the policy through org-wide configuration and the escalation ledger, not by sitting between your agent and its model calls. It still composes with whatever gateway you already run — see the Teams section above." }
     }
   ]
 }
