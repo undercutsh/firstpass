@@ -12,7 +12,7 @@ import { runFlagTest, printFlagReport } from './flagtest.js';
 import { codeSuite } from './suites/code.js';
 import { reasoningSuite } from './suites/reasoning.js';
 import { mechanicalSuite } from './suites/mechanical.js';
-import { loadGsm8k, loadHumanEval } from './benchmarks.js';
+import { loadGsm8k, loadHumanEval, loadMbpp } from './benchmarks.js';
 import { writeFileSync, mkdirSync, readFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 
@@ -113,14 +113,17 @@ async function main() {
   const arms = args.arms ? args.arms : Object.keys(ARMS);
 
   // --benchmark: load public benchmark suites (GSM8K reasoning, HumanEval
-  // code) into the suite set. They replace/join the built-in suites.
+  // code, MBPP code) into the suite set. They replace/join the built-in
+  // suites. gsm8k/humaneval fetch live from HuggingFace; mbpp is a fixed
+  // embedded subset (see benchmarks.js) so it needs no network access.
   let benchmarkSuites = null;
   if (args.benchmark) {
     benchmarkSuites = {};
     for (const name of args.benchmark) {
       if (name === 'gsm8k') benchmarkSuites.gsm8k = await loadGsm8k(50);
       else if (name === 'humaneval') benchmarkSuites.humaneval = await loadHumanEval(20);
-      else throw new Error(`unknown benchmark: ${name} (use gsm8k or humaneval)`);
+      else if (name === 'mbpp') benchmarkSuites.mbpp = loadMbpp(30);
+      else throw new Error(`unknown benchmark: ${name} (use gsm8k, humaneval, or mbpp)`);
     }
     console.log(`  benchmarks: ${Object.keys(benchmarkSuites).map((k) => `${k} (${benchmarkSuites[k].length} tasks)`).join(', ')}`);
   }
