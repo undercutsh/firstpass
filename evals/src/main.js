@@ -1,5 +1,5 @@
 // Eval harness entrypoint.
-//   node src/main.js                          full run (all vendors, all arms, 5 seeds)
+//   node src/main.js                          full run (all vendors, all arms, 10 seeds)
 //   node src/main.js --smoke                  small: 1 seed, cheap tiers only
 //   node src/main.js --verify-only            check model slugs resolve
 //   node src/main.js --mock                   run with the mock LLM (no key, plumbing check)
@@ -13,6 +13,7 @@ import { codeSuite } from './suites/code.js';
 import { reasoningSuite } from './suites/reasoning.js';
 import { mechanicalSuite } from './suites/mechanical.js';
 import { loadGsm8k, loadHumanEval } from './benchmarks.js';
+import { summarizeWithCI } from './stats.js';
 import { writeFileSync, mkdirSync, readFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 
@@ -48,13 +49,39 @@ function loadResults(file) {
   return JSON.parse(readFileSync(p, 'utf8'));
 }
 
-function saveResults(results, meta) {
+function saveResults(results, meta, stats) {
   mkdirSync(RESULTS_DIR, { recursive: true });
   const ts = new Date().toISOString().replace(/[:.]/g, '-');
   const file = path.join(RESULTS_DIR, `run-${meta.policy}-${meta.vendors.join('-')}-${meta.arms.join('-')}-${ts}.json`);
-  writeFileSync(file, JSON.stringify({ meta, results }, null, 2));
+  writeFileSync(file, JSON.stringify({ meta, results, stats }, null, 2));
   console.log(`\n💾 saved: ${file}`);
   return file;
+}
+
+/**
+ * Wilson CI on pass rate + seed-cluster bootstrap CI on cost-per-pass, for
+ * every vendor/arm/suite cell. Additive sibling to `results` — same shape,
+ * doesn't touch the existing results[vendor][arm][suite] unit arrays that
+ * --compare and the printed tables already depend on.
+ *
+ * summarizeWithCI() expects `{pass, cost, seed}`-shaped records; runner.js's
+ * units carry `passed`/`cost`/`seed` (seed tagged per-unit in runSuite()),
+ * so adapt the field name here rather than changing the unit shape.
+ */
+export function computeStats(results) {
+  const stats = {};
+  for (const [vendor, byArm] of Object.entries(results)) {
+    stats[vendor] = {};
+    for (const [arm, bySuite] of Object.entries(byArm)) {
+      stats[vendor][arm] = {};
+      for (const [suite, units] of Object.entries(bySuite)) {
+        if (!units.length) continue;
+        const forStats = units.map((u) => ({ pass: u.passed, cost: u.cost, seed: u.seed }));
+        stats[vendor][arm][suite] = summarizeWithCI(forStats);
+      }
+    }
+  }
+  return stats;
 }
 
 async function main() {
@@ -189,7 +216,9 @@ async function main() {
     }
   }
 
-  printReport(results, { vendors: smokeVendors, arms: smokeArmsFinal, suites: smokeSuites, seeds, mock: args.mock, policyVersion: args.policy });
+  const stats = computeStats(results);
+
+  printReport(results, { vendors: smokeVendors, arms: smokeArmsFinal, suites: smokeSuites, seeds, mock: args.mock, policyVersion: args.policy, stats });
 
   if (!args.mock) {
     saveResults(results, {
@@ -200,11 +229,11 @@ async function main() {
       seeds,
       mode: 'live',
       generated: new Date().toISOString(),
-    });
+    }, stats);
   }
 }
 
-function printReport(results, { vendors, arms, suites, seeds, mock, policyVersion = 'latest' }) {
+function printReport(results, { vendors, arms, suites, seeds, mock, policyVersion = 'latest', stats = {} }) {
   console.log('\n' + '='.repeat(72));
   console.log(`RESULTS (policy ${policyVersion})`);
   console.log('='.repeat(72));
@@ -232,6 +261,15 @@ function printReport(results, { vendors, arms, suites, seeds, mock, policyVersio
         console.log(
           `${arm.padEnd(14)}${`${passes}/${n}`.padEnd(8)}${cost.toFixed(4).padEnd(10)}${perPass.padEnd(10)}${String(tok).padEnd(10)}${`${((esc / n) * 100).toFixed(0)}%`.padEnd(6)}${String(apex).padEnd(5)}${retr}`
         );
+        const cell = stats[vendor]?.[arm]?.[suite];
+        if (cell && seeds > 1) {
+          const pr = cell.passRate;
+          const cpp = cell.costPerPassCI;
+          const fmtCpp = (v) => (Number.isFinite(v) ? `$${v.toFixed(4)}` : '∞');
+          console.log(
+            `${''.padEnd(14)}95% CI: pass ${(pr.lower * 100).toFixed(0)}–${(pr.upper * 100).toFixed(0)}%  ·  $/pass ${fmtCpp(cpp.lower)}–${fmtCpp(cpp.upper)}  (seed-cluster bootstrap, n=${cell.n} across ${seeds} seeds)`
+          );
+        }
       }
       printTaskDetail(results, vendor, suite, arms, retriesOf);
     }
@@ -360,7 +398,11 @@ function printComparison(a, b) {
   }
 }
 
-main().catch((e) => {
-  console.error('\nFATAL:', e.message);
-  process.exit(1);
-});
+// Guard so this file can be imported (e.g. by tests, for computeStats) without
+// kicking off a full run — only invoke main() when run directly via `node`.
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main().catch((e) => {
+    console.error('\nFATAL:', e.message);
+    process.exit(1);
+  });
+}
