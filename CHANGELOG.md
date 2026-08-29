@@ -6,6 +6,19 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ## [Unreleased]
 
+### Added
+
+- **MBPP public benchmark suite** (`evals/src/benchmarks.js`'s `loadMbpp`,
+  `--benchmark mbpp`) — a third public code-generation benchmark alongside
+  GSM8K/HumanEval, so trust-and-rigor claims don't rest on HumanEval alone.
+  Unlike those two, it's a fixed, embedded 30-problem subset
+  (`evals/src/data/mbpp-subset.js`) rather than fetched live, so `--mock`
+  and CI stay fully offline. Sourced from the official
+  google-research/mbpp `sanitized-mbpp.json` (Austin et al. 2021,
+  CC-BY-4.0). See `evals/README.md` and `testing/README.md` for details;
+  no live/paid vendor run has been done yet (mock-only, per the
+  "Public-task swap" roadmap item).
+
 ## [0.2.1] - 2026-08-28
 
 ### Added

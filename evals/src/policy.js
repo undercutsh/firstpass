@@ -73,6 +73,8 @@ export function createPolicy(version = 'latest') {
     const categoryNote =
       task.category === 'code'
         ? '\nANSWER FORMAT: the "answer" field MUST be the raw JavaScript function source code as a plain string. Do NOT wrap it in an object, do not add explanation. Example: {"status": "grounded", "reason": null, "answer": "function main(arr){ ... }"}'
+        : task.category === 'mbpp'
+        ? '\nANSWER FORMAT: the "answer" field MUST be the raw Python function source code as a plain string. Do NOT wrap it in an object, do not add explanation, do not include markdown fences. Example: {"status": "grounded", "reason": null, "answer": "def foo(x):\\n    return x"}'
         : '';
     return `${task.prompt}\n\n${extras}\n${categoryNote}\n\n${WORKER_CONTRACT}`;
   };
