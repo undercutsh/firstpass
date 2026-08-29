@@ -87,6 +87,9 @@ export async function runSuite({ arm, vendor, suite, attempt, apexChat, apexMode
   for (let seed = 0; seed < seeds; seed++) {
     // Run all tasks in the seed concurrently (bounded) — the dominant speedup.
     const seedUnits = await mapLimit(suite, concurrency, (task) => runUnitForArm(arm, task, attempt, policy));
+    // Tag each unit with the seed it ran under — stats.js's seed-cluster
+    // bootstrap resamples whole seeds, so it needs this to group by.
+    for (const u of seedUnits) u.seed = seed;
     // Batched apex: one call resolving ALL residual items across the suite.
     if (arm === 'tiered' && apexChat) {
       const residual = [];
