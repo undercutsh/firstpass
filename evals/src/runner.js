@@ -229,6 +229,22 @@ export function mockAttempter({ alwaysPass = false } = {}) {
         cost: 0.001,
         usage: { in: 100, out: 50, costUsd: 0.001 },
       };
+    } else if (task.category === 'mbpp') {
+      // Mock MBPP tasks always pass regardless of tier: answerKey is the
+      // dataset's own reference solution (real Python), so this exercises
+      // the real python3 grader end-to-end without spending money or
+      // touching the network — no mock-solution table needed, unlike the
+      // JS `code` suite above.
+      const answer = task.answerKey;
+      attempts.push(tier);
+      return {
+        answer,
+        status: 'grounded',
+        uncertaintyReason: null,
+        verdict: await task.grader(answer),
+        cost: 0.001,
+        usage: { in: 100, out: 50, costUsd: 0.001 },
+      };
     } else {
       shouldPass = alwaysPass || tier !== 'cheap';
     }

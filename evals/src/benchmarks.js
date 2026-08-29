@@ -7,6 +7,7 @@
 // https://huggingface.co/datasets/openai/gsm8k
 
 import { makeTask, gradeExact } from './tasks.js';
+import { MBPP_SUBSET } from './data/mbpp-subset.js';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 
@@ -74,6 +75,45 @@ export async function gradePython(solution, testCode, entryPoint) {
       : String(e.stderr || e.message).slice(0, 160).replace(/\n/g, ' ');
     return { pass: false, reason };
   }
+}
+
+// MBPP: Mostly Basic Python Problems (Austin et al., 2021). Unlike GSM8K and
+// HumanEval above, this one is NOT fetched live — the 30-problem subset is
+// embedded in `./data/mbpp-subset.js` (see that file's header for source,
+// license, and selection method). That keeps `--mock` and CI fully offline:
+// no HuggingFace dependency at all for this benchmark. CC-BY-4.0.
+// https://github.com/google-research/google-research/tree/master/mbpp
+// https://huggingface.co/datasets/google-research-datasets/mbpp
+
+/**
+ * Grade a Python solution against MBPP's official hand-written test asserts.
+ * Same execution strategy as `gradePython` above (python3 subprocess, strict
+ * timeout) — MBPP's test_list are plain `assert` statements that call the
+ * function by name directly, so no `check(candidate)` wrapper is needed.
+ */
+export async function gradeMbpp(solution, testList) {
+  return gradePython(solution, testList.join('\n'));
+}
+
+/** Build `n` MBPP test tasks (Python) from the embedded subset (no I/O). */
+export function loadMbpp(n = MBPP_SUBSET.length) {
+  return MBPP_SUBSET.slice(0, n).map((p) =>
+    makeTask({
+      id: `mbpp:${p.task_id}`,
+      category: 'mbpp',
+      prompt:
+        `Write a Python function for the following task. Return only the raw ` +
+        `Python source code for the function (and any small helper code it ` +
+        `needs), no explanation, no markdown fences. Your code must pass these ` +
+        `tests:\n\n${p.prompt}\n\n${p.test_list.join('\n')}`,
+      flags: { unverifiable: false, ambiguous: false, blast: false, crossCutting: false, novel: false },
+      // The dataset's own reference solution. Used as ground truth only by
+      // --mock (see runner.js mockAttempter) — real runs grade whatever the
+      // worker model produces.
+      answerKey: p.code,
+      grader: (answer) => gradeMbpp(answer, p.test_list),
+    })
+  );
 }
 
 /** Fetch `n` HumanEval test tasks (Python). */
