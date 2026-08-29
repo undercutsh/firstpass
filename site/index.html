@@ -177,6 +177,38 @@
 <script src="./support.js"></script>
 </head>
 <body>
+<!--
+  Static, dependency-free fallback. The interactive page below (<x-dc>) needs
+  React + the dc-runtime, loaded from a CDN by support.js, to render anything
+  at all — if that fails, support.js reveals this div (see revealStaticFallback
+  in support.js) so the page isn't blank. Hidden by default; no JS, no fonts,
+  no CDN dependency of its own. Keep this in sync by hand if hero/pricing/FAQ
+  copy changes materially.
+-->
+<div id="dc-fallback" hidden style="max-width: 720px; margin: 0 auto; padding: 48px 24px 80px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #15171C; background: #F5F3EE; line-height: 1.6">
+  <p style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: #8A8F98; margin: 0 0 8px">Undercut</p>
+  <h1 style="font-size: 32px; line-height: 1.15; margin: 0 0 16px">Cut your AI coding bill up to 71%. Not your pass rate.</h1>
+  <p style="font-size: 16px; color: #4a4e57; margin: 0 0 24px">A routing policy your coding agent follows — cheap tier first, escalate only on evidence, never on a vibe. Measured on public benchmarks, not promised.</p>
+  <p style="font-size: 13px; color: #955D22; background: rgba(199,125,46,0.1); border: 1px solid #C77D2E; padding: 10px 14px; margin: 0 0 24px">This page's interactive calculator, forms, and FAQ accordion need a script that didn't load (probably a blocked or unreachable CDN). Here's the essential content in the meantime — reload the page to try again.</p>
+  <ul style="display: flex; gap: 24px; flex-wrap: wrap; list-style: none; padding: 0; margin: 0 0 28px; font-size: 14px">
+    <li><strong style="color: #227644">−71%</strong> GSM8K cost, OpenAI</li>
+    <li><strong style="color: #227644">−95%</strong> HumanEval cost, Gemini</li>
+    <li><strong style="color: #227644">−68%</strong> avg. blended cost, Anthropic</li>
+    <li><strong>=</strong> pass rate, every cell</li>
+  </ul>
+  <p style="font-size: 14px; margin: 0 0 8px">Install (free, MIT, no signup):</p>
+  <pre style="background: #15171C; color: #F5F3EE; padding: 14px 16px; overflow-x: auto; font-size: 13px; margin: 0 0 32px"><code>npx skills add undercutsh/firstpass</code></pre>
+  <h2 style="font-size: 18px; margin: 0 0 12px">Frequently asked</h2>
+  <div style="margin: 0 0 32px">
+    <p style="font-weight: 600; margin: 0 0 4px">Can it quietly ship worse code?</p>
+    <p style="color: #4a4e57; margin: 0 0 16px">Cheap-tier output only stands if it passes mechanical verification (tests, schema, diff). Work that can't be checked mechanically starts at a high tier by rule. In the published benchmarks, pass rate was equal or better in every cell.</p>
+    <p style="font-weight: 600; margin: 0 0 4px">Is the free plan actually free forever?</p>
+    <p style="color: #4a4e57; margin: 0 0 16px">Yes. The MIT skill is the product's credibility, not a lead magnet for it — it stays free and full-featured for individual use indefinitely.</p>
+    <p style="font-weight: 600; margin: 0 0 4px">Does this touch our network or data?</p>
+    <p style="color: #4a4e57; margin: 0">No — it's a policy file the agent reads locally. Nothing proxies traffic, nothing calls home.</p>
+  </div>
+  <p style="font-size: 14px"><a href="https://github.com/undercutsh/firstpass" style="color: #15171C">Full README &amp; source on GitHub ↗</a></p>
+</div>
 <x-dc>
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">

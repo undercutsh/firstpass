@@ -1140,16 +1140,33 @@
   }
 
   // src/cdn.ts
+  // NOTE: manually patched (not regenerated from dc-runtime) to add a second-CDN
+  // fallback for the SPOF where unpkg being unreachable silently broke the whole
+  // page's interactivity. jsdelivr serves the identical npm-published bytes for
+  // each pinned version (verified: same SHA-384 as the unpkg SRI below), so the
+  // fallback URL keeps the same `integrity` value. Port this upstream into
+  // dc-runtime/src/cdn.ts next time support.js is rebuilt from source.
   var REACT_URL = "https://unpkg.com/react@18.3.1/umd/react.production.min.js";
+  var REACT_URL_FALLBACK = "https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js";
   var REACT_SRI = "sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z";
   var REACT_DOM_URL = "https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js";
+  var REACT_DOM_URL_FALLBACK = "https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js";
   var REACT_DOM_SRI = "sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1";
   var BABEL_URL = "https://unpkg.com/@babel/standalone@7.29.0/babel.min.js";
+  var BABEL_URL_FALLBACK = "https://cdn.jsdelivr.net/npm/@babel/standalone@7.29.0/babel.min.js";
   var BABEL_SRI = "sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y";
   function cdnScriptFor(url, sri) {
     const res = window.__resources;
     const v = res ? res[url] : void 0;
     return typeof v === "string" && v ? { src: v } : { src: url, integrity: sri };
+  }
+  var CDN_FALLBACKS = /* @__PURE__ */ new Map([
+    [REACT_URL, REACT_URL_FALLBACK],
+    [REACT_DOM_URL, REACT_DOM_URL_FALLBACK],
+    [BABEL_URL, BABEL_URL_FALLBACK]
+  ]);
+  function cdnFallbackFor(primaryUrl, resolvedSrc) {
+    return resolvedSrc === primaryUrl ? CDN_FALLBACKS.get(primaryUrl) || null : null;
   }
 
   // src/external.ts
@@ -1177,17 +1194,7 @@
       if (window.Babel) return Promise.resolve();
       if (babelLoading) return babelLoading;
       const babel = cdnScriptFor(BABEL_URL, BABEL_SRI);
-      babelLoading = new Promise((res, rej) => {
-        const s = document.createElement("script");
-        s.src = babel.src;
-        if (babel.integrity) {
-          s.integrity = babel.integrity;
-          s.crossOrigin = "anonymous";
-        }
-        s.onload = () => res();
-        s.onerror = rej;
-        document.head.appendChild(s);
-      });
+      babelLoading = loadScript(babel.src, babel.integrity, cdnFallbackFor(BABEL_URL, babel.src));
       return babelLoading;
     }
     const pending = /* @__PURE__ */ new Map();
@@ -1820,7 +1827,7 @@
     s.textContent = "x-dc{display:none!important}";
     document.head.appendChild(s);
   }
-  function loadScript(src, integrity) {
+  function loadScript(src, integrity, fallbackSrc) {
     return new Promise((resolve2, reject) => {
       //! nosemgrep: create-script-element
       const s = document.createElement("script");
@@ -1831,7 +1838,24 @@
       }
       s.async = false;
       s.onload = () => resolve2();
-      s.onerror = () => reject(new Error(`failed to load ${src}`));
+      s.onerror = () => {
+        if (!fallbackSrc) {
+          reject(new Error(`failed to load ${src}`));
+          return;
+        }
+        console.warn(`[dc] primary CDN failed for ${src} — trying fallback ${fallbackSrc}`);
+        //! nosemgrep: create-script-element
+        const f = document.createElement("script");
+        f.src = fallbackSrc;
+        if (integrity) {
+          f.integrity = integrity;
+          f.crossOrigin = "anonymous";
+        }
+        f.async = false;
+        f.onload = () => resolve2();
+        f.onerror = () => reject(new Error(`failed to load ${src} (and fallback ${fallbackSrc})`));
+        document.head.appendChild(f);
+      };
       document.head.appendChild(s);
     });
   }
@@ -1841,8 +1865,8 @@
     const react = cdnScriptFor(REACT_URL, REACT_SRI);
     const reactDom = cdnScriptFor(REACT_DOM_URL, REACT_DOM_SRI);
     return Promise.all([
-      loadScript(react.src, react.integrity),
-      loadScript(reactDom.src, reactDom.integrity)
+      loadScript(react.src, react.integrity, cdnFallbackFor(REACT_URL, react.src)),
+      loadScript(reactDom.src, reactDom.integrity, cdnFallbackFor(REACT_DOM_URL, reactDom.src))
     ]).then(() => void 0);
   }
   function init() {
@@ -1903,9 +1927,30 @@
     if (document.readyState !== "loading") api.__dcBoot();
     else document.addEventListener("DOMContentLoaded", () => api.__dcBoot());
   }
+  function revealStaticFallback() {
+    // Both CDNs (primary + fallback) failed, or the app failed to boot: the
+    // interactive page never renders anything (x-dc's raw markup is hidden by
+    // hideRawTemplate()). Reveal the static, no-JS-required fallback content
+    // that index.html ships outside <x-dc> so the page isn't blank.
+    const fb = document.getElementById("dc-fallback");
+    if (fb) fb.hidden = false;
+  }
   hideRawTemplate();
-  loadReactUmd().then(init).catch((err) => {
+  // Backstop for a hung connection: a script request that never fires load or
+  // error (some proxies/firewalls just black-hole the connection instead of
+  // resetting it) would otherwise leave loadReactUmd's promise pending forever
+  // and the page permanently blank. If nothing has produced a mounted root
+  // within 15s, treat it as failed and show the static content.
+  const bootTimeout = setTimeout(() => {
+    if (!document.getElementById("dc-root")) {
+      console.error("[dc] React/dc-runtime did not finish loading within 15s — showing static fallback");
+      revealStaticFallback();
+    }
+  }, 15e3);
+  loadReactUmd().then(init).then(() => clearTimeout(bootTimeout)).catch((err) => {
+    clearTimeout(bootTimeout);
     console.error("[dc] failed to load React or boot:", err);
+    revealStaticFallback();
     throw err;
   });
 })();
