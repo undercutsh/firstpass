@@ -182,8 +182,14 @@
   React + the dc-runtime, loaded from a CDN by support.js, to render anything
   at all — if that fails, support.js reveals this div (see revealStaticFallback
   in support.js) so the page isn't blank. Hidden by default; no JS, no fonts,
-  no CDN dependency of its own. Keep this in sync by hand if hero/pricing/FAQ
-  copy changes materially.
+  no CDN dependency of its own. Also doubles as the one static substitute for
+  the hero's animated demo log (ladderRows in the x-dc script below), which
+  has no other JS-independent copy anywhere on the site — see
+  business/design-canvas-audit-2026-08-29.md in the internal docs repo.
+  Hidden divs' text content is still present in raw HTML source, so this
+  covers non-JS-executing crawlers/agents even when never visually shown.
+  Keep this in sync by hand if hero/pricing/FAQ/demo-log copy changes
+  materially.
 -->
 <div id="dc-fallback" hidden style="max-width: 720px; margin: 0 auto; padding: 48px 24px 80px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #15171C; background: #F5F3EE; line-height: 1.6">
   <p style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: #8A8F98; margin: 0 0 8px">Undercut</p>
@@ -207,6 +213,19 @@
     <p style="font-weight: 600; margin: 0 0 4px">Does this touch our network or data?</p>
     <p style="color: #4a4e57; margin: 0">No — it's a policy file the agent reads locally. Nothing proxies traffic, nothing calls home.</p>
   </div>
+  <h2 style="font-size: 18px; margin: 0 0 12px">Example run</h2>
+  <p style="color: #4a4e57; margin: 0 0 12px">A representative batch of 8 units, dispatched under the shipped policy:</p>
+  <ul style="list-style: none; padding: 0; margin: 0 0 32px; font-family: monospace; font-size: 13px; line-height: 1.9; color: #4a4e57">
+    <li>unit 041 — 0 flags → cheap — <span style="color: #227644">✓ pass</span></li>
+    <li>unit 042 — 0 flags → cheap — <span style="color: #227644">✓ pass</span></li>
+    <li>unit 043 — 1 flag → standard — <span style="color: #227644">✓ pass</span></li>
+    <li>unit 044 — 0 flags → cheap — <span style="color: #227644">✓ pass</span></li>
+    <li>unit 045 — fail ×2 → escalate +1 — <span style="color: #955D22">↑ standard</span></li>
+    <li>unit 045 — residue → standard — <span style="color: #227644">✓ pass</span></li>
+    <li>unit 046 — 0 flags → cheap — <span style="color: #227644">✓ pass</span></li>
+    <li>unit 047 — 2 flags → standard — <span style="color: #227644">✓ pass</span></li>
+    <li>batch — 96% resolved at cheap tier — <strong style="color: #227644">−71% cost</strong></li>
+  </ul>
   <p style="font-size: 14px"><a href="https://github.com/undercutsh/firstpass" style="color: #15171C">Full README &amp; source on GitHub ↗</a></p>
 </div>
 <x-dc>

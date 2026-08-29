@@ -2,7 +2,7 @@
 title: "Undercut — pricing"
 description: "Free for individuals, forever. Teams $29/user/month (in development). Enterprise contact-only (in development)."
 canonical: "https://getundercut.sh/pricing.md"
-last-updated: "2026-08-20"
+last-updated: "2026-08-29"
 ---
 
 # Undercut — pricing
@@ -21,7 +21,7 @@ last-updated: "2026-08-20"
 - **Price:** $29 / user / month, billed monthly
 - **Trial:** 14 days, once it ships
 - **Status:** in development — not yet live; join the waitlist at https://getundercut.sh/#pricing
-- **Includes:** everything in Free, for every seat, plus org-wide routing policy enforcement, per-account savings metering and reporting, a verifiable escalation ledger, an always-updated tier→model mapping, and SSO/directory sync
+- **Includes:** everything in Free, for every seat, plus org-wide routing policy enforcement, per-account savings metering and reporting, a verifiable escalation ledger, an always-updated tier→model mapping, SSO/directory sync, and email support
 
 ## Enterprise
 

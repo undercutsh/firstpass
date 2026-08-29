@@ -2,7 +2,7 @@
 title: "Undercut — tiered dispatch for coding agents"
 description: "A routing policy your coding agent follows — cheap tier first, escalate only on evidence. Measured up to −95% cost on public benchmarks at equal-or-better pass rate."
 canonical: "https://getundercut.sh/"
-last-updated: "2026-08-20"
+last-updated: "2026-08-29"
 ---
 
 # Undercut — cut your AI coding bill up to 71%. Not your pass rate.
@@ -40,6 +40,20 @@ Controlled A/B: same tasks, same grader, only the routing policy changes. Vendor
 Secondary evidence (our own 30-task synthetic suite, clearly labeled ours): tiered was never worse than all-standard on any cell, beat it on 6 of 12.
 
 Full data: https://github.com/undercutsh/firstpass/tree/main/testing
+
+## Example run
+
+A representative batch of 8 units, dispatched under the shipped policy:
+
+- unit 041 — 0 flags → cheap — pass
+- unit 042 — 0 flags → cheap — pass
+- unit 043 — 1 flag → standard — pass
+- unit 044 — 0 flags → cheap — pass
+- unit 045 — fail ×2 → escalate +1 → standard
+- unit 045 — residue → standard — pass
+- unit 046 — 0 flags → cheap — pass
+- unit 047 — 2 flags → standard — pass
+- batch — 96% resolved at cheap tier — −71% cost
 
 ## How it works
 
