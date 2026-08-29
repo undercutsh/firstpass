@@ -61,6 +61,12 @@ OPENROUTER_API_KEY=sk-or-... node src/main.js
 # full run with a specific policy version
 OPENROUTER_API_KEY=sk-or-... node src/main.js --policy latest
 
+# run a public benchmark instead of the built-in suites (gsm8k, humaneval
+# fetch live from HuggingFace; mbpp is embedded, so this one also works with
+# --mock and needs no network access)
+node src/main.js --mock --benchmark mbpp
+OPENROUTER_API_KEY=sk-or-... node src/main.js --benchmark mbpp --policy probe
+
 # iterate cheaply: reuse a saved all-standard baseline (it never changes
 # between policy versions), run only the tiered arm
 OPENROUTER_API_KEY=sk-or-... node src/main.js --arms tiered --baseline <saved-run.json>
@@ -101,6 +107,28 @@ benchmark content. See `src/suites/`.
 | `code` | exec in sandboxed `vm` against hidden test cases | coding |
 | `reasoning` | exact-match on ground truth | reasoning |
 | `mechanical` | JSON schema / exact-match | cheap-verifiable batch work |
+
+## Public benchmark suites (`--benchmark`)
+
+Separate from the original suites above — see `src/benchmarks.js`. These
+score against third-party, uncontested test cases instead of our own graders:
+
+| Benchmark | Tasks | Grader | Source | Network in `--mock`? |
+|---|---|---|---|---|
+| `gsm8k` | 50 | exact-match on final number | fetched live from `openai/gsm8k` on HuggingFace | yes (fetch always runs) |
+| `humaneval` | 20 | official test cases, `python3` subprocess | fetched live from `openai/openai_humaneval` on HuggingFace | yes (fetch always runs) |
+| `mbpp` | 30 | official test asserts, `python3` subprocess | embedded in `src/data/mbpp-subset.js` (see its header for citation/license) | **no** — fully offline |
+
+`mbpp` is the odd one out on purpose: it's a fixed, pinned subset committed to
+the repo rather than fetched at run time, so `--mock` and CI never depend on
+HuggingFace being reachable. Source: the official
+[google-research/mbpp](https://github.com/google-research/google-research/tree/master/mbpp)
+`sanitized-mbpp.json` (the hand-verified subset from Austin et al. 2021,
+[2108.07732](https://arxiv.org/abs/2108.07732)), also mirrored on HuggingFace
+as
+[`google-research-datasets/mbpp`](https://huggingface.co/datasets/google-research-datasets/mbpp).
+Licensed CC-BY-4.0, which permits redistributing this subset with
+attribution — provided in `src/data/mbpp-subset.js`'s header.
 
 ## Model roster
 

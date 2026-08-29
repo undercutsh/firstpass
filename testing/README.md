@@ -58,9 +58,38 @@ tier); probe's cheap-first probing overpays. Absolute overhead is tiny
 
 ## Public benchmarks
 
-Both MIT-licensed, ungated, fetched live from HuggingFace at run time
-(`evals/src/benchmarks.js`). Test cases are the official ones — not authored
-by us.
+GSM8K and HumanEval are MIT-licensed, ungated, and fetched live from
+HuggingFace at run time (`evals/src/benchmarks.js`). Test cases are the
+official ones — not authored by us.
+
+### MBPP — Mostly Basic Python Problems (added, not yet run live)
+
+A third public benchmark, `mbpp`, is wired into the same `--benchmark` flag
+(`evals/src/benchmarks.js`'s `loadMbpp`) as part of the "Public-task swap"
+roadmap item — a second, independent public code-generation benchmark so
+this section doesn't rest on HumanEval alone. Unlike GSM8K/HumanEval it is
+**embedded, not fetched live**: a fixed, pinned 30-problem subset committed
+to `evals/src/data/mbpp-subset.js`, so `--mock` and CI stay fully offline.
+Source: the official
+[google-research/mbpp](https://github.com/google-research/google-research/tree/master/mbpp)
+`sanitized-mbpp.json` (Austin et al. 2021,
+[2108.07732](https://arxiv.org/abs/2108.07732)), CC-BY-4.0 — see that data
+file's header for the exact selection method and citation. Graded the same
+way as HumanEval: solutions run against the dataset's own official test
+asserts in a `python3` subprocess.
+
+Verified locally: `node src/main.js --mock --benchmark mbpp` passes 30/30
+across all arms with no network access (mock mode substitutes the dataset's
+own reference solutions, so this checks plumbing + the grader, not any
+model's real ability). No live/paid run against real vendor APIs has been
+done yet — that's a follow-up once budget is allocated; this entry records
+availability and the reproduction command, not results.
+
+```sh
+cd evals
+node src/main.js --mock --benchmark mbpp                    # plumbing, offline, no spend
+OPENROUTER_API_KEY=sk-or-... node src/main.js --benchmark mbpp --policy probe --seeds 5
+```
 
 ### GSM8K — math reasoning (50 tasks × 5 seeds = 250 units)
 
@@ -127,8 +156,8 @@ node src/main.js --compare a.json,b.json             # diff two saved runs
    exists, absolute cost negligible.
 3. **OpenAI code is NA\*** — its cheap tier can't write Python; tiered routing
    has no headroom there (quality still preserved).
-4. **HumanEval grader executes Python** from benchmark code — trusted, no
-   network, 8s timeout. Never point it at untrusted input.
+4. **HumanEval and MBPP graders execute Python** from benchmark code —
+   trusted, no network, 8s timeout. Never point it at untrusted input.
 5. **Sample sizes are modest** (50/20 tasks × 5 seeds). The direction is
    consistent across 2 benchmarks × 4 vendors; confidence intervals at higher
    seeds are a follow-up.

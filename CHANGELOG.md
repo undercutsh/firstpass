@@ -6,6 +6,27 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ## [Unreleased]
 
+### Added
+
+- **`/api/lead` serverless function** — the hero/audit/pricing lead-capture
+  forms now POST to a real endpoint instead of only logging to the console.
+  The destination is operator-configured via the `LEAD_WEBHOOK_URL` env var
+  (any webhook-accepting service: Zapier, Make, a Sheets webhook, an email
+  API) rather than a vendor picked in code — see `site/api/lead.js` for why.
+  **Requires `LEAD_WEBHOOK_URL` to be set in the Vercel project's
+  environment variables before this does anything** — without it, the
+  endpoint responds `501` rather than silently succeeding.
+- **MBPP public benchmark suite** (`evals/src/benchmarks.js`'s `loadMbpp`,
+  `--benchmark mbpp`) — a third public code-generation benchmark alongside
+  GSM8K/HumanEval, so trust-and-rigor claims don't rest on HumanEval alone.
+  Unlike those two, it's a fixed, embedded 30-problem subset
+  (`evals/src/data/mbpp-subset.js`) rather than fetched live, so `--mock`
+  and CI stay fully offline. Sourced from the official
+  google-research/mbpp `sanitized-mbpp.json` (Austin et al. 2021,
+  CC-BY-4.0). See `evals/README.md` and `testing/README.md` for details;
+  no live/paid vendor run has been done yet (mock-only, per the
+  "Public-task swap" roadmap item).
+
 ## [0.2.1] - 2026-08-28
 
 ### Added

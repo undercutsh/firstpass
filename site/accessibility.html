@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Accessibility — Undercut</title>
+<meta name="description" content="Undercut's accessibility statement: WCAG 2.1 AA is the conformance target, what's actually been verified, what hasn't, and how to report an issue.">
+<link rel="canonical" href="https://getundercut.sh/accessibility">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#F5F3EE;color:#15171C;font-family:'IBM Plex Sans',sans-serif;line-height:1.65}
+  .wrap{max-width:720px;margin:0 auto;padding:64px 24px 80px}
+  h1,h2{font-family:'JetBrains Mono',monospace}
+  h1{font-size:28px}h2{font-size:18px;margin-top:36px}
+  a{color:#15171C;text-underline-offset:3px}
+  .mono{font-family:'JetBrains Mono',monospace;font-size:12px;color:#8A8F98;text-transform:uppercase;letter-spacing:.08em}
+  code{background:#DFDAD0;padding:1px 5px;border-radius:3px;font-size:.92em}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="mono">Accessibility — Undercut</p>
+  <h1>An honest statement, not a certificate.</h1>
+  <p>Our target for this site (getundercut.sh) is <strong>WCAG 2.1 Level AA</strong>. We've fixed the specific issues an audit found, and we're saying plainly what we have and haven't checked. This is not a claim of full conformance, a VPAT, or sign-off from an accessibility audit firm — none of those exist for this site.</p>
+
+  <h2>What's been verified and fixed</h2>
+  <p>A round-3 accessibility pass on the landing page found and we fixed:</p>
+  <ul>
+    <li><strong>Text contrast.</strong> The signal-green and escalate-amber text used for the calculator's savings percentage, vendor-comparison rows, tier labels, and budget/hard-stop copy measured 2.96–3.41:1 against their light backgrounds — below the 4.5:1 minimum for normal text. Darker text-only variants (<code>#227644</code>, <code>#955D22</code>) now carry those instances. Button backgrounds and large/bold headline uses, which already passed, were left alone.</li>
+    <li><strong>Accessible names on form inputs.</strong> Five inputs had none: three placeholder-only email fields (hero, calculator footer, pricing card) now have <code>aria-label</code>; the two calculator number inputs (Seats, Spend) are now paired with their visible labels via <code>id</code>/<code>for</code>.</li>
+    <li><strong>Native semantic controls.</strong> Buttons and links use native <code>&lt;button&gt;</code> and <code>&lt;a&gt;</code> elements rather than divs with click handlers, so they carry correct roles, keyboard focus, and Enter/Space activation for free.</li>
+  </ul>
+
+  <h2>What hasn't been formally audited</h2>
+  <p>This is a small team shipping fixes as they're found, not a completed compliance program. Specifically not yet done:</p>
+  <ul>
+    <li>Full screen-reader testing (VoiceOver, NVDA, JAWS) across every page and interactive flow.</li>
+    <li>Comprehensive keyboard-navigation testing beyond the native controls above — focus order, visible focus states, and trap avoidance across the whole page haven't been walked end to end.</li>
+    <li>Color contrast on every remaining UI element, not just the instances flagged in the round-3 pass.</li>
+    <li>Testing with browser zoom, reduced-motion settings, or assistive input devices.</li>
+    <li>A formal WCAG 2.1 AA conformance audit by a third party, or a VPAT. Neither exists for this site.</li>
+  </ul>
+
+  <h2>Report an issue</h2>
+  <p>If something on this site is hard to use with a screen reader, keyboard only, or any other assistive technology, tell us — <a href="https://github.com/undercutsh/firstpass/issues">open a GitHub issue</a>. We'll treat accessibility bugs like any other bug.</p>
+
+  <p style="margin-top:40px;font-size:13px;color:#8A8F98">Updated 2026-08-29. <a href="/">Back to Undercut</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></p>
+</div>
+</body>
+</html>
