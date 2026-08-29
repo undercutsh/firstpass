@@ -6,8 +6,12 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-08-28
+
 ### Added
 
+- **`/.well-known/security.txt`** (#12) — RFC 9116 vulnerability-disclosure
+  contact, referenced from `robots.txt`.
 - **Landing page: "The landscape"** — category-level positioning section
   between "vs. cap-based routers" and the benchmark tables, comparing
   compression, gateways, observability, and all-in-one platforms against
@@ -19,6 +23,9 @@ All notable changes to Undercut (firstpass) are documented here. Follows
   page; crawlers reading JSON-LD now see the same FAQ content visitors do.
 - **`/developers` placeholder page** (#11) — `site/developers.html`, in the
   same visual pattern as `/about`.
+- **`/developers` added to `sitemap.xml`** (#12) — the placeholder page
+  shipped in #11 wasn't yet discoverable via the sitemap; crawlers can now
+  find it.
 - **AGENTS.md** at the repo root, linked from README.md and llms.txt.
 - **`/.well-known/ai-catalog.json`** and **`/.well-known/agent-skills/index.json`**
   agent-discovery catalogs, upgraded to the `ai-catalog` domain-anchored
@@ -49,6 +56,11 @@ All notable changes to Undercut (firstpass) are documented here. Follows
   and correct Content-Type on the new `.md` files.
 - toolname/tooldescription WebMCP attributes on the two real
   lead-capture forms (Teams waitlist, cost-audit email).
+- **`type="button"` hardening on all 3 lead-capture buttons** (#12) — the
+  two WebMCP-attributed lead-capture buttons plus the third pricing-card
+  button (now also labeled) explicitly declare `type="button"`, preventing
+  accidental form submission and giving WebMCP a consistent, unambiguous
+  target across all three.
 
 ### Fixed
 
@@ -113,6 +125,7 @@ Initial public release.
 - README documenting the generator–verifier gap, install via skills.sh, prior
   art, and the benchmark-triggered mapping roadmap.
 
-[unreleased]: https://github.com/undercutsh/firstpass/compare/v0.2.0...HEAD
+[unreleased]: https://github.com/undercutsh/firstpass/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/undercutsh/firstpass/releases/tag/v0.2.1
 [0.2.0]: https://github.com/undercutsh/firstpass/releases/tag/v0.2.0
 [0.1.0]: https://github.com/undercutsh/firstpass/releases/tag/v0.1.0
