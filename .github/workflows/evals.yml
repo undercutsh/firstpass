@@ -13,6 +13,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Unit tests (policy.js, tasks.js)
+        run: node --test 'src/**/*.test.js'
+        working-directory: evals
       - name: Mock harness (all vendors/arms/suites, plumbing check)
         run: node src/main.js --mock --seeds 1
         working-directory: evals
