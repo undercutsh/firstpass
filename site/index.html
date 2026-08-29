@@ -993,6 +993,7 @@ class Component extends DCLogic {
     calcSpend: 200,
     leadEmail: '',
     leadSubmitted: false,
+    leadSubmitting: false,
     leadError: ''
   };
   copyTimer = null;
@@ -1007,17 +1008,36 @@ class Component extends DCLogic {
     const c = this.state.copied;
 
     const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const submitLead = () => {
+    const submitLead = async () => {
       const email = (this.state.leadEmail || '').trim();
       if (!EMAIL_RE.test(email)) {
         this.setState({ leadError: 'That doesn’t look like a valid email.' });
         return;
       }
-      // MOCK ONLY — nothing persists yet. Real version should POST to a
-      // capture endpoint (serverless fn -> db/sheet, or a form service)
-      // before this ships live. Tracked as a backlog item, not wired here.
-      console.info('[lead-capture:mock, not persisted]', email);
-      this.setState({ leadSubmitted: true, leadError: '' });
+      if (this.state.leadSubmitting) return;
+      this.setState({ leadSubmitting: true, leadError: '' });
+      try {
+        const res = await fetch('/api/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email,
+            source: window.location.pathname,
+            calcMode: this.state.calcMode,
+            calcVendor: this.state.calcVendor,
+            calcSeats: this.state.calcSeats,
+            calcSpend: this.state.calcSpend
+          })
+        });
+        if (!res.ok) throw new Error('lead capture request failed');
+        this.setState({ leadSubmitted: true, leadSubmitting: false, leadError: '' });
+      } catch (err) {
+        console.error('[lead-capture] submit failed:', err);
+        this.setState({
+          leadSubmitting: false,
+          leadError: 'Couldn’t submit that right now — please try again in a moment.'
+        });
+      }
     };
 
     const { calcMode, calcVendor, calcSeats, calcSpend } = this.state;
