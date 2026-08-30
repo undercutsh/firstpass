@@ -1140,20 +1140,25 @@
   }
 
   // src/cdn.ts
-  // NOTE: manually patched (not regenerated from dc-runtime) to add a second-CDN
-  // fallback for the SPOF where unpkg being unreachable silently broke the whole
-  // page's interactivity. jsdelivr serves the identical npm-published bytes for
-  // each pinned version (verified: same SHA-384 as the unpkg SRI below), so the
-  // fallback URL keeps the same `integrity` value. Port this upstream into
-  // dc-runtime/src/cdn.ts next time support.js is rebuilt from source.
-  var REACT_URL = "https://unpkg.com/react@18.3.1/umd/react.production.min.js";
-  var REACT_URL_FALLBACK = "https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js";
+  // NOTE: manually patched (not regenerated from dc-runtime). A real visitor hit
+  // the CDN-failure fallback panel with BOTH unpkg and jsdelivr blocked (SRI
+  // verified byte-identical to the pinned versions, and both independently
+  // reachable from other networks -- so this wasn't a CDN outage, it was almost
+  // certainly a content blocker or network policy that flags third-party CDN
+  // domains). Same-origin hosting removes that whole failure class: these files
+  // are served from getundercut.sh itself now, so there's no third-party domain
+  // for a blocker/policy to match against. unpkg is kept as a single fallback
+  // in case the same-origin static file ever 404s from a bad deploy. Port this
+  // upstream into dc-runtime/src/cdn.ts next time support.js is rebuilt from
+  // source.
+  var REACT_URL = "/vendor/react-18.3.1.production.min.js";
+  var REACT_URL_FALLBACK = "https://unpkg.com/react@18.3.1/umd/react.production.min.js";
   var REACT_SRI = "sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z";
-  var REACT_DOM_URL = "https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js";
-  var REACT_DOM_URL_FALLBACK = "https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js";
+  var REACT_DOM_URL = "/vendor/react-dom-18.3.1.production.min.js";
+  var REACT_DOM_URL_FALLBACK = "https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js";
   var REACT_DOM_SRI = "sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1";
-  var BABEL_URL = "https://unpkg.com/@babel/standalone@7.29.0/babel.min.js";
-  var BABEL_URL_FALLBACK = "https://cdn.jsdelivr.net/npm/@babel/standalone@7.29.0/babel.min.js";
+  var BABEL_URL = "/vendor/babel-standalone-7.29.0.min.js";
+  var BABEL_URL_FALLBACK = "https://unpkg.com/@babel/standalone@7.29.0/babel.min.js";
   var BABEL_SRI = "sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y";
   function cdnScriptFor(url, sri) {
     const res = window.__resources;
