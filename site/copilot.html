@@ -19,7 +19,7 @@
 <link rel="author" href="https://iamjustinwinter.com/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -41,9 +41,9 @@
 </script>
 <style>
   html { scroll-behavior: smooth; }
-  body { margin: 0; background: #F5F3EE; color: #15171C; font-family: 'IBM Plex Sans', sans-serif; line-height: 1.65; }
+  body { margin: 0; background: #F5F3EE; color: #15171C; font-family: 'Inter', sans-serif; line-height: 1.65; }
   a { color: #15171C; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
-  a:hover { color: #2E9E5B; }
+  a:hover { color: #227644; }
   table { border-collapse: collapse; width: 100%; }
   details > summary { cursor: pointer; list-style: none; }
   details > summary::-webkit-details-marker { display: none; }
@@ -54,8 +54,10 @@
   .mono { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #8A8F98; text-transform: uppercase; letter-spacing: .08em; }
   code { background: #DFDAD0; padding: 1px 5px; border-radius: 3px; font-size: .92em; font-family: 'JetBrains Mono', monospace; }
   .callout { border: 1px solid #DFDAD0; border-radius: 6px; padding: 16px 18px; margin: 20px 0; }
-  .copybtn { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; background: transparent; color: #8A8F98; border: 1px solid #2A2D35; padding: 7px 14px; cursor: pointer; }
+  .copybtn { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; background: transparent; color: #8A8F98; border: 1px solid #2A2D35; height: 32px; padding: 0 14px; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; box-sizing: border-box; transition: color .15s ease, border-color .15s ease; }
   .copybtn:hover { color: #F5F3EE; border-color: #8A8F98; }
+  .step-row { transition: background-color .15s ease; }
+  .step-row:hover { background-color: rgba(245,243,238,0.05); }
 </style>
 </head>
 <body>
@@ -76,8 +78,8 @@
     <h1 style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: clamp(34px, 4.4vw, 58px); line-height: 1.05; letter-spacing: -0.03em; margin: 0 0 20px; text-wrap: balance">Copilot already reads a repo instructions file. Give it one that stops overpaying.</h1>
     <p style="font-size: 17px; line-height: 1.55; color: #b9bcc2; margin: 0 0 28px; max-width: 60ch">Undercut is a free, MIT-licensed routing policy you drop into <code style="background:#2A2D35;color:#F5F3EE">.github/copilot-instructions.md</code> (or <code style="background:#2A2D35;color:#F5F3EE">AGENTS.md</code>, which Copilot's coding agent also reads) &mdash; cheap tier first, escalate only on evidence, never on a vibe. Copilot has no built-in cost dial of its own to compare against; this exists because the same overpay-by-default pattern we measured elsewhere in the agent ecosystem (see the <a href="/claude-code" style="color:#b9bcc2">Claude Code page</a>) shows up anywhere an agent defaults every task to its strongest model.</p>
     <div style="display: flex; gap: 14px; flex-wrap: wrap">
-      <a href="#install" style="display: flex; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; background: #F5F3EE; color: #15171C; border: none; padding: 14px 20px; text-decoration: none">Install for Copilot</a>
-      <a href="/#benchmarks" style="display: flex; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #F5F3EE; text-decoration: none; border: 1px solid #2A2D35; padding: 14px 20px">See the benchmarks</a>
+      <a href="#install" style="display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; background: #F5F3EE; color: #15171C; border: none; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; text-decoration: none; transition: background-color .15s ease">Install for Copilot</a>
+      <a href="/#benchmarks" style="display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #F5F3EE; text-decoration: none; border: 1px solid #2A2D35; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; transition: border-color .15s ease">See the benchmarks</a>
     </div>
   </div>
 </header>
@@ -85,13 +87,13 @@
 <!-- Compatibility bar — byte-identical reuse from index.html, Copilot highlighted -->
 <section style="border-bottom: 1px solid #DFDAD0; padding: 26px 32px">
   <div style="max-width: 1160px; margin: 0 auto; display: flex; align-items: baseline; gap: 32px; flex-wrap: wrap">
-    <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #8A8F98">Works anywhere a routing policy can be read</span>
+    <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #63666C">Works anywhere a routing policy can be read</span>
     <div style="display: flex; gap: 32px; flex-wrap: wrap; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500">
-      <span style="display: flex; align-items: center; gap: 9px; color: #8A8F98; filter: grayscale(1); opacity: 0.75"><img src="https://cdn.simpleicons.org/claude" width="16" height="16" style="display: block" alt="">Claude Code</span>
-      <span style="display: flex; align-items: center; gap: 9px; color: #8A8F98; filter: grayscale(1); opacity: 0.75"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="7" stroke="currentColor" stroke-width="1.4"></rect><path d="M6.5 5.5 L4.5 8 L6.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M9.5 5.5 L11.5 8 L9.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>Codex</span>
-      <span style="display: flex; align-items: center; gap: 9px; color: #8A8F98; filter: grayscale(1); opacity: 0.75"><img src="https://cdn.simpleicons.org/cursor" width="16" height="16" style="display: block" alt="">Cursor</span>
+      <span style="display: flex; align-items: center; gap: 9px; color: #63666C; filter: grayscale(1); opacity: 0.75"><img src="https://cdn.simpleicons.org/claude" width="16" height="16" style="display: block" alt="">Claude Code</span>
+      <span style="display: flex; align-items: center; gap: 9px; color: #63666C; filter: grayscale(1); opacity: 0.75"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="7" stroke="currentColor" stroke-width="1.4"></rect><path d="M6.5 5.5 L4.5 8 L6.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M9.5 5.5 L11.5 8 L9.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>Codex</span>
+      <span style="display: flex; align-items: center; gap: 9px; color: #63666C; filter: grayscale(1); opacity: 0.75"><img src="https://cdn.simpleicons.org/cursor" width="16" height="16" style="display: block" alt="">Cursor</span>
       <span style="display: flex; align-items: center; gap: 9px; color: #15171C; opacity: 1"><img src="https://cdn.simpleicons.org/githubcopilot" width="16" height="16" style="display: block" alt="">Copilot</span>
-      <span style="display: flex; align-items: center; gap: 9px; color: #8A8F98; opacity: 0.85"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.4"></rect><path d="M4.5 5.5 L7 8 L4.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M8.5 10.5 H11.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path></svg>OpenCode</span>
+      <span style="display: flex; align-items: center; gap: 9px; color: #63666C; opacity: 0.85"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.4"></rect><path d="M4.5 5.5 L7 8 L4.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M8.5 10.5 H11.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path></svg>OpenCode</span>
     </div>
   </div>
 </section>
@@ -99,7 +101,7 @@
 <!-- Mechanism-grounding block — net-new, Copilot specific -->
 <section style="padding: 80px 32px; border-bottom: 1px solid #DFDAD0; background: #FBFAF7">
   <div class="wrap">
-    <p class="mono" style="margin: 0 0 14px">How this maps onto Copilot</p>
+    <p class="mono" style="margin: 0 0 14px; color: #63666C">How this maps onto Copilot</p>
     <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 30px; letter-spacing: -0.02em; margin: 0 0 24px; text-wrap: balance">No native skill loader. Repo custom instructions are the injection point.</h2>
     <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 20px; max-width: 70ch">Copilot doesn't have a first-class "skills" directory the way Claude Code does &mdash; there's nothing that auto-discovers <code>skills/firstpass/SKILL.md</code> on its own. What GitHub Copilot does read automatically is <strong>repository custom instructions</strong>: a <a href="https://docs.github.com/copilot/customizing-copilot/adding-custom-instructions-for-github-copilot">single <code>.github/copilot-instructions.md</code></a> file at the repo root, written in plain Markdown, that's applied in full to Copilot Chat, code review, and the Copilot coding agent for every request in that repository. As of August 2025, the <a href="https://github.blog/changelog/2025-08-28-copilot-coding-agent-now-supports-agents-md-custom-instructions/">Copilot coding agent also reads <code>AGENTS.md</code></a> (root or nested &mdash; the nearest one in the directory tree wins), alongside the GitHub-native format. That means Undercut's policy has to be delivered as instruction content Copilot reads whole, not as a skill it discovers &mdash; see Install below for the exact mechanics and what's still unverified.</p>
     <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0; max-width: 70ch">The tier names &mdash; <strong>cheap, standard, frontier, apex</strong> &mdash; stay generic on purpose. <a href="https://github.com/undercutsh/firstpass/blob/main/skills/firstpass/models.md">models.md</a> gives the rule of thumb rather than a fixed mapping for Copilot specifically: Copilot's own model picker exposes several vendors' models (varies by plan), so cheap resolves to the smallest/fastest model you have access to, standard to your default work model, frontier to the highest-reasoning model, and apex to a single tie-break call on the strongest model available. Nothing here sits between Copilot and its model backend &mdash; it's instruction text Copilot reads at request time, no proxy, no network hop.</p>
@@ -129,9 +131,9 @@
 
     <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 20px; color: #b9bcc2">Validate it yourself</h3>
     <ol style="margin: 0 0 36px; padding: 0; list-style: none; display: grid; gap: 0">
-      <li style="display: flex; gap: 18px; padding: 14px 0; border-top: 1px solid #2A2D35; font-size: 15px; line-height: 1.6; color: #b9bcc2"><span style="font-family: 'JetBrains Mono', monospace; color: #2E9E5B; font-weight: 700">1</span><span>Read the published results &mdash; <code style="background:#2A2D35;color:#F5F3EE">testing/README.md</code> and the raw JSON in <code style="background:#2A2D35;color:#F5F3EE">testing/results/</code></span></li>
-      <li style="display: flex; gap: 18px; padding: 14px 0; border-top: 1px solid #2A2D35; font-size: 15px; line-height: 1.6; color: #b9bcc2"><span style="font-family: 'JetBrains Mono', monospace; color: #2E9E5B; font-weight: 700">2</span><span>Reproduce for free, no API key, no spend: <code style="background:#2A2D35;color:#F5F3EE">node src/main.js --mock</code></span></li>
-      <li style="display: flex; gap: 18px; padding: 14px 0; border-top: 1px solid #2A2D35; border-bottom: 1px solid #2A2D35; font-size: 15px; line-height: 1.6; color: #b9bcc2"><span style="font-family: 'JetBrains Mono', monospace; color: #2E9E5B; font-weight: 700">3</span><span>Open a small PR against a repo with the instructions installed and watch which model tier Copilot's coding agent session log reports it used</span></li>
+      <li class="step-row" style="display: flex; align-items: center; gap: 18px; padding: 10px 14px; margin: 0 -14px; border-top: 1px solid #2A2D35; font-size: 15px; line-height: 1.6; color: #b9bcc2; border-radius: 8px"><span style="font-family: 'JetBrains Mono', monospace; color: #2E9E5B; font-weight: 700">1</span><span>Read the published results &mdash; <code style="background:#2A2D35;color:#F5F3EE">testing/README.md</code> and the raw JSON in <code style="background:#2A2D35;color:#F5F3EE">testing/results/</code></span></li>
+      <li class="step-row" style="display: flex; align-items: center; gap: 18px; padding: 10px 14px; margin: 0 -14px; border-top: 1px solid #2A2D35; font-size: 15px; line-height: 1.6; color: #b9bcc2; border-radius: 8px"><span style="font-family: 'JetBrains Mono', monospace; color: #2E9E5B; font-weight: 700">2</span><span>Reproduce for free, no API key, no spend: <code style="background:#2A2D35;color:#F5F3EE">node src/main.js --mock</code></span></li>
+      <li class="step-row" style="display: flex; align-items: center; gap: 18px; padding: 10px 14px; margin: 0 -14px; border-top: 1px solid #2A2D35; border-bottom: 1px solid #2A2D35; font-size: 15px; line-height: 1.6; color: #b9bcc2; border-radius: 8px"><span style="font-family: 'JetBrains Mono', monospace; color: #2E9E5B; font-weight: 700">3</span><span>Open a small PR against a repo with the instructions installed and watch which model tier Copilot's coding agent session log reports it used</span></li>
     </ol>
     <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0"><strong style="color: #F5F3EE">Zero lock-in.</strong> It's instruction text Copilot reads &mdash; delete the block and you're back to status quo.</p>
   </div>
@@ -142,7 +144,7 @@
   <div class="wrap">
     <div style="display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin: 0 0 14px">
       <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #8A8F98; margin: 0">How it works</p>
-      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #8A8F98; border: 1px solid #2A2D35; padding: 3px 8px">The Undercut Rubric &middot; v1</span>
+      <span style="font-family: 'Inter', sans-serif; font-weight: 500; font-size: 11px; color: #8A8F98; border: 1px solid #2A2D35; height: 20px; line-height: 18px; padding: 0 8px; border-radius: 6px; display: inline-flex; align-items: center; box-sizing: border-box">The Undercut Rubric &middot; v1</span>
     </div>
     <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 34px; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 24px; text-wrap: balance">Six flags assign a tier. Three triggers are the only way up.</h2>
     <p style="font-size: 13.5px; line-height: 1.6; color: #8A8F98; margin: 0 0 20px">This is a named, versioned spec &mdash; not internal logic we could quietly change. When the rubric changes (a new flag, a different cap), the version number moves and <a href="https://github.com/undercutsh/firstpass/blob/main/CHANGELOG.md" style="color: #8A8F98">the changelog</a> says why.</p>
@@ -218,7 +220,7 @@
 <!-- Why it holds up — byte-identical reuse from index.html -->
 <section style="padding: 88px 32px; border-bottom: 1px solid #DFDAD0">
   <div class="wrap">
-    <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #8A8F98; margin: 0 0 14px">Why it holds up</p>
+    <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #63666C; margin: 0 0 14px">Why it holds up</p>
     <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 34px; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 24px">Flags steer. Verification and escalation decide.</h2>
     <p style="font-size: 16px; line-height: 1.65; color: #4a4e57; margin: 0 0 28px">Even when the rubric flags are scored imperfectly, the escalator still routes work to the right tier almost every time &mdash; because a wrong flag only ever costs one extra cheap attempt, never a wrong answer or a big bill.</p>
     <details style="border: 1px solid #DFDAD0">
@@ -227,12 +229,12 @@
         <p style="font-size: 15px; line-height: 1.65; color: #4a4e57; margin: 20px 0 24px">A stock dispatcher model reproduces the rubric flags imperfectly &mdash; Haiku hits 90% agreement, Sonnet 93%. The weakest flag (format-strict) is only 60%. None of that matters: under the shipped policy, both dispatchers still route 100% of units to the correct tier. A wrong flag changes the ladder cap, never the base tier &mdash; worst case, one extra cheap attempt.</p>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 32px; margin: 0 0 28px; font-family: 'JetBrains Mono', monospace; font-size: 12px">
           <div>
-            <div style="margin-bottom: 12px; color: #8A8F98">Haiku dispatcher</div>
+            <div style="margin-bottom: 12px; color: #63666C">Haiku dispatcher</div>
             <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px"><div style="height: 14px; width: 90%; background: #8A8F98"></div><span>90% flag agreement</span></div>
             <div style="display: flex; align-items: center; gap: 10px"><div style="height: 14px; width: 100%; background: #2E9E5B"></div><span style="white-space: nowrap">100% tier-match</span></div>
           </div>
           <div>
-            <div style="margin-bottom: 12px; color: #8A8F98">Sonnet dispatcher</div>
+            <div style="margin-bottom: 12px; color: #63666C">Sonnet dispatcher</div>
             <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px"><div style="height: 14px; width: 93%; background: #8A8F98"></div><span>93% flag agreement</span></div>
             <div style="display: flex; align-items: center; gap: 10px"><div style="height: 14px; width: 100%; background: #2E9E5B"></div><span style="white-space: nowrap">100% tier-match</span></div>
           </div>
@@ -247,7 +249,7 @@
 <!-- What it doesn't do — condensed reuse, links out rather than duplicating -->
 <section style="padding: 64px 32px; border-bottom: 1px solid #DFDAD0; background: #FBFAF7">
   <div class="wrap">
-    <p class="mono" style="margin: 0 0 14px">Honest limits</p>
+    <p class="mono" style="margin: 0 0 14px; color: #63666C">Honest limits</p>
     <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 26px; letter-spacing: -0.02em; margin: 0 0 18px">What this doesn't do.</h2>
     <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 8px; max-width: 70ch">Not a proxy, not a gateway, doesn't auto-flag in production &mdash; and on Copilot specifically, it's not a "skill" Copilot discovers on its own: it only takes effect if you've put it in an instructions file Copilot reads (see Install above). Copilot's own reliability at scoring the flags hasn't been separately measured the way Claude Code's has (see above); treat that as unverified until tested. Full list of general limits, with the finance/procurement note and the paid-tier disclosure, is on the <a href="/#pricing">main page</a>.</p>
   </div>
@@ -259,8 +261,8 @@
     <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: clamp(32px, 3.6vw, 48px); letter-spacing: -0.03em; line-height: 1.1; margin: 0 0 20px; text-wrap: balance">Undercut the top tier. Not the quality bar.</h2>
     <p style="font-size: 16px; line-height: 1.6; color: #8A8F98; margin: 0 0 36px">Nothing about this page expires. What does keep happening is the token bill, one session at a time, on whatever Copilot is currently doing with mechanical work.</p>
     <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap">
-      <button type="button" onclick="undercutCopy(this)" data-copy="mkdir -p .github && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> .github/copilot-instructions.md" style="display: flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 14px; background: #F5F3EE; color: #15171C; border: none; padding: 14px 20px; cursor: pointer"><span style="font-weight: 800">Install</span><span style="color: #4a4e57">curl SKILL.md &gt;&gt; copilot-instructions.md</span></button>
-      <a href="https://github.com/undercutsh/firstpass" style="display: flex; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #F5F3EE; text-decoration: none; border: 1px solid #2A2D35; padding: 14px 20px">View on GitHub</a>
+      <button type="button" onclick="undercutCopy(this)" data-copy="mkdir -p .github && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> .github/copilot-instructions.md" style="display: inline-flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 14px; background: #F5F3EE; color: #15171C; border: none; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; cursor: pointer; transition: background-color .15s ease"><span style="font-weight: 800">Install</span><span style="color: #4a4e57">curl SKILL.md &gt;&gt; copilot-instructions.md</span></button>
+      <a href="https://github.com/undercutsh/firstpass" style="display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #F5F3EE; text-decoration: none; border: 1px solid #2A2D35; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; transition: border-color .15s ease">View on GitHub</a>
     </div>
   </div>
 </section>
@@ -271,12 +273,12 @@
     <div style="display: flex; justify-content: space-between; gap: 48px; flex-wrap: wrap; margin: 0 0 48px">
       <div>
         <div style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 17px; margin: 0 0 10px">undercut</div>
-        <p style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #8A8F98; margin: 0">MIT License &middot; <a href="https://github.com/undercutsh/firstpass" style="color: #8A8F98">github.com/undercutsh/firstpass</a></p>
-        <p style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #8A8F98; margin: 6px 0 0">Built by <a rel="me author" href="https://iamjustinwinter.com/" style="color: #8A8F98">Justin Winter</a></p>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #63666C; margin: 0">MIT License &middot; <a href="https://github.com/undercutsh/firstpass" style="color: #63666C">github.com/undercutsh/firstpass</a></p>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #63666C; margin: 6px 0 0">Built by <a rel="me author" href="https://iamjustinwinter.com/" style="color: #63666C">Justin Winter</a></p>
       </div>
       <div style="display: flex; gap: 72px; flex-wrap: wrap; font-size: 14px">
         <div style="display: grid; gap: 10px; align-content: start">
-          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #8A8F98">Product</span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #63666C">Product</span>
           <a href="/#how" style="text-decoration: none; color: #4a4e57">How it works</a>
           <a href="/#calculator" style="text-decoration: none; color: #4a4e57">Free audit</a>
           <a href="/#teams" style="text-decoration: none; color: #4a4e57">Teams</a>
@@ -284,36 +286,36 @@
           <a href="#install" style="text-decoration: none; color: #4a4e57">Install</a>
         </div>
         <div style="display: grid; gap: 10px; align-content: start">
-          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #8A8F98">Proof</span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #63666C">Proof</span>
           <a href="/#benchmarks" style="text-decoration: none; color: #4a4e57">Benchmarks</a>
           <a href="https://github.com/undercutsh/firstpass/tree/main/testing/results" style="text-decoration: none; color: #4a4e57">Raw results</a>
           <a href="https://github.com/undercutsh/firstpass/blob/main/testing/README.md" style="text-decoration: none; color: #4a4e57">Methodology</a>
         </div>
         <div style="display: grid; gap: 10px; align-content: start">
-          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #8A8F98">Repo</span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #63666C">Repo</span>
           <a href="https://github.com/undercutsh/firstpass" style="text-decoration: none; color: #4a4e57">GitHub</a>
           <a href="https://github.com/undercutsh/firstpass/releases" style="text-decoration: none; color: #4a4e57">Changelog</a>
           <a href="https://github.com/undercutsh/firstpass/issues" style="text-decoration: none; color: #4a4e57">Issues</a>
         </div>
       </div>
     </div>
-    <div style="border-top: 1px solid #DFDAD0; padding-top: 24px; display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-size: 12.5px; color: #8A8F98">
+    <div style="border-top: 1px solid #DFDAD0; padding-top: 24px; display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-size: 12.5px; color: #63666C">
       <span style="display: flex; gap: 18px; flex-wrap: wrap; align-items: baseline">
         <span style="font-family: 'JetBrains Mono', monospace" id="uc-copyright-year">&copy; 2026 Undercut &middot; MIT</span>
         <span style="font-family: 'JetBrains Mono', monospace">Works with: Claude Code &middot; Codex &middot; Cursor &middot; Copilot &middot; OpenCode</span>
       </span>
       <span style="display: flex; gap: 18px; flex-wrap: wrap">
-        <a href="/privacy/" style="color: #8A8F98; text-decoration: none">Privacy</a>
-        <a href="/terms/" style="color: #8A8F98; text-decoration: none">Terms</a>
-        <a href="https://github.com/undercutsh/firstpass/blob/main/testing/README.md" style="color: #8A8F98; text-decoration: none">Benchmark data</a>
-        <a href="https://github.com/undercutsh/firstpass/blob/main/CHANGELOG.md" style="color: #8A8F98; text-decoration: none">Changelog</a>
+        <a href="/privacy/" style="color: #63666C; text-decoration: none">Privacy</a>
+        <a href="/terms/" style="color: #63666C; text-decoration: none">Terms</a>
+        <a href="https://github.com/undercutsh/firstpass/blob/main/testing/README.md" style="color: #63666C; text-decoration: none">Benchmark data</a>
+        <a href="https://github.com/undercutsh/firstpass/blob/main/CHANGELOG.md" style="color: #63666C; text-decoration: none">Changelog</a>
       </span>
     </div>
-    <div style="margin-top: 10px; padding-top: 14px; border-top: 1px solid #DFDAD0; display: flex; gap: 18px; flex-wrap: wrap; font-size: 11px; color: #8A8F98">
+    <div style="margin-top: 10px; padding-top: 14px; border-top: 1px solid #DFDAD0; display: flex; gap: 18px; flex-wrap: wrap; font-size: 11px; color: #63666C">
       <span style="font-family: 'JetBrains Mono', monospace">agent &amp; crawler files:</span>
-      <a href="/llms.txt" style="color: #8A8F98; text-decoration: none">llms.txt</a>
-      <a href="/humans.txt" style="color: #8A8F98; text-decoration: none">humans.txt</a>
-      <a href="/robots.txt" style="color: #8A8F98; text-decoration: none">robots.txt</a>
+      <a href="/llms.txt" style="color: #63666C; text-decoration: none">llms.txt</a>
+      <a href="/humans.txt" style="color: #63666C; text-decoration: none">humans.txt</a>
+      <a href="/robots.txt" style="color: #63666C; text-decoration: none">robots.txt</a>
     </div>
   </div>
 </footer>
