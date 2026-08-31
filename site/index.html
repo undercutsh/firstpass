@@ -338,7 +338,7 @@
       <sc-if value="{{ leadNotSubmitted }}" hint-placeholder-val="{{ true }}">
         <div style="margin: 0 0 28px">
           <div style="display: flex; align-items: stretch; gap: 10px; flex-wrap: wrap; margin: 0 0 8px">
-            <input type="email" placeholder="you@company.com" aria-label="Email address for Team early-access waitlist" value="{{ leadEmail }}" onChange="{{ setLeadEmail }}" style="flex: 1; min-width: 220px; box-sizing: border-box; padding: 14px 16px; border: 1px solid #2A2D35; background: #101216; color: #F5F3EE; font-family: 'Inter', sans-serif; font-size: 14.5px" />
+            <input id="hero-lead-email" name="email" type="email" autocomplete="email" placeholder="you@company.com" aria-label="Email address for Team early-access waitlist" value="{{ leadEmail }}" onChange="{{ setLeadEmail }}" style="flex: 1; min-width: 220px; box-sizing: border-box; padding: 14px 16px; border: 1px solid #2A2D35; background: #101216; color: #F5F3EE; font-family: 'Inter', sans-serif; font-size: 14.5px" />
             <button type="button" onClick="{{ submitLead }}" toolname="join_teams_waitlist" tooldescription="Join the Undercut Teams early-access waitlist by submitting an email address. Teams is not yet live." style="display: flex; align-items: center; gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 14px; background: #2E9E5B; color: #101216; border: none; height: 32px; padding: 0 18px; border-radius: 10px; cursor: pointer; font-weight: 700" style-hover="background: #3AB56C"><span>Start my Team trial</span><span style="color: #0d3a20">14 days</span></button>
           </div>
           <sc-if value="{{ leadError }}" hint-placeholder-val="{{ false }}">
@@ -407,14 +407,14 @@
         <sc-if value="{{ calcIsTeam }}">
           <div>
             <label for="calc-seats" style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #8A8F98; margin: 0 0 10px">Seats</label>
-            <input id="calc-seats" type="number" min="1" step="1" value="{{ calcSeats }}" onChange="{{ setCalcSeats }}" style="width: 100%; box-sizing: border-box; padding: 11px 14px; border: 1px solid #DFDAD0; font-family: 'JetBrains Mono', monospace; font-size: 15px" />
+            <input id="calc-seats" name="seats" type="text" inputmode="numeric" pattern="[0-9]*" value="{{ calcSeats }}" onChange="{{ setCalcSeats }}" style="width: 100%; box-sizing: border-box; padding: 11px 14px; border: 1px solid #DFDAD0; font-family: 'JetBrains Mono', monospace; font-size: 15px" />
           </div>
         </sc-if>
         <div>
           <label for="calc-spend" style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #8A8F98; margin: 0 0 10px">Current monthly AI spend{{ calcSpendLabelSuffix }}</label>
           <div style="display: flex; align-items: center; border: 1px solid #DFDAD0">
             <span style="padding: 0 0 0 14px; font-family: 'JetBrains Mono', monospace; color: #8A8F98">$</span>
-            <input id="calc-spend" type="number" min="0" step="10" value="{{ calcSpend }}" onChange="{{ setCalcSpend }}" style="flex: 1; width: 100%; box-sizing: border-box; padding: 11px 14px 11px 6px; border: none; font-family: 'JetBrains Mono', monospace; font-size: 15px" />
+            <input id="calc-spend" name="spend" type="text" inputmode="decimal" pattern="[0-9]*" value="{{ calcSpend }}" onChange="{{ setCalcSpend }}" style="flex: 1; width: 100%; box-sizing: border-box; padding: 11px 14px 11px 6px; border: none; font-family: 'JetBrains Mono', monospace; font-size: 15px" />
           </div>
         </div>
         <div>
@@ -469,7 +469,7 @@
         <p class="ui-body" style="color: #F5F3EE; margin: 0; max-width: 40ch">Get this ${{ calcSavingsAmountFmt }}/mo breakdown emailed to you, plus early access to the Team trial.</p>
         <div style="display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 280px; align-items: flex-end">
           <div style="display: flex; gap: 10px; flex-wrap: wrap; width: 100%; justify-content: flex-end">
-            <input type="email" placeholder="you@company.com" aria-label="Email address to receive your cost audit" value="{{ leadEmail }}" onChange="{{ setLeadEmail }}" style="flex: 1; min-width: 200px; max-width: 320px; box-sizing: border-box; padding: 12px 16px; border: 1px solid #2A2D35; background: #101216; color: #F5F3EE; font-family: 'Inter', sans-serif; font-size: 14.5px" />
+            <input id="calc-lead-email" name="email" type="email" autocomplete="email" placeholder="you@company.com" aria-label="Email address to receive your cost audit" value="{{ leadEmail }}" onChange="{{ setLeadEmail }}" style="flex: 1; min-width: 200px; max-width: 320px; box-sizing: border-box; padding: 12px 16px; border: 1px solid #2A2D35; background: #101216; color: #F5F3EE; font-family: 'Inter', sans-serif; font-size: 14.5px" />
             <button type="button" onClick="{{ submitLead }}" toolname="email_cost_audit" tooldescription="Email a free, individualized AI coding cost-savings audit to the given address, based on the calculator inputs (individual or team, seats, current spend)." style="font-family: 'JetBrains Mono', monospace; font-size: 13.5px; font-weight: 700; background: #2E9E5B; color: #101216; border: none; height: 32px; padding: 0 20px; border-radius: 10px; cursor: pointer; white-space: nowrap" style-hover="background: #3AB56C">Email me my audit</button>
           </div>
           <sc-if value="{{ leadError }}" hint-placeholder-val="{{ false }}">
@@ -869,7 +869,7 @@
           <div style="text-align: center; padding: 13px 18px; border: 1px solid #2E9E5B; color: #2E9E5B; font-family: 'JetBrains Mono', monospace; font-size: 13.5px; font-weight: 700">✓ On the list — {{ leadEmail }}</div>
         </sc-if>
         <sc-if value="{{ leadNotSubmitted }}" hint-placeholder-val="{{ true }}">
-          <input type="email" placeholder="you@company.com" aria-label="Email address for Team early-access waitlist" value="{{ leadEmail }}" onChange="{{ setLeadEmail }}" style="box-sizing: border-box; width: 100%; padding: 12px 16px; border: 1px solid #DFDAD0; font-family: 'Inter', sans-serif; font-size: 14px; margin: 0 0 10px" />
+          <input id="pricing-lead-email" name="email" type="email" autocomplete="email" placeholder="you@company.com" aria-label="Email address for Team early-access waitlist" value="{{ leadEmail }}" onChange="{{ setLeadEmail }}" style="box-sizing: border-box; width: 100%; padding: 12px 16px; border: 1px solid #DFDAD0; font-family: 'Inter', sans-serif; font-size: 14px; margin: 0 0 10px" />
           <button type="button" onClick="{{ submitLead }}" toolname="join_teams_waitlist" tooldescription="Join the Undercut Teams early-access waitlist by submitting an email address. Teams is not yet live." style="text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 13.5px; font-weight: 700; background: #15171C; color: #F5F3EE; border: none; height: 32px; padding: 0 18px; border-radius: 10px; cursor: pointer" style-hover="background: #2A2D35">Get early access</button>
           <sc-if value="{{ leadError }}" hint-placeholder-val="{{ false }}">
             <p style="font-size: 11.5px; color: #C77D2E; margin: 8px 0 0">{{ leadError }}</p>
@@ -893,26 +893,40 @@
     </div>
     <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 700; margin: 0 0 24px">Compare in detail</h3>
     <div style="overflow-x: auto; margin: 0 0 8px">
-      <table style="font-size: 14px; min-width: 640px">
-        <thead>
-          <tr style="border-bottom: 1px solid #15171C">
-            <th style="text-align: left; padding: 12px 14px 12px 0; font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: #8A8F98">Feature</th>
-            <th style="text-align: center; padding: 12px 14px; font-family: 'JetBrains Mono', monospace; font-weight: 700">Free</th>
-            <th style="text-align: center; padding: 12px 14px; font-family: 'JetBrains Mono', monospace; font-weight: 700">Teams</th>
-            <th style="text-align: center; padding: 12px 14px; font-family: 'JetBrains Mono', monospace; font-weight: 700">Enterprise</th>
-          </tr>
-        </thead>
-        <tbody>
+      <!--
+        Real <table>/<tbody>/<tr> markup was replaced with an ARIA-rowed CSS
+        Grid on purpose: an <sc-for> loop element can't legally sit directly
+        inside <tbody> per the HTML5 table-parsing spec (only <tr> and
+        script-supporting elements are allowed there) — browsers silently
+        foster-parent it out of the table before any JS runs, which strips
+        the row/cell content out of the loop entirely and breaks both the
+        repetition and the `row` scope (confirmed via strict HTML5 parse:
+        the <sc-for> ends up with zero children and a <div> parent instead
+        of <tbody>). Every other sc-for on this page wraps a <div>/<button>/
+        <details>, which have no such restriction — this was the only one
+        inside a table. role="table"/"rowgroup"/"row"/"columnheader"/"cell"
+        keeps it accessible to assistive tech without real table elements.
+      -->
+      <div role="table" style="font-size: 14px; min-width: 640px; width: 100%">
+        <div role="rowgroup">
+          <div role="row" style="display: grid; grid-template-columns: minmax(220px, 1fr) 100px 100px 120px; border-bottom: 1px solid #15171C">
+            <span role="columnheader" style="text-align: left; padding: 12px 14px 12px 0; font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: #8A8F98">Feature</span>
+            <span role="columnheader" style="text-align: center; padding: 12px 14px; font-family: 'JetBrains Mono', monospace; font-weight: 700">Free</span>
+            <span role="columnheader" style="text-align: center; padding: 12px 14px; font-family: 'JetBrains Mono', monospace; font-weight: 700">Teams</span>
+            <span role="columnheader" style="text-align: center; padding: 12px 14px; font-family: 'JetBrains Mono', monospace; font-weight: 700">Enterprise</span>
+          </div>
+        </div>
+        <div role="rowgroup">
           <sc-for list="{{ pricingGrid }}" as="row" hint-placeholder-count="12">
-            <tr style="border-bottom: 1px solid #DFDAD0">
-              <td style="padding: 12px 14px 12px 0; color: #15171C">{{ row.feature }}</td>
-              <td style="text-align: center; padding: 12px 14px; color: {{ row.freeColor }}">{{ row.free }}</td>
-              <td style="text-align: center; padding: 12px 14px; color: {{ row.teamColor }}">{{ row.team }}</td>
-              <td style="text-align: center; padding: 12px 14px; color: {{ row.entColor }}">{{ row.ent }}</td>
-            </tr>
+            <div role="row" style="display: grid; grid-template-columns: minmax(220px, 1fr) 100px 100px 120px; border-bottom: 1px solid #DFDAD0">
+              <span role="cell" style="padding: 12px 14px 12px 0; color: #15171C">{{ row.feature }}</span>
+              <span role="cell" style="text-align: center; padding: 12px 14px; color: {{ row.freeColor }}">{{ row.free }}</span>
+              <span role="cell" style="text-align: center; padding: 12px 14px; color: {{ row.teamColor }}">{{ row.team }}</span>
+              <span role="cell" style="text-align: center; padding: 12px 14px; color: {{ row.entColor }}">{{ row.ent }}</span>
+            </div>
           </sc-for>
-        </tbody>
-      </table>
+        </div>
+      </div>
     </div>
     <p style="font-size: 12.5px; color: #8A8F98; margin: 16px 0 0">Pricing and feature scope for Teams/Enterprise are the current build target, not a signed rate card. They'll firm up at launch.</p>
   </div>
