@@ -5,12 +5,18 @@ when a model beats the incumbent on the reference benchmarks (see README
 roadmap). Last updated: 2026-08-18 — slugs verified against OpenRouter's
 model catalog at eval time.
 
+<!-- BEGIN AUTO-GENERATED: tier-model table (source: evals/src/config.js) -->
 | Tier | Anthropic | OpenAI | Google | Open-weight |
 |---|---|---|---|---|
 | cheap | `anthropic/claude-haiku-4.5` | `openai/gpt-5-nano` | `google/gemini-3.5-flash-lite` | `qwen/qwen3-coder-30b-a3b-instruct` |
 | standard | `anthropic/claude-sonnet-5` | `openai/gpt-5.6-terra` | `google/gemini-3.5-flash` | `deepseek/deepseek-v4-flash` |
 | frontier | `anthropic/claude-opus-5` | `openai/gpt-5.6-sol` | `google/gemini-3.1-pro-preview` | `deepseek/deepseek-v4-pro` |
 | apex | `anthropic/claude-fable-5` | `openai/gpt-5.6-sol-pro` | `google/gemini-3.1-pro-preview` | `z-ai/glm-5.2` |
+<!-- END AUTO-GENERATED -->
+
+Regenerate with `node scripts/sync-models-md.js` after changing
+`evals/src/config.js`'s `VENDORS` roster — CI fails if this table drifts
+from that file.
 
 For agents that consume a SKILL.md but don't expose OpenRouter slugs (Claude
 Code, Codex, Cursor, Copilot, OpenCode), map each tier to that agent's
