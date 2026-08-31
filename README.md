@@ -109,6 +109,11 @@ cheap ──fail x2──▶ standard ──fail x2──▶ frontier ──unre
 
 ## Install
 
+**Requirements:** none beyond the coding agent itself. `npx skills add`
+needs Node.js/npm (for `npx`) and network access to the skills.sh registry;
+the manual `cp -r` copy below needs neither. No API key, no account, no
+build step.
+
 ```
 npx skills add undercutsh/firstpass
 ```

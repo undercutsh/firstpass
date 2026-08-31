@@ -55,6 +55,11 @@ there don't need a build/compile step, just valid HTML/JSON/txt.
 
 ## Client install matrix
 
+**Requirements:** none beyond the coding agent itself — no API key, no
+account, no build step. `npx skills add` needs Node.js/npm (for `npx`) and
+network access to the skills.sh registry; the manual `cp -r` copy below
+needs neither.
+
 Undercut is a plain `SKILL.md` — every client below reads that file, or
 some project-wide instructions equivalent, from its own directory
 convention. Two install paths work everywhere:

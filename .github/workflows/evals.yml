@@ -22,3 +22,5 @@ jobs:
       - name: Policy parity (probe vs v1 vs latest sanity)
         run: node src/main.js --mock --seeds 1 --policy probe
         working-directory: evals
+      - name: models.md in sync with evals/src/config.js
+        run: node scripts/sync-models-md.js --check
