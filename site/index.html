@@ -283,6 +283,15 @@
   details[open] > summary .aff::before { content: "− "; }
   @keyframes rowcycle { 0% { opacity: 0; transform: translateY(4px); } 4% { opacity: 1; transform: translateY(0); } 88% { opacity: 1; } 96% { opacity: 0.25; } 100% { opacity: 0; } }
   @keyframes caretblink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* Hero agent-picker CTA: horizontal auto-scrolling strip of supported
+     coding-agent names, doubled once in the markup for a seamless loop. */
+  .agent-marquee { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+  .agent-marquee-track { display: flex; gap: 10px; width: max-content; animation: marquee 26s linear infinite; }
+  .agent-marquee:hover .agent-marquee-track { animation-play-state: paused; }
+  .agent-chip { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #b9bcc2; background: #1D2027; border: 1px solid #2A2D35; border-radius: 999px; padding: 7px 14px; white-space: nowrap; }
+  @media (prefers-reduced-motion: reduce) { .agent-marquee-track { animation: none; } }
 
   /* Type scale — Apps Design UI Cheatsheet, adapted: Inter for UI/body,
      JetBrains Mono reserved for H1/H2 display + data/code (unchanged). */
@@ -329,24 +338,38 @@
       <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #8A8F98; margin: 0 0 22px; text-transform: uppercase">Free for individuals, forever · MIT · Team plan in development</p>
       <h1 id="hero-heading" style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: clamp(40px, 5vw, 72px); line-height: 1.02; letter-spacing: -0.03em; margin: 0 0 20px; text-wrap: balance">Cut your AI coding bill up to <span style="color: #2E9E5B">71%</span>. Not your pass rate.</h1>
       <p id="hero-sub" style="font-size: 17px; line-height: 1.5; color: #b9bcc2; margin: 0 0 24px; max-width: 54ch">A routing policy your coding agent follows — cheap tier first, escalate only on evidence, never on a vibe. Measured on public benchmarks, not promised.</p>
-      <sc-if value="{{ leadSubmitted }}" hint-placeholder-val="{{ false }}">
-        <div style="display: flex; align-items: center; gap: 10px; padding: 14px 18px; border: 1px solid #2E9E5B; background: rgba(46,158,91,0.1); margin: 0 0 28px; max-width: 60ch">
-          <span style="color: #2E9E5B; font-weight: 700">✓</span>
-          <span style="font-size: 14.5px; color: #F5F3EE">You're on the Team early-access list — we'll email {{ leadEmail }} when trials open.</span>
+      <div style="margin: 0 0 28px">
+        <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin: 0 0 12px">
+          <a href="#install" style="display: flex; align-items: center; gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 800; background: #2E9E5B; color: #101216; border: none; height: 32px; padding: 0 22px; border-radius: 10px; text-decoration: none" style-hover="background: #3AB56C">Install now ↓</a>
+          <a href="#pricing" style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #8A8F98; text-decoration: underline; text-underline-offset: 2px" style-hover="color: #F5F3EE">Running a team? Get early access →</a>
         </div>
-      </sc-if>
-      <sc-if value="{{ leadNotSubmitted }}" hint-placeholder-val="{{ true }}">
-        <div style="margin: 0 0 28px">
-          <div style="display: flex; align-items: stretch; gap: 10px; flex-wrap: wrap; margin: 0 0 8px">
-            <input id="hero-lead-email" name="email" type="email" autocomplete="email" placeholder="you@company.com" aria-label="Email address for Team early-access waitlist" value="{{ leadEmail }}" onChange="{{ setLeadEmail }}" style="flex: 1; min-width: 220px; box-sizing: border-box; padding: 14px 16px; border: 1px solid #2A2D35; background: #101216; color: #F5F3EE; font-family: 'Inter', sans-serif; font-size: 14.5px" />
-            <button type="button" onClick="{{ submitLead }}" toolname="join_teams_waitlist" tooldescription="Join the Undercut Teams early-access waitlist by submitting an email address. Teams is not yet live." style="display: flex; align-items: center; gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 14px; background: #2E9E5B; color: #101216; border: none; height: 32px; padding: 0 18px; border-radius: 10px; cursor: pointer; font-weight: 700" style-hover="background: #3AB56C"><span>Start my Team trial</span><span style="color: #0d3a20">14 days</span></button>
+        <p style="font-size: 12.5px; color: #8A8F98; margin: 0 0 16px">Free for individuals, forever. No email needed — <code style="font-family: 'JetBrains Mono', monospace; font-size: 12px">npx skills add undercutsh/firstpass</code></p>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #8A8F98; margin: 0 0 10px">Works with every major coding agent</p>
+        <div class="agent-marquee">
+          <div class="agent-marquee-track">
+            <span class="agent-chip">Claude Code</span>
+            <span class="agent-chip">Codex CLI</span>
+            <span class="agent-chip">Cursor</span>
+            <span class="agent-chip">GitHub Copilot</span>
+            <span class="agent-chip">OpenCode</span>
+            <span class="agent-chip">Gemini CLI</span>
+            <span class="agent-chip">Windsurf</span>
+            <span class="agent-chip">JetBrains Junie</span>
+            <span class="agent-chip">Amp</span>
+            <span class="agent-chip">Devin</span>
+            <span class="agent-chip" aria-hidden="true">Claude Code</span>
+            <span class="agent-chip" aria-hidden="true">Codex CLI</span>
+            <span class="agent-chip" aria-hidden="true">Cursor</span>
+            <span class="agent-chip" aria-hidden="true">GitHub Copilot</span>
+            <span class="agent-chip" aria-hidden="true">OpenCode</span>
+            <span class="agent-chip" aria-hidden="true">Gemini CLI</span>
+            <span class="agent-chip" aria-hidden="true">Windsurf</span>
+            <span class="agent-chip" aria-hidden="true">JetBrains Junie</span>
+            <span class="agent-chip" aria-hidden="true">Amp</span>
+            <span class="agent-chip" aria-hidden="true">Devin</span>
           </div>
-          <sc-if value="{{ leadError }}" hint-placeholder-val="{{ false }}">
-            <p style="font-size: 12.5px; color: #C77D2E; margin: 0 0 8px">{{ leadError }}</p>
-          </sc-if>
-          <p style="font-size: 12.5px; color: #8A8F98; margin: 0"><button onClick="{{ copyInstall }}" style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #8A8F98; background: none; border: none; padding: 0; text-decoration: underline; text-underline-offset: 2px; cursor: pointer" style-hover="color: #F5F3EE">{{ heroCopyLabel }}</button> — or just install free for individuals, no email needed</p>
         </div>
-      </sc-if>
+      </div>
       <div style="display: flex; gap: 28px; flex-wrap: wrap">
         <div><div style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 26px; color: #2E9E5B">−71%</div><div style="font-size: 12.5px; color: #8A8F98">GSM8K cost, OpenAI</div></div>
         <div><div style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 26px; color: #2E9E5B">−95%</div><div style="font-size: 12.5px; color: #8A8F98">HumanEval cost, Gemini</div></div>
@@ -936,12 +959,22 @@
   <div style="max-width: 880px; margin: 0 auto">
     <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #8A8F98; margin: 0 0 14px">Try it</p>
     <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 34px; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 32px; text-wrap: balance">Free. MIT. Nothing installs, nothing proxies your traffic.</h2>
-    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #101216; border: 1px solid #2A2D35; padding: 18px 22px; font-family: 'JetBrains Mono', monospace; font-size: 15px; margin: 0 0 12px; flex-wrap: wrap">
-      <span><span style="color: #4a4e57">$ </span>npx skills add undercutsh/firstpass</span>
-      <button onClick="{{ copyInstall }}" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; background: transparent; color: #8A8F98; border: 1px solid #2A2D35; height: 32px; padding: 0 14px; border-radius: 10px; cursor: pointer" style-hover="color: #F5F3EE; border-color: #8A8F98">{{ blockCopyLabel }}</button>
+
+    <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 16px; color: #b9bcc2">1. Pick your agent</h3>
+    <div style="display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 28px">
+      <sc-for list="{{ installClients }}" as="client" hint-placeholder-count="10">
+        <button type="button" onClick="{{ client.onClick }}" style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 700; border-radius: 999px; padding: 8px 16px; cursor: pointer; background: {{ client.bg }}; color: {{ client.fg }}; border: 1px solid {{ client.border }}">{{ client.label }}</button>
+      </sc-for>
     </div>
-    <p style="font-size: 14px; color: #8A8F98; margin: 0 0 40px">or copy <code style="font-family: 'JetBrains Mono', monospace; font-size: 13px">skills/firstpass/</code> straight into your agent's skills directory.</p>
-    <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 20px; color: #b9bcc2">Validate it yourself</h3>
+
+    <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 16px; color: #b9bcc2">2. Run this in your project</h3>
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #101216; border: 1px solid #2A2D35; padding: 18px 22px; font-family: 'JetBrains Mono', monospace; font-size: 14.5px; margin: 0 0 12px; flex-wrap: wrap">
+      <span style="word-break: break-all"><span style="color: #4a4e57">$ </span>{{ activeInstallCommand }}</span>
+      <button onClick="{{ copyActiveInstall }}" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; background: transparent; color: #8A8F98; border: 1px solid #2A2D35; height: 32px; padding: 0 14px; border-radius: 10px; cursor: pointer; flex-shrink: 0" style-hover="color: #F5F3EE; border-color: #8A8F98">{{ blockCopyLabel }}</button>
+    </div>
+    <p style="font-size: 13.5px; color: #8A8F98; margin: 0 0 40px">{{ activeInstallNote }}</p>
+
+    <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 20px; color: #b9bcc2">3. Validate it yourself</h3>
     <ol style="margin: 0 0 36px; padding: 0; list-style: none; display: grid; gap: 0; counter-reset: step">
       <li style="display: flex; gap: 18px; padding: 14px 0; border-top: 1px solid #2A2D35; font-size: 15px; line-height: 1.6; color: #b9bcc2"><span style="font-family: 'JetBrains Mono', monospace; color: #2E9E5B; font-weight: 700">1</span><span>Read the published results — <code style="font-family: 'JetBrains Mono', monospace; font-size: 13px">testing/README.md</code> and the raw JSON in <code style="font-family: 'JetBrains Mono', monospace; font-size: 13px">testing/results/</code></span></li>
       <li style="display: flex; gap: 18px; padding: 14px 0; border-top: 1px solid #2A2D35; font-size: 15px; line-height: 1.6; color: #b9bcc2"><span style="font-family: 'JetBrains Mono', monospace; color: #2E9E5B; font-weight: 700">2</span><span>Reproduce for free, no API key, no spend: <code style="font-family: 'JetBrains Mono', monospace; font-size: 13px">node src/main.js --mock</code></span></li>
@@ -1045,6 +1078,22 @@ const SAVINGS_PCT = { anthropic: 0.68, gemini: 0.85, openai: 0.54 };
 const VENDOR_LABEL = { anthropic: 'Anthropic', openai: 'OpenAI', gemini: 'Gemini' };
 const fmt = (n) => Math.round(n).toLocaleString('en-US');
 const fmtCents = (n) => n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+// Per-client install commands. Keep in sync by hand with AGENTS.md's
+// "Client install matrix" — that file has the full reasoning/citations
+// per client, this is just the command each picker button runs.
+const INSTALL_CLIENTS = [
+  { id: 'claude-code', label: 'Claude Code', cmd: 'npx skills add undercutsh/firstpass', note: 'Reads SKILL.md under .claude/skills/firstpass/. Manual copy: cp -r firstpass/skills/firstpass ./.claude/skills/firstpass' },
+  { id: 'codex', label: 'Codex CLI', cmd: 'npx skills add undercutsh/firstpass -a codex', note: 'Reads .agents/skills/ (repo-scoped) or $HOME/.agents/skills/. Manual copy: cp -r firstpass/skills/firstpass ./.agents/skills/firstpass' },
+  { id: 'cursor', label: 'Cursor', cmd: 'cp -r firstpass/skills/firstpass ./.cursor/skills/firstpass', note: 'Folder name must match the name: field in SKILL.md (firstpass). npx skills add undercutsh/firstpass also works.' },
+  { id: 'copilot', label: 'GitHub Copilot', cmd: 'mkdir -p .github && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> .github/copilot-instructions.md', note: 'Copilot has no skills directory — it reads repo custom instructions instead.' },
+  { id: 'opencode', label: 'OpenCode', cmd: 'npx skills add undercutsh/firstpass', note: 'Reads .opencode/skills/firstpass/SKILL.md, and .claude/skills/ / .agents/skills/ for compatibility.' },
+  { id: 'gemini', label: 'Gemini CLI', cmd: 'mkdir -p .gemini && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> .gemini/GEMINI.md', note: 'Appends the policy to GEMINI.md, read hierarchically from the project root down.' },
+  { id: 'windsurf', label: 'Windsurf', cmd: 'echo "" >> AGENTS.md && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> AGENTS.md', note: 'Windsurf/Cascade (now under docs.devin.ai) reads a root AGENTS.md automatically.' },
+  { id: 'junie', label: 'JetBrains Junie', cmd: 'cp -r firstpass/skills/firstpass ./.junie/skills/firstpass', note: 'Project-level .junie/skills/firstpass/ wins on a name collision with the user-level copy.' },
+  { id: 'amp', label: 'Amp', cmd: 'cp -r firstpass/skills/firstpass ./.agents/skills/firstpass', note: 'Reads .agents/skills/firstpass/SKILL.md at the workspace root.' },
+  { id: 'devin', label: 'Devin', cmd: 'cp -r firstpass/skills/firstpass ./.devin/skills/firstpass', note: 'Devin CLI/Desktop skills live at .devin/skills/firstpass/SKILL.md.' },
+];
 class Component extends DCLogic {
   state = {
     copied: false,
@@ -1052,6 +1101,7 @@ class Component extends DCLogic {
     calcVendor: 'anthropic',
     calcSeats: 8,
     calcSpend: 200,
+    installClient: 'claude-code',
     leadEmail: '',
     leadSubmitted: false,
     leadSubmitting: false,
@@ -1059,14 +1109,27 @@ class Component extends DCLogic {
   };
   copyTimer = null;
   renderVals() {
-    const copy = () => {
-      const cmd = 'npx skills add undercutsh/firstpass';
-      if (navigator.clipboard) navigator.clipboard.writeText(cmd).catch(() => {});
+    const copyText = (text) => {
+      if (navigator.clipboard) navigator.clipboard.writeText(text).catch(() => {});
       this.setState({ copied: true });
       clearTimeout(this.copyTimer);
       this.copyTimer = setTimeout(() => this.setState({ copied: false }), 1800);
     };
+    const copy = () => copyText('npx skills add undercutsh/firstpass');
     const c = this.state.copied;
+
+    const installClients = INSTALL_CLIENTS.map((client) => {
+      const active = this.state.installClient === client.id;
+      return {
+        ...client,
+        onClick: () => this.setState({ installClient: client.id }),
+        bg: active ? '#2E9E5B' : 'transparent',
+        fg: active ? '#101216' : '#b9bcc2',
+        border: active ? '#2E9E5B' : '#2A2D35'
+      };
+    });
+    const activeClient = INSTALL_CLIENTS.find((client) => client.id === this.state.installClient) || INSTALL_CLIENTS[0];
+    const copyActiveInstall = () => copyText(activeClient.cmd);
 
     const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const submitLead = async () => {
@@ -1124,10 +1187,14 @@ class Component extends DCLogic {
       copyInstall: copy,
       copyrightYear: new Date().getFullYear(),
       navCopyLabel: c ? 'Copied' : 'Install',
-      heroCopyLabel: c ? 'Copied ✓' : 'Install',
       blockCopyLabel: c ? 'Copied ✓' : 'Copy',
       finalCopyLabel: c ? 'Copied ✓' : 'Install',
       playState: (this.props.animateHero ?? true) ? 'running' : 'paused',
+
+      installClients,
+      activeInstallCommand: activeClient.cmd,
+      activeInstallNote: activeClient.note,
+      copyActiveInstall,
 
       leadEmail: this.state.leadEmail,
       leadSubmitted: this.state.leadSubmitted,
