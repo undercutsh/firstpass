@@ -113,9 +113,19 @@ cheap ──fail x2──▶ standard ──fail x2──▶ frontier ──unre
 npx skills add undercutsh/firstpass
 ```
 
-Or copy `skills/firstpass/` into your agent's skills directory. Works
-with Claude Code, Codex, Cursor, Copilot, OpenCode — anything that reads a
-`SKILL.md`.
+Or copy `skills/firstpass/` into your agent's skills directory by hand.
+Every client uses its own directory:
+
+- **Claude Code** → `.claude/skills/firstpass/`
+- **Codex CLI** → `.agents/skills/firstpass/`
+- **Cursor** → `.cursor/skills/firstpass/`
+- **Copilot** (no skills dir — instructions file instead) → append to
+  `.github/copilot-instructions.md` or `AGENTS.md`
+
+Full install steps for these plus OpenCode, Gemini CLI, Windsurf, JetBrains
+Junie, Amp, and Devin — exact commands, a verify-your-install prompt, and
+troubleshooting — are in
+[`AGENTS.md` → Client install matrix](AGENTS.md#client-install-matrix).
 
 **For AI coding agents working in this repo:** see [`AGENTS.md`](AGENTS.md)
 for build/test commands and repo conventions.

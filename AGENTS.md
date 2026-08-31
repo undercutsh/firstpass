@@ -52,3 +52,258 @@ there don't need a build/compile step, just valid HTML/JSON/txt.
 - Methodology/numbers questions → `testing/README.md`
 - Routing logic questions → `skills/firstpass/SKILL.md` + `skills/firstpass/models.md`
 - Site copy/positioning questions → `site/llms.txt` (agent-facing) or `site/index.md` (full page, markdown)
+
+## Client install matrix
+
+Undercut is a plain `SKILL.md` — every client below reads that file, or
+some project-wide instructions equivalent, from its own directory
+convention. Two install paths work everywhere:
+
+```sh
+npx skills add undercutsh/firstpass       # generic skills.sh installer
+```
+
+or clone the repo and copy `skills/firstpass/` by hand into the exact
+directory your client scans (below, per client). The manual copy is also
+the fallback when `npx skills add` can't reach the network (see
+Troubleshooting).
+
+Claude Code, Codex CLI, Cursor, Copilot, and OpenCode below are sourced
+from this repo's own verified companion pages
+(`site/claude-code.html`, `site/codex.html`, `site/cursor.html`,
+`site/copilot.html`, `site/opencode.html`) — read those for the full
+reasoning and citations. Gemini CLI, Windsurf, JetBrains Junie, Amp, and
+Devin were researched fresh for this section (dated 2026-08); sources are
+inlined below each one.
+
+<details>
+<summary><strong>Claude Code</strong></summary>
+
+Reads `SKILL.md` files under `.claude/skills/<name>/`.
+
+```sh
+npx skills add undercutsh/firstpass
+# or
+cp -r firstpass/skills/firstpass ./.claude/skills/firstpass
+```
+
+Source: `site/claude-code.html`.
+
+</details>
+
+<details>
+<summary><strong>Codex CLI</strong></summary>
+
+Per Codex's own skills docs, scans repo-scoped `.agents/skills/` (working
+directory up to repo root) or user-level `$HOME/.agents/skills/` — a
+different convention from Claude Code's `.claude/skills/`.
+
+```sh
+npx skills add undercutsh/firstpass -a codex
+# or
+cp -r firstpass/skills/firstpass ./.agents/skills/firstpass
+```
+
+Source: `site/codex.html` (cites https://learn.chatgpt.com/docs/build-skills).
+
+</details>
+
+<details>
+<summary><strong>Cursor</strong></summary>
+
+Cursor's Agent Skills layer loads `SKILL.md` from
+`.cursor/skills/<name>/SKILL.md`, where the folder name must match the
+`name:` field in the skill's frontmatter (Undercut's is `firstpass`, so it
+copies straight across). Cursor's own docs also say it reads
+`.claude/skills/`, `.codex/skills/`, and `.agents/skills/` for
+compatibility — unverified end-to-end by this repo, but if you already
+installed for Claude Code or Codex, Cursor may pick it up with nothing
+extra.
+
+```sh
+cp -r firstpass/skills/firstpass ./.cursor/skills/firstpass
+# or
+npx skills add undercutsh/firstpass
+```
+
+Source: `site/cursor.html`.
+
+</details>
+
+<details>
+<summary><strong>GitHub Copilot (VS Code / coding agent)</strong></summary>
+
+Copilot has no skills directory — no auto-discovery of `SKILL.md`. It
+reads repository **custom instructions** in full instead: a single
+`.github/copilot-instructions.md` at the repo root (Copilot Chat, code
+review, and the coding agent all apply it), or, as of August 2025,
+`AGENTS.md` (root or nearest nested file). Deliver the policy as
+instruction content, not a discovered skill.
+
+```sh
+mkdir -p .github && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> .github/copilot-instructions.md
+# or, as a scoped instructions file (add your own `applyTo: "**"` frontmatter — the raw SKILL.md doesn't ship one):
+mkdir -p .github/instructions && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md -o .github/instructions/firstpass.instructions.md
+```
+
+Source: `site/copilot.html` (cites GitHub Docs custom-instructions page and
+the 2025-08-28 Copilot coding-agent AGENTS.md changelog entry).
+
+</details>
+
+<details>
+<summary><strong>OpenCode</strong></summary>
+
+OpenCode's native `skill` tool discovers `SKILL.md` under
+`.opencode/skills/<name>/SKILL.md` (walking up to the git worktree root),
+and — for compatibility — the same layout under `.claude/skills/` and
+`.agents/skills/`, plus the equivalent global paths under
+`~/.config/opencode/`, `~/.claude/`, and `~/.agents/`.
+
+```sh
+npx skills add undercutsh/firstpass
+# or, to target OpenCode's own path directly:
+cp -r firstpass/skills/firstpass ./.opencode/skills/firstpass
+```
+
+Source: `site/opencode.html` (cites https://opencode.ai/docs/skills/). Note:
+this repo hasn't independently verified which directory the `skills` CLI
+writes to for OpenCode — use the manual copy if you want to be sure it
+lands in `.opencode/skills/`.
+
+</details>
+
+<details>
+<summary><strong>Gemini CLI</strong></summary>
+
+Gemini CLI's reliable, verified mechanism is **`GEMINI.md`**, read
+hierarchically: `~/.gemini/GEMINI.md` (global) first, then from the
+project root down to the current directory, then a downward scan of
+subdirectories (docs:
+https://geminicli.com/docs/cli/gemini-md/,
+https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/gemini-md.md).
+Gemini CLI also has an **Agent Skills** feature, but per its own docs it
+auto-discovers `SKILL.md` only when bundled inside a full **extension**
+package (`skills/<name>/SKILL.md` inside the extension directory,
+https://geminicli.com/docs/extensions/writing-extensions/) — we found no
+documented plain `.gemini/skills/` auto-discovery path outside of an
+extension. skills.sh states it supports installing for Gemini
+(https://www.skills.sh/agent/gemini) but doesn't publish which directory
+it writes to, so treat that as unverified too.
+
+```sh
+mkdir -p .gemini && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> .gemini/GEMINI.md
+```
+
+Researched fresh 2026-08 — mechanism for true Agent Skills discovery
+(outside an extension) not independently verified; the `GEMINI.md` route
+above is the confirmed one.
+
+</details>
+
+<details>
+<summary><strong>Windsurf (Cascade)</strong></summary>
+
+Windsurf was acquired by Cognition and its docs now live under
+`docs.devin.ai`, branded as part of Devin Desktop — `docs.windsurf.com`
+redirects there. Confirmed paths for workspace rules: `.devin/rules/*.md`
+(preferred) with `.windsurf/rules/*.md` and the legacy `.windsurfrules`
+kept as fallbacks for backward compatibility; global rules at
+`~/.codeium/windsurf/memories/global_rules.md` (6,000-char limit,
+workspace files 12,000 chars). A root-level `AGENTS.md` is also read
+automatically as "location-scoped rules with zero config." We could not
+independently verify whether Windsurf/Cascade shares the `.devin/skills/`
+Agent Skills discovery path documented for Devin CLI (see below) — if in
+doubt, use `AGENTS.md`, which is confirmed.
+
+```sh
+# most portable, confirmed path:
+echo "" >> AGENTS.md && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> AGENTS.md
+```
+
+Researched fresh 2026-08 (https://docs.devin.ai/desktop/cascade/memories).
+
+</details>
+
+<details>
+<summary><strong>JetBrains AI Assistant / Junie</strong></summary>
+
+Junie supports Agent Skills. Confirmed discovery paths (per
+https://junie.jetbrains.com/docs/agent-skills.html):
+project-level `<projectRoot>/.junie/skills/<name>/`, user-level
+`~/.junie/skills/<name>/` (Windows: `%USERPROFILE%\.junie\skills\<name>\`),
+and the cross-agent `.agents/skills/` convention. Project-level wins on a
+name collision. Junie also reads plain guidelines from
+`.junie/guidelines.md` or `AGENTS.md` if no skill applies.
+
+```sh
+cp -r firstpass/skills/firstpass ./.junie/skills/firstpass
+# or, the cross-agent convention Junie also scans:
+cp -r firstpass/skills/firstpass ./.agents/skills/firstpass
+```
+
+Researched fresh 2026-08.
+
+</details>
+
+<details>
+<summary><strong>Amp</strong></summary>
+
+Amp's Agent Skills default to `.agents/skills/<name>/SKILL.md` at the
+workspace root, with `~/.config/agents/skills/` for user-level skills, and
+`.claude/skills/` / `~/.claude/skills/` read for compatibility with
+existing Claude skills (https://ampcode.com/news/agent-skills). Amp also
+reads a root `AGENTS.md` for plain repository instructions.
+
+```sh
+cp -r firstpass/skills/firstpass ./.agents/skills/firstpass
+```
+
+Researched fresh 2026-08.
+
+</details>
+
+<details>
+<summary><strong>Devin (CLI / Desktop)</strong></summary>
+
+Devin CLI supports Agent Skills at `.devin/skills/<name>/SKILL.md`
+(project-scoped) or `~/.config/devin/skills/` (macOS/Linux) /
+`%APPDATA%\devin\skills\` (Windows), per
+https://docs.devin.ai/cli/extensibility/skills/creating-skills. For plain
+instructions, Devin reads a root `AGENTS.md` automatically and treats it
+as always-on (recommended over piling everything into Rules — Devin's own
+docs say to prefer Skills for anything task-conditional):
+https://docs.devin.ai/cli/extensibility/rules. Devin also auto-pulls
+`.rules`, `.cursorrules`, `.windsurf`, and `CLAUDE.md` if present, so an
+existing Claude Code or Cursor install may already be picked up.
+
+```sh
+cp -r firstpass/skills/firstpass ./.devin/skills/firstpass
+```
+
+Researched fresh 2026-08.
+
+</details>
+
+### Verify your install
+
+Paste this into your agent after installing:
+
+> Read SKILL.md (or the routing policy in AGENTS.md/copilot-instructions.md,
+> whichever you loaded) and tell me: for the next 3 things I ask you to do,
+> what tier would each get routed to under the 6-flag rubric, and why —
+> name the flags that fired.
+
+If the agent can't find any routing policy to describe, the skill wasn't
+picked up — see Troubleshooting below.
+
+### Troubleshooting
+
+- **Skill not picked up.** The single most common cause is copying
+  `skills/firstpass/` into the wrong directory for your specific client —
+  each one scans a different path (see the matrix above). Double-check
+  against your client's entry before assuming the skill itself is broken.
+- **`npx skills add` does nothing / times out.** It needs network access to
+  the skills.sh registry. In a sandboxed, offline, or restricted CI
+  environment, use the manual `cp -r` copy for your client instead — it has
+  no network dependency.
