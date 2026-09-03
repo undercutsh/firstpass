@@ -6,26 +6,78 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-09-03
+
+Versioning policy formalized this release (see `AGENTS.md` → Versioning)
+— Semantic Versioning, gated the same way pre- and post-1.0. Everything
+below was already shipped and merged; this is the first release cut
+under the new "log at PR time, tag at release time" process, backfilled
+from #14 through #39.
+
 ### Added
 
-- **`/api/lead` serverless function** — the hero/audit/pricing lead-capture
-  forms now POST to a real endpoint instead of only logging to the console.
-  The destination is operator-configured via the `LEAD_WEBHOOK_URL` env var
-  (any webhook-accepting service: Zapier, Make, a Sheets webhook, an email
-  API) rather than a vendor picked in code — see `site/api/lead.js` for why.
-  **Requires `LEAD_WEBHOOK_URL` to be set in the Vercel project's
-  environment variables before this does anything** — without it, the
-  endpoint responds `501` rather than silently succeeding.
-- **MBPP public benchmark suite** (`evals/src/benchmarks.js`'s `loadMbpp`,
-  `--benchmark mbpp`) — a third public code-generation benchmark alongside
-  GSM8K/HumanEval, so trust-and-rigor claims don't rest on HumanEval alone.
-  Unlike those two, it's a fixed, embedded 30-problem subset
-  (`evals/src/data/mbpp-subset.js`) rather than fetched live, so `--mock`
-  and CI stay fully offline. Sourced from the official
-  google-research/mbpp `sanitized-mbpp.json` (Austin et al. 2021,
-  CC-BY-4.0). See `evals/README.md` and `testing/README.md` for details;
-  no live/paid vendor run has been done yet (mock-only, per the
-  "Public-task swap" roadmap item).
+- **`/api/lead` serverless function** (#26) — the hero/audit/pricing
+  lead-capture forms POST to a real endpoint instead of only logging to
+  the console. Destination is operator-configured via `LEAD_WEBHOOK_URL`
+  (any webhook-accepting service) rather than a vendor picked in code —
+  see `site/api/lead.js`. Requires that env var set in Vercel before it
+  does anything; responds `501` otherwise rather than silently succeeding.
+- **MBPP public benchmark suite** (#28) — a third public code-generation
+  benchmark alongside GSM8K/HumanEval (`--benchmark mbpp`), a fixed,
+  embedded 30-problem subset (CC-BY-4.0, google-research/mbpp) so `--mock`
+  and CI stay offline. No live/paid vendor run yet (mock-only).
+- **5 per-client companion/integration pages** (#17-19, #21, #23) —
+  dedicated pages for Claude Code, GitHub Copilot, Codex CLI, OpenCode,
+  and Cursor, each with verified install steps and citations.
+- **Per-client install matrix in `AGENTS.md`** (#34) — 10 clients total
+  (the 5 above plus Gemini CLI, Windsurf, JetBrains Junie, Amp, Devin,
+  researched fresh), a "Verify your install" prompt, and a Troubleshooting
+  section.
+- **Eval-harness statistical rigor** (#20, #29) — Wilson confidence
+  interval on pass rate, seed-cluster bootstrap on cost-per-pass, wired
+  into `main.js`'s report output; default seeds bumped 5→10.
+- **Accessibility statement page** (#25) and **unit tests for
+  `policy.js`/`tasks.js`** (#15).
+- **Markdown content negotiation** (#27) — a Vercel Edge Middleware
+  serving `/index.md`-equivalent markdown to agents that request it.
+- **Requirements line + auto-generated `models.md`** (#36) — install docs
+  now state up front that nothing beyond the coding agent is required;
+  `models.md`'s tier→model table is now generated from
+  `evals/src/config.js` via `scripts/sync-models-md.js`, with a CI check
+  that fails the build if the two drift.
+- **Floating "Star on GitHub" CTA** (#39) — bottom-right, scroll-triggered,
+  dismissible.
+- **Self-activation disclosure** (#38) — an honest caveat in
+  `testing/README.md` and expanded `AGENTS.md` troubleshooting for the
+  (real, third-party-confirmed-possible-for-similar-tools) case where the
+  skill is installed but a host's own matcher never loads it unprompted.
+
+### Changed
+
+- **Hero + install section redesign** (#37) — primary CTA is now
+  "Install now," an auto-scrolling strip of supported agents replaces the
+  old Team-trial-first hero layout, and the install section gained a
+  "pick your agent" client picker with a per-client command.
+- **Design UI token pass** (#31, #32) — Inter for body text, 32px/10px
+  button sizing, badge and switch components, applied to the main page
+  and all companion pages.
+
+### Fixed
+
+- **Real production outage: self-hosted React/ReactDOM/Babel** (#33) — a
+  CDN-blocking failure on a real visitor's network was taking the whole
+  page down; vendor scripts now ship from `site/vendor/`, no third-party
+  CDN single point of failure. (#24 was an earlier, narrower mitigation
+  attempt superseded by this fix.)
+- **Real production bug: pricing table rendered blank** (#35) — an
+  HTML5 table-parsing foster-parenting bug (found via the user's own
+  local `chrome-devtools-mcp` session against the live site), plus
+  unparsed-template-literal warnings on the calculator's number inputs
+  and missing `id`/`name`/`autocomplete` on 5 form fields.
+- **2 WCAG AA contrast fixes** (#16, #22) on signal/escalate text, form
+  inputs, and a companion-page link hover state.
+- **Design Canvas static-parity gaps** (#30) — the no-JS fallback's demo
+  log and a pricing-copy drift between the fallback and the live page.
 
 ## [0.2.1] - 2026-08-28
 
@@ -146,7 +198,8 @@ Initial public release.
 - README documenting the generator–verifier gap, install via skills.sh, prior
   art, and the benchmark-triggered mapping roadmap.
 
-[unreleased]: https://github.com/undercutsh/firstpass/compare/v0.2.1...HEAD
+[unreleased]: https://github.com/undercutsh/firstpass/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/undercutsh/firstpass/releases/tag/v0.3.0
 [0.2.1]: https://github.com/undercutsh/firstpass/releases/tag/v0.2.1
 [0.2.0]: https://github.com/undercutsh/firstpass/releases/tag/v0.2.0
 [0.1.0]: https://github.com/undercutsh/firstpass/releases/tag/v0.1.0
