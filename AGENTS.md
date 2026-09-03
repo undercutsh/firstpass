@@ -312,3 +312,21 @@ picked up — see Troubleshooting below.
   the skills.sh registry. In a sandboxed, offline, or restricted CI
   environment, use the manual `cp -r` copy for your client instead — it has
   no network dependency.
+- **Installed correctly, but the agent never seems to use it.** This is a
+  different problem from the one above — the skill is present and loadable,
+  but the host's own skill-matcher never decided a given task was relevant
+  enough to load it. Every client that discovers skills this way (not the
+  instruction-file clients like Copilot/Cursor's `AGENTS.md` fallback,
+  which load unconditionally) matches on `SKILL.md`'s `description:` field,
+  and matching is the host's judgment call, not a guarantee — a task that
+  doesn't closely resemble the description's trigger phrases ("fan out",
+  "which model", "dispatch", etc.) may never surface the skill at all, even
+  installed correctly. If routing doesn't seem to be happening: (1) ask the
+  agent directly to read and apply `skills/firstpass/SKILL.md` for the
+  current task — that always works regardless of auto-matching; (2) add an
+  explicit one-line pointer to it in your own project `AGENTS.md`/
+  `CLAUDE.md` ("apply the routing policy in skills/firstpass/SKILL.md to
+  every unit of work") so it's not depending on match-quality alone; (3) use
+  the "Verify your install" prompt above on a task that doesn't obviously
+  resemble the trigger phrases, not just an obvious one, to get an honest
+  read on whether auto-matching is working for your actual workload.
