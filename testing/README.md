@@ -161,3 +161,15 @@ node src/main.js --compare a.json,b.json             # diff two saved runs
 5. **Sample sizes are modest** (50/20 tasks × 5 seeds). The direction is
    consistent across 2 benchmarks × 4 vendors; confidence intervals at higher
    seeds are a follow-up.
+6. **Every number here assumes the policy is already active.** The harness
+   (`evals/src/main.js`) invokes the routing policy directly — it doesn't
+   measure whether a coding agent's own skill-matcher actually loads
+   `skills/firstpass/SKILL.md` on an arbitrary real task with no explicit
+   prompt pointing at it. That's a different, currently-unmeasured question
+   (self-activation rate, not routing quality once active), and it's real:
+   a third-party audit of a structurally similar skill (plain `SKILL.md`,
+   no lifecycle hook) found it self-activated in 0 of 10 sessions where it
+   was merely installed. Until we publish our own measurement of this,
+   treat the numbers above as "what the policy achieves when it runs," not
+   as a guarantee it runs unprompted on every session. If it doesn't seem
+   to be engaging, see `AGENTS.md`'s Troubleshooting section.
