@@ -1083,7 +1083,7 @@ const fmtCents = (n) => n.toLocaleString('en-US', { minimumFractionDigits: 2, ma
 // "Client install matrix" — that file has the full reasoning/citations
 // per client, this is just the command each picker button runs.
 const INSTALL_CLIENTS = [
-  { id: 'claude-code', label: 'Claude Code', cmd: 'npx skills add undercutsh/firstpass', note: 'Reads SKILL.md under .claude/skills/firstpass/. Manual copy: cp -r firstpass/skills/firstpass ./.claude/skills/firstpass' },
+  { id: 'claude-code', label: 'Claude Code', cmd: '/plugin marketplace add undercutsh/firstpass', note: 'Then /plugin install firstpass@firstpass — fewest keystrokes, this repo is its own marketplace. Or npx skills add undercutsh/firstpass, or copy skills/firstpass/ to .claude/skills/firstpass/ by hand.' },
   { id: 'codex', label: 'Codex CLI', cmd: 'npx skills add undercutsh/firstpass -a codex', note: 'Reads .agents/skills/ (repo-scoped) or $HOME/.agents/skills/. Manual copy: cp -r firstpass/skills/firstpass ./.agents/skills/firstpass' },
   { id: 'cursor', label: 'Cursor', cmd: 'cp -r firstpass/skills/firstpass ./.cursor/skills/firstpass', note: 'Folder name must match the name: field in SKILL.md (firstpass). npx skills add undercutsh/firstpass also works.' },
   { id: 'copilot', label: 'GitHub Copilot', cmd: 'mkdir -p .github && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> .github/copilot-instructions.md', note: 'Copilot has no skills directory — it reads repo custom instructions instead.' },

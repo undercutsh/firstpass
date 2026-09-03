@@ -1,0 +1,29 @@
+{
+  "name": "firstpass",
+  "version": "0.3.0",
+  "description": "Confidence-gated model routing for coding agents — run every unit of work at the cheapest model that can pass verification.",
+  "author": {
+    "name": "Justin Winter",
+    "url": "https://github.com/justinwinter"
+  },
+  "homepage": "https://getundercut.sh",
+  "repository": "https://github.com/undercutsh/firstpass",
+  "license": "MIT",
+  "keywords": ["model-routing", "cost-optimization", "coding-agent", "llm-routing", "token-cost"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Undercut",
+    "shortDescription": "Route every task to the cheapest model that can pass verification",
+    "longDescription": "A six-flag rubric assigns a base tier (cheap/standard/frontier/apex). Objective evidence — verification failure, disagreement between low-tier runs, an uncertainty flag — is the only thing allowed to escalate it, never predicted difficulty. Measured up to −95% cost on public benchmarks (GSM8K, HumanEval) at equal-or-better pass rate.",
+    "developerName": "Justin Winter",
+    "category": "Productivity",
+    "capabilities": ["Instructions"],
+    "websiteURL": "https://getundercut.sh",
+    "defaultPrompt": [
+      "Apply the Undercut routing policy to this batch of work.",
+      "What tier would the six-flag rubric assign this task, and why?",
+      "Read skills/firstpass/SKILL.md and follow it for the rest of this session."
+    ],
+    "brandColor": "#2E9E5B"
+  }
+}
