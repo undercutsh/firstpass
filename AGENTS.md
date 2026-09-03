@@ -46,6 +46,52 @@ there don't need a build/compile step, just valid HTML/JSON/txt.
   capabilities that actually exist (no API, MCP server, or auth flow exists
   yet — don't add discovery files implying they do).
 
+## Versioning
+
+[Semantic Versioning 2.0.0](https://semver.org/) — `MAJOR.MINOR.PATCH`.
+Still pre-1.0 (`0.y.z`) — the whole project is beta until an explicit
+graduation decision (see MAJOR below), but this repo doesn't take
+semver's pre-1.0 license to move the contract loosely: MINOR vs. PATCH is
+gated by the same rule it would be post-1.0, just without a MAJOR bump
+yet available to mark a breaking change. That's a deliberate tightening,
+not an oversight.
+
+- **PATCH** (`0.y.Z`) — a fix that adds no new capability: bug fixes,
+  copy/doc corrections, a11y/contrast fixes, CI-only changes, dependency
+  bumps, internal refactors with no user-visible change.
+- **MINOR** (`0.Y.0`) — additive new capability: a new page, a new
+  install-client entry, a new benchmark suite, a new site section, a new
+  CLI flag, anything that changes what the product can do or who it
+  visibly supports. This is the one most day-to-day feature PRs here hit.
+- **MAJOR** — reserved. The first MAJOR bump is `1.0.0`, a deliberate,
+  one-time graduation out of beta (candidate trigger: Teams ships +
+  independent replication lands — see the internal roadmap's "Trust &
+  rigor" section) — not a routine event. After `1.0.0`, MAJOR bumps only
+  for breaking changes to the six-flag rubric's contract, `SKILL.md`'s
+  public interface, or `models.md`'s tier-mapping *shape* (not its
+  values — those already update on their own cadence, see below).
+
+**This is separate from two other version axes already in this repo —
+don't conflate them:**
+- The **rubric spec version** inside `SKILL.md` itself (currently `v1`)
+  — bumps only when the six-flag rubric or escalation ladder's actual
+  rules change (a new flag, a different cap), independent of the package
+  version above.
+- **`models.md`'s tier→model mapping** — no version number of its own,
+  updates on its own cadence when a new model beats an incumbent on the
+  reference benchmarks, tracked via its "Last updated" date.
+
+**Process:** every merged PR gets a bullet under `CHANGELOG.md`'s
+`[Unreleased]` section (Added/Changed/Fixed — [Keep a
+Changelog](https://keepachangelog.com/) format, already in use here) as
+part of that PR, not deferred to a later release-prep pass. When cutting
+a release: move `[Unreleased]`'s content under a new `[X.Y.Z] - date`
+header per the rules above, then create the matching git tag in the same
+pass — `git tag vX.Y.Z && git push origin vX.Y.Z`. A changelog entry
+without a matching tag is a phantom release (happened once already, for
+0.2.1 — fixed as part of adopting this policy); don't let it happen
+again.
+
 ## Where to look first
 
 - Product/what-it-is questions → `README.md`, `skills/firstpass/SKILL.md`
