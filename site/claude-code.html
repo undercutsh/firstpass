@@ -114,13 +114,25 @@
     <p class="mono" style="margin: 0 0 14px">Install for Claude Code</p>
     <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 30px; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 32px; text-wrap: balance">Free. MIT. Nothing installs, nothing proxies your traffic.</h2>
 
-    <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 1 — skills CLI</h3>
+    <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 1 — plugin (fewest keystrokes)</h3>
+    <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0 0 12px">This repo doubles as its own plugin marketplace — no separate registry, just <code style="background:#2A2D35;color:#F5F3EE">.claude-plugin/</code> in the repo you're already installing from.</p>
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #101216; border: 1px solid #2A2D35; padding: 18px 22px; font-family: 'JetBrains Mono', monospace; font-size: 15px; margin: 0 0 10px; flex-wrap: wrap">
+      <span><span style="color: #4a4e57">$ </span>/plugin marketplace add undercutsh/firstpass</span>
+      <button type="button" class="copybtn" data-copy="/plugin marketplace add undercutsh/firstpass" onclick="undercutCopy(this)">Copy</button>
+    </div>
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #101216; border: 1px solid #2A2D35; padding: 18px 22px; font-family: 'JetBrains Mono', monospace; font-size: 15px; margin: 0 0 28px; flex-wrap: wrap">
+      <span><span style="color: #4a4e57">$ </span>/plugin install firstpass@firstpass</span>
+      <button type="button" class="copybtn" data-copy="/plugin install firstpass@firstpass" onclick="undercutCopy(this)">Copy</button>
+    </div>
+    <p style="font-size: 13px; color: #8A8F98; margin: 0 0 32px">Two separate prompts — send the marketplace command, wait for it to finish, then send the install command. Uninstall any time with <code style="background:#2A2D35;color:#F5F3EE">/plugin remove firstpass</code>.</p>
+
+    <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 2 — skills CLI</h3>
     <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #101216; border: 1px solid #2A2D35; padding: 18px 22px; font-family: 'JetBrains Mono', monospace; font-size: 15px; margin: 0 0 28px; flex-wrap: wrap">
       <span><span style="color: #4a4e57">$ </span>npx skills add undercutsh/firstpass</span>
       <button type="button" class="copybtn" data-copy="npx skills add undercutsh/firstpass" onclick="undercutCopy(this)">Copy</button>
     </div>
 
-    <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 2 — copy the skill directory directly</h3>
+    <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 3 — copy the skill directory directly</h3>
     <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0 0 12px">Clone or download <a href="https://github.com/undercutsh/firstpass" style="color: #F5F3EE">undercutsh/firstpass</a>, then copy <code style="background:#2A2D35;color:#F5F3EE">skills/firstpass/</code> into wherever your Claude Code setup reads skills from — project-level or user-level, same convention as any other skill.</p>
     <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #101216; border: 1px solid #2A2D35; padding: 18px 22px; font-family: 'JetBrains Mono', monospace; font-size: 15px; margin: 0 0 40px; flex-wrap: wrap">
       <span><span style="color: #4a4e57">$ </span>cp -r firstpass/skills/firstpass ./.claude/skills/firstpass</span>

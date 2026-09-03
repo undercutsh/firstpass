@@ -6,6 +6,20 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ## [Unreleased]
 
+### Added
+
+- **Claude Code plugin distribution** (`.claude-plugin/plugin.json`,
+  `.claude-plugin/marketplace.json`) — this repo doubles as its own
+  plugin marketplace, so `/plugin marketplace add undercutsh/firstpass`
+  + `/plugin install firstpass@firstpass` installs the skill in two
+  prompts instead of a shell command. No hooks, no lifecycle
+  enforcement — the plugin just declares `skills/` for auto-discovery,
+  same `SKILL.md` every other install path already uses. Added as an
+  "Option 1" alongside the existing `npx skills add` and manual-copy
+  paths (not a replacement) on `site/claude-code.html`, the homepage
+  install picker, and `AGENTS.md`'s client matrix, plus an `AGENTS.md`
+  Uninstall section (`/plugin remove firstpass`).
+
 ## [0.3.0] - 2026-09-03
 
 Versioning policy formalized this release (see `AGENTS.md` → Versioning)

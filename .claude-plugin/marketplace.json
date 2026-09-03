@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "firstpass",
+  "description": "Confidence-gated model routing for coding agents — run every unit of work at the cheapest model that can pass verification.",
+  "owner": {
+    "name": "undercutsh",
+    "url": "https://github.com/undercutsh"
+  },
+  "plugins": [
+    {
+      "name": "firstpass",
+      "description": "Six-flag rubric assigns a base tier; objective evidence is the only thing allowed to escalate it. Measured up to −95% cost, equal-or-better pass rate.",
+      "source": "./",
+      "category": "productivity"
+    }
+  ]
+}

@@ -130,11 +130,21 @@ inlined below each one.
 <details>
 <summary><strong>Claude Code</strong></summary>
 
-Reads `SKILL.md` files under `.claude/skills/<name>/`.
+Reads `SKILL.md` files under `.claude/skills/<name>/`. Three install
+paths — the plugin is the fewest keystrokes, but all three end up at
+the same `SKILL.md`, so pick whichever fits:
 
 ```sh
+# Plugin (this repo doubles as its own marketplace — .claude-plugin/)
+/plugin marketplace add undercutsh/firstpass
+/plugin install firstpass@firstpass
+```
+```sh
+# or, the generic installer
 npx skills add undercutsh/firstpass
-# or
+```
+```sh
+# or, manual copy — no network dependency
 cp -r firstpass/skills/firstpass ./.claude/skills/firstpass
 ```
 
@@ -376,3 +386,15 @@ picked up — see Troubleshooting below.
   the "Verify your install" prompt above on a task that doesn't obviously
   resemble the trigger phrases, not just an obvious one, to get an honest
   read on whether auto-matching is working for your actual workload.
+
+### Uninstall
+
+Zero lock-in either way — it's a policy file, not infrastructure, so
+removal is always "delete the thing you added":
+
+| Install method | Command |
+|---|---|
+| Claude Code plugin | `/plugin remove firstpass` |
+| `npx skills add` / manual copy | Delete the client's skill/rule directory (e.g. `rm -rf .claude/skills/firstpass`) |
+
+No config, no state, nothing else to clean up.
