@@ -1473,10 +1473,15 @@ class Component extends DCLogic {
       }
     } catch (e) {}
 
+    var controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+    var timeoutId = setTimeout(function () { if (controller) controller.abort(); }, 8000);
+
     fetch('https://api.github.com/repos/undercutsh/firstpass', {
-      headers: { Accept: 'application/vnd.github+json' }
+      headers: { Accept: 'application/vnd.github+json' },
+      signal: controller ? controller.signal : undefined
     })
       .then(function (res) {
+        clearTimeout(timeoutId);
         if (!res.ok) throw new Error('GitHub API error ' + res.status);
         return res.json();
       })
@@ -1487,6 +1492,7 @@ class Component extends DCLogic {
         render(count);
       })
       .catch(function () {
+        clearTimeout(timeoutId);
         fallback();
       });
   }
