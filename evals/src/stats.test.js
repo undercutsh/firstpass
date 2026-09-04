@@ -69,6 +69,18 @@ describe('wilsonInterval', () => {
   test('rejects successes > total', () => {
     assert.throws(() => wilsonInterval(11, 10), /invalid successes\/total/);
   });
+
+  test('rejects non-integer successes', () => {
+    assert.throws(() => wilsonInterval(1.5, 10), /invalid successes\/total/);
+  });
+
+  test('rejects negative successes', () => {
+    assert.throws(() => wilsonInterval(-1, 10), /invalid successes\/total/);
+  });
+
+  test('rejects negative total', () => {
+    assert.throws(() => wilsonInterval(0, -5), /invalid successes\/total/);
+  });
 });
 
 // --- seedBootstrapCI -----------------------------------------------------
@@ -174,6 +186,16 @@ describe('seedBootstrapCI', () => {
   test('rejects iterations < 1', () => {
     assert.throws(() => seedBootstrapCI([[{ cost: 1 }]], mean, { iterations: 0 }), /iterations must be/);
   });
+
+  test('single seed group (k=1): every resample draws the same seed, collapsing to a zero-width interval', () => {
+    // With only one seed to resample from, Math.floor(rng() * 1) is always 0,
+    // so every bootstrap replicate is identical to the point estimate.
+    const seedGroups = [[{ cost: 3 }, { cost: 5 }, { cost: 7 }]];
+    const { point, lower, upper } = seedBootstrapCI(seedGroups, mean, { iterations: 500 });
+    assert.equal(point, 5);
+    assert.equal(lower, 5);
+    assert.equal(upper, 5);
+  });
 });
 
 // --- summarizeWithCI -----------------------------------------------------
@@ -214,5 +236,20 @@ describe('summarizeWithCI', () => {
     const summary = summarizeWithCI(units, { seedKey: 'runSeed', iterations: 200 });
     assert.equal(summary.n, 2);
     assert.equal(summary.passes, 2);
+  });
+
+  // BUG FIX: an empty unit list (e.g. a category or arm with zero tasks in
+  // it) used to throw, because it fed an empty seedGroups array straight
+  // into seedBootstrapCI, which explicitly rejects that. summarizeWithCI now
+  // short-circuits to a degenerate all-zero summary instead, consistent with
+  // wilsonInterval's own documented n=0 behavior.
+  test('empty unit list returns a degenerate zero summary instead of throwing', () => {
+    const summary = summarizeWithCI([], { iterations: 200 });
+    assert.equal(summary.n, 0);
+    assert.equal(summary.passes, 0);
+    assert.deepEqual(summary.passRate, { point: 0, lower: 0, upper: 0, n: 0, confidence: 0.95 });
+    assert.equal(summary.totalCost, 0);
+    assert.equal(summary.costPerPass, Infinity);
+    assert.equal(summary.costPerPassCI.point, Infinity);
   });
 });
