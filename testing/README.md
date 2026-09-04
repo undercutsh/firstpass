@@ -7,7 +7,7 @@ claims** — anyone can re-verify any cell.
 
 ## TL;DR
 
-- **Synthetic suites (our own 30 tasks):** tiered routing (`probe` policy) is
+- **Synthetic suites (our own 68 tasks across 7 categories):** tiered routing (`probe` policy) is
   equal-or-better quality at **31–96% lower cost** on 3 of 4 model families.
 - **Public benchmarks (GSM8K, HumanEval):** the same pattern holds on
   third-party, MIT-licensed, uncontested tasks — **up to −71% (GSM8K) and
@@ -40,10 +40,11 @@ compare. Every `--compare` invocation in `evals/` accepts two of these files.
 
 ## Synthetic suites (own tasks, deterministic graders)
 
-40 original tasks — 10 code (sandboxed `vm` exec), 10 reasoning (exact-match),
-10 mechanical (JSON schema), 10 debug (JSON schema / exact-match, added
-below — not yet in the results table since it hasn't had a live run). Full
-details in `evals/src/suites/`.
+68 original tasks across 7 categories — 10 code (sandboxed `vm` exec), 10
+reasoning (exact-match), 10 mechanical (JSON schema), 10 debug, 8 refactor,
+10 documentation, and 10 security (all four of the latter graded by JSON
+schema / exact-match, added below — not yet in the results table since none
+has had a live run). Full details in `evals/src/suites/`.
 
 **probe tiered vs all-standard — 5 seeds, 150 units per cell:**
 
@@ -58,26 +59,38 @@ details in `evals/src/suites/`.
 tier); probe's cheap-first probing overpays. Absolute overhead is tiny
 (~$0.01–0.02 per 150 units).
 
-### `debug` — bug diagnosis (added, not yet run live)
+### `debug`, `refactor`, `documentation`, `security` — added, not yet run live
 
-A fourth synthetic suite, `debug`, is wired into the same `--suites` flag
-(`evals/src/suites/debug.js`) as part of the "New eval categories" roadmap
-item: 10 original tasks testing bug diagnosis specifically — finding the
-actual root cause behind a throw site, repairing an off-by-one condition,
-picking the hypothesis consistent with repro steps, and classifying race
-conditions / memory leaks from a fixed enum. Same deterministic-grader rule
-as every other suite here: JSON schema (`gradeJsonSubset`) or exact-match
-(`gradeExact`), no LLM judging.
+Four more synthetic suites are wired into the same `--suites` flag as part of
+the "New eval categories" roadmap item, taking the total from 3 to 7:
 
-Verified locally: `node src/main.js --mock --suites debug` passes with the
-mock LLM (plumbing + grader check, not real model ability). No live/paid run
-against real vendor APIs has been done yet; this entry records availability
-and the reproduction command, not results.
+- **`debug`** (`evals/src/suites/debug.js`, 10 tasks) — bug diagnosis: finding
+  the actual root cause behind a throw site, repairing an off-by-one
+  condition, picking the hypothesis consistent with repro steps, and
+  classifying race conditions / memory leaks from a fixed enum.
+- **`refactor`** (`evals/src/suites/refactor.js`, 8 tasks) — refactoring
+  judgment: dead code, pure-rename vs behavior-change, code-smell → pattern.
+- **`documentation`** (`evals/src/suites/documentation.js`, 10 tasks) —
+  generating structured docstrings from a signature + behavior description
+  (structural fields graded; free-text descriptions ungraded).
+- **`security`** (`evals/src/suites/security.js`, 10 tasks) — vulnerability
+  classification against a fixed enum (`sql-injection`, `xss`,
+  `path-traversal`, `hardcoded-secret`, `insecure-deserialization`,
+  `missing-auth-check`, `none`).
+
+Same deterministic-grader rule as every other suite here: JSON schema
+(`gradeJsonSubset`) or exact-match (`gradeExact`), no LLM judging.
+
+Verified locally: `node src/main.js --mock --suites debug,refactor,documentation,security`
+passes with the mock LLM (plumbing + grader check, not real model ability).
+No live/paid run against real vendor APIs has been done yet for any of the
+four; these entries record availability and the reproduction command, not
+results.
 
 ```sh
 cd evals
-node src/main.js --mock --suites debug                        # plumbing, offline, no spend
-OPENROUTER_API_KEY=sk-or-... node src/main.js --suites debug --policy probe --seeds 5
+node src/main.js --mock --suites debug,refactor,documentation,security                        # plumbing, offline, no spend
+OPENROUTER_API_KEY=sk-or-... node src/main.js --suites debug,refactor,documentation,security --policy probe --seeds 5
 ```
 
 ## Public benchmarks

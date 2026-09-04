@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Undercut Changelog</title>
+    <link>https://getundercut.sh/</link>
+    <atom:link href="https://getundercut.sh/changelog.xml" rel="self" type="application/rss+xml" />
+    <description>Dated releases of Undercut (firstpass), the tiered-dispatch skill for coding agents.</description>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 03 Sep 2026 00:00:00 GMT</lastBuildDate>
+    <generator>scripts/generate-changelog-feed.js</generator>
+    <item>
+      <title>v0.3.0</title>
+      <link>https://github.com/undercutsh/firstpass/releases/tag/v0.3.0</link>
+      <guid isPermaLink="true">https://github.com/undercutsh/firstpass/releases/tag/v0.3.0</guid>
+      <pubDate>Thu, 03 Sep 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[
+      <p>Versioning policy formalized this release (see `AGENTS.md` → Versioning) — Semantic Versioning, gated the same way pre- and post-1.0. Everything below was already shipped and merged; this is the first release cut under the new &quot;log at PR time, tag at release time&quot; process, backfilled from #14 through #39.</p>
+      <p><strong>Added</strong></p>
+      <ul><li>/api/lead serverless function (#26) — the hero/audit/pricing lead-capture forms POST to a real endpoint instead of only logging to the console. Destination is operator-configured via LEAD_WEBHOOK_URL (any webhook-accepting service) rather than a vendor picked in code — see site/api/lead.js. Requires that env var set in Vercel before it does anything; responds 501 otherwise rather than silently succeeding.</li><li>MBPP public benchmark suite (#28) — a third public code-generation benchmark alongside GSM8K/HumanEval (--benchmark mbpp), a fixed, embedded 30-problem subset (CC-BY-4.0, google-research/mbpp) so --mock and CI stay offline. No live/paid vendor run yet (mock-only).</li><li>5 per-client companion/integration pages (#17-19, #21, #23) — dedicated pages for Claude Code, GitHub Copilot, Codex CLI, OpenCode, and Cursor, each with verified install steps and citations.</li><li>Per-client install matrix in AGENTS.md (#34) — 10 clients total (the 5 above plus Gemini CLI, Windsurf, JetBrains Junie, Amp, Devin, researched fresh), a &quot;Verify your install&quot; prompt, and a Troubleshooting section.</li><li>Eval-harness statistical rigor (#20, #29) — Wilson confidence interval on pass rate, seed-cluster bootstrap on cost-per-pass, wired into main.js&apos;s report output; default seeds bumped 5→10.</li><li>Accessibility statement page (#25) and unit tests for policy.js/tasks.js (#15).</li><li>Markdown content negotiation (#27) — a Vercel Edge Middleware serving /index.md-equivalent markdown to agents that request it.</li><li>Requirements line + auto-generated models.md (#36) — install docs now state up front that nothing beyond the coding agent is required; models.md&apos;s tier→model table is now generated from evals/src/config.js via scripts/sync-models-md.js, with a CI check that fails the build if the two drift.</li><li>Floating &quot;Star on GitHub&quot; CTA (#39) — bottom-right, scroll-triggered, dismissible.</li><li>Self-activation disclosure (#38) — an honest caveat in testing/README.md and expanded AGENTS.md troubleshooting for the (real, third-party-confirmed-possible-for-similar-tools) case where the skill is installed but a host&apos;s own matcher never loads it unprompted.</li></ul>
+      <p><strong>Changed</strong></p>
+      <ul><li>Hero + install section redesign (#37) — primary CTA is now &quot;Install now,&quot; an auto-scrolling strip of supported agents replaces the old Team-trial-first hero layout, and the install section gained a &quot;pick your agent&quot; client picker with a per-client command.</li><li>Design UI token pass (#31, #32) — Inter for body text, 32px/10px button sizing, badge and switch components, applied to the main page and all companion pages.</li></ul>
+      <p><strong>Fixed</strong></p>
+      <ul><li>Real production outage: self-hosted React/ReactDOM/Babel (#33) — a CDN-blocking failure on a real visitor&apos;s network was taking the whole page down; vendor scripts now ship from site/vendor/, no third-party CDN single point of failure. (#24 was an earlier, narrower mitigation attempt superseded by this fix.)</li><li>Real production bug: pricing table rendered blank (#35) — an HTML5 table-parsing foster-parenting bug (found via the user&apos;s own local chrome-devtools-mcp session against the live site), plus unparsed-template-literal warnings on the calculator&apos;s number inputs and missing id/name/autocomplete on 5 form fields.</li><li>2 WCAG AA contrast fixes (#16, #22) on signal/escalate text, form inputs, and a companion-page link hover state.</li><li>Design Canvas static-parity gaps (#30) — the no-JS fallback&apos;s demo log and a pricing-copy drift between the fallback and the live page.</li></ul>
+      ]]></description>
+    </item>
+    <item>
+      <title>v0.2.1</title>
+      <link>https://github.com/undercutsh/firstpass/releases/tag/v0.2.1</link>
+      <guid isPermaLink="true">https://github.com/undercutsh/firstpass/releases/tag/v0.2.1</guid>
+      <pubDate>Fri, 28 Aug 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[
+      <p><strong>Added</strong></p>
+      <ul><li>/.well-known/security.txt (#12) — RFC 9116 vulnerability-disclosure contact, referenced from robots.txt.</li><li>Landing page: &quot;The landscape&quot; — category-level positioning section between &quot;vs. cap-based routers&quot; and the benchmark tables, comparing compression, gateways, observability, and all-in-one platforms against Undercut&apos;s verified-routing mechanism on a benefit-led table. Concedes the rows where a narrower tool wins (compression, gateway access) instead of overclaiming across the board.</li><li>FAQPage JSON-LD expanded to all 15 FAQs (#10) — the structured-data block previously mirrored only 6 of the 15 FAQ entries rendered on the page; crawlers reading JSON-LD now see the same FAQ content visitors do.</li><li>/developers placeholder page (#11) — site/developers.html, in the same visual pattern as /about.</li><li>/developers added to sitemap.xml (#12) — the placeholder page shipped in #11 wasn&apos;t yet discoverable via the sitemap; crawlers can now find it.</li><li>AGENTS.md at the repo root, linked from README.md and llms.txt.</li><li>/.well-known/ai-catalog.json and /.well-known/agent-skills/index.json agent-discovery catalogs, upgraded to the ai-catalog domain-anchored urn:air:... scheme and the agent-skills v0.2.0 schema (with a real sha256 digest of SKILL.md), plus an honest trustManifest.identity block per entry — no fabricated attestations.</li><li>New static pages/files for crawlers: /about.html, /pricing.md, /index.md (+ /llms.md alias), /sitemap.xml, /404.html with recovery links.</li></ul>
+      <p><strong>Changed</strong></p>
+      <ul><li>Real &lt;title&gt;/meta description/canonical/OG/Twitter/lang=&quot;en&quot; moved into the actual &lt;head&gt; — they were previously stuck inside an inert Design Canvas block in &lt;body&gt;, invisible to non-JS crawlers per strict HTML5 parsing.</li><li>Extended JSON-LD: sameAs (broadened to the maintainer&apos;s existing profile links), Offer entries for Free/Teams with real prices, a WebPage/speakable block, a minimal BreadcrumbList, and the FAQPage block above.</li><li>robots.txt: explicit allow list for answer-engine crawlers (OAI-SearchBot, Claude-User, Perplexity-User, Applebot-Extended, etc.), CCBot/Bytespider disallowed, real sitemap pointer.</li><li>llms.txt: markdown link syntax, a &quot;when to use this&quot; section.</li><li>index.md/llms.md/pricing.md now open with --- frontmatter (title, description, canonical, last-updated).</li><li>vercel.json: Link headers (sitemap, markdown alternate, ai-catalog) and correct Content-Type on the new .md files.</li><li>toolname/tooldescription WebMCP attributes on the two real lead-capture forms (Teams waitlist, cost-audit email).</li><li>type=&quot;button&quot; hardening on all 3 lead-capture buttons (#12) — the two WebMCP-attributed lead-capture buttons plus the third pricing-card button (now also labeled) explicitly declare type=&quot;button&quot;, preventing accidental form submission and giving WebMCP a consistent, unambiguous target across all three.</li></ul>
+      <p><strong>Fixed</strong></p>
+      <ul><li>Two orank agent-readiness rescan passes (29/100 -&gt; 38/100, targeting Discovery/Access): the head-tag/meta fix above, plus ai-catalog.json entries corrected from urn:ai:... to the spec-required urn:air:... identifiers.</li></ul>
+      ]]></description>
+    </item>
+    <item>
+      <title>v0.2.0</title>
+      <link>https://github.com/undercutsh/firstpass/releases/tag/v0.2.0</link>
+      <guid isPermaLink="true">https://github.com/undercutsh/firstpass/releases/tag/v0.2.0</guid>
+      <pubDate>Tue, 18 Aug 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[
+      <p>Rebranded to Undercut; moved to the undercutsh org; shipped a live landing page on getundercut.sh; added public-benchmark validation and trust infrastructure.</p>
+      <p><strong>Added</strong></p>
+      <ul><li>Public benchmark validation — GSM8K and HumanEval, fetched live from HuggingFace, graded against official test cases. Full tables in testing/README.md; raw results published in testing/results/.</li><li>probe policy (shipped) — FORMAT-STRICT work starts cheap (model-agnostic) and caps at standard. Replaces the vendor-specific &quot;format → standard&quot; rule that round-5 cross-vendor testing showed was brittle.</li><li>Flagging-reliability test — proves stock dispatchers route 100% of units to the correct tier despite ~90% flag accuracy. No custom flagging model required.</li><li>Landing page — getundercut.sh (Vercel + Cloudflare DNS), canonical to the full domain, privacy/terms, robots/humans/llms.txt.</li><li>CI — GitHub Actions runs the mock eval harness on every push/PR.</li><li>Trust backlog (testing/trust-backlog.md) — earn-then-add roadmap for status page, stars, independent replication, accessibility statement.</li><li>GitHub hygiene — CONTRIBUTING, issue + PR templates.</li></ul>
+      <p><strong>Changed</strong></p>
+      <ul><li>Repo moved from justinwinter/tiered-dispatch to undercutsh/firstpass; skill renamed to firstpass; install is npx skills add undercutsh/firstpass.</li><li>SKILL.md: FORMAT-STRICT added as 6th rubric flag; ladder cap for format-strict work at standard; documented &quot;flags steer, verification + escalation decide&quot; property.</li><li>models.md: replaced placeholder tier descriptions with the exact verified OpenRouter slugs used by the eval harness.</li></ul>
+      <p><strong>Fixed</strong></p>
+      <ul><li>Grader/prompt bugs in the synthetic suites (wrong transport answer key, under-specified semver-sort prompt, HTTP method classification) that were inflating failure rates and skewing every round.</li></ul>
+      ]]></description>
+    </item>
+    <item>
+      <title>v0.1.0</title>
+      <link>https://github.com/undercutsh/firstpass/releases/tag/v0.1.0</link>
+      <guid isPermaLink="true">https://github.com/undercutsh/firstpass/releases/tag/v0.1.0</guid>
+      <pubDate>Sat, 15 Aug 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[
+      <p>Initial public release.</p>
+      <p><strong>Added</strong></p>
+      <ul><li>Tiered Dispatch skill (skills/tiered-dispatch/SKILL.md): rubric-based base tier assignment (cheap → standard → frontier → apex), objective escalation triggers (verification failure ×2, low-tier disagreement, uncertainty flags), hysteresis rules, residue-only escalation with a structured handoff payload, verification patterns, and an end-of-run calibration loop.</li><li>Model-agnostic tier naming with models.md mapping tiers to concrete model IDs per agent (Claude Code, Codex, Cursor/other).</li><li>README documenting the generator–verifier gap, install via skills.sh, prior art, and the benchmark-triggered mapping roadmap.</li></ul>
+      ]]></description>
+    </item>
+  </channel>
+</rss>

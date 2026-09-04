@@ -125,8 +125,8 @@
     <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 1 — copy the skill into Cursor's skills directory</h3>
     <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0 0 12px">Cursor loads project skills from <code style="background:#2A2D35;color:#F5F3EE">.cursor/skills/&lt;name&gt;/SKILL.md</code>, where the folder name has to match the <code style="background:#2A2D35;color:#F5F3EE">name:</code> field in the file's frontmatter. Undercut's is already named <code style="background:#2A2D35;color:#F5F3EE">firstpass</code>, so the directory copies straight across — no renaming, no rewriting frontmatter.</p>
     <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #101216; border: 1px solid #2A2D35; padding: 18px 22px; font-family: 'JetBrains Mono', monospace; font-size: 15px; margin: 0 0 28px; flex-wrap: wrap">
-      <span><span style="color: #8A8F98">$ </span>cp -r firstpass/skills/firstpass ./.cursor/skills/firstpass</span>
-      <button type="button" class="copybtn" data-copy="cp -r firstpass/skills/firstpass ./.cursor/skills/firstpass" onclick="undercutCopy(this)" aria-label="Copy command: cp -r firstpass/skills/firstpass ./.cursor/skills/firstpass">Copy</button>
+      <span><span style="color: #8A8F98">$ </span>mkdir -p .cursor/skills && cp -r firstpass/skills/firstpass ./.cursor/skills/firstpass</span>
+      <button type="button" class="copybtn" data-copy="mkdir -p .cursor/skills && cp -r firstpass/skills/firstpass ./.cursor/skills/firstpass" onclick="undercutCopy(this)" aria-label="Copy command: mkdir -p .cursor/skills && cp -r firstpass/skills/firstpass ./.cursor/skills/firstpass">Copy</button>
     </div>
 
     <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 2 — skills CLI</h3>
@@ -272,7 +272,7 @@
     <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: clamp(32px, 3.6vw, 48px); letter-spacing: -0.03em; line-height: 1.1; margin: 0 0 20px; text-wrap: balance">Undercut the top tier. Not the quality bar.</h2>
     <p style="font-size: 16px; line-height: 1.6; color: #8A8F98; margin: 0 0 36px">Nothing about this page expires. What does keep happening is the token bill, one session at a time, on whatever Cursor's Agent is currently doing with mechanical work.</p>
     <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap">
-      <button type="button" onclick="undercutCopy(this)" data-copy="cp -r firstpass/skills/firstpass ./.cursor/skills/firstpass" style="display: inline-flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 14px; background: #F5F3EE; color: #15171C; border: none; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; cursor: pointer; transition: background-color .15s ease"><span style="font-weight: 800">Install</span><span style="color: #4a4e57">cp -r firstpass/skills/firstpass ./.cursor/skills/firstpass</span></button>
+      <button type="button" onclick="undercutCopy(this)" data-copy="mkdir -p .cursor/skills && cp -r firstpass/skills/firstpass ./.cursor/skills/firstpass" style="display: inline-flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 14px; background: #F5F3EE; color: #15171C; border: none; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; cursor: pointer; transition: background-color .15s ease"><span style="font-weight: 800">Install</span><span style="color: #4a4e57">mkdir -p .cursor/skills && cp -r firstpass/skills/firstpass ./.cursor/skills/firstpass</span></button>
       <a href="https://github.com/undercutsh/firstpass" style="display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #F5F3EE; text-decoration: none; border: 1px solid #2A2D35; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; transition: border-color .15s ease">View on GitHub</a>
     </div>
   </div>
@@ -319,6 +319,8 @@
       <span style="display: flex; gap: 18px; flex-wrap: wrap">
         <a href="/privacy/" style="color: #63666C; text-decoration: none">Privacy</a>
         <a href="/terms/" style="color: #63666C; text-decoration: none">Terms</a>
+        <a href="/accessibility" style="color: #63666C; text-decoration: none">Accessibility</a>
+        <a href="/status" style="color: #63666C; text-decoration: none">Status</a>
         <a href="https://github.com/undercutsh/firstpass/blob/main/testing/README.md" style="color: #63666C; text-decoration: none">Benchmark data</a>
         <a href="https://github.com/undercutsh/firstpass/blob/main/CHANGELOG.md" style="color: #63666C; text-decoration: none">Changelog</a>
       </span>
@@ -328,6 +330,7 @@
       <a href="/llms.txt" style="color: #63666C; text-decoration: none">llms.txt</a>
       <a href="/humans.txt" style="color: #63666C; text-decoration: none">humans.txt</a>
       <a href="/robots.txt" style="color: #63666C; text-decoration: none">robots.txt</a>
+      <a href="/changelog.xml" style="color: #63666C; text-decoration: none">changelog.xml</a>
     </div>
   </div>
 </footer>
@@ -382,10 +385,16 @@
       }
     } catch (e) {}
 
+    var controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+    var timeoutId = setTimeout(function () { if (controller) controller.abort(); }, 8000);
+
     fetch('https://api.github.com/repos/undercutsh/firstpass', {
-      headers: { Accept: 'application/vnd.github+json' }
+      headers: { Accept: 'application/vnd.github+json' },
+      signal: controller ? controller.signal : undefined
     })
       .then(function (res) {
+        clearTimeout(timeoutId);
+
         if (!res.ok) throw new Error('GitHub API error ' + res.status);
         return res.json();
       })
@@ -396,6 +405,8 @@
         render(count);
       })
       .catch(function () {
+        clearTimeout(timeoutId);
+
         fallback();
       });
   }

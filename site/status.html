@@ -7,6 +7,9 @@
 <meta name="description" content="Live pass/fail history of Undercut's automated eval test suite (GitHub Actions), pulled straight from the GitHub API. Not a service-uptime claim — there's no server to have uptime.">
 <link rel="canonical" href="https://getundercut.sh/status">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="alternate" type="application/rss+xml" title="Undercut changelog" href="https://getundercut.sh/changelog.xml">
+<link rel="apple-touch-icon" href="/favicon.svg">
+<link rel="mask-icon" href="/favicon.svg" color="#2E9E5B">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Undercut">
 <meta property="og:title" content="Build status — Undercut">
@@ -87,16 +90,141 @@
   <p style="margin-top: 24px; font-size: 13px; color: #63666C">Each dot is one run of <code>.github/workflows/evals.yml</code> (unit tests for the routing policy, plus a mocked eval-harness smoke run). Green = passed, red = failed, amber = another result (cancelled, in progress, etc). Data comes from <code>api.github.com/repos/undercutsh/firstpass/actions/workflows/evals.yml/runs</code> at page load &mdash; it is not cached or edited by hand.</p>
 </main>
 
-<footer style="padding: 40px 32px 48px; border-top: 1px solid #DFDAD0">
-  <div class="wrap" style="max-width: 1160px; display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-size: 12.5px; color: #4a4e57">
-    <span style="font-family: 'JetBrains Mono', monospace">&copy; 2026 Undercut &middot; MIT</span>
-    <span style="display: flex; gap: 18px; flex-wrap: wrap">
-      <a href="/privacy/" style="color: #4a4e57; text-decoration: none">Privacy</a>
-      <a href="/terms/" style="color: #4a4e57; text-decoration: none">Terms</a>
-      <a href="/accessibility" style="color: #4a4e57; text-decoration: none">Accessibility</a>
-    </span>
+<!-- Footer — byte-identical reuse from index.html -->
+<footer style="padding: 64px 32px 48px">
+  <div style="max-width: 1160px; margin: 0 auto">
+    <div style="display: flex; justify-content: space-between; gap: 48px; flex-wrap: wrap; margin: 0 0 48px">
+      <div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 17px; margin: 0 0 10px">undercut</div>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #63666C; margin: 0">MIT License &middot; <a href="https://github.com/undercutsh/firstpass" style="color: #63666C">github.com/undercutsh/firstpass</a></p>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #63666C; margin: 6px 0 0">Built by <a rel="me author" href="https://iamjustinwinter.com/" style="color: #63666C">Justin Winter</a></p>
+        <a id="uc-github-stars" href="https://github.com/undercutsh/firstpass" target="_blank" rel="noopener" class="badge badge-neutral" style="margin-top: 10px; text-decoration: none" hidden>★ <span id="uc-star-count"></span> stars on GitHub</a>
+      </div>
+      <div style="display: flex; gap: 72px; flex-wrap: wrap; font-size: 14px">
+        <div style="display: grid; gap: 10px; align-content: start">
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #63666C">Product</span>
+          <a href="/#how" style="text-decoration: none; color: #4a4e57">How it works</a>
+          <a href="/#calculator" style="text-decoration: none; color: #4a4e57">Free audit</a>
+          <a href="/#teams" style="text-decoration: none; color: #4a4e57">Teams</a>
+          <a href="/#pricing" style="text-decoration: none; color: #4a4e57">Pricing</a>
+          <a href="#install" style="text-decoration: none; color: #4a4e57">Install</a>
+        </div>
+        <div style="display: grid; gap: 10px; align-content: start">
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #63666C">Proof</span>
+          <a href="/#benchmarks" style="text-decoration: none; color: #4a4e57">Benchmarks</a>
+          <a href="https://github.com/undercutsh/firstpass/tree/main/testing/results" style="text-decoration: none; color: #4a4e57">Raw results</a>
+          <a href="https://github.com/undercutsh/firstpass/blob/main/testing/README.md" style="text-decoration: none; color: #4a4e57">Methodology</a>
+        </div>
+        <div style="display: grid; gap: 10px; align-content: start">
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #63666C">Repo</span>
+          <a href="https://github.com/undercutsh/firstpass" style="text-decoration: none; color: #4a4e57">GitHub</a>
+          <a href="https://github.com/undercutsh/firstpass/releases" style="text-decoration: none; color: #4a4e57">Changelog</a>
+          <a href="https://github.com/undercutsh/firstpass/issues" style="text-decoration: none; color: #4a4e57">Issues</a>
+        </div>
+      </div>
+    </div>
+    <div style="border-top: 1px solid #DFDAD0; padding-top: 24px; display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-size: 12.5px; color: #63666C">
+      <span style="display: flex; gap: 18px; flex-wrap: wrap; align-items: baseline">
+        <span style="font-family: 'JetBrains Mono', monospace" id="uc-copyright-year">&copy; 2026 Undercut &middot; MIT</span>
+        <span style="font-family: 'JetBrains Mono', monospace">Works with: Claude Code &middot; Codex &middot; Cursor &middot; Copilot &middot; OpenCode</span>
+      </span>
+      <span style="display: flex; gap: 18px; flex-wrap: wrap">
+        <a href="/privacy/" style="color: #63666C; text-decoration: none">Privacy</a>
+        <a href="/terms/" style="color: #63666C; text-decoration: none">Terms</a>
+        <a href="/accessibility" style="color: #63666C; text-decoration: none">Accessibility</a>
+        <a href="/status" style="color: #63666C; text-decoration: none">Status</a>
+        <a href="https://github.com/undercutsh/firstpass/blob/main/testing/README.md" style="color: #63666C; text-decoration: none">Benchmark data</a>
+        <a href="https://github.com/undercutsh/firstpass/blob/main/CHANGELOG.md" style="color: #63666C; text-decoration: none">Changelog</a>
+      </span>
+    </div>
+    <div style="margin-top: 10px; padding-top: 14px; border-top: 1px solid #DFDAD0; display: flex; gap: 18px; flex-wrap: wrap; font-size: 11px; color: #63666C">
+      <span style="font-family: 'JetBrains Mono', monospace">agent &amp; crawler files:</span>
+      <a href="/llms.txt" style="color: #63666C; text-decoration: none">llms.txt</a>
+      <a href="/humans.txt" style="color: #63666C; text-decoration: none">humans.txt</a>
+      <a href="/robots.txt" style="color: #63666C; text-decoration: none">robots.txt</a>
+      <a href="/changelog.xml" style="color: #63666C; text-decoration: none">changelog.xml</a>
+    </div>
   </div>
 </footer>
+
+<script>
+  function undercutCopy(btn) {
+    var text = btn.getAttribute('data-copy');
+    var original = btn.textContent;
+    function done() {
+      btn.textContent = 'Copied ✓';
+      setTimeout(function () { btn.textContent = original; }, 1800);
+    }
+    if (navigator.clipboard) { navigator.clipboard.writeText(text).then(done, done); }
+    else { done(); }
+  }
+  (function () {
+    var y = document.getElementById('uc-copyright-year');
+    if (y) y.textContent = '© ' + new Date().getFullYear() + ' Undercut · MIT';
+  })();
+</script>
+
+<!--
+  Footer "★ N stars on GitHub" chip. Live count via GitHub's unauthenticated
+  REST API, cached in sessionStorage for an hour to cut API calls across page
+  views. Fails closed: any error (network, rate limit, bad shape) falls back
+  to a plain "View on GitHub" link -- never a stale/fake number.
+-->
+<script>
+(function () {
+  var CACHE_KEY = 'uc-gh-stars-v1';
+  var TTL_MS = 60 * 60 * 1000;
+
+  function init() {
+    var chip = document.getElementById('uc-github-stars');
+    var countEl = document.getElementById('uc-star-count');
+    if (!chip || !countEl) return;
+
+    function render(count) {
+      countEl.textContent = count.toLocaleString('en-US');
+      chip.hidden = false;
+    }
+    function fallback() {
+      chip.textContent = 'View on GitHub';
+      chip.hidden = false;
+    }
+
+    try {
+      var cached = JSON.parse(sessionStorage.getItem(CACHE_KEY) || 'null');
+      if (cached && typeof cached.count === 'number' && Date.now() - cached.at < TTL_MS) {
+        render(cached.count);
+        return;
+      }
+    } catch (e) {}
+
+    var controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+    var timeoutId = setTimeout(function () { if (controller) controller.abort(); }, 8000);
+
+    fetch('https://api.github.com/repos/undercutsh/firstpass', {
+      headers: { Accept: 'application/vnd.github+json' },
+      signal: controller ? controller.signal : undefined
+    })
+      .then(function (res) {
+        clearTimeout(timeoutId);
+        if (!res.ok) throw new Error('GitHub API error ' + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        var count = data && typeof data.stargazers_count === 'number' ? data.stargazers_count : null;
+        if (count === null) { fallback(); return; }
+        try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ count: count, at: Date.now() })); } catch (e) {}
+        render(count);
+      })
+      .catch(function () {
+        clearTimeout(timeoutId);
+        fallback();
+      });
+  }
+
+  if (document.readyState === 'complete') init();
+  else window.addEventListener('load', init);
+})();
+</script>
 
 <script>
 (function () {

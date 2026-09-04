@@ -75,10 +75,12 @@ OPENROUTER_API_KEY=sk-or-... node src/main.js --arms tiered --baseline <saved-ru
 node src/main.js --compare <run-a.json>,<run-b.json>
 ```
 
-Flags: `--vendors anthropic,openai,gemini,openweights`,
+Flags: `--mock`, `--verify-only`, `--smoke`, `--vendors anthropic,openai,gemini,openweights`,
 `--arms all-frontier,all-standard,tiered`, `--suites code,reasoning,mechanical,debug,refactor,documentation,security`,
-`--seeds N`, `--policy v1|latest`, `--baseline <file>`, `--compare a,b`,
-`--concurrency N`.
+`--seeds N`, `--policy v1|latest|probe`, `--baseline <file>`, `--compare a,b`,
+`--concurrency N`, `--benchmark gsm8k,humaneval,mbpp`, `--flagtest` (measure
+dispatcher flag-reproduction accuracy; needs `OPENROUTER_API_KEY`),
+`--dispatcher cheap|<model slug>` (dispatcher model for `--flagtest`, default `cheap`).
 
 ### Policy versions
 

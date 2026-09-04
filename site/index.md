@@ -2,7 +2,7 @@
 title: "Undercut — tiered dispatch for coding agents"
 description: "A routing policy your coding agent follows — cheap tier first, escalate only on evidence. Measured up to −95% cost on public benchmarks at equal-or-better pass rate."
 canonical: "https://getundercut.sh/"
-last-updated: "2026-08-29"
+last-updated: "2026-09-04"
 ---
 
 # Undercut — cut your AI coding bill up to 71%. Not your pass rate.
@@ -98,15 +98,17 @@ Per-client commands (same set the interactive picker at https://getundercut.sh/#
 | Agent | Command | Note |
 |---|---|---|
 | Claude Code | `/plugin marketplace add undercutsh/firstpass` | Then `/plugin install firstpass@firstpass` — fewest keystrokes, this repo is its own marketplace. Or `npx skills add undercutsh/firstpass`, or copy `skills/firstpass/` to `.claude/skills/firstpass/` by hand. |
-| Codex CLI | `npx skills add undercutsh/firstpass -a codex` | Reads `.agents/skills/` (repo-scoped) or `$HOME/.agents/skills/`. Manual copy: `cp -r firstpass/skills/firstpass ./.agents/skills/firstpass` |
-| Cursor | `cp -r firstpass/skills/firstpass ./.cursor/skills/firstpass` | Folder name must match the `name:` field in SKILL.md (`firstpass`). `npx skills add undercutsh/firstpass` also works. |
+| Codex CLI | `npx skills add undercutsh/firstpass -a codex` | Reads `.agents/skills/` (repo-scoped) or `$HOME/.agents/skills/`. Manual copy: `mkdir -p .agents/skills && cp -r firstpass/skills/firstpass ./.agents/skills/firstpass` |
+| Cursor | `mkdir -p .cursor/skills && cp -r firstpass/skills/firstpass ./.cursor/skills/firstpass` | Folder name must match the `name:` field in SKILL.md (`firstpass`). `npx skills add undercutsh/firstpass` also works. |
 | GitHub Copilot | `mkdir -p .github && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> .github/copilot-instructions.md` | Copilot has no skills directory — it reads repo custom instructions instead. |
 | OpenCode | `npx skills add undercutsh/firstpass` | Reads `.opencode/skills/firstpass/SKILL.md`, and `.claude/skills/` / `.agents/skills/` for compatibility. |
 | Gemini CLI | `mkdir -p .gemini && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> .gemini/GEMINI.md` | Appends the policy to GEMINI.md, read hierarchically from the project root down. |
 | Windsurf | `echo "" >> AGENTS.md && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> AGENTS.md` | Windsurf/Cascade (now under docs.devin.ai) reads a root AGENTS.md automatically. |
-| JetBrains Junie | `cp -r firstpass/skills/firstpass ./.junie/skills/firstpass` | Project-level `.junie/skills/firstpass/` wins on a name collision with the user-level copy. |
-| Amp | `cp -r firstpass/skills/firstpass ./.agents/skills/firstpass` | Reads `.agents/skills/firstpass/SKILL.md` at the workspace root. |
-| Devin | `cp -r firstpass/skills/firstpass ./.devin/skills/firstpass` | Devin CLI/Desktop skills live at `.devin/skills/firstpass/SKILL.md`. |
+| JetBrains Junie | `mkdir -p .junie/skills && cp -r firstpass/skills/firstpass ./.junie/skills/firstpass` | Project-level `.junie/skills/firstpass/` wins on a name collision with the user-level copy. |
+| Amp | `mkdir -p .agents/skills && cp -r firstpass/skills/firstpass ./.agents/skills/firstpass` | Reads `.agents/skills/firstpass/SKILL.md` at the workspace root. |
+| Devin | `mkdir -p .devin/skills && cp -r firstpass/skills/firstpass ./.devin/skills/firstpass` | Devin CLI/Desktop skills live at `.devin/skills/firstpass/SKILL.md`. |
+
+Client-specific setup guide, one page per agent: [Claude Code](https://getundercut.sh/claude-code) · [Codex CLI](https://getundercut.sh/codex) · [Cursor](https://getundercut.sh/cursor) · [GitHub Copilot](https://getundercut.sh/copilot) · [OpenCode](https://getundercut.sh/opencode) · [Gemini CLI](https://getundercut.sh/gemini-cli) · [Windsurf](https://getundercut.sh/windsurf) · [JetBrains Junie](https://getundercut.sh/junie) · [Amp](https://getundercut.sh/amp) · [Devin](https://getundercut.sh/devin)
 
 ## Links
 
@@ -116,3 +118,5 @@ Per-client commands (same set the interactive picker at https://getundercut.sh/#
 - Agent-facing index: https://getundercut.sh/llms.txt
 - About: https://getundercut.sh/about
 - Pricing (markdown): https://getundercut.sh/pricing.md
+- Build status (live CI history): https://getundercut.sh/status
+- Changelog (RSS): https://getundercut.sh/changelog.xml
