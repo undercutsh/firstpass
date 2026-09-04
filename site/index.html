@@ -239,14 +239,14 @@
   <ul style="list-style: none; padding: 0; margin: 0 0 32px; font-family: monospace; font-size: 13px; line-height: 1.9; color: #4a4e57">
     <li><strong>Claude Code</strong> — <code>/plugin marketplace add undercutsh/firstpass</code></li>
     <li><strong>Codex CLI</strong> — <code>npx skills add undercutsh/firstpass -a codex</code></li>
-    <li><strong>Cursor</strong> — <code>cp -r firstpass/skills/firstpass ./.cursor/skills/firstpass</code></li>
+    <li><strong>Cursor</strong> — <code>mkdir -p .cursor/skills &amp;&amp; cp -r firstpass/skills/firstpass ./.cursor/skills/firstpass</code></li>
     <li><strong>GitHub Copilot</strong> — <code>mkdir -p .github &amp;&amp; curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md &gt;&gt; .github/copilot-instructions.md</code></li>
     <li><strong>OpenCode</strong> — <code>npx skills add undercutsh/firstpass</code></li>
     <li><strong>Gemini CLI</strong> — <code>mkdir -p .gemini &amp;&amp; curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md &gt;&gt; .gemini/GEMINI.md</code></li>
     <li><strong>Windsurf</strong> — <code>echo "" &gt;&gt; AGENTS.md &amp;&amp; curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md &gt;&gt; AGENTS.md</code></li>
-    <li><strong>JetBrains Junie</strong> — <code>cp -r firstpass/skills/firstpass ./.junie/skills/firstpass</code></li>
-    <li><strong>Amp</strong> — <code>cp -r firstpass/skills/firstpass ./.agents/skills/firstpass</code></li>
-    <li><strong>Devin</strong> — <code>cp -r firstpass/skills/firstpass ./.devin/skills/firstpass</code></li>
+    <li><strong>JetBrains Junie</strong> — <code>mkdir -p .junie/skills &amp;&amp; cp -r firstpass/skills/firstpass ./.junie/skills/firstpass</code></li>
+    <li><strong>Amp</strong> — <code>mkdir -p .agents/skills &amp;&amp; cp -r firstpass/skills/firstpass ./.agents/skills/firstpass</code></li>
+    <li><strong>Devin</strong> — <code>mkdir -p .devin/skills &amp;&amp; cp -r firstpass/skills/firstpass ./.devin/skills/firstpass</code></li>
   </ul>
   <h2 style="font-size: 18px; margin: 0 0 12px">Frequently asked</h2>
   <div style="margin: 0 0 32px">
@@ -1136,15 +1136,15 @@ const fmtCents = (n) => n.toLocaleString('en-US', { minimumFractionDigits: 2, ma
 // per client, this is just the command each picker button runs.
 const INSTALL_CLIENTS = [
   { id: 'claude-code', label: 'Claude Code', cmd: '/plugin marketplace add undercutsh/firstpass', note: 'Then /plugin install firstpass@firstpass — fewest keystrokes, this repo is its own marketplace. Or npx skills add undercutsh/firstpass, or copy skills/firstpass/ to .claude/skills/firstpass/ by hand.' },
-  { id: 'codex', label: 'Codex CLI', cmd: 'npx skills add undercutsh/firstpass -a codex', note: 'Reads .agents/skills/ (repo-scoped) or $HOME/.agents/skills/. Manual copy: cp -r firstpass/skills/firstpass ./.agents/skills/firstpass' },
-  { id: 'cursor', label: 'Cursor', cmd: 'cp -r firstpass/skills/firstpass ./.cursor/skills/firstpass', note: 'Folder name must match the name: field in SKILL.md (firstpass). npx skills add undercutsh/firstpass also works.' },
+  { id: 'codex', label: 'Codex CLI', cmd: 'npx skills add undercutsh/firstpass -a codex', note: 'Reads .agents/skills/ (repo-scoped) or $HOME/.agents/skills/. Manual copy: mkdir -p .agents/skills && cp -r firstpass/skills/firstpass ./.agents/skills/firstpass' },
+  { id: 'cursor', label: 'Cursor', cmd: 'mkdir -p .cursor/skills && cp -r firstpass/skills/firstpass ./.cursor/skills/firstpass', note: 'Folder name must match the name: field in SKILL.md (firstpass). npx skills add undercutsh/firstpass also works.' },
   { id: 'copilot', label: 'GitHub Copilot', cmd: 'mkdir -p .github && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> .github/copilot-instructions.md', note: 'Copilot has no skills directory — it reads repo custom instructions instead.' },
   { id: 'opencode', label: 'OpenCode', cmd: 'npx skills add undercutsh/firstpass', note: 'Reads .opencode/skills/firstpass/SKILL.md, and .claude/skills/ / .agents/skills/ for compatibility.' },
   { id: 'gemini', label: 'Gemini CLI', cmd: 'mkdir -p .gemini && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> .gemini/GEMINI.md', note: 'Appends the policy to GEMINI.md, read hierarchically from the project root down.' },
   { id: 'windsurf', label: 'Windsurf', cmd: 'echo "" >> AGENTS.md && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> AGENTS.md', note: 'Windsurf/Cascade (now under docs.devin.ai) reads a root AGENTS.md automatically.' },
-  { id: 'junie', label: 'JetBrains Junie', cmd: 'cp -r firstpass/skills/firstpass ./.junie/skills/firstpass', note: 'Project-level .junie/skills/firstpass/ wins on a name collision with the user-level copy.' },
-  { id: 'amp', label: 'Amp', cmd: 'cp -r firstpass/skills/firstpass ./.agents/skills/firstpass', note: 'Reads .agents/skills/firstpass/SKILL.md at the workspace root.' },
-  { id: 'devin', label: 'Devin', cmd: 'cp -r firstpass/skills/firstpass ./.devin/skills/firstpass', note: 'Devin CLI/Desktop skills live at .devin/skills/firstpass/SKILL.md.' },
+  { id: 'junie', label: 'JetBrains Junie', cmd: 'mkdir -p .junie/skills && cp -r firstpass/skills/firstpass ./.junie/skills/firstpass', note: 'Project-level .junie/skills/firstpass/ wins on a name collision with the user-level copy.' },
+  { id: 'amp', label: 'Amp', cmd: 'mkdir -p .agents/skills && cp -r firstpass/skills/firstpass ./.agents/skills/firstpass', note: 'Reads .agents/skills/firstpass/SKILL.md at the workspace root.' },
+  { id: 'devin', label: 'Devin', cmd: 'mkdir -p .devin/skills && cp -r firstpass/skills/firstpass ./.devin/skills/firstpass', note: 'Devin CLI/Desktop skills live at .devin/skills/firstpass/SKILL.md.' },
 ];
 class Component extends DCLogic {
   state = {
