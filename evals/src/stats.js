@@ -165,6 +165,21 @@ export function summarizeWithCI(units, opts = {}) {
   const passes = units.filter((u) => !!u.pass).length;
   const totalCost = units.reduce((sum, u) => sum + (u.cost ?? 0), 0);
 
+  // Empty unit list (e.g. a suite/category with nothing in it): short-circuit
+  // before seedBootstrapCI, which requires a non-empty seedGroups array and
+  // would otherwise throw. Degenerate zero-width summary, matching
+  // wilsonInterval's own n=0 behavior instead of crashing the caller.
+  if (n === 0) {
+    return {
+      n: 0,
+      passes: 0,
+      passRate: wilsonInterval(0, 0, { confidence }),
+      totalCost: 0,
+      costPerPass: Infinity,
+      costPerPassCI: { point: Infinity, lower: Infinity, upper: Infinity, iterations, seed: bootstrapSeed, confidence },
+    };
+  }
+
   const costPerPassStat = (pooled) => {
     const cost = pooled.reduce((sum, u) => sum + (u.cost ?? 0), 0);
     const pass = pooled.filter((u) => !!u.pass).length;
