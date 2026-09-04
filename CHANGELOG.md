@@ -161,6 +161,14 @@ All notable changes to Undercut (firstpass) are documented here. Follows
   wrapper, so their multi-column nowrap cells forced the whole page to
   scroll horizontally below ~375px; wrapped to match the existing
   pattern.
+- **`AGENTS.md` client-matrix intro/footers stale after tonight's 5
+  companion pages shipped** — the intro paragraph still said only
+  Claude Code/Codex/Cursor/Copilot/OpenCode had verified companion
+  pages, and Gemini CLI/Windsurf/Junie/Amp/Devin's "Researched fresh"
+  footers had no `Source:` line, even though `site/gemini-cli.html`,
+  `site/windsurf.html`, `site/junie.html`, `site/amp.html`, and
+  `site/devin.html` (added in #42, #44, #48, #49, #50) now back all 10
+  entries the same way the original 5 do. Updated both to match.
 
 ## [0.3.0] - 2026-09-03
 
