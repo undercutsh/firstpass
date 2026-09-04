@@ -56,6 +56,32 @@ export function extractJson(text) {
 }
 
 /**
+ * Structural deep equality: objects are compared key-by-key regardless of
+ * insertion/enumeration order (JS object equality is inherently unordered —
+ * `{a:1,b:2}` and `{b:2,a:1}` are the same value); arrays stay
+ * position-sensitive (order IS meaningful there — dedupe/sort/transpose
+ * tasks depend on it). Used instead of raw `JSON.stringify(x) === JSON.stringify(y)`
+ * comparisons, which spuriously fail a correct answer whenever an object's
+ * keys come out in a different order than the reference (e.g. a `main()`
+ * that builds its result object by iterating in a different sequence, or a
+ * worker that emits `{"type":"int","name":"n"}` instead of
+ * `{"name":"n","type":"int"}`) — both graded false negatives before this
+ * fix; see tasks.test.js's "key-order-independent" cases.
+ */
+function deepEqual(a, b) {
+  if (Object.is(a, b)) return true;
+  if (typeof a !== 'object' || typeof b !== 'object' || a === null || b === null) return false;
+  if (Array.isArray(a) !== Array.isArray(b)) return false;
+  if (Array.isArray(a)) {
+    return a.length === b.length && a.every((v, i) => deepEqual(v, b[i]));
+  }
+  const aKeys = Object.keys(a);
+  const bKeys = Object.keys(b);
+  if (aKeys.length !== bKeys.length) return false;
+  return aKeys.every((k) => Object.prototype.hasOwnProperty.call(b, k) && deepEqual(a[k], b[k]));
+}
+
+/**
  * Execute a JS solution body against test cases in a sandboxed vm.
  * solution: `function ... { ... }` body. testCases: [{input, expected}].
  * expected may be a value (deep-equality) or a RegExp for string matches.
@@ -84,7 +110,7 @@ export function gradeCode(solution, testCases) {
     }
     if (tc.expected instanceof RegExp) {
       if (!tc.expected.test(String(got))) return { pass: false, reason: `expected ~${tc.expected} got ${JSON.stringify(got)}` };
-    } else if (JSON.stringify(got) !== JSON.stringify(tc.expected)) {
+    } else if (!deepEqual(got, tc.expected)) {
       return { pass: false, reason: `expected ${JSON.stringify(tc.expected)} got ${JSON.stringify(got)}` };
     }
     passed++;
@@ -104,7 +130,7 @@ export function gradeJsonSubset(answer, answerKey) {
   if (!parsed) return { pass: false, reason: 'non-JSON output' };
   for (const [k, v] of Object.entries(answerKey)) {
     if (!(k in parsed)) return { pass: false, reason: `missing key "${k}"` };
-    if (JSON.stringify(parsed[k]) !== JSON.stringify(v)) {
+    if (!deepEqual(parsed[k], v)) {
       return { pass: false, reason: `key "${k}" expected ${JSON.stringify(v)} got ${JSON.stringify(parsed[k])}` };
     }
   }
