@@ -10,6 +10,12 @@ Measured (public benchmarks, official test cases, deterministic graders): up to 
 - [Markdown twin of the landing page](https://getundercut.sh/index.md)
 - [Source repo](https://github.com/undercutsh/firstpass)
 - [About](https://getundercut.sh/about)
+- [Build status (live CI history)](https://getundercut.sh/status)
+- [Changelog (RSS)](https://getundercut.sh/changelog.xml)
+
+## Client setup guides
+Per-agent companion pages, each with install commands and notes for that client:
+[Claude Code](https://getundercut.sh/claude-code) · [Codex CLI](https://getundercut.sh/codex) · [Cursor](https://getundercut.sh/cursor) · [GitHub Copilot](https://getundercut.sh/copilot) · [OpenCode](https://getundercut.sh/opencode) · [Gemini CLI](https://getundercut.sh/gemini-cli) · [Windsurf](https://getundercut.sh/windsurf) · [JetBrains Junie](https://getundercut.sh/junie) · [Amp](https://getundercut.sh/amp) · [Devin](https://getundercut.sh/devin)
 
 ## When to use this
 Reach for Undercut when an orchestrating agent is dispatching many small units of coding work (edits, mechanical refactors, test-writing, boilerplate) at a single fixed model tier for an entire session. It is a fit when:

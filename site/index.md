@@ -2,7 +2,7 @@
 title: "Undercut — tiered dispatch for coding agents"
 description: "A routing policy your coding agent follows — cheap tier first, escalate only on evidence. Measured up to −95% cost on public benchmarks at equal-or-better pass rate."
 canonical: "https://getundercut.sh/"
-last-updated: "2026-08-29"
+last-updated: "2026-09-04"
 ---
 
 # Undercut — cut your AI coding bill up to 71%. Not your pass rate.
@@ -108,6 +108,8 @@ Per-client commands (same set the interactive picker at https://getundercut.sh/#
 | Amp | `cp -r firstpass/skills/firstpass ./.agents/skills/firstpass` | Reads `.agents/skills/firstpass/SKILL.md` at the workspace root. |
 | Devin | `cp -r firstpass/skills/firstpass ./.devin/skills/firstpass` | Devin CLI/Desktop skills live at `.devin/skills/firstpass/SKILL.md`. |
 
+Client-specific setup guide, one page per agent: [Claude Code](https://getundercut.sh/claude-code) · [Codex CLI](https://getundercut.sh/codex) · [Cursor](https://getundercut.sh/cursor) · [GitHub Copilot](https://getundercut.sh/copilot) · [OpenCode](https://getundercut.sh/opencode) · [Gemini CLI](https://getundercut.sh/gemini-cli) · [Windsurf](https://getundercut.sh/windsurf) · [JetBrains Junie](https://getundercut.sh/junie) · [Amp](https://getundercut.sh/amp) · [Devin](https://getundercut.sh/devin)
+
 ## Links
 
 - Landing page: https://getundercut.sh/
@@ -116,3 +118,5 @@ Per-client commands (same set the interactive picker at https://getundercut.sh/#
 - Agent-facing index: https://getundercut.sh/llms.txt
 - About: https://getundercut.sh/about
 - Pricing (markdown): https://getundercut.sh/pricing.md
+- Build status (live CI history): https://getundercut.sh/status
+- Changelog (RSS): https://getundercut.sh/changelog.xml
