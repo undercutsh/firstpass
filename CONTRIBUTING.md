@@ -37,6 +37,59 @@ node src/main.js --flagtest        # dispatcher flagging reliability
 Mock mode needs no API key and is what CI runs. See `evals/README.md` for the
 full methodology.
 
+## Local development
+
+### Eval harness
+
+From `evals/`, everything below runs with no API key and no network access
+(except the `gsm8k`/`humaneval` benchmarks, which fetch from HuggingFace):
+
+```sh
+cd evals
+node src/main.js --mock --seeds 1                    # what CI runs (all vendors/arms/suites)
+node src/main.js --mock --seeds 5 --suites mechanical # more seeds, one suite — faster iteration
+node --test 'src/**/*.test.js'                        # unit tests (policy.js, tasks.js, runner.js, ...)
+```
+
+`--seeds N` re-runs each arm N times with the mock LLM and reports pass rate
+across seeds; CI uses `--seeds 1` for speed, `evals/README.md`'s reproduce
+steps use `--seeds 5` for the published numbers. See `evals/README.md` for
+the full flag reference (`--vendors`, `--arms`, `--suites`, `--policy`,
+`--benchmark`, `--compare`, ...).
+
+**Adding a new eval suite category** (e.g. alongside the existing `code`,
+`reasoning`, `mechanical`, `debug`, `refactor`, `security`): follow the
+`mechanical.js` / `refactor.js` / `debug.js` pattern in `evals/src/suites/`.
+
+1. Create `evals/src/suites/<name>.js` exporting an array of tasks built
+   with `makeTask` from `../tasks.js`, each with a deterministic grader
+   (`gradeJsonSubset` or `gradeExact` — never an LLM judge).
+2. Import it in `evals/src/main.js` and add it to the `SUITES` map there
+   (`{ ..., <name>: <name>Suite }`).
+3. Add a row for it to the suite table in `evals/README.md`.
+4. Run `node src/main.js --mock --seeds 1 --suites <name>` to sanity-check
+   the new suite in isolation, then `node --test 'src/**/*.test.js'` and a
+   full `node src/main.js --mock --seeds 1` before opening a PR.
+
+A new suite category is a MINOR bump (see `AGENTS.md` → Versioning) and
+needs a `CHANGELOG.md` entry.
+
+### Site preview
+
+`site/` is static HTML/JS with no build step — any local file server works:
+
+```sh
+cd site
+python3 -m http.server 8000    # or: npx serve .
+```
+
+Then open `http://localhost:8000/`. This serves the pages exactly as
+authored, but skips `site/vercel.json`'s headers/redirects and
+`site/middleware.ts`'s markdown content-negotiation (`Accept: text/markdown`
+and AI-crawler user agents get served `.md` alternates instead of HTML) —
+those only run on Vercel. If you're touching either of those, verify with
+`vercel dev` instead, or check the deployed preview from your PR.
+
 ## Relevant docs
 
 - `README.md` — what it is, measured results
