@@ -13,6 +13,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Full history, not the default single-commit shallow checkout:
+          # validate-sitemap.js's lastmod-drift check runs `git log -- <file>`
+          # per site page, which on a depth-1 checkout misreports every
+          # file's last-commit date as the tip commit's date (a shallow
+          # clone has no earlier history to diff against, so every tracked
+          # file looks like it was "added" in that one commit). This repo is
+          # small, so a full clone costs nothing measurable.
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -22,7 +31,7 @@ jobs:
       # the heavier eval-harness steps below.
       - name: plugin.json version in sync with CHANGELOG.md
         run: node scripts/check-plugin-version.js
-      - name: sitemap.xml in sync with site/*.html
+      - name: sitemap.xml in sync with site/*.html (incl. lastmod drift)
         run: node scripts/validate-sitemap.js --check
       - name: JSON-LD structured data validity
         run: node scripts/validate-jsonld.js --check
