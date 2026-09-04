@@ -1069,6 +1069,7 @@
         <div style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 17px; margin: 0 0 10px">undercut</div>
         <p style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #4a4e57; margin: 0">MIT License · <a href="https://github.com/undercutsh/firstpass" style="color: #4a4e57">github.com/undercutsh/firstpass</a></p>
         <p style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #4a4e57; margin: 6px 0 0">Built by <a rel="me author" href="https://iamjustinwinter.com/" style="color: #4a4e57">Justin Winter</a></p>
+        <a id="uc-github-stars" href="https://github.com/undercutsh/firstpass" target="_blank" rel="noopener" class="badge badge-neutral" style="margin-top: 10px; text-decoration: none; display: none">★ <span id="uc-star-count"></span> stars on GitHub</a>
       </div>
       <div style="display: flex; gap: 72px; flex-wrap: wrap; font-size: 14px">
         <div style="display: grid; gap: 10px; align-content: start">
@@ -1413,6 +1414,66 @@ class Component extends DCLogic {
     }
   }
   window.addEventListener('scroll', maybeShow, { passive: true });
+})();
+</script>
+
+<!--
+  Footer "★ N stars on GitHub" chip. The chip markup lives inside <x-dc>
+  (footer template, no data binding needed for it), so this waits for
+  window 'load' rather than DOMContentLoaded — support.js's own
+  DOMContentLoaded listener replaces <x-dc> with rendered output, and
+  'load' always fires after that. Live count via GitHub's unauthenticated
+  REST API, cached in sessionStorage for an hour to cut API calls across
+  page views. Fails closed: any error (network, rate limit, bad shape)
+  falls back to a plain "View on GitHub" link — never a stale/fake number.
+-->
+<script>
+(function () {
+  var CACHE_KEY = 'uc-gh-stars-v1';
+  var TTL_MS = 60 * 60 * 1000;
+
+  function init() {
+    var chip = document.getElementById('uc-github-stars');
+    var countEl = document.getElementById('uc-star-count');
+    if (!chip || !countEl) return;
+
+    function render(count) {
+      countEl.textContent = count.toLocaleString('en-US');
+      chip.style.display = 'inline-flex';
+    }
+    function fallback() {
+      chip.textContent = 'View on GitHub';
+      chip.style.display = 'inline-flex';
+    }
+
+    try {
+      var cached = JSON.parse(sessionStorage.getItem(CACHE_KEY) || 'null');
+      if (cached && typeof cached.count === 'number' && Date.now() - cached.at < TTL_MS) {
+        render(cached.count);
+        return;
+      }
+    } catch (e) {}
+
+    fetch('https://api.github.com/repos/undercutsh/firstpass', {
+      headers: { Accept: 'application/vnd.github+json' }
+    })
+      .then(function (res) {
+        if (!res.ok) throw new Error('GitHub API error ' + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        var count = data && typeof data.stargazers_count === 'number' ? data.stargazers_count : null;
+        if (count === null) { fallback(); return; }
+        try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ count: count, at: Date.now() })); } catch (e) {}
+        render(count);
+      })
+      .catch(function () {
+        fallback();
+      });
+  }
+
+  if (document.readyState === 'complete') init();
+  else window.addEventListener('load', init);
 })();
 </script>
 </body>
