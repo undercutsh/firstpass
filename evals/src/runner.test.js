@@ -5,8 +5,10 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { runSuite, mockAttempter } from './runner.js';
+import vm from 'node:vm';
 import { makeTask } from './tasks.js';
 import { createPolicy } from './policy.js';
+import { codeSuite } from './suites/code.js';
 
 const task = makeTask({
   id: 'reasoning:t1',
@@ -64,5 +66,37 @@ describe('runSuite seed tagging', () => {
     assert.deepEqual([...bySeed.keys()].sort(), [0, 1]);
     assert.equal(bySeed.get(0).length, 2);
     assert.equal(bySeed.get(1).length, 2);
+  });
+});
+
+describe('mockAttempter code-suite fixtures exercise key-order independence', () => {
+  test('code:word-count mock solution passes with an object key order that differs from the expected literal (regression coverage for #105 in --mock mode)', async () => {
+    const wordCountTask = codeSuite.find((t) => t.id === 'code:word-count');
+    assert.ok(wordCountTask, 'expected a code:word-count task in codeSuite');
+
+    const attempt = mockAttempter();
+    const result = await attempt('cheap', wordCountTask, null);
+
+    // The task must actually pass (the mock's reference solution is correct).
+    assert.equal(result.verdict.pass, true, result.verdict.reason);
+
+    // And the *reason it passes* must be genuine key-order independence, not
+    // a coincidental match — run the solution directly and confirm its
+    // object keys are NOT in the same order as the suite's expected literals
+    // (suites/code.js's code:word-count test cases), for the non-trivial
+    // (>1 key) cases. If this ever stops being true (e.g. the mock solution
+    // or the fixtures change), gradeCode's deepEqual fix would go
+    // unexercised by `--mock` again.
+    const source = `(function(){\n${result.answer}\nreturn main;})()`;
+    const fn = vm.runInNewContext(source, {});
+    const nonTrivialCases = [
+      { input: ['the cat and the dog'], expectedOrder: ['the', 'cat', 'and', 'dog'] },
+      { input: ['Hello, world! Hello.'], expectedOrder: ['hello', 'world'] },
+    ];
+    for (const { input, expectedOrder } of nonTrivialCases) {
+      const got = fn(...input);
+      assert.deepEqual(Object.keys(got).sort(), [...expectedOrder].sort()); // same key set
+      assert.notDeepEqual(Object.keys(got), expectedOrder); // different order
+    }
   });
 });
