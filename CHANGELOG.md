@@ -8,6 +8,12 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ### Added
 
+- **5 new FAQ entries on `site/index.html`** — addressing gateway/routing-tool
+  coexistence, what happens when the cheap tier is wrong, whether code leaves
+  the machine, the 10-client support matrix, and the honest self-activation
+  caveat. Added to both the visible FAQ accordion and the `FAQPage` JSON-LD
+  block in the same commit, keeping the two in sync (the JSON-LD/visible-FAQ
+  drift fixed in #10 stays fixed).
 - **Claude Code plugin distribution** (`.claude-plugin/plugin.json`,
   `.claude-plugin/marketplace.json`) — this repo doubles as its own
   plugin marketplace, so `/plugin marketplace add undercutsh/firstpass`
