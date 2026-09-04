@@ -90,10 +90,10 @@
     <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #63666C">Works anywhere a SKILL.md is read</span>
     <div style="display: flex; gap: 32px; flex-wrap: wrap; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500">
       <span style="display: flex; align-items: center; gap: 9px; color: #15171C; opacity: 1"><img src="https://cdn.simpleicons.org/claude" width="16" height="16" style="display: block" alt="">Claude Code</span>
-      <span style="display: flex; align-items: center; gap: 9px; color: #63666C; filter: grayscale(1); opacity: 0.75"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="7" stroke="currentColor" stroke-width="1.4"></rect><path d="M6.5 5.5 L4.5 8 L6.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M9.5 5.5 L11.5 8 L9.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>Codex</span>
+      <span style="display: flex; align-items: center; gap: 9px; color: #63666C; filter: grayscale(1); opacity: 0.75"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="1" width="14" height="14" rx="7" stroke="currentColor" stroke-width="1.4"></rect><path d="M6.5 5.5 L4.5 8 L6.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M9.5 5.5 L11.5 8 L9.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>Codex</span>
       <span style="display: flex; align-items: center; gap: 9px; color: #63666C; filter: grayscale(1); opacity: 0.75"><img src="https://cdn.simpleicons.org/cursor" width="16" height="16" style="display: block" alt="">Cursor</span>
       <span style="display: flex; align-items: center; gap: 9px; color: #63666C; filter: grayscale(1); opacity: 0.75"><img src="https://cdn.simpleicons.org/githubcopilot" width="16" height="16" style="display: block" alt="">Copilot</span>
-      <span style="display: flex; align-items: center; gap: 9px; color: #63666C; opacity: 0.85"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.4"></rect><path d="M4.5 5.5 L7 8 L4.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M8.5 10.5 H11.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path></svg>OpenCode</span>
+      <span style="display: flex; align-items: center; gap: 9px; color: #63666C; opacity: 0.85"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="1" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.4"></rect><path d="M4.5 5.5 L7 8 L4.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M8.5 10.5 H11.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path></svg>OpenCode</span>
     </div>
   </div>
 </section>
@@ -117,26 +117,26 @@
     <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 1 — plugin (fewest keystrokes)</h3>
     <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0 0 12px">This repo doubles as its own plugin marketplace — no separate registry, just <code style="background:#2A2D35;color:#F5F3EE">.claude-plugin/</code> in the repo you're already installing from.</p>
     <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #101216; border: 1px solid #2A2D35; padding: 18px 22px; font-family: 'JetBrains Mono', monospace; font-size: 15px; margin: 0 0 10px; flex-wrap: wrap">
-      <span><span style="color: #4a4e57">$ </span>/plugin marketplace add undercutsh/firstpass</span>
-      <button type="button" class="copybtn" data-copy="/plugin marketplace add undercutsh/firstpass" onclick="undercutCopy(this)">Copy</button>
+      <span><span style="color: #8A8F98">$ </span>/plugin marketplace add undercutsh/firstpass</span>
+      <button type="button" class="copybtn" data-copy="/plugin marketplace add undercutsh/firstpass" onclick="undercutCopy(this)" aria-label="Copy command: /plugin marketplace add undercutsh/firstpass">Copy</button>
     </div>
     <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #101216; border: 1px solid #2A2D35; padding: 18px 22px; font-family: 'JetBrains Mono', monospace; font-size: 15px; margin: 0 0 28px; flex-wrap: wrap">
-      <span><span style="color: #4a4e57">$ </span>/plugin install firstpass@firstpass</span>
-      <button type="button" class="copybtn" data-copy="/plugin install firstpass@firstpass" onclick="undercutCopy(this)">Copy</button>
+      <span><span style="color: #8A8F98">$ </span>/plugin install firstpass@firstpass</span>
+      <button type="button" class="copybtn" data-copy="/plugin install firstpass@firstpass" onclick="undercutCopy(this)" aria-label="Copy command: /plugin install firstpass@firstpass">Copy</button>
     </div>
     <p style="font-size: 13px; color: #8A8F98; margin: 0 0 32px">Two separate prompts — send the marketplace command, wait for it to finish, then send the install command. Uninstall any time with <code style="background:#2A2D35;color:#F5F3EE">/plugin remove firstpass</code>.</p>
 
     <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 2 — skills CLI</h3>
     <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #101216; border: 1px solid #2A2D35; padding: 18px 22px; font-family: 'JetBrains Mono', monospace; font-size: 15px; margin: 0 0 28px; flex-wrap: wrap">
-      <span><span style="color: #4a4e57">$ </span>npx skills add undercutsh/firstpass</span>
-      <button type="button" class="copybtn" data-copy="npx skills add undercutsh/firstpass" onclick="undercutCopy(this)">Copy</button>
+      <span><span style="color: #8A8F98">$ </span>npx skills add undercutsh/firstpass</span>
+      <button type="button" class="copybtn" data-copy="npx skills add undercutsh/firstpass" onclick="undercutCopy(this)" aria-label="Copy command: npx skills add undercutsh/firstpass">Copy</button>
     </div>
 
     <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 3 — copy the skill directory directly</h3>
     <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0 0 12px">Clone or download <a href="https://github.com/undercutsh/firstpass" style="color: #F5F3EE">undercutsh/firstpass</a>, then copy <code style="background:#2A2D35;color:#F5F3EE">skills/firstpass/</code> into wherever your Claude Code setup reads skills from — project-level or user-level, same convention as any other skill.</p>
     <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #101216; border: 1px solid #2A2D35; padding: 18px 22px; font-family: 'JetBrains Mono', monospace; font-size: 15px; margin: 0 0 40px; flex-wrap: wrap">
-      <span><span style="color: #4a4e57">$ </span>cp -r firstpass/skills/firstpass ./.claude/skills/firstpass</span>
-      <button type="button" class="copybtn" data-copy="cp -r firstpass/skills/firstpass ./.claude/skills/firstpass" onclick="undercutCopy(this)">Copy</button>
+      <span><span style="color: #8A8F98">$ </span>cp -r firstpass/skills/firstpass ./.claude/skills/firstpass</span>
+      <button type="button" class="copybtn" data-copy="cp -r firstpass/skills/firstpass ./.claude/skills/firstpass" onclick="undercutCopy(this)" aria-label="Copy command: cp -r firstpass/skills/firstpass ./.claude/skills/firstpass">Copy</button>
     </div>
 
     <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 20px; color: #b9bcc2">Validate it yourself</h3>
@@ -162,19 +162,19 @@
     <div style="border: 1px solid #2A2D35; background: #101216; padding: 28px 24px; margin: 0 0 28px; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; overflow-x: auto">
       <div style="display: flex; align-items: center; gap: 0; min-width: 640px">
         <div style="border: 1px solid #2A2D35; padding: 12px 16px; color: #b9bcc2; white-space: nowrap">unit of work</div>
-        <div style="width: 36px; height: 1px; background: #2A2D35; position: relative"><span style="position: absolute; right: -2px; top: -4px; color: #2A2D35">&rsaquo;</span></div>
+        <div style="width: 36px; height: 1px; background: #2A2D35; position: relative"><span aria-hidden="true" style="position: absolute; right: -2px; top: -4px; color: #2A2D35">&rsaquo;</span></div>
         <div style="border: 1px solid #8A8F98; padding: 12px 16px; color: #F5F3EE; white-space: nowrap">6-flag rubric</div>
-        <div style="width: 36px; display: flex; align-items: center; justify-content: center; color: #4a4e57; flex-shrink: 0">&rsaquo;</div>
+        <div style="width: 36px; display: flex; align-items: center; justify-content: center; color: #8A8F98; flex-shrink: 0">&rsaquo;</div>
         <div style="display: grid; gap: 8px; flex: 1">
-          <div style="display: flex; align-items: center; gap: 12px"><span style="color: #4a4e57; width: 64px">0 flags</span><div style="flex: 1; border: 1px solid #2E9E5B; color: #2E9E5B; padding: 8px 14px; display: flex; justify-content: space-between; gap: 12px"><span>cheap</span><span>~90% of units land here &#10003;</span></div></div>
-          <div style="display: flex; align-items: center; gap: 12px"><span style="color: #4a4e57; width: 64px">1&ndash;2</span><div style="flex: 1; border: 1px solid #2A2D35; color: #b9bcc2; padding: 8px 14px">standard</div></div>
-          <div style="display: flex; align-items: center; gap: 12px"><span style="color: #4a4e57; width: 64px">3+/own</span><div style="flex: 1; border: 1px solid #2A2D35; color: #b9bcc2; padding: 8px 14px">frontier</div></div>
+          <div style="display: flex; align-items: center; gap: 12px"><span style="color: #8A8F98; width: 64px">0 flags</span><div style="flex: 1; border: 1px solid #2E9E5B; color: #2E9E5B; padding: 8px 14px; display: flex; justify-content: space-between; gap: 12px"><span>cheap</span><span>~90% of units land here &#10003;</span></div></div>
+          <div style="display: flex; align-items: center; gap: 12px"><span style="color: #8A8F98; width: 64px">1&ndash;2</span><div style="flex: 1; border: 1px solid #2A2D35; color: #b9bcc2; padding: 8px 14px">standard</div></div>
+          <div style="display: flex; align-items: center; gap: 12px"><span style="color: #8A8F98; width: 64px">3+/own</span><div style="flex: 1; border: 1px solid #2A2D35; color: #b9bcc2; padding: 8px 14px">frontier</div></div>
         </div>
       </div>
       <div style="display: flex; align-items: center; gap: 12px; margin-top: 20px; padding-top: 16px; border-top: 1px dashed #2A2D35; min-width: 640px">
         <span style="color: #C77D2E">&uarr; escalate +1 tier</span>
         <span style="color: #8A8F98">only on: fail &times;2 &middot; two runs disagree &middot; tagged "uncertain"</span>
-        <span style="color: #4a4e57; margin-left: auto">residue only &mdash; never redoes the batch</span>
+        <span style="color: #8A8F98; margin-left: auto">residue only &mdash; never redoes the batch</span>
       </div>
     </div>
     <details style="border: 1px solid #2A2D35">
