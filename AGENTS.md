@@ -147,7 +147,7 @@ npx skills add undercutsh/firstpass
 ```
 ```sh
 # or, manual copy — no network dependency
-cp -r firstpass/skills/firstpass ./.claude/skills/firstpass
+mkdir -p .claude/skills && cp -r firstpass/skills/firstpass ./.claude/skills/firstpass
 ```
 
 Source: `site/claude-code.html`.
@@ -164,7 +164,7 @@ different convention from Claude Code's `.claude/skills/`.
 ```sh
 npx skills add undercutsh/firstpass -a codex
 # or
-cp -r firstpass/skills/firstpass ./.agents/skills/firstpass
+mkdir -p .agents/skills && cp -r firstpass/skills/firstpass ./.agents/skills/firstpass
 ```
 
 Source: `site/codex.html` (cites https://learn.chatgpt.com/docs/build-skills).
@@ -184,7 +184,7 @@ installed for Claude Code or Codex, Cursor may pick it up with nothing
 extra.
 
 ```sh
-cp -r firstpass/skills/firstpass ./.cursor/skills/firstpass
+mkdir -p .cursor/skills && cp -r firstpass/skills/firstpass ./.cursor/skills/firstpass
 # or
 npx skills add undercutsh/firstpass
 ```
@@ -226,7 +226,7 @@ and — for compatibility — the same layout under `.claude/skills/` and
 ```sh
 npx skills add undercutsh/firstpass
 # or, to target OpenCode's own path directly:
-cp -r firstpass/skills/firstpass ./.opencode/skills/firstpass
+mkdir -p .opencode/skills && cp -r firstpass/skills/firstpass ./.opencode/skills/firstpass
 ```
 
 Source: `site/opencode.html` (cites https://opencode.ai/docs/skills/). Note:
@@ -300,9 +300,9 @@ name collision. Junie also reads plain guidelines from
 `.junie/guidelines.md` or `AGENTS.md` if no skill applies.
 
 ```sh
-cp -r firstpass/skills/firstpass ./.junie/skills/firstpass
+mkdir -p .junie/skills && cp -r firstpass/skills/firstpass ./.junie/skills/firstpass
 # or, the cross-agent convention Junie also scans:
-cp -r firstpass/skills/firstpass ./.agents/skills/firstpass
+mkdir -p .agents/skills && cp -r firstpass/skills/firstpass ./.agents/skills/firstpass
 ```
 
 Researched fresh 2026-08.
@@ -319,7 +319,7 @@ existing Claude skills (https://ampcode.com/news/agent-skills). Amp also
 reads a root `AGENTS.md` for plain repository instructions.
 
 ```sh
-cp -r firstpass/skills/firstpass ./.agents/skills/firstpass
+mkdir -p .agents/skills && cp -r firstpass/skills/firstpass ./.agents/skills/firstpass
 ```
 
 Researched fresh 2026-08.
@@ -341,7 +341,7 @@ https://docs.devin.ai/cli/extensibility/rules. Devin also auto-pulls
 existing Claude Code or Cursor install may already be picked up.
 
 ```sh
-cp -r firstpass/skills/firstpass ./.devin/skills/firstpass
+mkdir -p .devin/skills && cp -r firstpass/skills/firstpass ./.devin/skills/firstpass
 ```
 
 Researched fresh 2026-08.

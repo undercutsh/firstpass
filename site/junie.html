@@ -124,15 +124,15 @@
     <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 1 — project-level skill (recommended)</h3>
     <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0 0 12px">Junie's own docs confirm project-scoped discovery at <code style="background:#2A2D35;color:#F5F3EE">.junie/skills/&lt;name&gt;/</code>. Undercut's skill is already named <code style="background:#2A2D35;color:#F5F3EE">firstpass</code>, so the directory copies straight across — no renaming, no rewriting frontmatter — and it takes priority over a user-level or cross-agent copy if there's ever a name collision.</p>
     <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #101216; border: 1px solid #2A2D35; padding: 18px 22px; font-family: 'JetBrains Mono', monospace; font-size: 15px; margin: 0 0 28px; flex-wrap: wrap">
-      <span><span style="color: #8A8F98">$ </span>cp -r firstpass/skills/firstpass ./.junie/skills/firstpass</span>
-      <button type="button" class="copybtn" data-copy="cp -r firstpass/skills/firstpass ./.junie/skills/firstpass" onclick="undercutCopy(this)" aria-label="Copy command: cp -r firstpass/skills/firstpass ./.junie/skills/firstpass">Copy</button>
+      <span><span style="color: #8A8F98">$ </span>mkdir -p .junie/skills && cp -r firstpass/skills/firstpass ./.junie/skills/firstpass</span>
+      <button type="button" class="copybtn" data-copy="mkdir -p .junie/skills && cp -r firstpass/skills/firstpass ./.junie/skills/firstpass" onclick="undercutCopy(this)" aria-label="Copy command: mkdir -p .junie/skills && cp -r firstpass/skills/firstpass ./.junie/skills/firstpass">Copy</button>
     </div>
 
     <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 2 — the cross-agent convention Junie also scans</h3>
     <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0 0 12px">Junie's docs also list <code style="background:#2A2D35;color:#F5F3EE">.agents/skills/</code> as a recognized discovery path — the same convention several other agents in this compatibility bar read. If a repo already carries a skill installed that way for another tool, Junie should pick it up with nothing extra to install.</p>
     <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #101216; border: 1px solid #2A2D35; padding: 18px 22px; font-family: 'JetBrains Mono', monospace; font-size: 15px; margin: 0 0 28px; flex-wrap: wrap">
-      <span><span style="color: #8A8F98">$ </span>cp -r firstpass/skills/firstpass ./.agents/skills/firstpass</span>
-      <button type="button" class="copybtn" data-copy="cp -r firstpass/skills/firstpass ./.agents/skills/firstpass" onclick="undercutCopy(this)" aria-label="Copy command: cp -r firstpass/skills/firstpass ./.agents/skills/firstpass">Copy</button>
+      <span><span style="color: #8A8F98">$ </span>mkdir -p .agents/skills && cp -r firstpass/skills/firstpass ./.agents/skills/firstpass</span>
+      <button type="button" class="copybtn" data-copy="mkdir -p .agents/skills && cp -r firstpass/skills/firstpass ./.agents/skills/firstpass" onclick="undercutCopy(this)" aria-label="Copy command: mkdir -p .agents/skills && cp -r firstpass/skills/firstpass ./.agents/skills/firstpass">Copy</button>
     </div>
 
     <div class="callout" style="border-color: #2A2D35; background: #101216; margin: 0 0 32px">
@@ -271,7 +271,7 @@
     <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: clamp(32px, 3.6vw, 48px); letter-spacing: -0.03em; line-height: 1.1; margin: 0 0 20px; text-wrap: balance">Undercut the top tier. Not the quality bar.</h2>
     <p style="font-size: 16px; line-height: 1.6; color: #8A8F98; margin: 0 0 36px">Nothing about this page expires. What does keep happening is the token bill, one session at a time, on whatever Junie is currently doing with mechanical work.</p>
     <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap">
-      <button type="button" onclick="undercutCopy(this)" data-copy="cp -r firstpass/skills/firstpass ./.junie/skills/firstpass" style="display: inline-flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 14px; background: #F5F3EE; color: #15171C; border: none; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; cursor: pointer; transition: background-color .15s ease"><span style="font-weight: 800">Install</span><span style="color: #4a4e57">cp -r firstpass/skills/firstpass ./.junie/skills/firstpass</span></button>
+      <button type="button" onclick="undercutCopy(this)" data-copy="mkdir -p .junie/skills && cp -r firstpass/skills/firstpass ./.junie/skills/firstpass" style="display: inline-flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 14px; background: #F5F3EE; color: #15171C; border: none; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; cursor: pointer; transition: background-color .15s ease"><span style="font-weight: 800">Install</span><span style="color: #4a4e57">mkdir -p .junie/skills && cp -r firstpass/skills/firstpass ./.junie/skills/firstpass</span></button>
       <a href="https://github.com/undercutsh/firstpass" style="display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #F5F3EE; text-decoration: none; border: 1px solid #2A2D35; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; transition: border-color .15s ease">View on GitHub</a>
     </div>
   </div>
