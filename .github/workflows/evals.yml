@@ -30,3 +30,5 @@ jobs:
         run: node scripts/validate-jsonld.js --check
       - name: sitemap.xml in sync with site/*.html
         run: node scripts/validate-sitemap.js --check
+      - name: changelog.xml in sync with CHANGELOG.md
+        run: node scripts/generate-changelog-feed.js --check
