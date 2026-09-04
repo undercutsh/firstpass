@@ -1408,6 +1408,11 @@ class Component extends DCLogic {
   function hide() {
     wrap.style.display = 'none';
     try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
+    document.removeEventListener('keydown', onKeydown);
+  }
+
+  function onKeydown(e) {
+    if (e.key === 'Escape' || e.key === 'Esc') hide();
   }
 
   dismiss.addEventListener('click', hide);
@@ -1418,7 +1423,13 @@ class Component extends DCLogic {
     if (window.scrollY > 600) {
       triggered = true;
       window.removeEventListener('scroll', maybeShow);
-      setTimeout(show, 2000);
+      setTimeout(function () {
+        show();
+        // Dismissible via Escape while the CTA is visible, matching the
+        // explicit close button — keyboard users shouldn't need to tab to
+        // the × to get rid of an unrequested floating element.
+        document.addEventListener('keydown', onKeydown);
+      }, 2000);
     }
   }
   window.addEventListener('scroll', maybeShow, { passive: true });
