@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Build status — Undercut</title>
+<meta name="description" content="Live pass/fail history of Undercut's automated eval test suite (GitHub Actions), pulled straight from the GitHub API. Not a service-uptime claim — there's no server to have uptime.">
+<link rel="canonical" href="https://getundercut.sh/status">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Undercut">
+<meta property="og:title" content="Build status — Undercut">
+<meta property="og:description" content="Live pass/fail history of Undercut's automated eval test suite, pulled from the GitHub Actions API.">
+<meta property="og:url" content="https://getundercut.sh/status">
+<meta property="og:image" content="https://getundercut.sh/og-image.svg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Build status — Undercut">
+<meta name="twitter:description" content="Live pass/fail history of Undercut's automated eval test suite, pulled from the GitHub Actions API.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #F5F3EE; color: #15171C; font-family: 'Inter', sans-serif; line-height: 1.65; }
+  a { color: #15171C; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  a:hover { color: #227644; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+  .mono { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #63666C; text-transform: uppercase; letter-spacing: .08em; }
+  code { background: #DFDAD0; padding: 1px 5px; border-radius: 3px; font-size: .92em; font-family: 'JetBrains Mono', monospace; }
+  .badge { display: inline-flex; align-items: center; justify-content: center; height: 20px; padding: 0 8px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; background: rgba(46,158,91,0.14); color: #227644; }
+  .badge-amber { background: rgba(199,125,46,0.16); color: #955D22; }
+  .badge-neutral { background: rgba(138,143,152,0.16); color: #4a4e57; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; text-decoration: none; }
+  .btn-primary { background: #15171C; color: #F5F3EE; border: none; }
+  .btn-outline { background: transparent; color: #15171C; border: 1px solid #DFDAD0; }
+  .card { border: 1px solid #DFDAD0; border-radius: 10px; padding: 20px 22px; background: #FBFAF7; }
+  .dots { display: flex; gap: 6px; flex-wrap: wrap; }
+  .dot { width: 14px; height: 14px; border-radius: 50%; background: #DFDAD0; }
+  .dot-pass { background: #2E9E5B; }
+  .dot-fail { background: #C0392B; }
+  .dot-other { background: #C77D2E; }
+  #status-current { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  #status-fallback { display: none; }
+</style>
+</head>
+<body>
+
+<nav style="display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 14px 32px; border-bottom: 1px solid #DFDAD0; flex-wrap: wrap;">
+  <a href="/" style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 17px; letter-spacing: -0.02em; text-decoration: none">undercut</a>
+  <div style="display: flex; align-items: center; gap: 24px; font-size: 14px; flex-wrap: wrap;">
+    <a href="/#calculator" style="text-decoration: none; color: #4a4e57">Free audit</a>
+    <a href="/#benchmarks" style="text-decoration: none; color: #4a4e57">Benchmarks</a>
+    <a href="https://github.com/undercutsh/firstpass" style="text-decoration: none; color: #4a4e57; font-family: 'JetBrains Mono', monospace; font-size: 13px">GitHub &#8599;</a>
+  </div>
+</nav>
+
+<header class="wrap" style="padding: 56px 24px 0">
+  <p class="mono" style="margin: 0 0 14px">Build status</p>
+  <h1 style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: clamp(28px, 4vw, 42px); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 16px; text-wrap: balance">CI status, not a service-uptime claim.</h1>
+  <p style="font-size: 15.5px; color: #4a4e57; margin: 0 0 40px; max-width: 66ch">This page shows the real pass/fail history of the <code>evals</code> GitHub Actions workflow &mdash; the automated test suite that runs on every push and pull request &mdash; pulled live from GitHub's public API. Undercut is a static site plus one serverless function: there's no server fleet, no SLA, and nothing that would make an &ldquo;uptime %&rdquo; figure honest. What we can show, and do, is whether the tests that gate every change are currently passing.</p>
+</header>
+
+<main class="wrap" style="padding: 0 24px 80px">
+  <div class="card">
+    <div id="status-loading" class="mono">Checking latest run&hellip;</div>
+
+    <div id="status-current" style="display: none">
+      <span id="status-badge" class="badge badge-neutral">Unknown</span>
+      <span id="status-meta" style="font-size: 13.5px; color: #4a4e57"></span>
+    </div>
+
+    <div id="status-fallback">
+      <p style="margin: 0 0 4px"><strong>Live status is unavailable right now</strong> &mdash; GitHub's API didn't respond (likely a public rate limit; this page makes an unauthenticated request).</p>
+      <p style="margin: 0; font-size: 14px; color: #4a4e57">See the run history directly on GitHub instead:</p>
+    </div>
+
+    <div style="margin: 20px 0 4px">
+      <p class="mono" style="margin: 0 0 10px">Last 20 runs (newest first)</p>
+      <div id="status-dots" class="dots" role="list" aria-label="Recent workflow run history"></div>
+    </div>
+
+    <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap">
+      <a class="btn btn-primary" href="https://github.com/undercutsh/firstpass/actions/workflows/evals.yml">Full history on GitHub Actions &#8599;</a>
+      <a class="btn btn-outline" href="/">Back to Undercut</a>
+    </div>
+  </div>
+
+  <p style="margin-top: 24px; font-size: 13px; color: #63666C">Each dot is one run of <code>.github/workflows/evals.yml</code> (unit tests for the routing policy, plus a mocked eval-harness smoke run). Green = passed, red = failed, amber = another result (cancelled, in progress, etc). Data comes from <code>api.github.com/repos/undercutsh/firstpass/actions/workflows/evals.yml/runs</code> at page load &mdash; it is not cached or edited by hand.</p>
+</main>
+
+<footer style="padding: 40px 32px 48px; border-top: 1px solid #DFDAD0">
+  <div class="wrap" style="max-width: 1160px; display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-size: 12.5px; color: #4a4e57">
+    <span style="font-family: 'JetBrains Mono', monospace">&copy; 2026 Undercut &middot; MIT</span>
+    <span style="display: flex; gap: 18px; flex-wrap: wrap">
+      <a href="/privacy/" style="color: #4a4e57; text-decoration: none">Privacy</a>
+      <a href="/terms/" style="color: #4a4e57; text-decoration: none">Terms</a>
+      <a href="/accessibility" style="color: #4a4e57; text-decoration: none">Accessibility</a>
+    </span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var API_URL = 'https://api.github.com/repos/undercutsh/firstpass/actions/workflows/evals.yml/runs?per_page=20';
+  var loadingEl = document.getElementById('status-loading');
+  var currentEl = document.getElementById('status-current');
+  var fallbackEl = document.getElementById('status-fallback');
+  var badgeEl = document.getElementById('status-badge');
+  var metaEl = document.getElementById('status-meta');
+  var dotsEl = document.getElementById('status-dots');
+
+  function fmtDate(iso) {
+    try {
+      var d = new Date(iso);
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) +
+        ' ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    } catch (e) {
+      return iso;
+    }
+  }
+
+  function renderDots(runs) {
+    dotsEl.textContent = '';
+    runs.forEach(function (run) {
+      var dot = document.createElement('span');
+      var cls = 'dot dot-other';
+      var label = run.status;
+      if (run.status === 'completed') {
+        if (run.conclusion === 'success') { cls = 'dot dot-pass'; label = 'passed'; }
+        else if (run.conclusion === 'failure') { cls = 'dot dot-fail'; label = 'failed'; }
+        else { label = run.conclusion || 'other'; }
+      }
+      dot.className = cls;
+      dot.title = 'Run #' + run.run_number + ' — ' + label + ' — ' + fmtDate(run.created_at);
+      dotsEl.appendChild(dot);
+    });
+  }
+
+  function renderCurrent(latest) {
+    var conclusion = latest.status === 'completed' ? latest.conclusion : latest.status;
+    var text = 'Unknown';
+    var cls = 'badge badge-neutral';
+    if (latest.status !== 'completed') {
+      text = 'Running';
+      cls = 'badge badge-amber';
+    } else if (latest.conclusion === 'success') {
+      text = 'Passing';
+      cls = 'badge';
+    } else if (latest.conclusion === 'failure') {
+      text = 'Failing';
+      cls = 'badge badge-amber';
+      badgeEl.style.background = 'rgba(192,57,43,0.16)';
+      badgeEl.style.color = '#C0392B';
+    } else {
+      text = conclusion || 'Unknown';
+      cls = 'badge badge-neutral';
+    }
+    badgeEl.className = cls;
+    badgeEl.textContent = text;
+    metaEl.textContent = 'Run #' + latest.run_number + ' on ' + (latest.head_branch || 'main') + ' — ' + fmtDate(latest.created_at);
+  }
+
+  function showFallback() {
+    loadingEl.style.display = 'none';
+    fallbackEl.style.display = 'block';
+  }
+
+  var controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+  var timeoutId = setTimeout(function () { if (controller) controller.abort(); }, 8000);
+
+  fetch(API_URL, {
+    headers: { Accept: 'application/vnd.github+json' },
+    signal: controller ? controller.signal : undefined
+  }).then(function (res) {
+    clearTimeout(timeoutId);
+    if (!res.ok) { throw new Error('GitHub API returned ' + res.status); }
+    return res.json();
+  }).then(function (data) {
+    var runs = (data && data.workflow_runs) || [];
+    if (!runs.length) { showFallback(); return; }
+    loadingEl.style.display = 'none';
+    currentEl.style.display = 'flex';
+    renderCurrent(runs[0]);
+    renderDots(runs);
+  }).catch(function () {
+    clearTimeout(timeoutId);
+    showFallback();
+  });
+})();
+</script>
+
+</body>
+</html>
