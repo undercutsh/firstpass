@@ -111,7 +111,7 @@
   <div class="wrap">
     <p class="mono" style="margin: 0 0 14px; color: #63666C">How this maps onto Windsurf</p>
     <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 30px; letter-spacing: -0.02em; margin: 0 0 24px; text-wrap: balance">A multi-model IDE. AGENTS.md is the confirmed way in.</h2>
-    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 20px; max-width: 70ch">Windsurf was acquired by Cognition, and its documentation now lives under <code>docs.devin.ai</code>, branded as part of Devin Desktop &mdash; <code>docs.windsurf.com</code> redirects there. Per that documentation, Windsurf's Cascade agent reads workspace rules from <code>.windsurf/rules/*.md</code>, with the legacy <code>.windsurfrules</code> kept as a fallback for backward compatibility. Global rules live at <code>~/.codeium/windsurf/memories/global_rules.md</code> (capped at 6,000 characters; workspace rules files cap at 12,000). Separately, Cascade also reads a root-level <code>AGENTS.md</code> automatically &mdash; documented as location-scoped rules with zero configuration required, which is the most portable of the confirmed paths and doesn't depend on which of the rules-file conventions your workspace already uses.</p>
+    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 20px; max-width: 70ch">Windsurf was acquired by Cognition, and its documentation now lives under <code>docs.devin.ai</code>, branded as part of Devin Desktop &mdash; <code>docs.windsurf.com</code> redirects there. Per that documentation, Windsurf's Cascade agent now prefers workspace rules from <code>.devin/rules/*.md</code>, with <code>.windsurf/rules/*.md</code> and the legacy single-file <code>.windsurfrules</code> kept as fallbacks for backward compatibility. Global rules live at <code>~/.codeium/windsurf/memories/global_rules.md</code> (capped at 6,000 characters; workspace rules files cap at 12,000). Separately, Cascade also reads a root-level <code>AGENTS.md</code> automatically &mdash; documented as location-scoped rules with zero configuration required, which is the most portable of the confirmed paths and doesn't depend on which of the rules-file conventions your workspace already uses.</p>
     <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 20px; max-width: 70ch">Windsurf doesn't have a model family of its own the way Claude Code or Codex do &mdash; it's a multi-model IDE, wired up to whichever provider(s) you've configured in Cascade's model picker. Undercut's tier names &mdash; <strong>cheap, standard, frontier, apex</strong> &mdash; are generic on purpose for exactly this case. <a href="https://github.com/undercutsh/firstpass/blob/main/skills/firstpass/models.md">models.md</a> gives the rule of thumb rather than a fixed mapping: cheap resolves to the smallest/fastest model you have access to in Cascade, standard to your default work model, frontier to the highest-reasoning model on offer, and apex to a single batched tie-break call on the strongest model available.</p>
     <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0; max-width: 70ch">Nothing about this sits between Cascade and its model backend. It's a Markdown file Cascade reads at dispatch time &mdash; no proxy, no network hop, nothing to route around if you delete the block.</p>
   </div>
@@ -131,15 +131,15 @@
     </div>
 
     <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 2 &mdash; Windsurf's own workspace rules</h3>
-    <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0 0 12px">If you'd rather keep it inside Windsurf's own convention, drop it under <code style="background:#2A2D35;color:#F5F3EE">.windsurf/rules/</code> &mdash; the preferred path per current docs &mdash; or the legacy fallback location, <code style="background:#2A2D35;color:#F5F3EE">.windsurfrules</code>. Both are confirmed in Windsurf's documentation.</p>
+    <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0 0 12px">If you'd rather keep it inside Windsurf's own convention, drop it under <code style="background:#2A2D35;color:#F5F3EE">.devin/rules/</code> &mdash; the preferred path per current docs since the Devin Desktop rebrand &mdash; or the legacy fallback location, <code style="background:#2A2D35;color:#F5F3EE">.windsurf/rules/</code>. Both are confirmed in Windsurf's documentation.</p>
     <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #101216; border: 1px solid #2A2D35; padding: 18px 22px; font-family: 'JetBrains Mono', monospace; font-size: 15px; margin: 0 0 28px; flex-wrap: wrap">
-      <span><span style="color: #8A8F98">$ </span>mkdir -p .windsurf/rules && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md -o .windsurf/rules/firstpass.md</span>
-      <button type="button" class="copybtn" data-copy="mkdir -p .windsurf/rules && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md -o .windsurf/rules/firstpass.md" onclick="undercutCopy(this)" aria-label="Copy command: mkdir -p .windsurf/rules && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md -o .windsurf/rules/firstpass.md">Copy</button>
+      <span><span style="color: #8A8F98">$ </span>mkdir -p .devin/rules && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md -o .devin/rules/firstpass.md</span>
+      <button type="button" class="copybtn" data-copy="mkdir -p .devin/rules && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md -o .devin/rules/firstpass.md" onclick="undercutCopy(this)" aria-label="Copy command: mkdir -p .devin/rules && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md -o .devin/rules/firstpass.md">Copy</button>
     </div>
     <p style="font-size: 14px; line-height: 1.6; color: #8A8F98; margin: 0 0 28px">Want it applied to every workspace instead of one repo? Copy the same content into <code style="background:#2A2D35;color:#F5F3EE">~/.codeium/windsurf/memories/global_rules.md</code> &mdash; note that file caps out at 6,000 characters (workspace rules files cap at 12,000), so check the raw <code style="background:#2A2D35;color:#F5F3EE">SKILL.md</code> fits before relying on the global copy.</p>
 
     <div class="callout" style="border-color: #2A2D35; background: #101216; margin: 0 0 32px">
-      <p style="font-size: 14px; line-height: 1.6; color: #b9bcc2; margin: 0"><strong style="color: #F5F3EE">What we couldn't verify:</strong> Windsurf's Devin CLI sibling documents a <code style="background:#2A2D35;color:#F5F3EE">.devin/skills/</code> Agent Skills discovery path. We could not independently confirm whether Windsurf/Cascade shares that same discovery mechanism &mdash; if in doubt, use <code style="background:#2A2D35;color:#F5F3EE">AGENTS.md</code> (Option 1) instead, which is the confirmed path.</p>
+      <p style="font-size: 14px; line-height: 1.6; color: #b9bcc2; margin: 0"><strong style="color: #F5F3EE">Update: Cascade has its own Agent Skills path, confirmed.</strong> Per <a href="https://docs.devin.ai/desktop/cascade/skills" style="color: #F5F3EE">Cascade's own skills docs</a>, Windsurf does <em>not</em> share Devin CLI's <code style="background:#2A2D35;color:#F5F3EE">.devin/skills/</code> path &mdash; it discovers skills from <code style="background:#2A2D35;color:#F5F3EE">.windsurf/skills/&lt;name&gt;/</code> (workspace) and <code style="background:#2A2D35;color:#F5F3EE">~/.codeium/windsurf/skills/&lt;name&gt;/</code> (global), plus the cross-agent <code style="background:#2A2D35;color:#F5F3EE">.agents/skills/</code> convention. That means <code style="background:#2A2D35;color:#F5F3EE">cp -r firstpass/skills/firstpass ./.windsurf/skills/firstpass</code> is now a confirmed, direct install path too &mdash; AGENTS.md (Option 1) remains the most portable if you're already using it across other tools.</p>
     </div>
 
     <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 20px; color: #b9bcc2">Validate it yourself</h3>
@@ -264,7 +264,7 @@
   <div class="wrap">
     <p class="mono" style="margin: 0 0 14px; color: #63666C">Honest limits</p>
     <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 26px; letter-spacing: -0.02em; margin: 0 0 18px">What this doesn't do.</h2>
-    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 8px; max-width: 70ch">Not a proxy, not a gateway, doesn't auto-flag in production — and on Windsurf specifically, we haven't independently verified whether Cascade shares the <code>.devin/skills/</code> Agent Skills discovery path documented for Devin CLI, so this page routes you through <code>AGENTS.md</code>, the confirmed path, rather than claiming a skill-loader integration we couldn't test. Cascade's own reliability at scoring the flags hasn't been separately measured the way Claude Code's has (see above); treat that as unverified until tested. Full list of general limits, with the finance/procurement note and the paid-tier disclosure, is on the <a href="/#pricing">main page</a>.</p>
+    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 8px; max-width: 70ch">Not a proxy, not a gateway, doesn't auto-flag in production &mdash; and on Windsurf specifically, Cascade has its own confirmed skill-discovery path (<code>.windsurf/skills/</code>, distinct from Devin CLI's <code>.devin/skills/</code> &mdash; see Install above), but that's a documented path, not a session we ran ourselves, so treat the live behavior as unverified until tested. Cascade's own reliability at scoring the flags hasn't been separately measured the way Claude Code's has (see above); treat that as unverified until tested. Full list of general limits, with the finance/procurement note and the paid-tier disclosure, is on the <a href="/#pricing">main page</a>.</p>
   </div>
 </section>
 
@@ -321,6 +321,8 @@
       <span style="display: flex; gap: 18px; flex-wrap: wrap">
         <a href="/privacy/" style="color: #63666C; text-decoration: none">Privacy</a>
         <a href="/terms/" style="color: #63666C; text-decoration: none">Terms</a>
+        <a href="/accessibility" style="color: #63666C; text-decoration: none">Accessibility</a>
+        <a href="/status" style="color: #63666C; text-decoration: none">Status</a>
         <a href="https://github.com/undercutsh/firstpass/blob/main/testing/README.md" style="color: #63666C; text-decoration: none">Benchmark data</a>
         <a href="https://github.com/undercutsh/firstpass/blob/main/CHANGELOG.md" style="color: #63666C; text-decoration: none">Changelog</a>
       </span>
@@ -330,6 +332,7 @@
       <a href="/llms.txt" style="color: #63666C; text-decoration: none">llms.txt</a>
       <a href="/humans.txt" style="color: #63666C; text-decoration: none">humans.txt</a>
       <a href="/robots.txt" style="color: #63666C; text-decoration: none">robots.txt</a>
+      <a href="/changelog.xml" style="color: #63666C; text-decoration: none">changelog.xml</a>
     </div>
   </div>
 </footer>
@@ -384,10 +387,15 @@
       }
     } catch (e) {}
 
+    var controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+    var timeoutId = setTimeout(function () { if (controller) controller.abort(); }, 8000);
+
     fetch('https://api.github.com/repos/undercutsh/firstpass', {
-      headers: { Accept: 'application/vnd.github+json' }
+      headers: { Accept: 'application/vnd.github+json' },
+      signal: controller ? controller.signal : undefined
     })
       .then(function (res) {
+        clearTimeout(timeoutId);
         if (!res.ok) throw new Error('GitHub API error ' + res.status);
         return res.json();
       })
@@ -398,6 +406,7 @@
         render(count);
       })
       .catch(function () {
+        clearTimeout(timeoutId);
         fallback();
       });
   }

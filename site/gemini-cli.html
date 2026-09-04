@@ -110,8 +110,8 @@
 <section style="padding: 80px 32px; border-bottom: 1px solid #DFDAD0; background: #FBFAF7">
   <div class="wrap">
     <p class="mono" style="margin: 0 0 14px; color: #63666C">How this maps onto Gemini CLI</p>
-    <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 30px; letter-spacing: -0.02em; margin: 0 0 24px; text-wrap: balance">No plain skills directory. GEMINI.md is the confirmed read path.</h2>
-    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 20px; max-width: 70ch">Gemini CLI's documented, reliable mechanism is <strong>GEMINI.md</strong>, read hierarchically: <code>~/.gemini/GEMINI.md</code> (global) first, then from the project root down to the current directory, then a downward scan of subdirectories (per <a href="https://geminicli.com/docs/cli/gemini-md/">Gemini CLI's own docs</a> and the <a href="https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/gemini-md.md">gemini-cli repo's docs</a>). Gemini CLI also ships an <strong>Agent Skills</strong> feature, but per its own <a href="https://geminicli.com/docs/extensions/writing-extensions/">extensions documentation</a> it auto-discovers a <code>SKILL.md</code> only when that file is bundled inside a full extension package &mdash; we found no documented plain <code>.gemini/skills/</code> auto-discovery path outside of one. That's why this page delivers the policy as text appended to GEMINI.md, not as a skill Gemini CLI discovers on its own.</p>
+    <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 30px; letter-spacing: -0.02em; margin: 0 0 24px; text-wrap: balance">GEMINI.md is the confirmed read path — and Agent Skills work too.</h2>
+    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 20px; max-width: 70ch">Gemini CLI's documented, reliable mechanism is <strong>GEMINI.md</strong>, read in three tiers: <code>~/.gemini/GEMINI.md</code> (global) first, then <code>GEMINI.md</code> files in your configured workspace directories and their parent directories, then a just-in-time scan &mdash; when a tool accesses a file or directory, the CLI automatically scans for <code>GEMINI.md</code> files in that directory and its ancestors up to a trusted root (per <a href="https://geminicli.com/docs/cli/gemini-md/">Gemini CLI's own docs</a> and the <a href="https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/gemini-md.md">gemini-cli repo's docs</a>). Gemini CLI also ships an <strong>Agent Skills</strong> feature: per <a href="https://geminicli.com/docs/cli/skills/">Gemini CLI's own skills docs</a>, it auto-discovers a plain <code>SKILL.md</code> from <code>.gemini/skills/&lt;name&gt;/</code> (workspace) or <code>~/.gemini/skills/&lt;name&gt;/</code> (user), or the cross-agent <code>.agents/skills/</code> alias &mdash; no extension package required. (Extension-bundled skills also work, and sit lower in the precedence order than workspace skills.) That makes a direct skill install a confirmed option alongside GEMINI.md &mdash; see Install below for both.</p>
     <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 20px; max-width: 70ch">Undercut's tier names &mdash; <strong>cheap, standard, frontier, apex</strong> &mdash; are generic on purpose. <a href="https://github.com/undercutsh/firstpass/blob/main/skills/firstpass/models.md">models.md</a> gives the rule of thumb rather than a fixed slug for Gemini CLI specifically: cheap maps to the smallest/fastest model in Google's current Gemini lineup, standard to the default work model, frontier to the highest-reasoning production model, and apex is reserved for the single batched tie-break call when the ladder is exhausted. The mapping is versioned separately from the rubric, so a new Gemini release updates the model name without touching the escalation logic itself.</p>
     <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0; max-width: 70ch">Nothing about this sits between Gemini CLI and the Gemini API. It's plain markdown text Gemini CLI reads into context at session start, same as any other project instructions &mdash; no proxy, no network hop, nothing to route around if you remove the block.</p>
   </div>
@@ -124,10 +124,10 @@
     <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 30px; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 32px; text-wrap: balance">Free. MIT. Nothing installs, nothing proxies your traffic.</h2>
 
     <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 1 &mdash; append to project GEMINI.md (recommended, confirmed path)</h3>
-    <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0 0 12px">Run this from the repo root. Gemini CLI reads <code style="background:#2A2D35;color:#F5F3EE">GEMINI.md</code> into context on every session in that project, so appending the policy text here is the most reliable way to get it in front of Gemini CLI.</p>
+    <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0 0 12px">Run this from the repo root. Gemini CLI walks upward from your working directory looking for a <code style="background:#2A2D35;color:#F5F3EE">GEMINI.md</code> file at the project root (not inside a <code style="background:#2A2D35;color:#F5F3EE">.gemini/</code> subdirectory &mdash; that's reserved for the global, home-directory copy), so appending the policy text to the root file here is the most reliable way to get it in front of Gemini CLI.</p>
     <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #101216; border: 1px solid #2A2D35; padding: 18px 22px; font-family: 'JetBrains Mono', monospace; font-size: 15px; margin: 0 0 28px; flex-wrap: wrap">
-      <span><span style="color: #8A8F98">$ </span>mkdir -p .gemini && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md &gt;&gt; .gemini/GEMINI.md</span>
-      <button type="button" class="copybtn" data-copy="mkdir -p .gemini && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> .gemini/GEMINI.md" onclick="undercutCopy(this)" aria-label="Copy command: mkdir -p .gemini && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> .gemini/GEMINI.md">Copy</button>
+      <span><span style="color: #8A8F98">$ </span>curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md &gt;&gt; GEMINI.md</span>
+      <button type="button" class="copybtn" data-copy="curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> GEMINI.md" onclick="undercutCopy(this)" aria-label="Copy command: curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> GEMINI.md">Copy</button>
     </div>
 
     <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 2 &mdash; install globally for every session</h3>
@@ -137,8 +137,15 @@
       <button type="button" class="copybtn" data-copy="mkdir -p ~/.gemini && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> ~/.gemini/GEMINI.md" onclick="undercutCopy(this)" aria-label="Copy command: mkdir -p ~/.gemini && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> ~/.gemini/GEMINI.md">Copy</button>
     </div>
 
+    <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 3 &mdash; install as an Agent Skill (also confirmed)</h3>
+    <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0 0 12px">Gemini CLI's own docs now confirm plain <code style="background:#2A2D35;color:#F5F3EE">SKILL.md</code> discovery at <code style="background:#2A2D35;color:#F5F3EE">.gemini/skills/&lt;name&gt;/</code> &mdash; no extension package needed. Undercut's skill is already named <code style="background:#2A2D35;color:#F5F3EE">firstpass</code>, so the directory copies straight across.</p>
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #101216; border: 1px solid #2A2D35; padding: 18px 22px; font-family: 'JetBrains Mono', monospace; font-size: 15px; margin: 0 0 28px; flex-wrap: wrap">
+      <span><span style="color: #8A8F98">$ </span>cp -r firstpass/skills/firstpass ./.gemini/skills/firstpass</span>
+      <button type="button" class="copybtn" data-copy="cp -r firstpass/skills/firstpass ./.gemini/skills/firstpass" onclick="undercutCopy(this)" aria-label="Copy command: cp -r firstpass/skills/firstpass ./.gemini/skills/firstpass">Copy</button>
+    </div>
+
     <div class="callout" style="border-color: #2A2D35; background: #101216; margin: 0 0 32px">
-      <p style="font-size: 14px; line-height: 1.6; color: #b9bcc2; margin: 0"><strong style="color: #F5F3EE">Agent Skills exist too, but need an extension package.</strong> Per Gemini CLI's own docs, plain <code style="background:#2A2D35;color:#F5F3EE">SKILL.md</code> auto-discovery only fires when the file is bundled inside a full extension package &mdash; we found no documented <code style="background:#2A2D35;color:#F5F3EE">.gemini/skills/</code> auto-discovery outside of one. <a href="https://www.skills.sh/agent/gemini" style="color: #F5F3EE">skills.sh</a> lists Gemini as a supported install target but doesn't publish which directory it writes to, so treat <code style="background:#2A2D35;color:#F5F3EE">npx skills add undercutsh/firstpass</code> for Gemini as unverified until confirmed against a real session. The GEMINI.md route above is the one we verified.</p>
+      <p style="font-size: 14px; line-height: 1.6; color: #b9bcc2; margin: 0"><strong style="color: #F5F3EE">What's still unverified:</strong> <a href="https://www.skills.sh/agent/gemini" style="color: #F5F3EE">skills.sh</a> lists Gemini as a supported install target but doesn't publish which directory it writes to, so treat <code style="background:#2A2D35;color:#F5F3EE">npx skills add undercutsh/firstpass</code> for Gemini as unverified until confirmed against a real session &mdash; use Option 1 or Option 3 above instead, both directly confirmed against Gemini CLI's own docs.</p>
     </div>
 
     <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 20px; color: #b9bcc2">Validate it yourself</h3>
@@ -273,7 +280,7 @@
     <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: clamp(32px, 3.6vw, 48px); letter-spacing: -0.03em; line-height: 1.1; margin: 0 0 20px; text-wrap: balance">Undercut the top tier. Not the quality bar.</h2>
     <p style="font-size: 16px; line-height: 1.6; color: #8A8F98; margin: 0 0 36px">Nothing about this page expires. What does keep happening is the token bill, one session at a time, on whatever Gemini CLI is currently doing with mechanical work.</p>
     <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap">
-      <button type="button" onclick="undercutCopy(this)" data-copy="mkdir -p .gemini && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> .gemini/GEMINI.md" style="display: inline-flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 14px; background: #F5F3EE; color: #15171C; border: none; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; cursor: pointer; transition: background-color .15s ease"><span style="font-weight: 800">Install</span><span style="color: #4a4e57">append to GEMINI.md</span></button>
+      <button type="button" onclick="undercutCopy(this)" data-copy="curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> GEMINI.md" style="display: inline-flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 14px; background: #F5F3EE; color: #15171C; border: none; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; cursor: pointer; transition: background-color .15s ease"><span style="font-weight: 800">Install</span><span style="color: #4a4e57">append to GEMINI.md</span></button>
       <a href="https://github.com/undercutsh/firstpass" style="display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #F5F3EE; text-decoration: none; border: 1px solid #2A2D35; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; transition: border-color .15s ease">View on GitHub</a>
     </div>
   </div>
@@ -320,6 +327,8 @@
       <span style="display: flex; gap: 18px; flex-wrap: wrap">
         <a href="/privacy/" style="color: #63666C; text-decoration: none">Privacy</a>
         <a href="/terms/" style="color: #63666C; text-decoration: none">Terms</a>
+        <a href="/accessibility" style="color: #63666C; text-decoration: none">Accessibility</a>
+        <a href="/status" style="color: #63666C; text-decoration: none">Status</a>
         <a href="https://github.com/undercutsh/firstpass/blob/main/testing/README.md" style="color: #63666C; text-decoration: none">Benchmark data</a>
         <a href="https://github.com/undercutsh/firstpass/blob/main/CHANGELOG.md" style="color: #63666C; text-decoration: none">Changelog</a>
       </span>
@@ -329,6 +338,7 @@
       <a href="/llms.txt" style="color: #63666C; text-decoration: none">llms.txt</a>
       <a href="/humans.txt" style="color: #63666C; text-decoration: none">humans.txt</a>
       <a href="/robots.txt" style="color: #63666C; text-decoration: none">robots.txt</a>
+      <a href="/changelog.xml" style="color: #63666C; text-decoration: none">changelog.xml</a>
     </div>
   </div>
 </footer>
@@ -383,10 +393,15 @@
       }
     } catch (e) {}
 
+    var controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+    var timeoutId = setTimeout(function () { if (controller) controller.abort(); }, 8000);
+
     fetch('https://api.github.com/repos/undercutsh/firstpass', {
-      headers: { Accept: 'application/vnd.github+json' }
+      headers: { Accept: 'application/vnd.github+json' },
+      signal: controller ? controller.signal : undefined
     })
       .then(function (res) {
+        clearTimeout(timeoutId);
         if (!res.ok) throw new Error('GitHub API error ' + res.status);
         return res.json();
       })
@@ -397,6 +412,7 @@
         render(count);
       })
       .catch(function () {
+        clearTimeout(timeoutId);
         fallback();
       });
   }
