@@ -28,3 +28,5 @@ jobs:
         run: node scripts/check-plugin-version.js
       - name: JSON-LD structured data validity
         run: node scripts/validate-jsonld.js --check
+      - name: Spellcheck site copy (site/*.html)
+        run: node scripts/spellcheck.js
