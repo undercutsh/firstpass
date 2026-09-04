@@ -76,7 +76,7 @@ node src/main.js --compare <run-a.json>,<run-b.json>
 ```
 
 Flags: `--vendors anthropic,openai,gemini,openweights`,
-`--arms all-frontier,all-standard,tiered`, `--suites code,reasoning,mechanical`,
+`--arms all-frontier,all-standard,tiered`, `--suites code,reasoning,mechanical,debug,refactor`,
 `--seeds N`, `--policy v1|latest`, `--baseline <file>`, `--compare a,b`,
 `--concurrency N`.
 
@@ -107,6 +107,8 @@ benchmark content. See `src/suites/`.
 | `code` | exec in sandboxed `vm` against hidden test cases | coding |
 | `reasoning` | exact-match on ground truth | reasoning |
 | `mechanical` | JSON schema / exact-match | cheap-verifiable batch work |
+| `debug` | JSON schema / exact-match | bug diagnosis — root-causing, not just locating the throw site |
+| `refactor` | JSON schema / exact-match | refactoring judgment (dead code, pure-rename vs behavior-change, code-smell → pattern) |
 
 ## Public benchmark suites (`--benchmark`)
 

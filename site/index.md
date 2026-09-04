@@ -91,6 +91,23 @@ npx skills add undercutsh/firstpass
 
 Or copy `skills/firstpass/` straight into your agent's skills directory. To validate: read `testing/README.md` and `testing/results/`, reproduce for free with `node src/main.js --mock`, or run live on your own vendor with an OpenRouter key (~$4–5 for a full run).
 
+### Install for your agent
+
+Per-client commands (same set the interactive picker at https://getundercut.sh/#install offers):
+
+| Agent | Command | Note |
+|---|---|---|
+| Claude Code | `/plugin marketplace add undercutsh/firstpass` | Then `/plugin install firstpass@firstpass` — fewest keystrokes, this repo is its own marketplace. Or `npx skills add undercutsh/firstpass`, or copy `skills/firstpass/` to `.claude/skills/firstpass/` by hand. |
+| Codex CLI | `npx skills add undercutsh/firstpass -a codex` | Reads `.agents/skills/` (repo-scoped) or `$HOME/.agents/skills/`. Manual copy: `cp -r firstpass/skills/firstpass ./.agents/skills/firstpass` |
+| Cursor | `cp -r firstpass/skills/firstpass ./.cursor/skills/firstpass` | Folder name must match the `name:` field in SKILL.md (`firstpass`). `npx skills add undercutsh/firstpass` also works. |
+| GitHub Copilot | `mkdir -p .github && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> .github/copilot-instructions.md` | Copilot has no skills directory — it reads repo custom instructions instead. |
+| OpenCode | `npx skills add undercutsh/firstpass` | Reads `.opencode/skills/firstpass/SKILL.md`, and `.claude/skills/` / `.agents/skills/` for compatibility. |
+| Gemini CLI | `mkdir -p .gemini && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> .gemini/GEMINI.md` | Appends the policy to GEMINI.md, read hierarchically from the project root down. |
+| Windsurf | `echo "" >> AGENTS.md && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> AGENTS.md` | Windsurf/Cascade (now under docs.devin.ai) reads a root AGENTS.md automatically. |
+| JetBrains Junie | `cp -r firstpass/skills/firstpass ./.junie/skills/firstpass` | Project-level `.junie/skills/firstpass/` wins on a name collision with the user-level copy. |
+| Amp | `cp -r firstpass/skills/firstpass ./.agents/skills/firstpass` | Reads `.agents/skills/firstpass/SKILL.md` at the workspace root. |
+| Devin | `cp -r firstpass/skills/firstpass ./.devin/skills/firstpass` | Devin CLI/Desktop skills live at `.devin/skills/firstpass/SKILL.md`. |
+
 ## Links
 
 - Landing page: https://getundercut.sh/
