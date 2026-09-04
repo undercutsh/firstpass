@@ -203,3 +203,143 @@ describe('escalate', () => {
     }
   });
 });
+
+// --- capTier(): direct coverage (previously only exercised indirectly via
+// baseTier's formatStrict fallthrough) ---------------------------------------
+
+describe('capTier', () => {
+  const task = (flags) => makeTask({ id: 'c', category: 'mechanical', prompt: 'x', flags, answerKey: 'x', grader: () => {} });
+
+  test('v1 always caps at frontier, formatStrict or not (no formatStrict concept)', () => {
+    const policy = createPolicy('v1');
+    assert.equal(policy.capTier(task({})), 'frontier');
+    assert.equal(policy.capTier(task({ formatStrict: true })), 'frontier');
+  });
+
+  for (const version of ['latest', 'probe']) {
+    test(`${version}: non-formatStrict task caps at frontier`, () => {
+      const policy = createPolicy(version);
+      assert.equal(policy.capTier(task({})), 'frontier');
+    });
+
+    test(`${version}: formatStrict task caps at standard (never spends frontier on format work)`, () => {
+      const policy = createPolicy(version);
+      assert.equal(policy.capTier(task({ formatStrict: true })), 'standard');
+    });
+  }
+});
+
+// --- runUnitLadder(): escalation trace, hysteresis, and the apex cap -------
+// Previously untested directly — only exercised indirectly through
+// runner.test.js's seed-tagging tests via a mock attempter that never
+// exercises retries, uncertainty, or the needsApex cap path.
+
+describe('runUnitLadder', () => {
+  const task = (flags = {}) => makeTask({ id: 'ladder-task', category: 'reasoning', prompt: 'x', flags, answerKey: 'x', grader: () => {} });
+
+  const passResult = { answer: 'ok', status: 'grounded', uncertaintyReason: null, verdict: { pass: true, reason: 'ok' }, cost: 1 };
+  const failResult = { answer: 'bad', status: 'grounded', uncertaintyReason: null, verdict: { pass: false, reason: 'nope' }, cost: 1 };
+  const uncertainResult = { answer: null, status: 'uncertain', uncertaintyReason: 'unsure', verdict: { pass: false, reason: 'unsure' }, cost: 1 };
+
+  test('passes on the very first attempt: single attempt, no escalation', async () => {
+    const policy = createPolicy('latest');
+    const attempt = async () => passResult;
+    const trace = await policy.runUnitLadder(task(), attempt);
+    assert.equal(trace.attempts.length, 1);
+    assert.equal(trace.finalTier, 'cheap');
+    assert.equal(trace.escalated, false);
+    assert.equal(trace.needsApex, false);
+  });
+
+  test('hysteresis: one retry at the same tier on failure before escalating', async () => {
+    const policy = createPolicy('latest');
+    let calls = 0;
+    // Fail twice at cheap (initial + 1 retry), then pass at standard.
+    const attempt = async (tier) => {
+      calls++;
+      if (tier === 'cheap') return failResult;
+      return passResult;
+    };
+    const trace = await policy.runUnitLadder(task(), attempt);
+    assert.equal(calls, 3); // cheap, cheap (retry), standard (pass)
+    assert.deepEqual(trace.attempts.map((a) => a.tier), ['cheap', 'cheap', 'standard']);
+    assert.equal(trace.finalTier, 'standard');
+    assert.equal(trace.escalated, true);
+  });
+
+  test('uncertain status escalates immediately, with no same-tier retry', async () => {
+    const policy = createPolicy('latest');
+    const attempt = async (tier) => (tier === 'cheap' ? uncertainResult : passResult);
+    const trace = await policy.runUnitLadder(task(), attempt);
+    assert.deepEqual(trace.attempts.map((a) => a.tier), ['cheap', 'standard']);
+    assert.equal(trace.finalTier, 'standard');
+  });
+
+  test('never escalates past the cap: exhausting the cap tier marks needsApex instead of trying apex directly', async () => {
+    const policy = createPolicy('latest');
+    // Always fails, at every tier — should climb cheap -> standard -> frontier
+    // (the v1/non-formatStrict cap) and stop there, never attempting 'apex'.
+    const attempt = async () => failResult;
+    const trace = await policy.runUnitLadder(task(), attempt);
+    assert.equal(trace.needsApex, true);
+    assert.equal(trace.finalTier, 'frontier');
+    assert.ok(trace.attempts.every((a) => a.tier !== 'apex'), 'ladder must never call apex directly');
+  });
+
+  test('a formatStrict task under `latest` caps at standard, not frontier', async () => {
+    const policy = createPolicy('latest');
+    const attempt = async () => failResult;
+    const trace = await policy.runUnitLadder(task({ formatStrict: true }), attempt);
+    assert.equal(trace.needsApex, true);
+    assert.equal(trace.finalTier, 'standard');
+  });
+});
+
+// --- runUnitDual(): dual-run disagreement for ambiguous cheap work ---------
+// Previously untested directly.
+
+describe('runUnitDual', () => {
+  const task = makeTask({ id: 'dual-task', category: 'reasoning', prompt: 'x', flags: { ambiguous: true }, answerKey: 'x', grader: () => {} });
+
+  test('two agreeing, passing attempts: no escalation, settles at the low tier', async () => {
+    const policy = createPolicy('latest');
+    const attempt = async () => ({ answer: 'same', status: 'grounded', uncertaintyReason: null, verdict: { pass: true, reason: 'ok' }, cost: 1 });
+    const result = await policy.runUnitDual(task, attempt);
+    assert.equal(result.escalated, false);
+    assert.equal(result.finalTier, 'cheap');
+    assert.equal(result.attempts.length, 2);
+  });
+
+  test('two agreeing attempts that both FAIL still escalate (agreement alone is not enough)', async () => {
+    const policy = createPolicy('latest');
+    const attempt = async () => ({ answer: 'same', status: 'grounded', uncertaintyReason: null, verdict: { pass: false, reason: 'nope' }, cost: 1 });
+    const result = await policy.runUnitDual(task, attempt);
+    assert.equal(result.escalated, true);
+    assert.equal(result.finalTier, null);
+    assert.equal(result.disagreement, true);
+  });
+
+  test('two attempts with different answers escalate as a disagreement', async () => {
+    const policy = createPolicy('latest');
+    let call = 0;
+    const attempt = async () => {
+      call++;
+      return { answer: call === 1 ? 'a' : 'b', status: 'grounded', uncertaintyReason: null, verdict: { pass: true, reason: 'ok' }, cost: 1 };
+    };
+    const result = await policy.runUnitDual(task, attempt);
+    assert.equal(result.escalated, true);
+    assert.equal(result.disagreement, true);
+    assert.equal(result.finalTier, null);
+  });
+
+  test('respects a custom lowTier argument', async () => {
+    const policy = createPolicy('latest');
+    const seenTiers = [];
+    const attempt = async (tier) => {
+      seenTiers.push(tier);
+      return { answer: 'x', status: 'grounded', uncertaintyReason: null, verdict: { pass: true, reason: 'ok' }, cost: 1 };
+    };
+    await policy.runUnitDual(task, attempt, 'standard');
+    assert.deepEqual(seenTiers, ['standard', 'standard']);
+  });
+});
