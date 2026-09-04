@@ -144,6 +144,18 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ### Fixed
 
+- **`site/.well-known/ai-catalog.json` two stale/inaccurate claims** —
+  a content-accuracy pass (prior audit only checked well-formedness)
+  found the `notes` field still said "no ... agentic plugin exists
+  yet," which stopped being true once the Claude Code plugin
+  distribution shipped (`.claude-plugin/`, documented in `README.md`'s
+  Install section); reworded to match README's "no API/MCP server yet"
+  framing and mention the plugin install path. Also fixed a trust
+  attestation claiming benchmark methodology is public "at /testing" —
+  no such route exists on the live site (every other page links the
+  GitHub path `github.com/undercutsh/firstpass/tree/main/testing`
+  instead); corrected to the real URL. `llms.txt` and `README.md` were
+  cross-checked and found already accurate.
 - **Design Canvas install-picker parity gap** (#47) — a follow-up audit
   (same methodology as the 0.3.0 Design Canvas audit) found the "pick
   your agent" install-client picker added since had no JS-independent
