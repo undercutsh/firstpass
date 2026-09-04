@@ -140,8 +140,8 @@
     <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 3 — copy the skill directory directly</h3>
     <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0 0 12px">Clone or download <a href="https://github.com/undercutsh/firstpass" style="color: #F5F3EE">undercutsh/firstpass</a>, then copy <code style="background:#2A2D35;color:#F5F3EE">skills/firstpass/</code> into wherever your Claude Code setup reads skills from — project-level or user-level, same convention as any other skill.</p>
     <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #101216; border: 1px solid #2A2D35; padding: 18px 22px; font-family: 'JetBrains Mono', monospace; font-size: 15px; margin: 0 0 40px; flex-wrap: wrap">
-      <span><span style="color: #8A8F98">$ </span>cp -r firstpass/skills/firstpass ./.claude/skills/firstpass</span>
-      <button type="button" class="copybtn" data-copy="cp -r firstpass/skills/firstpass ./.claude/skills/firstpass" onclick="undercutCopy(this)" aria-label="Copy command: cp -r firstpass/skills/firstpass ./.claude/skills/firstpass">Copy</button>
+      <span><span style="color: #8A8F98">$ </span>mkdir -p .claude/skills && cp -r firstpass/skills/firstpass ./.claude/skills/firstpass</span>
+      <button type="button" class="copybtn" data-copy="mkdir -p .claude/skills && cp -r firstpass/skills/firstpass ./.claude/skills/firstpass" onclick="undercutCopy(this)" aria-label="Copy command: mkdir -p .claude/skills && cp -r firstpass/skills/firstpass ./.claude/skills/firstpass">Copy</button>
     </div>
 
     <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 20px; color: #b9bcc2">Validate it yourself</h3>
