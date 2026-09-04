@@ -53,7 +53,7 @@ Three properties make the results defensible:
 | OpenAI | 50/50 = | 50/50 **+4** | 50/50 **+5** |
 | open-weights | 50/50 = | 49/50 +1 | 50/50 +1 |
 
-Tiered is never worse than all-standard on any suite; it is *better* on 6 of
+Tiered is never worse than all-standard on any suite; it is *better* on 7 of
 12 cells (the escalator recovers failures a fixed single tier gives up on).
 
 ### The open-weights caveat
