@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Undercut for JetBrains AI Assistant — tiered dispatch, free MIT skill</title>
+<meta name="description" content="Undercut is a free, MIT-licensed SKILL.md that JetBrains AI Assistant's Junie agent reads via its Agent Skills support — routing each unit of work to the cheapest model that can pass verification. Measured up to −95% cost on public benchmarks at equal-or-better pass rate.">
+<link rel="canonical" href="https://getundercut.sh/junie">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Undercut">
+<meta property="og:title" content="Undercut for JetBrains AI Assistant — tiered dispatch, free MIT skill">
+<meta property="og:description" content="Routes JetBrains AI Assistant's Junie agent to the cheapest model that can pass verification. Measured up to −95% cost on public benchmarks at equal-or-better pass rate.">
+<meta property="og:url" content="https://getundercut.sh/junie">
+<meta property="og:image" content="https://getundercut.sh/og-image.svg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Undercut for JetBrains AI Assistant — tiered dispatch, free MIT skill">
+<meta name="twitter:description" content="Routes JetBrains AI Assistant's Junie agent to the cheapest model that can pass verification. Measured up to −95% cost on public benchmarks.">
+<link rel="author" href="https://iamjustinwinter.com/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Undercut",
+  "alternateName": "tiered-dispatch",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "url": "https://getundercut.sh/junie",
+  "description": "Confidence-gated model routing for JetBrains AI Assistant / Junie — a SKILL.md that runs every unit of work at the cheapest model that can pass verification.",
+  "license": "https://opensource.org/licenses/MIT",
+  "codeRepository": "https://github.com/undercutsh/firstpass",
+  "author": {
+    "@type": "Person",
+    "name": "Justin Winter",
+    "url": "https://iamjustinwinter.com/"
+  }
+}
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #F5F3EE; color: #15171C; font-family: 'Inter', sans-serif; line-height: 1.65; }
+  a { color: #15171C; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  a:hover { color: #227644; }
+  table { border-collapse: collapse; width: 100%; }
+  details > summary { cursor: pointer; list-style: none; }
+  details > summary::-webkit-details-marker { display: none; }
+  details > summary .aff::before { content: "+ "; }
+  details[open] > summary .aff::before { content: "− "; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 32px; }
+  .narrow { max-width: 720px; margin: 0 auto; padding: 64px 24px 0; }
+  .mono { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #8A8F98; text-transform: uppercase; letter-spacing: .08em; }
+  code { background: #DFDAD0; padding: 1px 5px; border-radius: 3px; font-size: .92em; font-family: 'JetBrains Mono', monospace; }
+  .callout { border: 1px solid #DFDAD0; border-radius: 6px; padding: 16px 18px; margin: 20px 0; }
+  .copybtn { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; background: transparent; color: #8A8F98; border: 1px solid #2A2D35; height: 32px; padding: 0 14px; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; box-sizing: border-box; transition: color .15s ease, border-color .15s ease; }
+  .copybtn:hover { color: #F5F3EE; border-color: #8A8F98; }
+  .step-row { transition: background-color .15s ease; }
+  .step-row:hover { background-color: rgba(245,243,238,0.05); }
+</style>
+</head>
+<body>
+
+<nav style="position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 14px 32px; background: rgba(245,243,238,0.94); backdrop-filter: blur(8px); border-bottom: 1px solid #DFDAD0; flex-wrap: wrap;">
+  <a href="/" style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 17px; letter-spacing: -0.02em; text-decoration: none">undercut</a>
+  <div style="display: flex; align-items: center; gap: 24px; font-size: 14px; flex-wrap: wrap;">
+    <a href="/#calculator" style="text-decoration: none; color: #4a4e57">Free audit</a>
+    <a href="/#benchmarks" style="text-decoration: none; color: #4a4e57">Benchmarks</a>
+    <a href="https://github.com/undercutsh/firstpass" style="text-decoration: none; color: #4a4e57; font-family: 'JetBrains Mono', monospace; font-size: 13px">GitHub &#8599;</a>
+  </div>
+</nav>
+
+<!-- Hero — net-new, Junie specific -->
+<header style="background: #15171C; color: #F5F3EE; padding: 80px 32px 88px">
+  <div class="wrap">
+    <p class="mono" style="margin: 0 0 16px">Undercut for JetBrains AI Assistant</p>
+    <h1 style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: clamp(34px, 4.4vw, 58px); line-height: 1.05; letter-spacing: -0.03em; margin: 0 0 20px; text-wrap: balance">Junie already reads Agent Skills. Give it one that stops overpaying.</h1>
+    <p style="font-size: 17px; line-height: 1.55; color: #b9bcc2; margin: 0 0 28px; max-width: 60ch">Undercut is a free, MIT-licensed policy file JetBrains AI Assistant's Junie agent follows at dispatch time — cheap tier first, escalate only on evidence, never on a vibe. One self-reported <code style="background:#2A2D35;color:#F5F3EE">ccusage</code>-style breakdown of default routing behavior in a different agent showed 93.8% of tokens going to the top-tier model by default (<a href="https://github.com/anthropics/claude-code/issues/27665" style="color:#b9bcc2">anthropics/claude-code#27665</a>) — one account's data, from Claude Code rather than Junie, but the pattern of defaulting to the priciest tier for mechanical work is the reason this exists.</p>
+    <div style="display: flex; gap: 14px; flex-wrap: wrap">
+      <a href="#install" style="display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; background: #F5F3EE; color: #15171C; border: none; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; text-decoration: none; transition: background-color .15s ease">Install for Junie</a>
+      <a href="/#benchmarks" style="display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #F5F3EE; text-decoration: none; border: 1px solid #2A2D35; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; transition: border-color .15s ease">See the benchmarks</a>
+    </div>
+  </div>
+</header>
+
+<!-- Compatibility bar — reuse from index.html, Junie added and highlighted for this page -->
+<section style="border-bottom: 1px solid #DFDAD0; padding: 26px 32px">
+  <div style="max-width: 1160px; margin: 0 auto; display: flex; align-items: baseline; gap: 32px; flex-wrap: wrap">
+    <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #63666C">Works anywhere a SKILL.md is read</span>
+    <div style="display: flex; gap: 32px; flex-wrap: wrap; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500">
+      <span style="display: flex; align-items: center; gap: 9px; color: #63666C; filter: grayscale(1); opacity: 0.75"><img src="https://cdn.simpleicons.org/claude" width="16" height="16" style="display: block" alt="">Claude Code</span>
+      <span style="display: flex; align-items: center; gap: 9px; color: #63666C; filter: grayscale(1); opacity: 0.75"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="7" stroke="currentColor" stroke-width="1.4"></rect><path d="M6.5 5.5 L4.5 8 L6.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M9.5 5.5 L11.5 8 L9.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>Codex</span>
+      <span style="display: flex; align-items: center; gap: 9px; color: #63666C; filter: grayscale(1); opacity: 0.75"><img src="https://cdn.simpleicons.org/cursor" width="16" height="16" style="display: block" alt="">Cursor</span>
+      <span style="display: flex; align-items: center; gap: 9px; color: #63666C; filter: grayscale(1); opacity: 0.75"><img src="https://cdn.simpleicons.org/githubcopilot" width="16" height="16" style="display: block" alt="">Copilot</span>
+      <span style="display: flex; align-items: center; gap: 9px; color: #63666C; opacity: 0.85"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.4"></rect><path d="M4.5 5.5 L7 8 L4.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M8.5 10.5 H11.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path></svg>OpenCode</span>
+      <span style="display: flex; align-items: center; gap: 9px; color: #15171C; opacity: 1"><img src="https://cdn.simpleicons.org/jetbrains" width="16" height="16" style="display: block" alt="">Junie</span>
+    </div>
+  </div>
+</section>
+
+<!-- Mechanism-grounding block — net-new, Junie specific -->
+<section style="padding: 80px 32px; border-bottom: 1px solid #DFDAD0; background: #FBFAF7">
+  <div class="wrap">
+    <p class="mono" style="margin: 0 0 14px; color: #63666C">How this maps onto JetBrains AI Assistant</p>
+    <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 30px; letter-spacing: -0.02em; margin: 0 0 24px; text-wrap: balance">Same rubric. Junie's own Agent Skills support underneath it.</h2>
+    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 20px; max-width: 70ch">Junie, the agentic coding assistant inside JetBrains AI Assistant, <a href="https://junie.jetbrains.com/docs/agent-skills.html" style="color:#4a4e57">documents support for Agent Skills</a> with three confirmed discovery paths: project-level <code>&lt;projectRoot&gt;/.junie/skills/&lt;name&gt;/</code>, user-level <code>~/.junie/skills/&lt;name&gt;/</code> (<code>%USERPROFILE%\.junie\skills\&lt;name&gt;\</code> on Windows), and the cross-agent <code>.agents/skills/</code> convention shared with several other tools. Project-level wins on a name collision. That's a direct fit for something already shipped as a <code>SKILL.md</code> — no translation needed.</p>
+    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 20px; max-width: 70ch">If no skill applies to a given task, Junie falls back to plain guidelines in <code>.junie/guidelines.md</code> or a root <code>AGENTS.md</code> — but a scored, versioned rubric is exactly what Agent Skills exist for, so the skill install below is the reliable path, not the fallback.</p>
+    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0; max-width: 70ch">Undercut's tier names — <strong>cheap, standard, frontier, apex</strong> — are generic on purpose. JetBrains AI Assistant is multi-model, not a single vendor's own models — the plan and IDE decide which providers are on offer. <a href="https://github.com/undercutsh/firstpass/blob/main/skills/firstpass/models.md">models.md</a> gives the rule of thumb rather than a fixed mapping for Junie specifically: cheap resolves to the smallest/fastest model available in your model picker, standard to your default work model, frontier to the highest-reasoning model on offer, and apex to a single tie-break call on the strongest model available. Nothing here sits between Junie and its model backend — it's a policy file the agent reads at dispatch time, same as any other skill, no proxy, no network hop.</p>
+  </div>
+</section>
+
+<!-- Install — net-new, Junie specific mechanics -->
+<section id="install" style="background: #15171C; color: #F5F3EE; padding: 80px 32px">
+  <div class="wrap">
+    <p class="mono" style="margin: 0 0 14px">Install for JetBrains AI Assistant</p>
+    <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 30px; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 32px; text-wrap: balance">Free. MIT. Nothing installs, nothing proxies your traffic.</h2>
+
+    <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 1 — project-level skill (recommended)</h3>
+    <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0 0 12px">Junie's own docs confirm project-scoped discovery at <code style="background:#2A2D35;color:#F5F3EE">.junie/skills/&lt;name&gt;/</code>. Undercut's skill is already named <code style="background:#2A2D35;color:#F5F3EE">firstpass</code>, so the directory copies straight across — no renaming, no rewriting frontmatter — and it takes priority over a user-level or cross-agent copy if there's ever a name collision.</p>
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #101216; border: 1px solid #2A2D35; padding: 18px 22px; font-family: 'JetBrains Mono', monospace; font-size: 15px; margin: 0 0 28px; flex-wrap: wrap">
+      <span><span style="color: #4a4e57">$ </span>cp -r firstpass/skills/firstpass ./.junie/skills/firstpass</span>
+      <button type="button" class="copybtn" data-copy="cp -r firstpass/skills/firstpass ./.junie/skills/firstpass" onclick="undercutCopy(this)">Copy</button>
+    </div>
+
+    <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 2 — the cross-agent convention Junie also scans</h3>
+    <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0 0 12px">Junie's docs also list <code style="background:#2A2D35;color:#F5F3EE">.agents/skills/</code> as a recognized discovery path — the same convention several other agents in this compatibility bar read. If a repo already carries a skill installed that way for another tool, Junie should pick it up with nothing extra to install.</p>
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #101216; border: 1px solid #2A2D35; padding: 18px 22px; font-family: 'JetBrains Mono', monospace; font-size: 15px; margin: 0 0 28px; flex-wrap: wrap">
+      <span><span style="color: #4a4e57">$ </span>cp -r firstpass/skills/firstpass ./.agents/skills/firstpass</span>
+      <button type="button" class="copybtn" data-copy="cp -r firstpass/skills/firstpass ./.agents/skills/firstpass" onclick="undercutCopy(this)">Copy</button>
+    </div>
+
+    <div class="callout" style="border-color: #2A2D35; background: #101216; margin: 0 0 32px">
+      <p style="font-size: 14px; line-height: 1.6; color: #b9bcc2; margin: 0"><strong style="color: #F5F3EE">Working across machines?</strong> Junie also reads a user-level skills directory — <code style="background:#2A2D35;color:#F5F3EE">~/.junie/skills/&lt;name&gt;/</code> on macOS/Linux, <code style="background:#2A2D35;color:#F5F3EE">%USERPROFILE%\.junie\skills\&lt;name&gt;\</code> on Windows — for a skill you want available in every project without installing it per-repo. If no skill applies to the task at hand, Junie falls back to plain guidelines in <code style="background:#2A2D35;color:#F5F3EE">.junie/guidelines.md</code> or a root <code style="background:#2A2D35;color:#F5F3EE">AGENTS.md</code>, but the rubric is written as a skill, not guideline prose, so install it as a skill first.</p>
+    </div>
+
+    <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 20px; color: #b9bcc2">Validate it yourself</h3>
+    <ol style="margin: 0 0 36px; padding: 0; list-style: none; display: grid; gap: 0">
+      <li class="step-row" style="display: flex; align-items: center; gap: 18px; padding: 10px 14px; margin: 0 -14px; border-top: 1px solid #2A2D35; font-size: 15px; line-height: 1.6; color: #b9bcc2; border-radius: 8px"><span style="font-family: 'JetBrains Mono', monospace; color: #2E9E5B; font-weight: 700">1</span><span>Read the published results — <code style="background:#2A2D35;color:#F5F3EE">testing/README.md</code> and the raw JSON in <code style="background:#2A2D35;color:#F5F3EE">testing/results/</code></span></li>
+      <li class="step-row" style="display: flex; align-items: center; gap: 18px; padding: 10px 14px; margin: 0 -14px; border-top: 1px solid #2A2D35; font-size: 15px; line-height: 1.6; color: #b9bcc2; border-radius: 8px"><span style="font-family: 'JetBrains Mono', monospace; color: #2E9E5B; font-weight: 700">2</span><span>Reproduce for free, no API key, no spend: <code style="background:#2A2D35;color:#F5F3EE">node src/main.js --mock</code></span></li>
+      <li class="step-row" style="display: flex; align-items: center; gap: 18px; padding: 10px 14px; margin: 0 -14px; border-top: 1px solid #2A2D35; border-bottom: 1px solid #2A2D35; font-size: 15px; line-height: 1.6; color: #b9bcc2; border-radius: 8px"><span style="font-family: 'JetBrains Mono', monospace; color: #2E9E5B; font-weight: 700">3</span><span>Open a small task in Junie with the skill installed and check which model tier it picks in the run log — a single-model smoke test is pennies</span></li>
+    </ol>
+    <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0"><strong style="color: #F5F3EE">Zero lock-in.</strong> It's a policy Junie reads — remove the skill and you're back to status quo.</p>
+  </div>
+</section>
+
+<!-- How it works — byte-identical reuse from index.html -->
+<section id="how" style="background: #15171C; color: #F5F3EE; padding: 88px 32px">
+  <div class="wrap">
+    <div style="display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin: 0 0 14px">
+      <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #8A8F98; margin: 0">How it works</p>
+      <span style="font-family: 'Inter', sans-serif; font-weight: 500; font-size: 11px; color: #8A8F98; border: 1px solid #2A2D35; height: 20px; line-height: 18px; padding: 0 8px; border-radius: 6px; display: inline-flex; align-items: center; box-sizing: border-box">The Undercut Rubric &middot; v1</span>
+    </div>
+    <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 34px; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 24px; text-wrap: balance">Six flags assign a tier. Three triggers are the only way up.</h2>
+    <p style="font-size: 13.5px; line-height: 1.6; color: #8A8F98; margin: 0 0 20px">This is a named, versioned spec — not internal logic we could quietly change. When the rubric changes (a new flag, a different cap), the version number moves and <a href="https://github.com/undercutsh/firstpass/blob/main/CHANGELOG.md" style="color: #8A8F98">the changelog</a> says why.</p>
+    <p style="font-size: 16px; line-height: 1.65; color: #b9bcc2; margin: 0 0 28px">Every unit of work gets scored against six flags, then assigned the cheapest tier that can plausibly handle it. It only moves up a tier when something objective proves it needs to — a failed check, a measured disagreement, an explicit uncertainty flag. It never moves up on a guess, and it never moves back down mid-task.</p>
+    <div style="border: 1px solid #2A2D35; background: #101216; padding: 28px 24px; margin: 0 0 28px; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; overflow-x: auto">
+      <div style="display: flex; align-items: center; gap: 0; min-width: 640px">
+        <div style="border: 1px solid #2A2D35; padding: 12px 16px; color: #b9bcc2; white-space: nowrap">unit of work</div>
+        <div style="width: 36px; height: 1px; background: #2A2D35; position: relative"><span style="position: absolute; right: -2px; top: -4px; color: #2A2D35">&rsaquo;</span></div>
+        <div style="border: 1px solid #8A8F98; padding: 12px 16px; color: #F5F3EE; white-space: nowrap">6-flag rubric</div>
+        <div style="width: 36px; display: flex; align-items: center; justify-content: center; color: #4a4e57; flex-shrink: 0">&rsaquo;</div>
+        <div style="display: grid; gap: 8px; flex: 1">
+          <div style="display: flex; align-items: center; gap: 12px"><span style="color: #4a4e57; width: 64px">0 flags</span><div style="flex: 1; border: 1px solid #2E9E5B; color: #2E9E5B; padding: 8px 14px; display: flex; justify-content: space-between; gap: 12px"><span>cheap</span><span>~90% of units land here &#10003;</span></div></div>
+          <div style="display: flex; align-items: center; gap: 12px"><span style="color: #4a4e57; width: 64px">1&ndash;2</span><div style="flex: 1; border: 1px solid #2A2D35; color: #b9bcc2; padding: 8px 14px">standard</div></div>
+          <div style="display: flex; align-items: center; gap: 12px"><span style="color: #4a4e57; width: 64px">3+/own</span><div style="flex: 1; border: 1px solid #2A2D35; color: #b9bcc2; padding: 8px 14px">frontier</div></div>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; margin-top: 20px; padding-top: 16px; border-top: 1px dashed #2A2D35; min-width: 640px">
+        <span style="color: #C77D2E">&uarr; escalate +1 tier</span>
+        <span style="color: #8A8F98">only on: fail &times;2 &middot; two runs disagree &middot; tagged "uncertain"</span>
+        <span style="color: #4a4e57; margin-left: auto">residue only &mdash; never redoes the batch</span>
+      </div>
+    </div>
+    <details style="border: 1px solid #2A2D35">
+      <summary style="padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700"><span class="aff">See the rubric</span></summary>
+      <div style="padding: 8px 24px 28px; border-top: 1px solid #2A2D35">
+        <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 20px 0 14px; color: #F5F3EE">Step 1 &mdash; Base tier, six-flag rubric</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 10px 28px; font-size: 14.5px; line-height: 1.5; color: #b9bcc2">
+          <div><strong style="color: #F5F3EE; font-family: 'JetBrains Mono', monospace; font-size: 13px">Unverifiable</strong> &mdash; can output be checked mechanically? (tests, schema, diff, grep)</div>
+          <div><strong style="color: #F5F3EE; font-family: 'JetBrains Mono', monospace; font-size: 13px">Ambiguous</strong> &mdash; one right answer, or several defensible ones?</div>
+          <div><strong style="color: #F5F3EE; font-family: 'JetBrains Mono', monospace; font-size: 13px">Blast</strong> &mdash; reversible? touches money, auth, user data, production, deletes?</div>
+          <div><strong style="color: #F5F3EE; font-family: 'JetBrains Mono', monospace; font-size: 13px">Cross-cutting</strong> &mdash; one file/source, or reasoning across many?</div>
+          <div><strong style="color: #F5F3EE; font-family: 'JetBrains Mono', monospace; font-size: 13px">Novel</strong> &mdash; pattern-following, or genuinely new design?</div>
+          <div><strong style="color: #F5F3EE; font-family: 'JetBrains Mono', monospace; font-size: 13px">Format-strict</strong> &mdash; must output match an exact schema?</div>
+        </div>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 13.5px; line-height: 1.7; margin: 20px 0 0; color: #b9bcc2">0 flags &rarr; <span style="color: #2E9E5B">cheap</span> &middot; 1&ndash;2 &rarr; standard &middot; 3+ or any ownership/judgment call &rarr; frontier. Apex only when you can write one sentence stating why the marginal intelligence pays for the cost.</p>
+        <div style="margin: 24px 0; padding: 16px 20px; border-left: 2px solid #2E9E5B; background: rgba(46,158,91,0.07)">
+          <strong style="font-family: 'JetBrains Mono', monospace; font-size: 13px">The override &mdash; single biggest lever</strong>
+          <p style="font-size: 14.5px; line-height: 1.6; color: #b9bcc2; margin: 8px 0 0">Cheap-to-verify &rArr; cheap-to-generate. If output can be checked mechanically, it starts at the lowest tier regardless of how hard it looks &mdash; verification catches failure. Only unverifiable work needs to start high.</p>
+        </div>
+        <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 24px 0 10px">Step 2 &mdash; Escalate exactly one tier, on evidence only</h3>
+        <ul style="font-size: 14.5px; line-height: 1.7; color: #b9bcc2; margin: 0; padding-left: 20px">
+          <li>Verification fails twice at the current tier</li>
+          <li>Two cheap-tier runs disagree on ambiguous-flagged work</li>
+          <li>The worker tags an item "uncertain"</li>
+        </ul>
+        <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 24px 0 8px">Residue-only handoff</h3>
+        <p style="font-size: 14.5px; line-height: 1.6; color: #b9bcc2; margin: 0">The next tier up gets only the failed or uncertain items, plus verification notes. It resolves the residue &mdash; it never redoes the batch.</p>
+        <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 24px 0 8px">Hysteresis &mdash; guardrails</h3>
+        <p style="font-size: 14.5px; line-height: 1.6; color: #b9bcc2; margin: 0 0 24px">Never de-escalate mid-task. Max one retry per tier. Anything still unresolved goes to a single batched apex tie-break call. One hard file in a 700-file job doesn't drag the other 699 up a tier.</p>
+        <pre style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.6; color: #8A8F98; background: #101216; border: 1px solid #2A2D35; padding: 20px 24px; margin: 0; overflow-x: auto"> unit of work
+      |
+  6-flag rubric
+      |
+  +---+----+
+  | 0 flags|--&gt; <span style="color: #2E9E5B">cheap</span>
+  | 1-2    |--&gt; standard
+  | 3+/own |--&gt; frontier
+  +---+----+
+      | <span style="color: #C77D2E">fail x2 / disagree / uncertain</span>
+      v
+  <span style="color: #C77D2E">escalate +1 tier</span>
+  (residue only)
+      |
+  still unresolved?
+      v
+  single batched
+  apex tie-break</pre>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- Why it holds up — byte-identical reuse from index.html -->
+<section style="padding: 88px 32px; border-bottom: 1px solid #DFDAD0">
+  <div class="wrap">
+    <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #63666C; margin: 0 0 14px">Why it holds up</p>
+    <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 34px; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 24px">Flags steer. Verification and escalation decide.</h2>
+    <p style="font-size: 16px; line-height: 1.65; color: #4a4e57; margin: 0 0 28px">Even when the rubric flags are scored imperfectly, the escalator still routes work to the right tier almost every time &mdash; because a wrong flag only ever costs one extra cheap attempt, never a wrong answer or a big bill.</p>
+    <details style="border: 1px solid #DFDAD0">
+      <summary style="padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700"><span class="aff">See the data</span></summary>
+      <div style="padding: 8px 24px 28px; border-top: 1px solid #DFDAD0">
+        <p style="font-size: 15px; line-height: 1.65; color: #4a4e57; margin: 20px 0 24px">A stock dispatcher model reproduces the rubric flags imperfectly &mdash; Haiku hits 90% agreement, Sonnet 93%. The weakest flag (format-strict) is only 60%. None of that matters: under the shipped policy, both dispatchers still route 100% of units to the correct tier. A wrong flag changes the ladder cap, never the base tier &mdash; worst case, one extra cheap attempt.</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 32px; margin: 0 0 28px; font-family: 'JetBrains Mono', monospace; font-size: 12px">
+          <div>
+            <div style="margin-bottom: 12px; color: #63666C">Haiku dispatcher</div>
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px"><div style="height: 14px; width: 90%; background: #8A8F98"></div><span>90% flag agreement</span></div>
+            <div style="display: flex; align-items: center; gap: 10px"><div style="height: 14px; width: 100%; background: #2E9E5B"></div><span style="white-space: nowrap">100% tier-match</span></div>
+          </div>
+          <div>
+            <div style="margin-bottom: 12px; color: #63666C">Sonnet dispatcher</div>
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px"><div style="height: 14px; width: 93%; background: #8A8F98"></div><span>93% flag agreement</span></div>
+            <div style="display: flex; align-items: center; gap: 10px"><div style="height: 14px; width: 100%; background: #2E9E5B"></div><span style="white-space: nowrap">100% tier-match</span></div>
+          </div>
+        </div>
+        <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 700; margin: 0 0 8px">The rules are about the work, not the model.</h3>
+        <p style="font-size: 15px; line-height: 1.65; color: #4a4e57; margin: 0">Every rule is a property of the unit of work &mdash; verifiable, ambiguous, blast-radius &mdash; never a specific model's known weakness. Vendor cards go stale as models change; work properties don't. It's also hard-won &mdash; a format-strict rule that worked on Anthropic backfired on Gemini, which is exactly why the rubric no longer encodes per-vendor behavior.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- What it doesn't do — condensed reuse, links out rather than duplicating -->
+<section style="padding: 64px 32px; border-bottom: 1px solid #DFDAD0; background: #FBFAF7">
+  <div class="wrap">
+    <p class="mono" style="margin: 0 0 14px; color: #63666C">Honest limits</p>
+    <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 26px; letter-spacing: -0.02em; margin: 0 0 18px">What this doesn't do.</h2>
+    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 8px; max-width: 70ch">Not a proxy, not a gateway, doesn't auto-flag in production (Junie scores the flags itself &mdash; measured robust to getting them wrong, see above), and doesn't promise a dollar figure for your workload. The Agent Skills discovery paths above come from JetBrains' own docs, researched fresh rather than run end-to-end by us &mdash; if you hit a mismatch, see the note in the PR. Full list, with the finance/procurement note and the paid-tier disclosure, is on the <a href="/#pricing">main page</a>.</p>
+  </div>
+</section>
+
+<!-- Final CTA — byte-identical reuse from index.html -->
+<section style="background: #15171C; color: #F5F3EE; padding: 96px 32px; text-align: center">
+  <div style="max-width: 720px; margin: 0 auto">
+    <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: clamp(32px, 3.6vw, 48px); letter-spacing: -0.03em; line-height: 1.1; margin: 0 0 20px; text-wrap: balance">Undercut the top tier. Not the quality bar.</h2>
+    <p style="font-size: 16px; line-height: 1.6; color: #8A8F98; margin: 0 0 36px">Nothing about this page expires. What does keep happening is the token bill, one session at a time, on whatever Junie is currently doing with mechanical work.</p>
+    <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap">
+      <button type="button" onclick="undercutCopy(this)" data-copy="cp -r firstpass/skills/firstpass ./.junie/skills/firstpass" style="display: inline-flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 14px; background: #F5F3EE; color: #15171C; border: none; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; cursor: pointer; transition: background-color .15s ease"><span style="font-weight: 800">Install</span><span style="color: #4a4e57">cp -r firstpass/skills/firstpass ./.junie/skills/firstpass</span></button>
+      <a href="https://github.com/undercutsh/firstpass" style="display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #F5F3EE; text-decoration: none; border: 1px solid #2A2D35; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; transition: border-color .15s ease">View on GitHub</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer — byte-identical reuse from index.html -->
+<footer style="padding: 64px 32px 48px">
+  <div style="max-width: 1160px; margin: 0 auto">
+    <div style="display: flex; justify-content: space-between; gap: 48px; flex-wrap: wrap; margin: 0 0 48px">
+      <div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 17px; margin: 0 0 10px">undercut</div>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #63666C; margin: 0">MIT License &middot; <a href="https://github.com/undercutsh/firstpass" style="color: #63666C">github.com/undercutsh/firstpass</a></p>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #63666C; margin: 6px 0 0">Built by <a rel="me author" href="https://iamjustinwinter.com/" style="color: #63666C">Justin Winter</a></p>
+      </div>
+      <div style="display: flex; gap: 72px; flex-wrap: wrap; font-size: 14px">
+        <div style="display: grid; gap: 10px; align-content: start">
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #63666C">Product</span>
+          <a href="/#how" style="text-decoration: none; color: #4a4e57">How it works</a>
+          <a href="/#calculator" style="text-decoration: none; color: #4a4e57">Free audit</a>
+          <a href="/#teams" style="text-decoration: none; color: #4a4e57">Teams</a>
+          <a href="/#pricing" style="text-decoration: none; color: #4a4e57">Pricing</a>
+          <a href="#install" style="text-decoration: none; color: #4a4e57">Install</a>
+        </div>
+        <div style="display: grid; gap: 10px; align-content: start">
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #63666C">Proof</span>
+          <a href="/#benchmarks" style="text-decoration: none; color: #4a4e57">Benchmarks</a>
+          <a href="https://github.com/undercutsh/firstpass/tree/main/testing/results" style="text-decoration: none; color: #4a4e57">Raw results</a>
+          <a href="https://github.com/undercutsh/firstpass/blob/main/testing/README.md" style="text-decoration: none; color: #4a4e57">Methodology</a>
+        </div>
+        <div style="display: grid; gap: 10px; align-content: start">
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #63666C">Repo</span>
+          <a href="https://github.com/undercutsh/firstpass" style="text-decoration: none; color: #4a4e57">GitHub</a>
+          <a href="https://github.com/undercutsh/firstpass/releases" style="text-decoration: none; color: #4a4e57">Changelog</a>
+          <a href="https://github.com/undercutsh/firstpass/issues" style="text-decoration: none; color: #4a4e57">Issues</a>
+        </div>
+      </div>
+    </div>
+    <div style="border-top: 1px solid #DFDAD0; padding-top: 24px; display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-size: 12.5px; color: #63666C">
+      <span style="display: flex; gap: 18px; flex-wrap: wrap; align-items: baseline">
+        <span style="font-family: 'JetBrains Mono', monospace" id="uc-copyright-year">&copy; 2026 Undercut &middot; MIT</span>
+        <span style="font-family: 'JetBrains Mono', monospace">Works with: Claude Code &middot; Codex &middot; Cursor &middot; Copilot &middot; OpenCode &middot; JetBrains AI Assistant</span>
+      </span>
+      <span style="display: flex; gap: 18px; flex-wrap: wrap">
+        <a href="/privacy/" style="color: #63666C; text-decoration: none">Privacy</a>
+        <a href="/terms/" style="color: #63666C; text-decoration: none">Terms</a>
+        <a href="https://github.com/undercutsh/firstpass/blob/main/testing/README.md" style="color: #63666C; text-decoration: none">Benchmark data</a>
+        <a href="https://github.com/undercutsh/firstpass/blob/main/CHANGELOG.md" style="color: #63666C; text-decoration: none">Changelog</a>
+      </span>
+    </div>
+    <div style="margin-top: 10px; padding-top: 14px; border-top: 1px solid #DFDAD0; display: flex; gap: 18px; flex-wrap: wrap; font-size: 11px; color: #63666C">
+      <span style="font-family: 'JetBrains Mono', monospace">agent &amp; crawler files:</span>
+      <a href="/llms.txt" style="color: #63666C; text-decoration: none">llms.txt</a>
+      <a href="/humans.txt" style="color: #63666C; text-decoration: none">humans.txt</a>
+      <a href="/robots.txt" style="color: #63666C; text-decoration: none">robots.txt</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function undercutCopy(btn) {
+    var text = btn.getAttribute('data-copy');
+    var original = btn.textContent;
+    function done() {
+      btn.textContent = 'Copied ✓';
+      setTimeout(function () { btn.textContent = original; }, 1800);
+    }
+    if (navigator.clipboard) { navigator.clipboard.writeText(text).then(done, done); }
+    else { done(); }
+  }
+  (function () {
+    var y = document.getElementById('uc-copyright-year');
+    if (y) y.textContent = '© ' + new Date().getFullYear() + ' Undercut · MIT';
+  })();
+</script>
+
+</body>
+</html>
