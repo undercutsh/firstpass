@@ -13,8 +13,8 @@ claims** — anyone can re-verify any cell.
   third-party, MIT-licensed, uncontested tasks — **up to −71% (GSM8K) and
   −95% (HumanEval)** on closed vendors, never worse quality on any cell with
   a tiered benefit (OpenAI code is NA\* — its cheap tier lacks Python).
-- **The escalator never loses quality.** Across all 16 measured cells
-  (2 benchmarks × 4 vendors × ... ) tiered pass rate was equal-or-better to
+- **The escalator never loses quality.** Across all 8 measured cells
+  (2 benchmarks × 4 vendors) tiered pass rate was equal-or-better to
   all-standard except GSM8K/Gemini (−2, within seed noise).
 - **Robust to imperfect flagging.** A stock dispatcher model reproduces 90% of
   rubric flags but routes 100% of units to the correct tier.

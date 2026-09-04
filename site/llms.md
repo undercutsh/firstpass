@@ -37,7 +37,7 @@ Controlled A/B: same tasks, same grader, only the routing policy changes. Vendor
 
 **HumanEval (Python code, 100 units/cell):** Gemini −95% cost (same pass) · Anthropic −61% (same) · OpenAI NA* (same) · Open-weights +77%* (same) — *OpenAI's cheapest tier can't write Python, so every task escalates the full ladder; quality holds at 100/100.
 
-Secondary evidence (our own 30-task synthetic suite, clearly labeled ours): tiered was never worse than all-standard on any cell, beat it on 6 of 12.
+Secondary evidence (our own 30-task synthetic suite, clearly labeled ours): tiered was never worse than all-standard on any cell, beat it on 7 of 12.
 
 Full data: https://github.com/undercutsh/firstpass/tree/main/testing
 
