@@ -74,4 +74,16 @@ export const reasoningSuite = [
     { unverifiable: false, ambiguous: false, blast: false, crossCutting: false, novel: false },
     'yes',
   ),
+  // Deliberately unresolvable by every local tier in --mock (see runner.js's
+  // mockAttempter APEX_PROBE_IDS) so the ladder genuinely exhausts its cap
+  // and needsApex, exercising the single batched apex tie-break end to end
+  // in mock/plumbing runs. Without a task like this, --mock's ladder always
+  // resolves by 'standard' (mockAttempter passes any non-cheap tier), so
+  // frontier — and therefore apex — is dead code from --mock's perspective.
+  T(
+    'apex-tiebreak',
+    'Two expert reviewers disagree on whether this refactor changes observable behavior. Resolve the tie: does it change observable behavior? Answer "yes" or "no".',
+    { unverifiable: false, ambiguous: false, blast: false, crossCutting: false, novel: false },
+    'no',
+  ),
 ];

@@ -217,10 +217,24 @@ const MOCK_SOLUTIONS = {
   palindrome: 'function main(s){ const c=s.toLowerCase().replace(/[^a-z0-9]/g,""); return c===c.split("").reverse().join("") }',
 };
 
+// Tasks that must fail at EVERY local tier (cheap, standard, frontier) in
+// --mock mode, so the ladder genuinely exhausts its cap and marks needsApex
+// — the only way the single batched apex tie-break (runner.js's
+// rawApexCall, wired via mockApex in main.js) gets exercised in a mock run.
+// Without an id in this set, mockAttempter's generic branch below passes on
+// any tier !== 'cheap', so every mock task resolves by 'standard' and never
+// even reaches 'frontier', let alone apex — the same "coincidentally never
+// triggers the real path" gap PR #110 fixed for key-order sensitivity, here
+// for hysteresis's escalation ceiling / the apex tie-break. See
+// suites/reasoning.js's 'apex-tiebreak' task and rawApexCall's test coverage
+// in runner.test.js.
+const APEX_PROBE_IDS = new Set(['reasoning:apex-tiebreak']);
+
 /**
  * Build a mock attempter. For known-correct answers it returns the task's
  * answerKey at any tier (so cheap passes fast); unknown answers fail on the
- * cheap tier and pass on standard+ (exercises escalation).
+ * cheap tier and pass on standard+ (exercises escalation). APEX_PROBE_IDS
+ * fail at every local tier so they exercise the apex path instead.
  */
 export function mockAttempter({ alwaysPass = false } = {}) {
   const attempts = [];
@@ -258,7 +272,7 @@ export function mockAttempter({ alwaysPass = false } = {}) {
         usage: { in: 100, out: 50, costUsd: 0.001 },
       };
     } else {
-      shouldPass = alwaysPass || tier !== 'cheap';
+      shouldPass = alwaysPass || (tier !== 'cheap' && !APEX_PROBE_IDS.has(task.id));
     }
     const answer = shouldPass ? task.answerKey : { wrong: 'mock-cheap-fail' };
     attempts.push(tier);

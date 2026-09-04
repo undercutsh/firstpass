@@ -4,11 +4,13 @@
 
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
-import { runSuite, mockAttempter } from './runner.js';
+import { runSuite, mockAttempter, mockApex } from './runner.js';
 import vm from 'node:vm';
 import { makeTask } from './tasks.js';
 import { createPolicy } from './policy.js';
 import { codeSuite } from './suites/code.js';
+import { reasoningSuite } from './suites/reasoning.js';
+import { TIER_ORDER, MAX_TIER_RETRIES } from './config.js';
 
 const task = makeTask({
   id: 'reasoning:t1',
@@ -97,6 +99,78 @@ describe('mockAttempter code-suite fixtures exercise key-order independence', ()
       const got = fn(...input);
       assert.deepEqual(Object.keys(got).sort(), [...expectedOrder].sort()); // same key set
       assert.notDeepEqual(Object.keys(got), expectedOrder); // different order
+    }
+  });
+});
+
+// --- regression coverage: does --mock actually reach the batched apex   ---
+// --- tie-break, and does it genuinely exercise the hysteresis cap?      ---
+//
+// Before the 'apex-tiebreak' fixture (suites/reasoning.js) and its
+// APEX_PROBE_IDS handling (runner.js's mockAttempter), EVERY mock task
+// resolved by the 'standard' tier (mockAttempter passes any tier !==
+// 'cheap'), so runSuite's single-batched-apex-call code path — and the
+// ladder's cap-exhaustion branch that feeds it — were dead in `node
+// src/main.js --mock`: a naive implementation that dropped the max-one-retry
+// hysteresis, or that called apex per-item instead of in one batch, would
+// still pass `--mock` with zero coverage. This pins the genuine path.
+describe('runSuite exercises the single batched apex tie-break in --mock', () => {
+  test('a task that fails at every local tier rides the ladder to its cap and is resolved by ONE batched apex call', async () => {
+    const policy = createPolicy('latest');
+    const probeTask = reasoningSuite.find((t) => t.id === 'reasoning:apex-tiebreak');
+    assert.ok(probeTask, 'expected a reasoning:apex-tiebreak task in reasoningSuite');
+
+    let apexCalls = 0;
+    const apexChat = mockApex((id) => (id === probeTask.id ? probeTask.answerKey : null));
+    const wrappedApexChat = async (...args) => {
+      apexCalls++;
+      return apexChat(...args);
+    };
+
+    const units = await runSuite({
+      arm: 'tiered',
+      vendor: 'anthropic',
+      suite: [probeTask],
+      attempt: mockAttempter(),
+      apexChat: wrappedApexChat,
+      apexModel: 'mock-apex',
+      seeds: 1,
+      concurrency: 4,
+      policy,
+    });
+
+    assert.equal(units.length, 1);
+    const [u] = units;
+
+    // Genuinely resolved via apex, not just marked for it.
+    assert.equal(u.needsApex, true);
+    assert.equal(u.apexResolved, true);
+    assert.equal(u.finalTier, 'apex');
+    assert.equal(u.passed, true, u.reason);
+
+    // Exactly ONE batched apex call for the whole suite (never per-item).
+    assert.equal(apexCalls, 1);
+
+    // The ladder actually rode through every local tier, in order, cap ==
+    // 'frontier' (TIER_ORDER[length-2]) before falling to apex — apex is
+    // never attempted directly.
+    const localTiers = u.attemptLog.filter((a) => a.tier !== 'apex').map((a) => a.tier);
+    assert.deepEqual([...new Set(localTiers)], ['cheap', 'standard', 'frontier']);
+    assert.equal(policy.capTier(probeTask), TIER_ORDER[TIER_ORDER.length - 2]);
+    assert.equal(policy.capTier(probeTask), 'frontier');
+
+    // Hysteresis is genuinely exercised, not just declared: MAX_TIER_RETRIES
+    // + 1 attempts at EACH local tier before escalating (one retry, then up).
+    for (const tier of ['cheap', 'standard', 'frontier']) {
+      const attemptsAtTier = u.attemptLog.filter((a) => a.tier === tier).length;
+      assert.equal(attemptsAtTier, MAX_TIER_RETRIES + 1, `expected ${MAX_TIER_RETRIES + 1} attempts at ${tier}`);
+    }
+
+    // And the ladder never de-escalates — attempted tiers only ever move up.
+    const tierIdx = (t) => TIER_ORDER.indexOf(t);
+    const seenOrder = u.attemptLog.map((a) => tierIdx(a.tier));
+    for (let i = 1; i < seenOrder.length; i++) {
+      assert.ok(seenOrder[i] >= seenOrder[i - 1], 'tier index must never decrease (no de-escalation)');
     }
   });
 });
