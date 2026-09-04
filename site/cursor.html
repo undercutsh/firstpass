@@ -394,7 +394,6 @@
     })
       .then(function (res) {
         clearTimeout(timeoutId);
-
         if (!res.ok) throw new Error('GitHub API error ' + res.status);
         return res.json();
       })
@@ -406,7 +405,6 @@
       })
       .catch(function () {
         clearTimeout(timeoutId);
-
         fallback();
       });
   }
