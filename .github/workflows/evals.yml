@@ -13,6 +13,26 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      # Fast, independent static checks first (each reads a handful of files,
+      # none depend on another step's output) so a doc/content mistake — the
+      # most common PR shape — fails in well under a second instead of after
+      # the heavier eval-harness steps below.
+      - name: plugin.json version in sync with CHANGELOG.md
+        run: node scripts/check-plugin-version.js
+      - name: sitemap.xml in sync with site/*.html
+        run: node scripts/validate-sitemap.js --check
+      - name: JSON-LD structured data validity
+        run: node scripts/validate-jsonld.js --check
+      - name: changelog.xml in sync with CHANGELOG.md
+        run: node scripts/generate-changelog-feed.js --check
+      - name: Spellcheck site copy (site/*.html)
+        run: node scripts/spellcheck.js
+      - name: models.md in sync with evals/src/config.js
+        run: node scripts/sync-models-md.js --check
+      # Heavier eval-harness steps last, cheapest-of-these first: unit tests
+      # exercise policy.js/tasks.js in isolation, the mock harness runs the
+      # full CLI end-to-end, and the policy-parity run is the slowest/most
+      # comprehensive of the three.
       - name: Unit tests (policy.js, tasks.js)
         run: node --test 'src/**/*.test.js'
         working-directory: evals
@@ -22,15 +42,3 @@ jobs:
       - name: Policy parity (probe vs v1 vs latest sanity)
         run: node src/main.js --mock --seeds 1 --policy probe
         working-directory: evals
-      - name: models.md in sync with evals/src/config.js
-        run: node scripts/sync-models-md.js --check
-      - name: plugin.json version in sync with CHANGELOG.md
-        run: node scripts/check-plugin-version.js
-      - name: JSON-LD structured data validity
-        run: node scripts/validate-jsonld.js --check
-      - name: sitemap.xml in sync with site/*.html
-        run: node scripts/validate-sitemap.js --check
-      - name: changelog.xml in sync with CHANGELOG.md
-        run: node scripts/generate-changelog-feed.js --check
-      - name: Spellcheck site copy (site/*.html)
-        run: node scripts/spellcheck.js
