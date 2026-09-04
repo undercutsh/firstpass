@@ -24,3 +24,5 @@ jobs:
         working-directory: evals
       - name: models.md in sync with evals/src/config.js
         run: node scripts/sync-models-md.js --check
+      - name: plugin.json version in sync with CHANGELOG.md
+        run: node scripts/check-plugin-version.js
