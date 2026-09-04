@@ -201,7 +201,16 @@ const MOCK_SOLUTIONS = {
   anagram: 'function main(a,b){ const c=s=>s.toLowerCase().replace(/[^a-z0-9]/g,"").split("").sort().join(""); return c(a)===c(b) }',
   dedupe: 'function main(arr){ return arr.filter((v,i)=>arr.indexOf(v)===i) }',
   'matrix-transpose': 'function main(m){ return m[0].map((_,c)=>m.map(r=>r[c])) }',
-  'word-count': 'function main(t){ const o={}; t.toLowerCase().replace(/[^a-z0-9\\s]/g,"").split(/\\s+/).filter(Boolean).forEach(w=>o[w]=(o[w]||0)+1); return o }',
+  // Deliberately builds the result object with keys in reverse-alphabetical
+  // order rather than first-occurrence order. code:word-count's expected
+  // fixtures (see suites/code.js) happen to list keys in first-occurrence
+  // order, so a first-occurrence-order solution here would coincidentally
+  // match key-for-key and never exercise gradeCode's deepEqual against an
+  // object-shaped answer with a *different* key order — i.e. `--mock` runs
+  // would give zero regression coverage for the exact bug class PR #105
+  // fixed (JSON.stringify-based comparison spuriously failing a correct
+  // answer whose object keys enumerate in a different order).
+  'word-count': 'function main(t){ const m={}; t.toLowerCase().replace(/[^a-z0-9\\s]/g,"").split(/\\s+/).filter(Boolean).forEach(w=>m[w]=(m[w]||0)+1); const o={}; Object.keys(m).sort().reverse().forEach(k=>o[k]=m[k]); return o }',
   clamp: 'function main(v,min,max){ return Math.max(min, Math.min(max, v)) }',
   'csv-sum': 'function main(c){ return c.split(/\\n/).flatMap(r=>r.split(",").map(Number)).filter(n=>!isNaN(n)).reduce((a,b)=>a+b,0) }',
   'two-sum': 'function main(n,t){ const m={}; for(let i=0;i<n.length;i++){ const d=t-n[i]; if(d in m) return [m[d],i]; m[n[i]]=i } }',
