@@ -108,6 +108,44 @@ describe('gradeJsonSubset', () => {
     const result = gradeJsonSubset({ tags: ['x', 'y'] }, { tags: ['y', 'x'] });
     assert.equal(result.pass, false);
   });
+
+  // FIXED BUG: object-valued keys (including objects nested inside an
+  // order-sensitive array, e.g. documentation's "params" list) were compared
+  // with plain JSON.stringify equality, which is sensitive to key
+  // enumeration order even though object equality never should be — a
+  // worker emitting the exact same fields in a different order was scored
+  // as a failure. gradeJsonSubset (and gradeCode, tested below) now uses a
+  // deepEqual that is key-order-independent for objects while staying
+  // element-order-sensitive for arrays (see the REGRESSION tests above,
+  // still pinned/unchanged).
+  test('object-valued key: same fields in a different order passes', () => {
+    const result = gradeJsonSubset({ returns: { type: 'int', name: 'n' } }, { returns: { name: 'n', type: 'int' } });
+    assert.equal(result.pass, true);
+  });
+
+  test('object nested inside an array: key order within each object does not matter', () => {
+    const result = gradeJsonSubset(
+      { params: [{ type: 'int', name: 'n' }] },
+      { params: [{ name: 'n', type: 'int' }] },
+    );
+    assert.equal(result.pass, true);
+  });
+
+  test('object nested inside an array: still fails on genuinely different content', () => {
+    const result = gradeJsonSubset(
+      { params: [{ name: 'n', type: 'str' }] },
+      { params: [{ name: 'n', type: 'int' }] },
+    );
+    assert.equal(result.pass, false);
+  });
+
+  test('array element order still matters even when elements are objects', () => {
+    const result = gradeJsonSubset(
+      { params: [{ name: 'b' }, { name: 'a' }] },
+      { params: [{ name: 'a' }, { name: 'b' }] },
+    );
+    assert.equal(result.pass, false);
+  });
 });
 
 // --- gradeCode() ---------------------------------------------------------
@@ -178,6 +216,33 @@ describe('gradeCode', () => {
     ]);
     assert.equal(result.pass, false);
     assert.match(result.reason, /expected "ok" got "bad"/);
+  });
+
+  // FIXED BUG: an object-returning solution (e.g. the word-count task, whose
+  // expected output is a plain object like {the:2, cat:1, ...}) was compared
+  // with JSON.stringify(got) !== JSON.stringify(expected) — a correct
+  // implementation that happens to build the result object in a different
+  // key order (e.g. by iterating a Map, or sorting keys before returning)
+  // was scored as a failure even though the two objects are equal. This is
+  // a real class of solution an LLM worker plausibly produces, not a
+  // contrived edge case.
+  test('an object return value with the same keys in a different order passes (was a false failure)', () => {
+    const result = gradeCode('function main() { return { cat: 1, and: 1, dog: 1, the: 2 }; }', [
+      { input: [], expected: { the: 2, cat: 1, and: 1, dog: 1 } },
+    ]);
+    assert.equal(result.pass, true);
+  });
+
+  test('object return value still fails on genuinely different content, not just reordered', () => {
+    const result = gradeCode('function main() { return { cat: 1, the: 3 }; }', [
+      { input: [], expected: { the: 2, cat: 1 } },
+    ]);
+    assert.equal(result.pass, false);
+  });
+
+  test('array return value order still matters (unaffected by the object-order fix)', () => {
+    const result = gradeCode('function main() { return [3, 1, 2]; }', [{ input: [], expected: [1, 2, 3] }]);
+    assert.equal(result.pass, false);
   });
 });
 
