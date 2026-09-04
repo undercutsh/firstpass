@@ -121,13 +121,14 @@ directory your client scans (below, per client). The manual copy is also
 the fallback when `npx skills add` can't reach the network (see
 Troubleshooting).
 
-Claude Code, Codex CLI, Cursor, Copilot, and OpenCode below are sourced
-from this repo's own verified companion pages
-(`site/claude-code.html`, `site/codex.html`, `site/cursor.html`,
-`site/copilot.html`, `site/opencode.html`) — read those for the full
-reasoning and citations. Gemini CLI, Windsurf, JetBrains Junie, Amp, and
-Devin were researched fresh for this section (dated 2026-08); sources are
-inlined below each one.
+All 10 clients below are sourced from this repo's own verified companion
+pages (`site/claude-code.html`, `site/codex.html`, `site/cursor.html`,
+`site/copilot.html`, `site/opencode.html`, `site/gemini-cli.html`,
+`site/windsurf.html`, `site/junie.html`, `site/amp.html`,
+`site/devin.html`) — read those for the full reasoning and citations.
+Gemini CLI, Windsurf, JetBrains Junie, Amp, and Devin were researched
+fresh for this section (dated 2026-08); their companion pages and the
+sources inlined below each one carry the citations.
 
 <details>
 <summary><strong>Claude Code</strong></summary>
@@ -258,9 +259,9 @@ it writes to, so treat that as unverified too.
 mkdir -p .gemini && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> .gemini/GEMINI.md
 ```
 
-Researched fresh 2026-08 — mechanism for true Agent Skills discovery
-(outside an extension) not independently verified; the `GEMINI.md` route
-above is the confirmed one.
+Source: `site/gemini-cli.html`. Researched fresh 2026-08 — mechanism for
+true Agent Skills discovery (outside an extension) not independently
+verified; the `GEMINI.md` route above is the confirmed one.
 
 </details>
 
@@ -284,7 +285,8 @@ doubt, use `AGENTS.md`, which is confirmed.
 echo "" >> AGENTS.md && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> AGENTS.md
 ```
 
-Researched fresh 2026-08 (https://docs.devin.ai/desktop/cascade/memories).
+Source: `site/windsurf.html` (cites https://docs.devin.ai/desktop/cascade/memories).
+Researched fresh 2026-08.
 
 </details>
 
@@ -305,7 +307,7 @@ mkdir -p .junie/skills && cp -r firstpass/skills/firstpass ./.junie/skills/first
 mkdir -p .agents/skills && cp -r firstpass/skills/firstpass ./.agents/skills/firstpass
 ```
 
-Researched fresh 2026-08.
+Source: `site/junie.html`. Researched fresh 2026-08.
 
 </details>
 
@@ -322,7 +324,7 @@ reads a root `AGENTS.md` for plain repository instructions.
 mkdir -p .agents/skills && cp -r firstpass/skills/firstpass ./.agents/skills/firstpass
 ```
 
-Researched fresh 2026-08.
+Source: `site/amp.html`. Researched fresh 2026-08.
 
 </details>
 
@@ -344,7 +346,7 @@ existing Claude Code or Cursor install may already be picked up.
 mkdir -p .devin/skills && cp -r firstpass/skills/firstpass ./.devin/skills/firstpass
 ```
 
-Researched fresh 2026-08.
+Source: `site/devin.html`. Researched fresh 2026-08.
 
 </details>
 
