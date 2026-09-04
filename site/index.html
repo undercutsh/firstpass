@@ -463,8 +463,8 @@
     <div style="border: 1px solid #15171C; background: #FFFFFF; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr))">
       <div style="padding: 32px; border-right: 1px solid #DFDAD0; border-bottom: 1px solid #DFDAD0; display: grid; gap: 26px; align-content: start">
         <div>
-          <label style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #4a4e57; margin: 0 0 10px">Who's this for?</label>
-          <button type="button" onClick="{{ toggleCalcMode }}" aria-pressed="{{ calcIsTeam }}" style="display: flex; align-items: center; gap: 10px; background: none; border: none; padding: 0; cursor: pointer">
+          <span id="calc-mode-label" style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #4a4e57; margin: 0 0 10px">Who's this for?</span>
+          <button type="button" id="calc-mode-toggle" onClick="{{ toggleCalcMode }}" aria-pressed="{{ calcIsTeam }}" aria-labelledby="calc-mode-label calc-mode-toggle" style="display: flex; align-items: center; gap: 10px; background: none; border: none; padding: 0; cursor: pointer">
             <span style="position: relative; width: 24px; height: 14px; border-radius: 7px; flex-shrink: 0; background: {{ switchTrackBg }}" class="switch-track">
               <span style="position: absolute; top: 2px; left: {{ switchThumbLeft }}; width: 10px; height: 10px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 1px 2px rgba(0,0,0,0.25)" class="switch-thumb"></span>
             </span>
@@ -485,10 +485,10 @@
           </div>
         </div>
         <div>
-          <label style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #4a4e57; margin: 0 0 10px">Primary model vendor</label>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap">
+          <span id="calc-vendor-label" style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #4a4e57; margin: 0 0 10px">Primary model vendor</span>
+          <div role="group" aria-labelledby="calc-vendor-label" style="display: flex; gap: 8px; flex-wrap: wrap">
             <sc-for list="{{ calcVendorButtons }}" as="v" hint-placeholder-count="3">
-              <button onClick="{{ v.onClick }}" style="height: 32px; padding: 0 16px; border-radius: 10px; font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; cursor: pointer; border: 1px solid {{ v.border }}; background: {{ v.bg }}; color: {{ v.fg }}">{{ v.label }}</button>
+              <button type="button" onClick="{{ v.onClick }}" aria-pressed="{{ v.active }}" style="height: 32px; padding: 0 16px; border-radius: 10px; font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; cursor: pointer; border: 1px solid {{ v.border }}; background: {{ v.bg }}; color: {{ v.fg }}">{{ v.label }}</button>
             </sc-for>
           </div>
         </div>
@@ -536,11 +536,11 @@
         <p class="ui-body" style="color: #F5F3EE; margin: 0; max-width: 40ch">Get this ${{ calcSavingsAmountFmt }}/mo breakdown emailed to you, plus early access to the Team trial.</p>
         <div style="display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 280px; align-items: flex-end">
           <div style="display: flex; gap: 10px; flex-wrap: wrap; width: 100%; justify-content: flex-end">
-            <input id="calc-lead-email" name="email" type="email" autocomplete="email" placeholder="you@company.com" aria-label="Email address to receive your cost audit" value="{{ leadEmail }}" onChange="{{ setLeadEmail }}" style="flex: 1; min-width: 200px; max-width: 320px; box-sizing: border-box; padding: 12px 16px; border: 1px solid #2A2D35; background: #101216; color: #F5F3EE; font-family: 'Inter', sans-serif; font-size: 14.5px" />
+            <input id="calc-lead-email" name="email" type="email" autocomplete="email" required aria-required="true" aria-describedby="calc-lead-error" aria-invalid="{{ leadInvalid }}" placeholder="you@company.com" aria-label="Email address to receive your cost audit" value="{{ leadEmail }}" onChange="{{ setLeadEmail }}" style="flex: 1; min-width: 200px; max-width: 320px; box-sizing: border-box; padding: 12px 16px; border: 1px solid #2A2D35; background: #101216; color: #F5F3EE; font-family: 'Inter', sans-serif; font-size: 14.5px" />
             <button type="button" onClick="{{ submitLead }}" toolname="email_cost_audit" tooldescription="Email a free, individualized AI coding cost-savings audit to the given address, based on the calculator inputs (individual or team, seats, current spend)." style="font-family: 'JetBrains Mono', monospace; font-size: 13.5px; font-weight: 700; background: #2E9E5B; color: #101216; border: none; height: 32px; padding: 0 20px; border-radius: 10px; cursor: pointer; white-space: nowrap" style-hover="background: #3AB56C">Email me my audit</button>
           </div>
           <sc-if value="{{ leadError }}" hint-placeholder-val="{{ false }}">
-            <p style="font-size: 12px; color: #C77D2E; margin: 0">{{ leadError }}</p>
+            <p id="calc-lead-error" role="alert" style="font-size: 12px; color: #C77D2E; margin: 0">{{ leadError }}</p>
           </sc-if>
         </div>
       </sc-if>
@@ -940,10 +940,10 @@
           <div style="text-align: center; padding: 13px 18px; border: 1px solid #2E9E5B; color: #227644; font-family: 'JetBrains Mono', monospace; font-size: 13.5px; font-weight: 700">✓ On the list — {{ leadEmail }}</div>
         </sc-if>
         <sc-if value="{{ leadNotSubmitted }}" hint-placeholder-val="{{ true }}">
-          <input id="pricing-lead-email" name="email" type="email" autocomplete="email" placeholder="you@company.com" aria-label="Email address for Team early-access waitlist" value="{{ leadEmail }}" onChange="{{ setLeadEmail }}" style="box-sizing: border-box; width: 100%; padding: 12px 16px; border: 1px solid #DFDAD0; font-family: 'Inter', sans-serif; font-size: 14px; margin: 0 0 10px" />
+          <input id="pricing-lead-email" name="email" type="email" autocomplete="email" required aria-required="true" aria-describedby="pricing-lead-error" aria-invalid="{{ leadInvalid }}" placeholder="you@company.com" aria-label="Email address for Team early-access waitlist" value="{{ leadEmail }}" onChange="{{ setLeadEmail }}" style="box-sizing: border-box; width: 100%; padding: 12px 16px; border: 1px solid #DFDAD0; font-family: 'Inter', sans-serif; font-size: 14px; margin: 0 0 10px" />
           <button type="button" onClick="{{ submitLead }}" toolname="join_teams_waitlist" tooldescription="Join the Undercut Teams early-access waitlist by submitting an email address. Teams is not yet live." style="text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 13.5px; font-weight: 700; background: #15171C; color: #F5F3EE; border: none; height: 32px; padding: 0 18px; border-radius: 10px; cursor: pointer" style-hover="background: #2A2D35">Get early access</button>
           <sc-if value="{{ leadError }}" hint-placeholder-val="{{ false }}">
-            <p style="font-size: 11.5px; color: #955D22; margin: 8px 0 0">{{ leadError }}</p>
+            <p id="pricing-lead-error" role="alert" style="font-size: 11.5px; color: #955D22; margin: 8px 0 0">{{ leadError }}</p>
           </sc-if>
         </sc-if>
         <p style="font-size: 11.5px; color: #4a4e57; margin: 10px 0 0">Teams isn't live yet — this puts you on the list for launch. Prefer GitHub? <a href="https://github.com/undercutsh/firstpass/issues" style="color: #4a4e57">Open an issue instead →</a></p>
@@ -1251,6 +1251,7 @@ class Component extends DCLogic {
       leadSubmitted: this.state.leadSubmitted,
       leadNotSubmitted: !this.state.leadSubmitted,
       leadError: this.state.leadError,
+      leadInvalid: this.state.leadError ? 'true' : 'false',
       setLeadEmail: (e) => this.setState({ leadEmail: e.target.value, leadError: '' }),
       submitLead,
 
