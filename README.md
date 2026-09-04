@@ -114,6 +114,17 @@ needs Node.js/npm (for `npx`) and network access to the skills.sh registry;
 the manual `cp -r` copy below needs neither. No API key, no account, no
 build step.
 
+**Claude Code** can also install via plugin (this repo doubles as its own
+marketplace):
+
+```
+/plugin marketplace add undercutsh/firstpass
+/plugin install firstpass@firstpass
+```
+
+Every other client — and Claude Code too, if you'd rather skip the
+plugin — uses the generic installer:
+
 ```
 npx skills add undercutsh/firstpass
 ```
