@@ -10,8 +10,44 @@
 // else that accepts a POST. If it isn't configured, this responds with a
 // clear 501 rather than pretending to succeed (no unearned trust signals —
 // see AGENTS.md's hard rules).
+//
+// Hardening note (this endpoint is live and publicly reachable even while
+// LEAD_WEBHOOK_URL is unset, so it's worth defending regardless of
+// activation status):
+//   - Real rate limiting needs a shared, persistent store (Vercel KV / Edge
+//     Config or similar) — this project doesn't have one wired up yet, and
+//     picking/paying for one is an infra decision out of scope here. A
+//     per-invocation counter would do nothing, since Vercel serverless
+//     functions don't share memory across invocations. Until that infra
+//     exists, this leans on strict input validation, a hard payload-size
+//     cap, and an allowlist of known fields to keep the endpoint cheap to
+//     reject-and-forget even under abuse — and never echoes internal
+//     error detail back to the caller.
+
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_EMAIL_LEN = 254;
+const MAX_BODY_BYTES = 10 * 1024; // 10KB — a lead payload has no business being bigger
+const MAX_STRING_LEN = 500; // hard cap for any string field before per-field caps apply
+
+// Allowlist of fields submitLead() actually sends (site/index.html). Anything
+// else in the payload is rejected outright rather than silently dropped, so
+// unexpected/extra fields can't be used to smuggle bulk data through this
+// endpoint.
+const STRING_FIELDS = {
+  source: 64,
+  calcMode: 32,
+  calcVendor: 32
+};
+const NUMBER_FIELDS = ['calcSeats', 'calcSpend'];
+const ALLOWED_FIELDS = new Set(['email', ...Object.keys(STRING_FIELDS), ...NUMBER_FIELDS]);
+
+// Vercel's default Node.js body parser also honors this, but we don't rely
+// on that alone — see the explicit Content-Length + byte-length checks below.
+export const config = {
+  api: {
+    bodyParser: { sizeLimit: '10kb' }
+  }
+};
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -19,23 +55,58 @@ export default async function handler(req, res) {
     return res.status(405).json({ ok: false, error: 'method not allowed' });
   }
 
-  const body = typeof req.body === 'string' ? safeParse(req.body) : req.body;
-  const email = typeof body?.email === 'string' ? body.email.trim() : '';
+  const contentLength = Number(req.headers['content-length']);
+  if (Number.isFinite(contentLength) && contentLength > MAX_BODY_BYTES) {
+    return res.status(413).json({ ok: false, error: 'payload too large' });
+  }
+
+  let body;
+  try {
+    body = readBody(req);
+  } catch (err) {
+    // Never echo the parser's own error text back to the client.
+    const status = err?.message === 'payload too large' ? 413 : 400;
+    return res.status(status).json({ ok: false, error: status === 413 ? 'payload too large' : 'invalid request body' });
+  }
+
+  if (!isPlainObject(body)) {
+    return res.status(400).json({ ok: false, error: 'invalid request body' });
+  }
+
+  // Reject anything with fields we don't expect — no silent stripping.
+  for (const key of Object.keys(body)) {
+    if (!ALLOWED_FIELDS.has(key)) {
+      return res.status(400).json({ ok: false, error: 'unexpected field: ' + key });
+    }
+  }
+
+  const email = typeof body.email === 'string' ? body.email.trim() : '';
   if (!email || email.length > MAX_EMAIL_LEN || !EMAIL_RE.test(email)) {
     return res.status(400).json({ ok: false, error: 'invalid email' });
   }
 
-  // Free-form context from the calculator/waitlist forms — never trusted for
-  // anything beyond logging/forwarding, so no further validation needed.
-  const context = {
-    email,
-    source: typeof body?.source === 'string' ? body.source.slice(0, 64) : 'unknown',
-    calcMode: typeof body?.calcMode === 'string' ? body.calcMode.slice(0, 32) : undefined,
-    calcVendor: typeof body?.calcVendor === 'string' ? body.calcVendor.slice(0, 32) : undefined,
-    calcSeats: Number.isFinite(body?.calcSeats) ? body.calcSeats : undefined,
-    calcSpend: Number.isFinite(body?.calcSpend) ? body.calcSpend : undefined,
-    submittedAt: new Date().toISOString()
-  };
+  const context = { email };
+
+  for (const [field, maxLen] of Object.entries(STRING_FIELDS)) {
+    const value = body[field];
+    if (value === undefined) continue;
+    if (typeof value !== 'string' || value.length > Math.min(maxLen, MAX_STRING_LEN)) {
+      return res.status(400).json({ ok: false, error: 'invalid field: ' + field });
+    }
+    context[field] = value;
+  }
+  if (!('source' in context)) context.source = 'unknown';
+
+  for (const field of NUMBER_FIELDS) {
+    const value = body[field];
+    if (value === undefined) continue;
+    if (typeof value !== 'number' || !Number.isFinite(value) || Math.abs(value) > 1e9) {
+      return res.status(400).json({ ok: false, error: 'invalid field: ' + field });
+    }
+    context[field] = value;
+  }
+
+  context.submittedAt = new Date().toISOString();
 
   const webhookUrl = process.env.LEAD_WEBHOOK_URL;
   if (!webhookUrl) {
@@ -60,10 +131,26 @@ export default async function handler(req, res) {
   }
 }
 
-function safeParse(s) {
-  try {
-    return JSON.parse(s);
-  } catch {
-    return null;
+function isPlainObject(value) {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+// Accepts either an already-parsed body (normal Vercel behavior) or a raw
+// string, and enforces the byte cap regardless of which one we got —
+// Content-Length can be absent or spoofed, so the actual bytes are checked
+// too.
+function readBody(req) {
+  if (typeof req.body === 'string') {
+    if (Buffer.byteLength(req.body, 'utf8') > MAX_BODY_BYTES) {
+      throw new Error('payload too large');
+    }
+    return JSON.parse(req.body);
   }
+  if (req.body !== undefined && req.body !== null) {
+    if (Buffer.byteLength(JSON.stringify(req.body), 'utf8') > MAX_BODY_BYTES) {
+      throw new Error('payload too large');
+    }
+    return req.body;
+  }
+  return null;
 }
