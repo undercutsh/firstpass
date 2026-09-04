@@ -183,13 +183,15 @@
   at all — if that fails, support.js reveals this div (see revealStaticFallback
   in support.js) so the page isn't blank. Hidden by default; no JS, no fonts,
   no CDN dependency of its own. Also doubles as the one static substitute for
-  the hero's animated demo log (ladderRows in the x-dc script below), which
-  has no other JS-independent copy anywhere on the site — see
-  business/design-canvas-audit-2026-08-29.md in the internal docs repo.
+  the hero's animated demo log (ladderRows in the x-dc script below) and for
+  the "pick your agent" install-client picker (installClients / cmd / note
+  in the x-dc script below), neither of which has any other JS-independent
+  copy anywhere on the site — see business/design-canvas-audit-2026-08-29.md
+  and business/design-canvas-audit-2026-09-04.md in the internal docs repo.
   Hidden divs' text content is still present in raw HTML source, so this
   covers non-JS-executing crawlers/agents even when never visually shown.
-  Keep this in sync by hand if hero/pricing/FAQ/demo-log copy changes
-  materially.
+  Keep this in sync by hand if hero/pricing/FAQ/demo-log/install-client copy
+  changes materially.
 -->
 <div id="dc-fallback" hidden style="max-width: 720px; margin: 0 auto; padding: 48px 24px 80px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #15171C; background: #F5F3EE; line-height: 1.6">
   <p style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: #8A8F98; margin: 0 0 8px">Undercut</p>
@@ -204,6 +206,20 @@
   </ul>
   <p style="font-size: 14px; margin: 0 0 8px">Install (free, MIT, no signup):</p>
   <pre style="background: #15171C; color: #F5F3EE; padding: 14px 16px; overflow-x: auto; font-size: 13px; margin: 0 0 32px"><code>npx skills add undercutsh/firstpass</code></pre>
+  <h2 style="font-size: 18px; margin: 0 0 12px">Install for your agent</h2>
+  <p style="color: #4a4e57; margin: 0 0 12px">Per-client commands (see the picker at getundercut.sh/#install for the interactive version):</p>
+  <ul style="list-style: none; padding: 0; margin: 0 0 32px; font-family: monospace; font-size: 13px; line-height: 1.9; color: #4a4e57">
+    <li><strong>Claude Code</strong> — <code>/plugin marketplace add undercutsh/firstpass</code></li>
+    <li><strong>Codex CLI</strong> — <code>npx skills add undercutsh/firstpass -a codex</code></li>
+    <li><strong>Cursor</strong> — <code>cp -r firstpass/skills/firstpass ./.cursor/skills/firstpass</code></li>
+    <li><strong>GitHub Copilot</strong> — <code>mkdir -p .github &amp;&amp; curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md &gt;&gt; .github/copilot-instructions.md</code></li>
+    <li><strong>OpenCode</strong> — <code>npx skills add undercutsh/firstpass</code></li>
+    <li><strong>Gemini CLI</strong> — <code>mkdir -p .gemini &amp;&amp; curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md &gt;&gt; .gemini/GEMINI.md</code></li>
+    <li><strong>Windsurf</strong> — <code>echo "" &gt;&gt; AGENTS.md &amp;&amp; curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md &gt;&gt; AGENTS.md</code></li>
+    <li><strong>JetBrains Junie</strong> — <code>cp -r firstpass/skills/firstpass ./.junie/skills/firstpass</code></li>
+    <li><strong>Amp</strong> — <code>cp -r firstpass/skills/firstpass ./.agents/skills/firstpass</code></li>
+    <li><strong>Devin</strong> — <code>cp -r firstpass/skills/firstpass ./.devin/skills/firstpass</code></li>
+  </ul>
   <h2 style="font-size: 18px; margin: 0 0 12px">Frequently asked</h2>
   <div style="margin: 0 0 32px">
     <p style="font-weight: 600; margin: 0 0 4px">Can it quietly ship worse code?</p>
