@@ -7,6 +7,7 @@
 <meta name="description" content="Undercut is a free, MIT-licensed routing policy you drop into AGENTS.md or Windsurf's own rules files — routing Cascade to the cheapest model that can pass verification. Measured up to −95% cost on public benchmarks at equal-or-better pass rate.">
 <link rel="canonical" href="https://getundercut.sh/windsurf">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="alternate" type="application/rss+xml" title="Undercut changelog" href="https://getundercut.sh/changelog.xml">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Undercut">
 <meta property="og:title" content="Undercut for Windsurf — tiered dispatch, free MIT skill">
@@ -58,6 +59,8 @@
   .copybtn:hover { color: #F5F3EE; border-color: #8A8F98; }
   .step-row { transition: background-color .15s ease; }
   .step-row:hover { background-color: rgba(245,243,238,0.05); }
+  .badge { display: inline-flex; align-items: center; justify-content: center; height: 20px; padding: 0 8px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; background: rgba(46,158,91,0.14); color: #227644; }
+  .badge-neutral { background: rgba(138,143,152,0.16); color: #4a4e57; }
 </style>
 </head>
 <body>
@@ -281,6 +284,7 @@
         <div style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 17px; margin: 0 0 10px">undercut</div>
         <p style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #63666C; margin: 0">MIT License &middot; <a href="https://github.com/undercutsh/firstpass" style="color: #63666C">github.com/undercutsh/firstpass</a></p>
         <p style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #63666C; margin: 6px 0 0">Built by <a rel="me author" href="https://iamjustinwinter.com/" style="color: #63666C">Justin Winter</a></p>
+        <a id="uc-github-stars" href="https://github.com/undercutsh/firstpass" target="_blank" rel="noopener" class="badge badge-neutral" style="margin-top: 10px; text-decoration: none" hidden>★ <span id="uc-star-count"></span> stars on GitHub</a>
       </div>
       <div style="display: flex; gap: 72px; flex-wrap: wrap; font-size: 14px">
         <div style="display: grid; gap: 10px; align-content: start">
@@ -343,5 +347,60 @@
   })();
 </script>
 
+<!--
+  Footer "★ N stars on GitHub" chip. Live count via GitHub's unauthenticated
+  REST API, cached in sessionStorage for an hour to cut API calls across page
+  views. Fails closed: any error (network, rate limit, bad shape) falls back
+  to a plain "View on GitHub" link -- never a stale/fake number.
+-->
+<script>
+(function () {
+  var CACHE_KEY = 'uc-gh-stars-v1';
+  var TTL_MS = 60 * 60 * 1000;
+
+  function init() {
+    var chip = document.getElementById('uc-github-stars');
+    var countEl = document.getElementById('uc-star-count');
+    if (!chip || !countEl) return;
+
+    function render(count) {
+      countEl.textContent = count.toLocaleString('en-US');
+      chip.hidden = false;
+    }
+    function fallback() {
+      chip.textContent = 'View on GitHub';
+      chip.hidden = false;
+    }
+
+    try {
+      var cached = JSON.parse(sessionStorage.getItem(CACHE_KEY) || 'null');
+      if (cached && typeof cached.count === 'number' && Date.now() - cached.at < TTL_MS) {
+        render(cached.count);
+        return;
+      }
+    } catch (e) {}
+
+    fetch('https://api.github.com/repos/undercutsh/firstpass', {
+      headers: { Accept: 'application/vnd.github+json' }
+    })
+      .then(function (res) {
+        if (!res.ok) throw new Error('GitHub API error ' + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        var count = data && typeof data.stargazers_count === 'number' ? data.stargazers_count : null;
+        if (count === null) { fallback(); return; }
+        try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ count: count, at: Date.now() })); } catch (e) {}
+        render(count);
+      })
+      .catch(function () {
+        fallback();
+      });
+  }
+
+  if (document.readyState === 'complete') init();
+  else window.addEventListener('load', init);
+})();
+</script>
 </body>
 </html>
