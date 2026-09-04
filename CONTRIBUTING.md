@@ -37,6 +37,39 @@ node src/main.js --flagtest        # dispatcher flagging reliability
 Mock mode needs no API key and is what CI runs. See `evals/README.md` for the
 full methodology.
 
+## What CI checks
+
+Every push and PR runs `.github/workflows/evals.yml` (job `mock-evals`).
+Fast static checks run first, then the eval harness. Run all of these from
+the repo root (except the `evals/` ones, noted below) before pushing so you
+aren't surprised by a red check:
+
+```sh
+node scripts/check-plugin-version.js          # .claude-plugin/plugin.json version matches CHANGELOG.md
+node scripts/validate-sitemap.js --check      # sitemap.xml matches site/*.html
+node scripts/validate-jsonld.js --check       # <script type="application/ld+json"> blocks on site/*.html are valid
+node scripts/generate-changelog-feed.js --check  # site/changelog.xml matches CHANGELOG.md
+node scripts/spellcheck.js                    # site copy (site/*.html) against scripts/wordlist.txt
+node scripts/sync-models-md.js --check        # skills/firstpass/models.md matches evals/src/config.js
+```
+
+Four of these (`validate-sitemap.js`, `validate-jsonld.js`,
+`generate-changelog-feed.js`, `sync-models-md.js`) also write/fix the file
+in place when run *without* `--check` — handy if a check fails because you
+touched `site/*.html`, `CHANGELOG.md`, or `evals/src/config.js` without
+updating the generated file. `check-plugin-version.js` and `spellcheck.js`
+have no auto-fix mode; fix the flagged file by hand (bump `plugin.json`,
+or add a real word to `scripts/wordlist.txt` if the "typo" is a genuine
+addition to the vocabulary).
+
+Then, from `evals/`:
+
+```sh
+node --test 'src/**/*.test.js'                # unit tests (policy.js, tasks.js)
+node src/main.js --mock --seeds 1             # mock harness, all vendors/arms/suites
+node src/main.js --mock --seeds 1 --policy probe  # policy parity (probe vs v1 vs latest sanity)
+```
+
 ## Local development
 
 ### Eval harness
