@@ -25,17 +25,19 @@
 <div class="wrap">
   <p class="mono">Privacy — Undercut</p>
   <h1>We don't track you. Literally.</h1>
-  <p>This site (getundercut.sh) is a static page. It sets <strong>no cookies</strong>, runs <strong>no analytics</strong>, and sells or shares <strong>no personal information</strong> — there is simply nothing tracking you while you're here. The tool itself is downloaded by your agent and runs locally; it does not phone home.</p>
+  <p>This site (getundercut.sh) is a static page. It sets <strong>no cookies</strong> and runs <strong>no analytics</strong> — there is no tracker following you around while you're here. A few pages make plain, unauthenticated calls to GitHub's public API to show live data (details below), and if you use a form on this site your email goes exactly where we say it goes. Nothing is sold. The tool itself is downloaded by your agent and runs locally; it does not phone home.</p>
 
   <h2>What we do handle</h2>
   <ul>
     <li><strong>GitHub activity.</strong> If you star or open issues on the repository, that data lives on GitHub under GitHub's privacy policy, not ours.</li>
+    <li><strong>Live GitHub API calls from your browser.</strong> The "★ stars on GitHub" chip in the footer (every page) and the <a href="/status">/status</a> page both make an unauthenticated <code style="font-family:'JetBrains Mono',monospace;background:#EDEAE2;padding:1px 5px;border-radius:3px;font-size:.92em">GET</code> request directly from your browser to <code style="font-family:'JetBrains Mono',monospace;background:#EDEAE2;padding:1px 5px;border-radius:3px;font-size:.92em">api.github.com</code> (public repo/stargazer counts, public Actions run history). No cookie, account info, or anything identifying you is attached — just the standard headers your browser sends on any request. That request, and whatever GitHub logs from it (e.g. your IP address, per GitHub's own privacy policy), happens between your browser and GitHub directly; we don't see or store it. The star count is cached in your browser's <code style="font-family:'JetBrains Mono',monospace;background:#EDEAE2;padding:1px 5px;border-radius:3px;font-size:.92em">sessionStorage</code> for an hour, on your device only.</li>
+    <li><strong>Lead-capture forms.</strong> The "Email me my audit" and "Get early access" (Teams waitlist) forms send your email — plus, for the audit form, non-identifying calculator inputs (individual/team mode, vendor, seat count, spend) — to our <code style="font-family:'JetBrains Mono',monospace;background:#EDEAE2;padding:1px 5px;border-radius:3px;font-size:.92em">/api/lead</code> endpoint. That endpoint validates the submission (allowed fields only, size-capped) and forwards it as JSON to a webhook URL the site operator configures — an email or spreadsheet automation tool — so we can send you your audit or add you to the waitlist. If no webhook is configured, submissions are rejected outright, not silently dropped. We don't sell this data or hand it to anyone beyond that configured destination.</li>
     <li><strong>Benchmark runs.</strong> The eval harness (evals/) calls model providers directly to measure routing. If you run it yourself, those calls are made under whatever provider account you use — we never see them.</li>
   </ul>
 
   <h2>Contact</h2>
   <p>Questions about privacy or this policy: <a href="https://iamjustinwinter.com">Justin Winter</a>.</p>
-  <p style="margin-top:40px;font-size:13px;color:#63666C">Updated 2026-08-18. <a href="/">Back to Undercut</a> · <a href="/accessibility">Accessibility</a></p>
+  <p style="margin-top:40px;font-size:13px;color:#63666C">Updated 2026-09-04. <a href="/">Back to Undercut</a> · <a href="/accessibility">Accessibility</a></p>
 </div>
 </body>
 </html>
