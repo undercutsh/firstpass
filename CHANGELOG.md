@@ -113,6 +113,27 @@ All notable changes to Undercut (firstpass) are documented here. Follows
   Node version, a root `.nvmrc` (22) covers `scripts/*.js`; `SECURITY.md`
   documents that `evals/` has zero external npm dependencies (nothing
   for `npm audit` to check).
+- **CI reordered to fail-fast on cheap checks** (#79) —
+  `.github/workflows/evals.yml` now runs the six sub-100ms static
+  checks (plugin/CHANGELOG version sync, sitemap, JSON-LD, changelog
+  feed, spellcheck, models.md sync) before the three heavier eval-
+  harness steps, so a doc/content-only mistake fails in well under a
+  second instead of waiting on the harness first.
+- **`privacy.html` discloses client-side GitHub API calls and the
+  lead-form data flow** (#89) — the footer star-count chip and
+  `/status` make unauthenticated `GET`s to `api.github.com` from the
+  visitor's browser, and the audit-calculator/Teams-waitlist forms send
+  an email address to `/api/lead`; neither flow was previously
+  disclosed, despite the page's "nothing tracking you" claim.
+- **Google Fonts CSS switched to async-load on 16 pages** (#92) — the
+  render-blocking `<link rel="stylesheet">` for Google Fonts now uses
+  the preload + `media="print"` onload-swap pattern with a `<noscript>`
+  fallback, on every static/companion page except `site/index.html`
+  (excluded due to concurrent-edit contention on its `<head>`).
+- **Google Fonts CSS async-load extended to `site/index.html`** (#93) —
+  follow-up to #92 applying the identical preload/onload-swap pattern
+  to the one page it deliberately excluded, now that edit contention
+  had resolved.
 
 ### Fixed
 
@@ -162,13 +183,77 @@ All notable changes to Undercut (firstpass) are documented here. Follows
   scroll horizontally below ~375px; wrapped to match the existing
   pattern.
 - **`AGENTS.md` client-matrix intro/footers stale after tonight's 5
-  companion pages shipped** — the intro paragraph still said only
+  companion pages shipped** (#83) — the intro paragraph still said only
   Claude Code/Codex/Cursor/Copilot/OpenCode had verified companion
   pages, and Gemini CLI/Windsurf/Junie/Amp/Devin's "Researched fresh"
   footers had no `Source:` line, even though `site/gemini-cli.html`,
   `site/windsurf.html`, `site/junie.html`, `site/amp.html`, and
   `site/devin.html` (added in #42, #44, #48, #49, #50) now back all 10
   entries the same way the original 5 do. Updated both to match.
+- **`skills/firstpass/SKILL.md` YAML frontmatter parse failure** (#76) —
+  an unescaped `: ` in the `description` field broke `npx skills add
+  undercutsh/firstpass` end-to-end with a YAML scanner error; fixed by
+  single-quoting the scalar, reproduced and re-verified the install
+  path before and after.
+- **`evals/README.md` terse `Flags:` summary missing 6 flags** (#77) —
+  `--flagtest`, `--dispatcher`, `--benchmark`, `--mock`, `--verify-only`,
+  and `--smoke` were documented only in usage examples; also corrected
+  `--policy v1|latest` to `v1|latest|probe` to match the Policy versions
+  table below it.
+- **Static-mirror drift in `llms.txt`/`index.md`** (#78) — the 10
+  client companion pages, `/status`, and `changelog.xml` were never
+  linked from the crawler-facing markdown mirrors, only from the live
+  HTML footer/install picker; added to both files.
+- **Floating GitHub-star CTA had no Escape-to-dismiss** (#80) — a
+  keyboard-nav audit of `index.html`'s interactive elements found the
+  dismissible star CTA's × close button was keyboard-reachable but
+  Escape did nothing; added an Escape listener, attached only while the
+  CTA is visible.
+- **Manual-copy skill install commands failed on a fresh checkout**
+  (#81) — `cp -r firstpass/skills/firstpass ./.<client>/skills/firstpass`
+  doesn't create missing parent directories; reproduced the failure for
+  real, then fixed with an `mkdir -p <parent> &&` prefix in `AGENTS.md`
+  (8 occurrences) and 7 companion pages (visible command + `data-copy`
+  attribute).
+- **Nav/footer link drift across companion + status pages** (#82) — the
+  Accessibility, Status, and changelog.xml footer links added by #61,
+  #62, and #64 only ever landed on `index.html`; `site/status.html`'s
+  footer was also never built from the shared boilerplate at all
+  (shipped as a 3-link stub). Brought all 11 non-home pages' footers to
+  parity with `index.html`.
+- **`gemini-cli.html` GEMINI.md discovery mechanism described
+  inaccurately** (#84) — corrected to the real 3-tier hierarchy (global
+  config, workspace-directory `GEMINI.md` files, just-in-time ancestor
+  scan on file access), verified against Gemini CLI's own docs.
+- **`site/index.html`/`index.md` install-picker had the same `cp -r`
+  parent-dir bug as #81** (#85) — affected Cursor, JetBrains Junie,
+  Amp, Devin, and the Codex CLI manual-copy note (list items and the
+  `INSTALL_CLIENTS` JS array's `cmd`/`note` fields); fixed with the
+  same `mkdir -p` prefix and re-verified each command end-to-end.
+- **Stray design-token color drift** (#86) — `index.html`'s
+  competitor-comparison table header used `#217443` for "signal-green"
+  text where the other 56 occurrences across 13 pages use `#227644`;
+  standardized to the canonical value.
+- **Honest-limits caveats verified against current vendor docs** (#87)
+  — `windsurf.html` was updated to reflect Cascade's own `.windsurf/`
+  and `.codeium/` skill paths, `gemini-cli.html` now documents
+  auto-discovered `.gemini/skills/` with no extension package required,
+  and `devin.html`'s auto-read rules-file list was corrected against
+  Devin's actual docs (`CLAUDE.md`, `.windsurfrules`,
+  `.cursor/rules/*.md`, `.windsurf/rules/*.md`, `.claude/`).
+- **GitHub stars-chip fetch had no request timeout** (#88) — unlike
+  `/status`'s Actions-API fetch, the footer star-count chip on
+  `index.html` and 11 companion/status pages had no `AbortController`;
+  brought in line with the existing 8s-timeout pattern, falling back to
+  a plain "View on GitHub" link on abort.
+- **Two more path bugs found in a full-page re-audit** (#91) — a prior
+  fix (#53) had incorrectly replaced `.devin/rules/` with
+  `.windsurf/rules/` on `windsurf.html`; restored `.devin/rules/*.md` as
+  primary per Devin Desktop's post-rebrand docs, with `.windsurf/`
+  kept as a fallback. `gemini-cli.html`'s Install Option 1 wrote to
+  `.gemini/GEMINI.md`, which Gemini CLI never reads for project-level
+  config (`.gemini/` is global-only); fixed to append to root
+  `GEMINI.md`, matching the page's own mechanism prose.
 
 ## [0.3.0] - 2026-09-03
 
