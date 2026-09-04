@@ -40,8 +40,10 @@ compare. Every `--compare` invocation in `evals/` accepts two of these files.
 
 ## Synthetic suites (own tasks, deterministic graders)
 
-30 original tasks — 10 code (sandboxed `vm` exec), 10 reasoning (exact-match),
-10 mechanical (JSON schema). Full details in `evals/src/suites/`.
+40 original tasks — 10 code (sandboxed `vm` exec), 10 reasoning (exact-match),
+10 mechanical (JSON schema), 10 debug (JSON schema / exact-match, added
+below — not yet in the results table since it hasn't had a live run). Full
+details in `evals/src/suites/`.
 
 **probe tiered vs all-standard — 5 seeds, 150 units per cell:**
 
@@ -55,6 +57,28 @@ compare. Every `--compare` invocation in `evals/` accepts two of these files.
 ⚠ = open-weights price ladder is inverted (standard tier cheaper than cheap
 tier); probe's cheap-first probing overpays. Absolute overhead is tiny
 (~$0.01–0.02 per 150 units).
+
+### `debug` — bug diagnosis (added, not yet run live)
+
+A fourth synthetic suite, `debug`, is wired into the same `--suites` flag
+(`evals/src/suites/debug.js`) as part of the "New eval categories" roadmap
+item: 10 original tasks testing bug diagnosis specifically — finding the
+actual root cause behind a throw site, repairing an off-by-one condition,
+picking the hypothesis consistent with repro steps, and classifying race
+conditions / memory leaks from a fixed enum. Same deterministic-grader rule
+as every other suite here: JSON schema (`gradeJsonSubset`) or exact-match
+(`gradeExact`), no LLM judging.
+
+Verified locally: `node src/main.js --mock --suites debug` passes with the
+mock LLM (plumbing + grader check, not real model ability). No live/paid run
+against real vendor APIs has been done yet; this entry records availability
+and the reproduction command, not results.
+
+```sh
+cd evals
+node src/main.js --mock --suites debug                        # plumbing, offline, no spend
+OPENROUTER_API_KEY=sk-or-... node src/main.js --suites debug --policy probe --seeds 5
+```
 
 ## Public benchmarks
 

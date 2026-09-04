@@ -12,12 +12,13 @@ import { runFlagTest, printFlagReport } from './flagtest.js';
 import { codeSuite } from './suites/code.js';
 import { reasoningSuite } from './suites/reasoning.js';
 import { mechanicalSuite } from './suites/mechanical.js';
+import { debugSuite } from './suites/debug.js';
 import { loadGsm8k, loadHumanEval, loadMbpp } from './benchmarks.js';
 import { summarizeWithCI } from './stats.js';
 import { writeFileSync, mkdirSync, readFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 
-const SUITES = { code: codeSuite, reasoning: reasoningSuite, mechanical: mechanicalSuite };
+const SUITES = { code: codeSuite, reasoning: reasoningSuite, mechanical: mechanicalSuite, debug: debugSuite };
 const RESULTS_DIR = path.join(import.meta.dirname, '..', 'results');
 
 function parseArgs(argv) {
