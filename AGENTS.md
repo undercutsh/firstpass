@@ -90,7 +90,9 @@ header per the rules above, then create the matching git tag in the same
 pass — `git tag vX.Y.Z && git push origin vX.Y.Z`. A changelog entry
 without a matching tag is a phantom release (happened once already, for
 0.2.1 — fixed as part of adopting this policy); don't let it happen
-again.
+again. `.claude-plugin/plugin.json`'s `"version"` field must match this
+same package version — CI (`scripts/check-plugin-version.js`) guards it
+against drift.
 
 ## Where to look first
 
