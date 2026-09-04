@@ -18,7 +18,7 @@
           "repository": "https://github.com/undercutsh/firstpass",
           "contact": "https://raw.githubusercontent.com/undercutsh/firstpass/main/site/humans.txt"
         },
-        "attestations": ["MIT licensed", "source open on GitHub", "benchmark methodology public at /testing"]
+        "attestations": ["MIT licensed", "source open on GitHub", "benchmark methodology public at github.com/undercutsh/firstpass/tree/main/testing"]
       }
     },
     {
@@ -49,5 +49,5 @@
       }
     }
   ],
-  "notes": "No public API, MCP server, or agentic plugin exists yet — the free tier is a static policy file, not a running service. This catalog will grow when those ship; see https://getundercut.sh/#teams for what's in development."
+  "notes": "No public API or MCP server exists yet — the free tier is a static policy file, not a running service. Claude Code can install it as a plugin (`/plugin marketplace add undercutsh/firstpass`); every other client uses the skill file directly. This catalog will grow when the API/MCP server ships; see https://getundercut.sh/#teams for what's in development."
 }
