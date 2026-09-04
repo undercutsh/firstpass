@@ -1,6 +1,6 @@
 ---
 name: firstpass
-description: Use BEFORE any multi-agent fan-out, swarm, or Workflow orchestration — and when assigning a model tier to any delegated unit of work. Confidence-gated model routing: rubric-based base-tier assignment (cheap→standard→frontier→apex), objective escalation triggers (verification failure, disagreement, uncertainty flags), hysteresis rules, and the structured handoff payload that lets higher tiers resolve only the residue lower tiers couldn't. Triggers on "fan out", "swarm", "parallel agents", "which model", "assign tiers", "dispatch", "model routing", "token cost".
+description: 'Use BEFORE any multi-agent fan-out, swarm, or Workflow orchestration — and when assigning a model tier to any delegated unit of work. Confidence-gated model routing: rubric-based base-tier assignment (cheap→standard→frontier→apex), objective escalation triggers (verification failure, disagreement, uncertainty flags), hysteresis rules, and the structured handoff payload that lets higher tiers resolve only the residue lower tiers couldn''t. Triggers on "fan out", "swarm", "parallel agents", "which model", "assign tiers", "dispatch", "model routing", "token cost".'
 ---
 
 # Tiered Dispatch — confidence-gated model routing
