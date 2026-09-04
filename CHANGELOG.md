@@ -25,6 +25,142 @@ All notable changes to Undercut (firstpass) are documented here. Follows
   paths (not a replacement) on `site/claude-code.html`, the homepage
   install picker, and `AGENTS.md`'s client matrix, plus an `AGENTS.md`
   Uninstall section (`/plugin remove firstpass`).
+- **5 remaining per-client companion pages**: Windsurf/Cascade (#42),
+  Amp/Sourcegraph (#44), Devin CLI/Desktop (#48), Gemini CLI (#49), and
+  JetBrains AI Assistant/Junie (#50) — completing the 10-client set
+  documented in `AGENTS.md`'s install matrix, each following the
+  established companion-page pattern (hero, compatibility bar,
+  mechanism-grounding sourced from `AGENTS.md`, install steps, shared
+  how-it-works/why-it-holds-up/footer blocks) and added to
+  `sitemap.xml`.
+- **CI guard for `plugin.json` version drift** (#43) —
+  `scripts/check-plugin-version.js`, wired into the evals workflow,
+  catching drift between `.claude-plugin/plugin.json`'s `version` field
+  and the package version (mirrors the existing `sync-models-md.js`
+  drift guard for `models.md`).
+- **Refactor eval suite** (#45) — 8 synthetic tasks (dead-code and
+  unused-import detection, pure-rename-vs-behavior-change
+  classification, extract-helper signature, code-smell-to-refactor
+  classification), deterministic grading only, wired into `main.js`'s
+  SUITES map.
+- **Debug eval suite** (#46) — 10 synthetic bug-diagnosis tasks
+  (root-causing past the throw site, off-by-one repair, hypothesis
+  selection against repro steps, race-condition/memory-leak/regression
+  classification against a fixed enum), same deterministic-grading
+  pattern as `mechanical.js`.
+- **Security-review eval suite** (#54) — 10 vulnerability-classification
+  tasks against a fixed enum (SQL injection, XSS, path traversal,
+  hardcoded secrets, insecure deserialization, missing auth check, plus
+  3 "none"/safe-code tasks), graded deterministically, no LLM judge.
+- **Documentation eval suite** (#55) — a new synthetic suite category,
+  wired into `main.js`'s SUITES map and `evals/README.md`.
+- **`/status` build-status page** (#62) — `site/status.html` shows the
+  last 20 runs of the evals GitHub Actions workflow, pulled live from
+  GitHub's public Actions API, with a pass/fail dot history and
+  current-run badge; framed honestly as CI/build status rather than a
+  service-uptime claim, with a plain-link fallback if the API is
+  unreachable. Linked from the footer, added to `sitemap.xml`.
+- **JSON-LD structured data validator** (#63) —
+  `scripts/validate-jsonld.js`, wired into the evals CI workflow.
+- **`CONTRIBUTING.md` Local development section** (#60) — documents
+  running the eval harness locally (`--mock --seeds N`), the unit test
+  command, the suite-authoring pattern (`mechanical.js`/`refactor.js`/
+  `debug.js`), and previewing the static site locally; every documented
+  command was run against the repo to confirm it works.
+- **Generated RSS feed for CHANGELOG.md releases** (#64) —
+  `site/changelog.xml`, built by `scripts/generate-changelog-feed.js`
+  from CHANGELOG.md's dated release entries (`[Unreleased]` skipped, no
+  date yet), with a `--check` CI step that fails the build if the
+  committed feed drifts from CHANGELOG.md. Every page's `<head>` gets a
+  matching `rel="alternate"` RSS link, plus a footer link on the
+  homepage.
+- **Sitemap drift checker, wired into CI** (#66) —
+  `scripts/validate-sitemap.js` diffs the real pages in `site/*.html`
+  against `sitemap.xml`'s `<url><loc>` entries, so a new companion page
+  can't land without a sitemap entry (this exact drift caused merge
+  conflicts across several of tonight's companion-page PRs).
+- **Live GitHub star count in the footer** (#67) — a "★ N stars on
+  GitHub" chip on `index.html` and all 10 companion pages, fetched
+  client-side from GitHub's public REST API and cached in
+  `sessionStorage` for an hour; fails closed to a plain "View on
+  GitHub" link on any error rather than showing a stale/fake number.
+- **Spellcheck pass for `site/*.html`, wired into CI** (#69) —
+  `scripts/spellcheck.js`, a dependency-free Node script checking
+  extracted visible text against a standard wordlist with a curated
+  brand/technical-term allowlist. No copy changed — 333 raw hits, all
+  false positives after fixing an entity-decoding bug and tuning the
+  allowlist.
+
+### Changed
+
+- **HTTP security headers hardened** (#61) — `site/vercel.json` gains
+  `X-Frame-Options: DENY`, `Strict-Transport-Security`, a locked-down
+  `Permissions-Policy`, and an enforced (not report-only)
+  `Content-Security-Policy` traced against every real resource the site
+  loads (dc-runtime's `unsafe-eval`/`unsafe-inline`, Google Fonts,
+  `cdn.simpleicons.org`, same-origin-only `connect-src`) — an OWASP
+  Secure Headers baseline pass.
+- **`lead.js` hardened** (#56) — input validation, a payload size cap,
+  and no error-detail leakage on the `/api/lead` serverless function,
+  plus a new `site/api/lead.test.js`.
+- **README documents the plugin install path** (#59) — the Install
+  section previously listed only `npx skills add` and the manual `cp -r`
+  copy; now also covers the `.claude-plugin/` marketplace path already
+  shipped in #41, verified in sync with `AGENTS.md`'s client matrix and
+  the current CHANGELOG version.
+- **Node engine pinned; dependency audit documented** (#65) —
+  `evals/package.json` gets `"engines": {"node": ">=22"}` matching CI's
+  Node version, a root `.nvmrc` (22) covers `scripts/*.js`; `SECURITY.md`
+  documents that `evals/` has zero external npm dependencies (nothing
+  for `npm audit` to check).
+
+### Fixed
+
+- **Design Canvas install-picker parity gap** (#47) — a follow-up audit
+  (same methodology as the 0.3.0 Design Canvas audit) found the "pick
+  your agent" install-client picker added since had no JS-independent
+  equivalent; added the full 10-client command/note matrix to
+  `#dc-fallback` and `site/index.md`.
+- **Site-wide WCAG 2.1 AA audit** (#52) — first systematic full-site
+  pass (previously only 2 spot-fix PRs on individual elements) across
+  `index.html` and all 10 companion pages: muted-gray text/background
+  mismatches between the dark- and light-panel gray variants, signal-
+  green/escalate-amber text below 4.5:1 contrast in tables and form
+  copy, an effectively-invisible border-colored "not applicable" em
+  dash in the feature-comparison table, per-agent Copy buttons now
+  `aria-label`led with the specific command each copies, decorative
+  icons marked `aria-hidden="true"`, and the GitHub-star dismiss button
+  bumped to the 24×24 target size.
+- **`windsurf.html` copy-paste bug** (#53) — three body paragraphs and
+  the Option 2 install command referenced `.devin/rules/` instead of
+  `.windsurf/rules/`.
+- **Stray CI-trigger comment removed** (#51) — leftover from working
+  around a CI-webhook delay while merging #48; whitespace/comment-only,
+  no behavior change.
+- **`summarizeWithCI([])` crash** (#57) — an empty `seedGroups` array
+  fed into `seedBootstrapCI` (which rejects empty input) crashed the
+  whole reporting path for any suite/category/arm with zero units; now
+  short-circuits to a degenerate zero-width summary for `n=0`, matching
+  `wilsonInterval`'s own documented `n=0` behavior, with a regression
+  test. Same PR closes missing edge-case test coverage for `tasks.js`
+  (`gradeCode`/`gradeExact`/`makeTask`) and `policy.js`
+  (`runUnitLadder`/`runUnitDual` hysteresis and escalation paths).
+- **Canonical URL trailing-slash mismatch** (#68) — `privacy.html` and
+  `terms.html` self-referenced `/privacy/` and `/terms/` with a
+  trailing slash, mismatching `vercel.json`'s `cleanUrls`
+  (`trailingSlash: false`) and `sitemap.xml`; audited all 17
+  `site/*.html` pages' canonical/`og:url`/`twitter:url` tags, these
+  were the only two mismatches.
+- **Missing favicons on 6 pages** (#70) — `404`, `about`,
+  `accessibility`, `developers`, `privacy`, and `terms` had no favicon
+  link at all; every `site/*.html` page now links `favicon.svg` plus
+  `apple-touch-icon`/`mask-icon` references for browsers without SVG
+  favicon support.
+- **Mobile overflow on the GSM8K/HumanEval benchmark tables** (#71) —
+  unlike the site's other wide tables, they had no `overflow-x: auto`
+  wrapper, so their multi-column nowrap cells forced the whole page to
+  scroll horizontally below ~375px; wrapped to match the existing
+  pattern.
 
 ## [0.3.0] - 2026-09-03
 
