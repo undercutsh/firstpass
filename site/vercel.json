@@ -21,13 +21,19 @@
     {
       "source": "/",
       "headers": [
-        { "key": "Link", "value": "</sitemap.xml>; rel=\"sitemap\", </index.md>; rel=\"alternate\"; type=\"text/markdown\", </.well-known/ai-catalog.json>; rel=\"ai-catalog\"" }
+        { "key": "Link", "value": "</sitemap.xml>; rel=\"sitemap\", </index.md>; rel=\"alternate\"; type=\"text/markdown\", </changelog.xml>; rel=\"alternate\"; type=\"application/rss+xml\", </.well-known/ai-catalog.json>; rel=\"ai-catalog\"" }
       ]
     },
     {
       "source": "/index.md",
       "headers": [
         { "key": "Content-Type", "value": "text/markdown; charset=utf-8" }
+      ]
+    },
+    {
+      "source": "/changelog.xml",
+      "headers": [
+        { "key": "Content-Type", "value": "application/rss+xml; charset=utf-8" }
       ]
     },
     {
