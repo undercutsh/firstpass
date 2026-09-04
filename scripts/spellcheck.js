@@ -136,7 +136,7 @@ const ALLOWLIST = [
   'subagent-model-routing', 'codebase', 'eval', 'evals', 'Eval', 'eval-harness', 'xhigh',
   'yml', 'Sitemap', 'Edgee', 'Observability', 'dev', 'devs', 'onboarding', 're-runnable',
   'signup', 'agentic', 'git', 'prem', 'div', 'divs', 'img', 'quo', 'ent', 'serverless',
-  'uptime', 'service-uptime', 'txt',
+  'uptime', 'service-uptime', 'txt', 'labelledby', 'describedby', 'programmatic',
   // Files / identifiers used verbatim in copy
   'SKILL.md', 'AGENTS.md', 'CLAUDE.md', 'CHANGELOG.md',
   // People / orgs in credits, socials, contributors

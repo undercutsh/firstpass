@@ -43,11 +43,19 @@
   </ul>
   <p>Round 3's earlier fixes — accessible names on the homepage's calculator/waitlist form inputs, and native <code>&lt;button&gt;</code>/<code>&lt;a&gt;</code> elements instead of clickable divs — are still in place and were re-checked, not redone.</p>
 
+  <p>A follow-up pass took a closer look at the two real lead-capture forms (the Teams waitlist and the cost-audit email form) and the savings calculator. It found and fixed genuine gaps beyond what the full-site sweep above caught:</p>
+  <ul>
+    <li><strong>Orphaned form labels.</strong> The "Who's this for?" individual/team toggle and the "Primary model vendor" control had <code>&lt;label&gt;</code> elements with no <code>for</code>/<code>id</code> tie to their controls. They're now <code>&lt;span&gt;</code>s wired via <code>aria-labelledby</code>, including a self-referencing label on the toggle so its accessible name reflects the current state.</li>
+    <li><strong>Missing pressed-state on vendor buttons.</strong> The Anthropic/OpenAI/Gemini selector buttons didn't expose which one was active to assistive tech. They now carry <code>aria-pressed</code> and an explicit <code>type="button"</code>.</li>
+    <li><strong>Unannounced validation errors.</strong> Both lead-capture email inputs lacked <code>required</code>/<code>aria-required</code>, and their client-side error text had no programmatic link to the input. Errors are now tied in with <code>aria-describedby</code> and <code>aria-invalid</code>, and the error text itself is a <code>role="alert"</code> element, so a screen reader announces it when validation fails.</li>
+  </ul>
+  <p>Separately, a keyboard-only pass through the homepage's interactive elements — the agent picker, the individual/team toggle, the FAQ accordion, and the companion pages' copy-to-clipboard buttons — confirmed they're all native, keyboard-operable controls needing no fix. The one real gap: the floating GitHub-star callout could only be dismissed by tabbing all the way to its small × button. <kbd>Escape</kbd> now dismisses it too.</p>
+
   <h2>What hasn't been formally audited</h2>
   <p>This is a small team shipping fixes as they're found, not a completed compliance program. Specifically not yet done:</p>
   <ul>
-    <li>Full screen-reader testing (VoiceOver, NVDA, JAWS) across every page and interactive flow.</li>
-    <li>Comprehensive keyboard-navigation testing beyond the native controls noted above — focus order, and trap avoidance across the whole site haven't been walked end to end with a keyboard alone.</li>
+    <li>Full screen-reader testing (VoiceOver, NVDA, JAWS) across every page and interactive flow. (The lead-capture forms now announce validation errors via <code>role="alert"</code>, but that's implementation, not screen-reader testing.)</li>
+    <li>A full keyboard-navigation walkthrough of every page. The homepage's interactive elements have been checked individually and are keyboard-operable, but focus order and trap avoidance haven't been walked end to end, page by page, with a keyboard alone.</li>
     <li>Testing with browser zoom, reduced-motion settings, or assistive input devices.</li>
     <li>A formal WCAG 2.1 AA conformance audit by a third party, or a VPAT. Neither exists for this site — everything above is a self-audit, not independent verification.</li>
   </ul>
