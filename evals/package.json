@@ -4,6 +4,9 @@
   "type": "module",
   "private": true,
   "description": "A/B eval harness for the tiered-dispatch skill: all-frontier vs all-standard vs tiered routing, per vendor, on deterministically-graded task suites.",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "evals": "node src/main.js",
     "smoke": "node src/main.js --seeds 1 --suites code,reasoning,mechanical",
