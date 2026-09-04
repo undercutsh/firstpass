@@ -8,6 +8,13 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ### Added
 
+- **`theme-color` meta tag on all 18 `site/*.html` pages** — colors the
+  mobile browser chrome/status bar to match the site's dark panel
+  background (`#15171c`, the existing dark-section color used
+  site-wide) instead of leaving it default white/gray. Pure visual
+  polish, not a PWA signal — no `manifest.json` or
+  `apple-mobile-web-app-*` tags added; the site has none of those
+  anywhere and stays that way.
 - **5 new FAQ entries on `site/index.html`** — addressing gateway/routing-tool
   coexistence, what happens when the cheap tier is wrong, whether code leaves
   the machine, the 10-client support matrix, and the honest self-activation
