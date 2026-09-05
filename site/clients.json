@@ -312,6 +312,16 @@
       }
     },
     {
+      "slug": "augment-code",
+      "detailed": false,
+      "labels": {
+        "faq": "Augment Code",
+        "llms": "Augment Code",
+        "readme": "Augment Code",
+        "agents": "Augment Code"
+      }
+    },
+    {
       "slug": "goose",
       "detailed": false,
       "labels": {
