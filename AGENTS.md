@@ -355,7 +355,7 @@ Source: `site/devin.html`. Researched fresh 2026-08.
 
 ### Additional clients
 
-20 more companion pages landed on 2026-09-05, each independently
+21 more companion pages landed on 2026-09-05, each independently
 researched and cited on its own page — same bar as the 10 above, just not
 expanded inline here. Read the linked page for the confirmed discovery
 path, honest limits, and citations before assuming the summary below is
@@ -383,6 +383,7 @@ the whole story.
 | Firebase Studio | No skills directory; append policy text to `.idx/airules.md` | `site/firebase-studio.html` |
 | Aider | No Agent Skills directory; load `CONVENTIONS.md` explicitly via `--read`/`/read`, or set a `read:` entry in `.aider.conf.yml` for it to load automatically every session | `site/aider.html` |
 | Kilo Code | Reads `SKILL.md` under `.kilo/skills/<name>/` (own convention, distinct from Roo Code's `.roo/skills/`) | `site/kilo-code.html` |
+| OpenHands | Reads `SKILL.md` under its own Agent Skills support at `.agents/skills/<name>/` | `site/openhands.html` |
 
 Note: JetBrains AI Assistant (above) is a separate product from JetBrains
 Junie (detailed in full above) — don't conflate the two when reading the
