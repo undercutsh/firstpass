@@ -103,19 +103,25 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://getundercut.sh/trae</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://getundercut.sh/cody</loc>
     <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://getundercut.sh/continue</loc>
+    <loc>https://getundercut.sh/bolt</loc>
     <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://getundercut.sh/trae</loc>
+    <loc>https://getundercut.sh/continue</loc>
     <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
