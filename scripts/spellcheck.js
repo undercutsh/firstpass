@@ -138,6 +138,7 @@ const ALLOWLIST = [
   'yml', 'Sitemap', 'Edgee', 'Observability', 'dev', 'devs', 'onboarding', 're-runnable',
   'signup', 'agentic', 'git', 'prem', 'div', 'divs', 'img', 'quo', 'ent', 'serverless',
   'uptime', 'service-uptime', 'txt', 'labelledby', 'describedby', 'programmatic',
+  'conf', 'printf', 'verifiability',
   // Files / identifiers used verbatim in copy
   'SKILL.md', 'AGENTS.md', 'CLAUDE.md', 'CHANGELOG.md',
   // People / orgs in credits, socials, contributors
