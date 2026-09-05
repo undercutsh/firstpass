@@ -1,35 +1,315 @@
 {
-  "//": "Single source of truth for every per-agent companion page (site/<slug>.html). scripts/validate-client-list.js --check cross-checks this list against site/index.html's FAQ (JSON-LD + x-dc mirror), site/llms.txt's client-guide link list, README.md's install-section client list, and AGENTS.md's client install matrix, so the four hand-written locations that quote 'how many clients' or 'which clients' can't drift out of sync silently again (see PR #139, #140). Add a new companion page's entry here FIRST, then update the four prose locations to match — the check tells you exactly what's missing.",
+  "//": "Single source of truth for every per-agent companion page (site/<slug>.html). scripts/validate-client-list.js --check cross-checks this list against site/index.html's FAQ (JSON-LD + x-dc mirror), site/llms.txt's client-guide link list, README.md's install-section client list, and AGENTS.md's client install matrix, so the four hand-written locations that quote 'how many clients' or 'which clients' can't drift out of sync silently again (see PR #139, #140). Add a new companion page's entry here FIRST, then update the four prose locations to match \u2014 the check tells you exactly what's missing.",
   "clients": [
-    { "slug": "claude-code", "detailed": true, "labels": { "faq": "Claude Code", "llms": "Claude Code", "readme": "Claude Code", "agents": "Claude Code" } },
-    { "slug": "codex", "detailed": true, "labels": { "faq": "Codex CLI", "llms": "Codex CLI", "readme": "Codex CLI", "agents": "Codex CLI" } },
-    { "slug": "cursor", "detailed": true, "labels": { "faq": "Cursor", "llms": "Cursor", "readme": "Cursor", "agents": "Cursor" } },
-    { "slug": "copilot", "detailed": true, "labels": { "faq": "GitHub Copilot", "llms": "GitHub Copilot", "readme": "Copilot", "agents": "GitHub Copilot" } },
-    { "slug": "opencode", "detailed": true, "labels": { "faq": "OpenCode", "llms": "OpenCode", "readme": "OpenCode", "agents": "OpenCode" } },
-    { "slug": "gemini-cli", "detailed": true, "labels": { "faq": "Gemini CLI", "llms": "Gemini CLI", "readme": "Gemini CLI", "agents": "Gemini CLI" } },
-    { "slug": "windsurf", "detailed": true, "labels": { "faq": "Windsurf (Cascade)", "llms": "Windsurf", "readme": "Windsurf", "agents": "Windsurf" } },
-    { "slug": "junie", "detailed": true, "labels": { "faq": "JetBrains Junie", "llms": "JetBrains Junie", "readme": "JetBrains Junie", "agents": "Junie" } },
-    { "slug": "amp", "detailed": true, "labels": { "faq": "Amp", "llms": "Amp", "readme": "Amp", "agents": "Amp" } },
-    { "slug": "devin", "detailed": true, "labels": { "faq": "Devin (CLI/Desktop)", "llms": "Devin", "readme": "Devin", "agents": "Devin" } },
-    { "slug": "cline", "detailed": false, "labels": { "faq": "Cline", "llms": "Cline", "readme": "Cline", "agents": "Cline" } },
-    { "slug": "zed", "detailed": false, "labels": { "faq": "Zed", "llms": "Zed", "readme": "Zed", "agents": "Zed" } },
-    { "slug": "warp", "detailed": false, "labels": { "faq": "Warp", "llms": "Warp", "readme": "Warp", "agents": "Warp" } },
-    { "slug": "cody", "detailed": false, "labels": { "faq": "Cody", "llms": "Cody", "readme": "Cody", "agents": "Cody" } },
-    { "slug": "continue", "detailed": false, "labels": { "faq": "Continue", "llms": "Continue", "readme": "Continue", "agents": "Continue" } },
-    { "slug": "roo-code", "detailed": false, "labels": { "faq": "Roo Code", "llms": "Roo Code", "readme": "Roo Code", "agents": "Roo Code" } },
-    { "slug": "kiro", "detailed": false, "labels": { "faq": "Kiro", "llms": "Kiro", "readme": "Kiro", "agents": "Kiro" } },
-    { "slug": "void", "detailed": false, "labels": { "faq": "Void", "llms": "Void", "readme": "Void", "agents": "Void" } },
-    { "slug": "trae", "detailed": false, "labels": { "faq": "Trae", "llms": "Trae", "readme": "Trae", "agents": "Trae" } },
-    { "slug": "bolt", "detailed": false, "labels": { "faq": "Bolt", "llms": "Bolt", "readme": "Bolt", "agents": "Bolt" } },
-    { "slug": "factory", "detailed": false, "labels": { "faq": "Factory", "llms": "Factory", "readme": "Factory", "agents": "Factory" } },
-    { "slug": "lovable", "detailed": false, "labels": { "faq": "Lovable", "llms": "Lovable", "readme": "Lovable", "agents": "Lovable" } },
-    { "slug": "qoder", "detailed": false, "labels": { "faq": "Qoder", "llms": "Qoder", "readme": "Qoder", "agents": "Qoder" } },
-    { "slug": "tabnine", "detailed": false, "labels": { "faq": "Tabnine", "llms": "Tabnine", "readme": "Tabnine", "agents": "Tabnine" } },
-    { "slug": "jules", "detailed": false, "labels": { "faq": "Jules", "llms": "Jules", "readme": "Jules", "agents": "Jules" } },
-    { "slug": "jetbrains-ai", "detailed": false, "labels": { "faq": "JetBrains AI Assistant", "llms": "JetBrains AI Assistant", "readme": "JetBrains AI Assistant", "agents": "JetBrains AI Assistant" } },
-    { "slug": "amazon-q", "detailed": false, "labels": { "faq": "Amazon Q Developer", "llms": "Amazon Q Developer", "readme": "Amazon Q Developer", "agents": "Amazon Q Developer" } },
-    { "slug": "firebase-studio", "detailed": false, "labels": { "faq": "Firebase Studio", "llms": "Firebase Studio", "readme": "Firebase Studio", "agents": "Firebase Studio" } },
-    { "slug": "aider", "detailed": false, "labels": { "faq": "Aider", "llms": "Aider", "readme": "Aider", "agents": "Aider" } },
-    { "slug": "openhands", "detailed": false, "labels": { "faq": "OpenHands", "llms": "OpenHands", "readme": "OpenHands", "agents": "OpenHands" } }
+    {
+      "slug": "claude-code",
+      "detailed": true,
+      "labels": {
+        "faq": "Claude Code",
+        "llms": "Claude Code",
+        "readme": "Claude Code",
+        "agents": "Claude Code"
+      }
+    },
+    {
+      "slug": "codex",
+      "detailed": true,
+      "labels": {
+        "faq": "Codex CLI",
+        "llms": "Codex CLI",
+        "readme": "Codex CLI",
+        "agents": "Codex CLI"
+      }
+    },
+    {
+      "slug": "cursor",
+      "detailed": true,
+      "labels": {
+        "faq": "Cursor",
+        "llms": "Cursor",
+        "readme": "Cursor",
+        "agents": "Cursor"
+      }
+    },
+    {
+      "slug": "copilot",
+      "detailed": true,
+      "labels": {
+        "faq": "GitHub Copilot",
+        "llms": "GitHub Copilot",
+        "readme": "Copilot",
+        "agents": "GitHub Copilot"
+      }
+    },
+    {
+      "slug": "opencode",
+      "detailed": true,
+      "labels": {
+        "faq": "OpenCode",
+        "llms": "OpenCode",
+        "readme": "OpenCode",
+        "agents": "OpenCode"
+      }
+    },
+    {
+      "slug": "gemini-cli",
+      "detailed": true,
+      "labels": {
+        "faq": "Gemini CLI",
+        "llms": "Gemini CLI",
+        "readme": "Gemini CLI",
+        "agents": "Gemini CLI"
+      }
+    },
+    {
+      "slug": "windsurf",
+      "detailed": true,
+      "labels": {
+        "faq": "Windsurf (Cascade)",
+        "llms": "Windsurf",
+        "readme": "Windsurf",
+        "agents": "Windsurf"
+      }
+    },
+    {
+      "slug": "junie",
+      "detailed": true,
+      "labels": {
+        "faq": "JetBrains Junie",
+        "llms": "JetBrains Junie",
+        "readme": "JetBrains Junie",
+        "agents": "Junie"
+      }
+    },
+    {
+      "slug": "amp",
+      "detailed": true,
+      "labels": {
+        "faq": "Amp",
+        "llms": "Amp",
+        "readme": "Amp",
+        "agents": "Amp"
+      }
+    },
+    {
+      "slug": "devin",
+      "detailed": true,
+      "labels": {
+        "faq": "Devin (CLI/Desktop)",
+        "llms": "Devin",
+        "readme": "Devin",
+        "agents": "Devin"
+      }
+    },
+    {
+      "slug": "cline",
+      "detailed": false,
+      "labels": {
+        "faq": "Cline",
+        "llms": "Cline",
+        "readme": "Cline",
+        "agents": "Cline"
+      }
+    },
+    {
+      "slug": "zed",
+      "detailed": false,
+      "labels": {
+        "faq": "Zed",
+        "llms": "Zed",
+        "readme": "Zed",
+        "agents": "Zed"
+      }
+    },
+    {
+      "slug": "warp",
+      "detailed": false,
+      "labels": {
+        "faq": "Warp",
+        "llms": "Warp",
+        "readme": "Warp",
+        "agents": "Warp"
+      }
+    },
+    {
+      "slug": "cody",
+      "detailed": false,
+      "labels": {
+        "faq": "Cody",
+        "llms": "Cody",
+        "readme": "Cody",
+        "agents": "Cody"
+      }
+    },
+    {
+      "slug": "continue",
+      "detailed": false,
+      "labels": {
+        "faq": "Continue",
+        "llms": "Continue",
+        "readme": "Continue",
+        "agents": "Continue"
+      }
+    },
+    {
+      "slug": "roo-code",
+      "detailed": false,
+      "labels": {
+        "faq": "Roo Code",
+        "llms": "Roo Code",
+        "readme": "Roo Code",
+        "agents": "Roo Code"
+      }
+    },
+    {
+      "slug": "kiro",
+      "detailed": false,
+      "labels": {
+        "faq": "Kiro",
+        "llms": "Kiro",
+        "readme": "Kiro",
+        "agents": "Kiro"
+      }
+    },
+    {
+      "slug": "void",
+      "detailed": false,
+      "labels": {
+        "faq": "Void",
+        "llms": "Void",
+        "readme": "Void",
+        "agents": "Void"
+      }
+    },
+    {
+      "slug": "trae",
+      "detailed": false,
+      "labels": {
+        "faq": "Trae",
+        "llms": "Trae",
+        "readme": "Trae",
+        "agents": "Trae"
+      }
+    },
+    {
+      "slug": "bolt",
+      "detailed": false,
+      "labels": {
+        "faq": "Bolt",
+        "llms": "Bolt",
+        "readme": "Bolt",
+        "agents": "Bolt"
+      }
+    },
+    {
+      "slug": "factory",
+      "detailed": false,
+      "labels": {
+        "faq": "Factory",
+        "llms": "Factory",
+        "readme": "Factory",
+        "agents": "Factory"
+      }
+    },
+    {
+      "slug": "lovable",
+      "detailed": false,
+      "labels": {
+        "faq": "Lovable",
+        "llms": "Lovable",
+        "readme": "Lovable",
+        "agents": "Lovable"
+      }
+    },
+    {
+      "slug": "qoder",
+      "detailed": false,
+      "labels": {
+        "faq": "Qoder",
+        "llms": "Qoder",
+        "readme": "Qoder",
+        "agents": "Qoder"
+      }
+    },
+    {
+      "slug": "tabnine",
+      "detailed": false,
+      "labels": {
+        "faq": "Tabnine",
+        "llms": "Tabnine",
+        "readme": "Tabnine",
+        "agents": "Tabnine"
+      }
+    },
+    {
+      "slug": "jules",
+      "detailed": false,
+      "labels": {
+        "faq": "Jules",
+        "llms": "Jules",
+        "readme": "Jules",
+        "agents": "Jules"
+      }
+    },
+    {
+      "slug": "jetbrains-ai",
+      "detailed": false,
+      "labels": {
+        "faq": "JetBrains AI Assistant",
+        "llms": "JetBrains AI Assistant",
+        "readme": "JetBrains AI Assistant",
+        "agents": "JetBrains AI Assistant"
+      }
+    },
+    {
+      "slug": "amazon-q",
+      "detailed": false,
+      "labels": {
+        "faq": "Amazon Q Developer",
+        "llms": "Amazon Q Developer",
+        "readme": "Amazon Q Developer",
+        "agents": "Amazon Q Developer"
+      }
+    },
+    {
+      "slug": "firebase-studio",
+      "detailed": false,
+      "labels": {
+        "faq": "Firebase Studio",
+        "llms": "Firebase Studio",
+        "readme": "Firebase Studio",
+        "agents": "Firebase Studio"
+      }
+    },
+    {
+      "slug": "aider",
+      "detailed": false,
+      "labels": {
+        "faq": "Aider",
+        "llms": "Aider",
+        "readme": "Aider",
+        "agents": "Aider"
+      }
+    },
+    {
+      "slug": "openhands",
+      "detailed": false,
+      "labels": {
+        "faq": "OpenHands",
+        "llms": "OpenHands",
+        "readme": "OpenHands",
+        "agents": "OpenHands"
+      }
+    },
+    {
+      "slug": "kilo-code",
+      "detailed": false,
+      "labels": {
+        "faq": "Kilo Code",
+        "llms": "Kilo Code",
+        "readme": "Kilo Code",
+        "agents": "Kilo Code"
+      }
+    }
   ]
 }

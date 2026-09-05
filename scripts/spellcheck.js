@@ -141,7 +141,8 @@ const ALLOWLIST = [
   'uptime', 'service-uptime', 'txt', 'labelledby', 'describedby', 'programmatic', 'init',
   'conf', 'printf', 'verifiability',
   'lexicographical', 'regex', 'async', 'cloud-VM', 'Jules', 'idx', 'airules', 'Firebase',
-  'Antigravity', 'OpenHands', "OpenHands'", 'OpenDevin', 'microagent', 'microagents', 'LiteLLM',
+  'Antigravity', 'jsonc', 'kilocode',
+  'OpenHands', "OpenHands'", 'OpenDevin', 'microagent', 'microagents', 'LiteLLM',
   // Files / identifiers used verbatim in copy
   'SKILL.md', 'AGENTS.md', 'CLAUDE.md', 'CHANGELOG.md', 'WARP.md',
   // People / orgs in credits, socials, contributors
