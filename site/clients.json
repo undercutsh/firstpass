@@ -310,6 +310,16 @@
         "readme": "Kilo Code",
         "agents": "Kilo Code"
       }
+    },
+    {
+      "slug": "goose",
+      "detailed": false,
+      "labels": {
+        "faq": "Goose",
+        "llms": "Goose",
+        "readme": "Goose",
+        "agents": "Goose"
+      }
     }
   ]
 }
