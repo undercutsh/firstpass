@@ -2,6 +2,7 @@ node_modules
 .DS_Store
 *.local.md
 evals/results/*.json
+evals/self-activation/results/*.json
 
 # local tool artifacts
 .lcm/
