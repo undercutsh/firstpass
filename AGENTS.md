@@ -128,7 +128,7 @@ verified companion pages (`site/claude-code.html`, `site/codex.html`,
 `site/amp.html`, `site/devin.html`) — read those for the full reasoning and
 citations. Gemini CLI, Windsurf, JetBrains Junie, Amp, and Devin were
 researched fresh for this section (dated 2026-08); their companion pages
-and the sources inlined below each one carry the citations. A further 18
+and the sources inlined below each one carry the citations. A further 19
 clients have companion pages with the same research-and-citation bar but
 are summarized only in the table further down (see "Additional clients")
 rather than expanded here — read each one's page for its full reasoning.
