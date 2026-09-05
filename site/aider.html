@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#15171c">
+<title>Undercut for Aider — tiered dispatch, free MIT skill</title>
+<meta name="description" content="Undercut is a free, MIT-licensed policy Aider reads via --read/CONVENTIONS.md, routing work to the cheapest model that passes verification — up to −95% cost.">
+<link rel="canonical" href="https://getundercut.sh/aider">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="alternate" type="application/rss+xml" title="Undercut changelog" href="https://getundercut.sh/changelog.xml">
+<link rel="apple-touch-icon" href="/favicon.svg">
+<link rel="mask-icon" href="/favicon.svg" color="#2E9E5B">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Undercut">
+<meta property="og:title" content="Undercut for Aider — tiered dispatch, free MIT skill">
+<meta property="og:description" content="Routes each unit of Aider's work to the cheapest model that can pass verification. Measured up to −95% cost on public benchmarks at equal-or-better pass rate.">
+<meta property="og:url" content="https://getundercut.sh/aider">
+<meta property="og:image" content="https://getundercut.sh/og-image.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://getundercut.sh/og-image.png">
+<meta name="twitter:title" content="Undercut for Aider — tiered dispatch, free MIT skill">
+<meta name="twitter:description" content="Routes each unit of Aider's work to the cheapest model that can pass verification. Measured up to −95% cost on public benchmarks.">
+<link rel="author" href="https://iamjustinwinter.com/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Undercut",
+  "alternateName": "tiered-dispatch",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "url": "https://getundercut.sh/aider",
+  "description": "Confidence-gated model routing for Aider — a policy file Aider loads read-only via --read or .aider.conf.yml that runs every unit of work at the cheapest model that can pass verification.",
+  "license": "https://opensource.org/licenses/MIT",
+  "codeRepository": "https://github.com/undercutsh/firstpass",
+  "author": {
+    "@type": "Person",
+    "name": "Justin Winter",
+    "url": "https://iamjustinwinter.com/"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Undercut", "item": "https://getundercut.sh/" },
+    { "@type": "ListItem", "position": 2, "name": "Aider", "item": "https://getundercut.sh/aider" }
+  ]
+}
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #F5F3EE; color: #15171C; font-family: 'Inter', sans-serif; line-height: 1.65; }
+  a { color: #15171C; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  a:hover { color: #227644; }
+  table { border-collapse: collapse; width: 100%; }
+  details > summary { cursor: pointer; list-style: none; }
+  details > summary::-webkit-details-marker { display: none; }
+  details > summary .aff::before { content: "+ "; }
+  details[open] > summary .aff::before { content: "− "; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 32px; }
+  .mono { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #8A8F98; text-transform: uppercase; letter-spacing: .08em; }
+  code { background: #DFDAD0; padding: 1px 5px; border-radius: 3px; font-size: .92em; font-family: 'JetBrains Mono', monospace; }
+  .callout { border: 1px solid #DFDAD0; border-radius: 6px; padding: 16px 18px; margin: 20px 0; }
+  .copybtn { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; background: transparent; color: #8A8F98; border: 1px solid #2A2D35; height: 32px; padding: 0 14px; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; box-sizing: border-box; transition: color .15s ease, border-color .15s ease; }
+  .copybtn:hover { color: #F5F3EE; border-color: #8A8F98; }
+  .step-row { transition: background-color .15s ease; }
+  .step-row:hover { background-color: rgba(245,243,238,0.05); }
+  .badge { display: inline-flex; align-items: center; justify-content: center; height: 20px; padding: 0 8px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; background: rgba(46,158,91,0.08); color: #227644; }
+  .badge-neutral { background: rgba(138,143,152,0.16); color: #4a4e57; }
+</style>
+</head>
+<body>
+
+<nav style="position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 14px 32px; background: rgba(245,243,238,0.94); backdrop-filter: blur(8px); border-bottom: 1px solid #DFDAD0; flex-wrap: wrap;">
+  <a href="/" style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 17px; letter-spacing: -0.02em; text-decoration: none">undercut</a>
+  <div style="display: flex; align-items: center; gap: 24px; font-size: 14px; flex-wrap: wrap;">
+    <a href="/#calculator" style="text-decoration: none; color: #4a4e57">Free audit</a>
+    <a href="/#benchmarks" style="text-decoration: none; color: #4a4e57">Benchmarks</a>
+    <a href="https://github.com/undercutsh/firstpass" style="text-decoration: none; color: #4a4e57; font-family: 'JetBrains Mono', monospace; font-size: 13px">GitHub &#8599;</a>
+  </div>
+</nav>
+
+<!-- Hero — net-new, Aider specific -->
+<header style="background: #15171C; color: #F5F3EE; padding: 80px 32px 88px">
+  <div class="wrap">
+    <p class="mono" style="margin: 0 0 16px">Undercut for Aider</p>
+    <h1 style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: clamp(34px, 4.4vw, 58px); line-height: 1.05; letter-spacing: -0.03em; margin: 0 0 20px; text-wrap: balance">Aider already loads read-only context files. Give it one that stops overpaying.</h1>
+    <p style="font-size: 17px; line-height: 1.55; color: #b9bcc2; margin: 0 0 28px; max-width: 60ch">Undercut is a free, MIT-licensed policy file delivered through Aider's own conventions mechanism — <code style="background:#2A2D35;color:#F5F3EE">--read</code>, <code style="background:#2A2D35;color:#F5F3EE">/read</code>, or a <code style="background:#2A2D35;color:#F5F3EE">read:</code> entry in <code style="background:#2A2D35;color:#F5F3EE">.aider.conf.yml</code> — cheap tier first, escalate only on evidence, never on a vibe. Unlike most clients on this site, Aider has no automatic rules-file discovery of its own; you point it at the policy once and it sticks. See below for exactly how.</p>
+    <div style="display: flex; gap: 14px; flex-wrap: wrap">
+      <a href="#install" style="display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; background: #F5F3EE; color: #15171C; border: none; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; text-decoration: none; transition: background-color .15s ease">Install for Aider</a>
+      <a href="/#benchmarks" style="display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #F5F3EE; text-decoration: none; border: 1px solid #2A2D35; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; transition: border-color .15s ease">See the benchmarks</a>
+    </div>
+  </div>
+</header>
+
+<!-- Compatibility bar — extends the shared strip with Aider highlighted for this page -->
+<section style="border-bottom: 1px solid #DFDAD0; padding: 26px 32px">
+  <div style="max-width: 1160px; margin: 0 auto; display: flex; align-items: baseline; gap: 32px; flex-wrap: wrap">
+    <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #63666C">Works anywhere a routing policy can be read</span>
+    <div style="display: flex; gap: 32px; flex-wrap: wrap; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500">
+      <span style="display: flex; align-items: center; gap: 9px; color: #63666C; filter: grayscale(1); opacity: 0.75"><img src="https://cdn.simpleicons.org/claude" width="16" height="16" style="display: block" alt="">Claude Code</span>
+      <span style="display: flex; align-items: center; gap: 9px; color: #63666C; filter: grayscale(1); opacity: 0.75"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="1" width="14" height="14" rx="7" stroke="currentColor" stroke-width="1.4"></rect><path d="M6.5 5.5 L4.5 8 L6.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M9.5 5.5 L11.5 8 L9.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>Codex</span>
+      <span style="display: flex; align-items: center; gap: 9px; color: #63666C; filter: grayscale(1); opacity: 0.75"><img src="https://cdn.simpleicons.org/cursor" width="16" height="16" style="display: block" alt="">Cursor</span>
+      <span style="display: flex; align-items: center; gap: 9px; color: #63666C; filter: grayscale(1); opacity: 0.75"><img src="https://cdn.simpleicons.org/githubcopilot" width="16" height="16" style="display: block" alt="">Copilot</span>
+      <span style="display: flex; align-items: center; gap: 9px; color: #63666C; filter: grayscale(1); opacity: 0.75"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="1" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.4"></rect><path d="M4.5 5.5 L7 8 L4.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M8.5 10.5 H11.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path></svg>OpenCode</span>
+      <span style="display: flex; align-items: center; gap: 9px; color: #15171C; opacity: 1"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="1" width="14" height="14" rx="8" stroke="currentColor" stroke-width="1.4"></rect><path d="M4.5 6 L7 8 L4.5 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M8.5 10 H10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path></svg>Aider</span>
+    </div>
+  </div>
+</section>
+
+<!-- Mechanism-grounding block — net-new, Aider specific -->
+<section style="padding: 80px 32px; border-bottom: 1px solid #DFDAD0; background: #FBFAF7">
+  <div class="wrap">
+    <p class="mono" style="margin: 0 0 14px; color: #63666C">How this maps onto Aider</p>
+    <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 30px; letter-spacing: -0.02em; margin: 0 0 24px; text-wrap: balance">No auto-discovery here — you load the file, once, and it sticks.</h2>
+    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 20px; max-width: 70ch">Aider's own docs are explicit that it has no built-in rules-file or Agent Skills directory it scans on its own — per <a href="https://aider.chat/docs/usage/conventions.html">Aider's conventions docs</a>, the documented pattern is a conventionally-named <code>CONVENTIONS.md</code> you load explicitly, either with <code>aider --read CONVENTIONS.md</code> on the command line or <code>/read CONVENTIONS.md</code> inside a running chat. Either way marks the file read-only and, per that same page, caches it if prompt caching is enabled — cheaper on every subsequent turn, not just the first.</p>
+    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 20px; max-width: 70ch">To avoid typing <code>--read</code> every session, <a href="https://aider.chat/docs/config/aider_conf.html">Aider's config docs</a> describe a persistent alternative: a <code>read:</code> entry in <code>.aider.conf.yml</code>, which accepts one file or a list. Aider looks for that config file in your home directory, your git repo root, and your current directory, loading all three if present — later ones override earlier ones — or you can point it at a specific file with <code>--config</code>/<code>-c</code>. Once <code>read:</code> names the policy file, every session in that repo loads it automatically, no flag required.</p>
+    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 20px; max-width: 70ch">Separately, the <a href="https://agents.md/">agents.md project's own compatibility page</a> lists Aider as reading <code>AGENTS.md</code> when you add <code>read: AGENTS.md</code> to <code>.aider.conf.yml</code> — functionally the same <code>read:</code> mechanism above, just pointed at the cross-tool convention instead of a bespoke file. That claim comes from the AGENTS.md spec's own site, not from Aider's documentation directly, so treat it as one config line to try rather than a separately-confirmed Aider feature — see Honest limits below.</p>
+    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0; max-width: 70ch">Aider already has its own cost-tiering primitive worth knowing about: <code>--model</code>, <code>--weak-model</code>, and <code>--editor-model</code> assign different models to fixed roles — main chat, commit messages/history summarization, and editing, respectively (per <a href="https://aider.chat/docs/config/options.html">Aider's options reference</a>). That's a static, role-based split decided once at launch. Undercut's tiers — <strong>cheap, standard, frontier, apex</strong> — are dynamic instead: assigned per unit of work based on verifiability and risk, escalating only on measured evidence. The two aren't in conflict — <code>--weak-model</code> picks who writes your commit message; Undercut's rubric picks who does the actual edit — but they answer different questions, and nothing here overrides your <code>--model</code> flags or touches Aider's network calls to your LLM provider.</p>
+  </div>
+</section>
+
+<!-- Install — net-new, Aider specific mechanics -->
+<section id="install" style="background: #15171C; color: #F5F3EE; padding: 80px 32px">
+  <div class="wrap">
+    <p class="mono" style="margin: 0 0 14px">Install for Aider</p>
+    <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 30px; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 32px; text-wrap: balance">Free. MIT. Nothing installs, nothing proxies your traffic.</h2>
+
+    <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 1 &mdash; persist it in .aider.conf.yml (recommended, confirmed path)</h3>
+    <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0 0 12px">Run this from your git repo root. It downloads the policy as <code style="background:#2A2D35;color:#F5F3EE">CONVENTIONS.md</code> &mdash; Aider's own documented convention name &mdash; and adds a <code style="background:#2A2D35;color:#F5F3EE">read:</code> line so every future session picks it up with no flag needed.</p>
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #101216; border: 1px solid #2A2D35; padding: 18px 22px; font-family: 'JetBrains Mono', monospace; font-size: 15px; margin: 0 0 28px; flex-wrap: wrap">
+      <span><span style="color: #8A8F98">$ </span>curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md -o CONVENTIONS.md &amp;&amp; printf 'read: CONVENTIONS.md\n' &gt;&gt; .aider.conf.yml</span>
+      <button type="button" class="copybtn" data-copy="curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md -o CONVENTIONS.md && printf 'read: CONVENTIONS.md\n' >> .aider.conf.yml" onclick="undercutCopy(this)" aria-label="Copy command: download CONVENTIONS.md and add a read entry to .aider.conf.yml">Copy</button>
+    </div>
+
+    <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 2 &mdash; load it for one session, no config change</h3>
+    <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0 0 12px">Skip the config file and pass <code style="background:#2A2D35;color:#F5F3EE">--read</code> directly, or run <code style="background:#2A2D35;color:#F5F3EE">/read CONVENTIONS.md</code> inside a chat you've already started. Either way Aider marks it read-only and caches it if prompt caching is enabled, per Aider's own docs.</p>
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #101216; border: 1px solid #2A2D35; padding: 18px 22px; font-family: 'JetBrains Mono', monospace; font-size: 15px; margin: 0 0 28px; flex-wrap: wrap">
+      <span><span style="color: #8A8F98">$ </span>aider --read CONVENTIONS.md</span>
+      <button type="button" class="copybtn" data-copy="aider --read CONVENTIONS.md" onclick="undercutCopy(this)" aria-label="Copy command: aider --read CONVENTIONS.md">Copy</button>
+    </div>
+
+    <div class="callout" style="border-color: #2A2D35; background: #101216; margin: 0 0 32px">
+      <p style="font-size: 14px; line-height: 1.6; color: #b9bcc2; margin: 0"><strong style="color: #F5F3EE">Already have it in AGENTS.md?</strong> The <a href="https://agents.md/" style="color: #F5F3EE">agents.md project's own site</a> says adding <code style="background:#2A2D35;color:#F5F3EE">read: AGENTS.md</code> to <code style="background:#2A2D35;color:#F5F3EE">.aider.conf.yml</code> gets Aider reading it &mdash; same mechanism as Option 1, just a different filename. That claim isn't in Aider's own documentation, though, so we haven't independently confirmed it end-to-end; if you already maintain an AGENTS.md, it costs one line to try before adding a second file.</p>
+    </div>
+
+    <div class="callout" style="border-color: #2A2D35; background: #101216; margin: 0 0 32px">
+      <p style="font-size: 14px; line-height: 1.6; color: #b9bcc2; margin: 0"><strong style="color: #F5F3EE">No <code style="background:#2A2D35;color:#F5F3EE">npx skills add</code> path yet.</strong> <a href="https://www.skills.sh" style="color: #F5F3EE">skills.sh</a> doesn't list Aider as a supported install target as of this writing &mdash; the manual options above are the confirmed way in for now.</p>
+    </div>
+
+    <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 20px; color: #b9bcc2">Validate it yourself</h3>
+    <ol style="margin: 0 0 36px; padding: 0; list-style: none; display: grid; gap: 0">
+      <li class="step-row" style="display: flex; align-items: center; gap: 18px; padding: 10px 14px; margin: 0 -14px; border-top: 1px solid #2A2D35; font-size: 15px; line-height: 1.6; color: #b9bcc2; border-radius: 8px"><span style="font-family: 'JetBrains Mono', monospace; color: #2E9E5B; font-weight: 700">1</span><span>Read the published results &mdash; <code style="background:#2A2D35;color:#F5F3EE">testing/README.md</code> and the raw JSON in <code style="background:#2A2D35;color:#F5F3EE">testing/results/</code></span></li>
+      <li class="step-row" style="display: flex; align-items: center; gap: 18px; padding: 10px 14px; margin: 0 -14px; border-top: 1px solid #2A2D35; font-size: 15px; line-height: 1.6; color: #b9bcc2; border-radius: 8px"><span style="font-family: 'JetBrains Mono', monospace; color: #2E9E5B; font-weight: 700">2</span><span>Reproduce for free, no API key, no spend: <code style="background:#2A2D35;color:#F5F3EE">node src/main.js --mock</code></span></li>
+      <li class="step-row" style="display: flex; align-items: center; gap: 18px; padding: 10px 14px; margin: 0 -14px; border-top: 1px solid #2A2D35; border-bottom: 1px solid #2A2D35; font-size: 15px; line-height: 1.6; color: #b9bcc2; border-radius: 8px"><span style="font-family: 'JetBrains Mono', monospace; color: #2E9E5B; font-weight: 700">3</span><span>Run <code style="background:#2A2D35;color:#F5F3EE">aider --read CONVENTIONS.md</code> on a small task and check whether it references the routing policy before starting mechanical work</span></li>
+    </ol>
+    <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0"><strong style="color: #F5F3EE">Zero lock-in.</strong> It's a markdown file Aider reads &mdash; drop the <code style="background:#2A2D35;color:#F5F3EE">read:</code> line, or stop passing <code style="background:#2A2D35;color:#F5F3EE">--read</code>, and you're back to status quo.</p>
+  </div>
+</section>
+
+<!-- How it works — byte-identical reuse from index.html -->
+<section id="how" style="background: #15171C; color: #F5F3EE; padding: 88px 32px">
+  <div class="wrap">
+    <div style="display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin: 0 0 14px">
+      <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #8A8F98; margin: 0">How it works</p>
+      <span style="font-family: 'Inter', sans-serif; font-weight: 500; font-size: 11px; color: #8A8F98; border: 1px solid #2A2D35; height: 20px; line-height: 18px; padding: 0 8px; border-radius: 6px; display: inline-flex; align-items: center; box-sizing: border-box">The Undercut Rubric &middot; v1</span>
+    </div>
+    <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 34px; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 24px; text-wrap: balance">Six flags assign a tier. Three triggers are the only way up.</h2>
+    <p style="font-size: 13.5px; line-height: 1.6; color: #8A8F98; margin: 0 0 20px">This is a named, versioned spec — not internal logic we could quietly change. When the rubric changes (a new flag, a different cap), the version number moves and <a href="https://github.com/undercutsh/firstpass/blob/main/CHANGELOG.md" style="color: #8A8F98">the changelog</a> says why.</p>
+    <p style="font-size: 16px; line-height: 1.65; color: #b9bcc2; margin: 0 0 28px">Every unit of work gets scored against six flags, then assigned the cheapest tier that can plausibly handle it. It only moves up a tier when something objective proves it needs to — a failed check, a measured disagreement, an explicit uncertainty flag. It never moves up on a guess, and it never moves back down mid-task.</p>
+    <div style="border: 1px solid #2A2D35; background: #101216; padding: 28px 24px; margin: 0 0 28px; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; overflow-x: auto">
+      <div style="display: flex; align-items: center; gap: 0; min-width: 640px">
+        <div style="border: 1px solid #2A2D35; padding: 12px 16px; color: #b9bcc2; white-space: nowrap">unit of work</div>
+        <div style="width: 36px; height: 1px; background: #2A2D35; position: relative"><span aria-hidden="true" style="position: absolute; right: -2px; top: -4px; color: #2A2D35">&rsaquo;</span></div>
+        <div style="border: 1px solid #8A8F98; padding: 12px 16px; color: #F5F3EE; white-space: nowrap">6-flag rubric</div>
+        <div style="width: 36px; display: flex; align-items: center; justify-content: center; color: #8A8F98; flex-shrink: 0">&rsaquo;</div>
+        <div style="display: grid; gap: 8px; flex: 1">
+          <div style="display: flex; align-items: center; gap: 12px"><span style="color: #8A8F98; width: 64px">0 flags</span><div style="flex: 1; border: 1px solid #2E9E5B; color: #2E9E5B; padding: 8px 14px; display: flex; justify-content: space-between; gap: 12px"><span>cheap</span><span>~90% of units land here &#10003;</span></div></div>
+          <div style="display: flex; align-items: center; gap: 12px"><span style="color: #8A8F98; width: 64px">1&ndash;2</span><div style="flex: 1; border: 1px solid #2A2D35; color: #b9bcc2; padding: 8px 14px">standard</div></div>
+          <div style="display: flex; align-items: center; gap: 12px"><span style="color: #8A8F98; width: 64px">3+/own</span><div style="flex: 1; border: 1px solid #2A2D35; color: #b9bcc2; padding: 8px 14px">frontier</div></div>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; margin-top: 20px; padding-top: 16px; border-top: 1px dashed #2A2D35; min-width: 640px">
+        <span style="color: #C77D2E">&uarr; escalate +1 tier</span>
+        <span style="color: #8A8F98">only on: fail &times;2 &middot; two runs disagree &middot; tagged "uncertain"</span>
+        <span style="color: #8A8F98; margin-left: auto">residue only &mdash; never redoes the batch</span>
+      </div>
+    </div>
+    <details style="border: 1px solid #2A2D35">
+      <summary style="padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700"><span class="aff">See the rubric</span></summary>
+      <div style="padding: 8px 24px 28px; border-top: 1px solid #2A2D35">
+        <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 20px 0 14px; color: #F5F3EE">Step 1 &mdash; Base tier, six-flag rubric</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 10px 28px; font-size: 14.5px; line-height: 1.5; color: #b9bcc2">
+          <div><strong style="color: #F5F3EE; font-family: 'JetBrains Mono', monospace; font-size: 13px">Unverifiable</strong> &mdash; can output be checked mechanically? (tests, schema, diff, grep)</div>
+          <div><strong style="color: #F5F3EE; font-family: 'JetBrains Mono', monospace; font-size: 13px">Ambiguous</strong> &mdash; one right answer, or several defensible ones?</div>
+          <div><strong style="color: #F5F3EE; font-family: 'JetBrains Mono', monospace; font-size: 13px">Blast</strong> &mdash; reversible? touches money, auth, user data, production, deletes?</div>
+          <div><strong style="color: #F5F3EE; font-family: 'JetBrains Mono', monospace; font-size: 13px">Cross-cutting</strong> &mdash; one file/source, or reasoning across many?</div>
+          <div><strong style="color: #F5F3EE; font-family: 'JetBrains Mono', monospace; font-size: 13px">Novel</strong> &mdash; pattern-following, or genuinely new design?</div>
+          <div><strong style="color: #F5F3EE; font-family: 'JetBrains Mono', monospace; font-size: 13px">Format-strict</strong> &mdash; must output match an exact schema?</div>
+        </div>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 13.5px; line-height: 1.7; margin: 20px 0 0; color: #b9bcc2">0 flags &rarr; <span style="color: #2E9E5B">cheap</span> &middot; 1&ndash;2 &rarr; standard &middot; 3+ or any ownership/judgment call &rarr; frontier. Apex only when you can write one sentence stating why the marginal intelligence pays for the cost.</p>
+        <div style="margin: 24px 0; padding: 16px 20px; border-left: 2px solid #2E9E5B; background: rgba(46,158,91,0.07)">
+          <strong style="font-family: 'JetBrains Mono', monospace; font-size: 13px">The override &mdash; single biggest lever</strong>
+          <p style="font-size: 14.5px; line-height: 1.6; color: #b9bcc2; margin: 8px 0 0">Cheap-to-verify &rArr; cheap-to-generate. If output can be checked mechanically, it starts at the lowest tier regardless of how hard it looks &mdash; verification catches failure. Only unverifiable work needs to start high.</p>
+        </div>
+        <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 24px 0 10px">Step 2 &mdash; Escalate exactly one tier, on evidence only</h3>
+        <ul style="font-size: 14.5px; line-height: 1.7; color: #b9bcc2; margin: 0; padding-left: 20px">
+          <li>Verification fails twice at the current tier</li>
+          <li>Two cheap-tier runs disagree on ambiguous-flagged work</li>
+          <li>The worker tags an item "uncertain"</li>
+        </ul>
+        <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 24px 0 8px">Residue-only handoff</h3>
+        <p style="font-size: 14.5px; line-height: 1.6; color: #b9bcc2; margin: 0">The next tier up gets only the failed or uncertain items, plus verification notes. It resolves the residue &mdash; it never redoes the batch.</p>
+        <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 24px 0 8px">Hysteresis &mdash; guardrails</h3>
+        <p style="font-size: 14.5px; line-height: 1.6; color: #b9bcc2; margin: 0 0 24px">Never de-escalate mid-task. Max one retry per tier. Anything still unresolved goes to a single batched apex tie-break call. One hard file in a 700-file job doesn't drag the other 699 up a tier.</p>
+        <pre style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.6; color: #8A8F98; background: #101216; border: 1px solid #2A2D35; padding: 20px 24px; margin: 0; overflow-x: auto"> unit of work
+      |
+  6-flag rubric
+      |
+  +---+----+
+  | 0 flags|--&gt; <span style="color: #2E9E5B">cheap</span>
+  | 1-2    |--&gt; standard
+  | 3+/own |--&gt; frontier
+  +---+----+
+      | <span style="color: #C77D2E">fail x2 / disagree / uncertain</span>
+      v
+  <span style="color: #C77D2E">escalate +1 tier</span>
+  (residue only)
+      |
+  still unresolved?
+      v
+  single batched
+  apex tie-break</pre>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- Why it holds up — byte-identical reuse from index.html -->
+<section style="padding: 88px 32px; border-bottom: 1px solid #DFDAD0">
+  <div class="wrap">
+    <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #63666C; margin: 0 0 14px">Why it holds up</p>
+    <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 34px; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 24px">Flags steer. Verification and escalation decide.</h2>
+    <p style="font-size: 16px; line-height: 1.65; color: #4a4e57; margin: 0 0 28px">Even when the rubric flags are scored imperfectly, the escalator still routes work to the right tier almost every time &mdash; because a wrong flag only ever costs one extra cheap attempt, never a wrong answer or a big bill.</p>
+    <details style="border: 1px solid #DFDAD0">
+      <summary style="padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700"><span class="aff">See the data</span></summary>
+      <div style="padding: 8px 24px 28px; border-top: 1px solid #DFDAD0">
+        <p style="font-size: 15px; line-height: 1.65; color: #4a4e57; margin: 20px 0 24px">A stock dispatcher model reproduces the rubric flags imperfectly &mdash; Haiku hits 90% agreement, Sonnet 93%. The weakest flag (format-strict) is only 60%. None of that matters: under the shipped policy, both dispatchers still route 100% of units to the correct tier. A wrong flag changes the ladder cap, never the base tier &mdash; worst case, one extra cheap attempt.</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 32px; margin: 0 0 28px; font-family: 'JetBrains Mono', monospace; font-size: 12px">
+          <div>
+            <div style="margin-bottom: 12px; color: #63666C">Haiku dispatcher</div>
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px"><div style="height: 14px; width: 90%; background: #8A8F98"></div><span>90% flag agreement</span></div>
+            <div style="display: flex; align-items: center; gap: 10px"><div style="height: 14px; width: 100%; background: #2E9E5B"></div><span style="white-space: nowrap">100% tier-match</span></div>
+          </div>
+          <div>
+            <div style="margin-bottom: 12px; color: #63666C">Sonnet dispatcher</div>
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px"><div style="height: 14px; width: 93%; background: #8A8F98"></div><span>93% flag agreement</span></div>
+            <div style="display: flex; align-items: center; gap: 10px"><div style="height: 14px; width: 100%; background: #2E9E5B"></div><span style="white-space: nowrap">100% tier-match</span></div>
+          </div>
+        </div>
+        <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 700; margin: 0 0 8px">The rules are about the work, not the model.</h3>
+        <p style="font-size: 15px; line-height: 1.65; color: #4a4e57; margin: 0">Every rule is a property of the unit of work &mdash; verifiable, ambiguous, blast-radius &mdash; never a specific model's known weakness. Vendor cards go stale as models change; work properties don't. It's also hard-won &mdash; a format-strict rule that worked on Anthropic backfired on Gemini, which is exactly why the rubric no longer encodes per-vendor behavior.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- What it doesn't do — condensed reuse, links out rather than duplicating -->
+<section style="padding: 64px 32px; border-bottom: 1px solid #DFDAD0; background: #FBFAF7">
+  <div class="wrap">
+    <p class="mono" style="margin: 0 0 14px; color: #63666C">Honest limits</p>
+    <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 26px; letter-spacing: -0.02em; margin: 0 0 18px">What this doesn't do.</h2>
+    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 8px; max-width: 70ch">Not a proxy, not a gateway, doesn't auto-flag in production — Aider scores the flags itself (measured robust to getting them wrong, see above). Unlike most clients on this site, Aider won't pick the policy up on its own: forget the <code>read:</code> line or the <code>--read</code> flag and it's simply not loaded, silently. The AGENTS.md path above is a third-party claim from the agents.md project's own site, not Aider's documentation, so treat it as unverified until confirmed directly. Doesn't promise a dollar figure for your workload, and doesn't prove your number until you run it — every figure here is a reproducible observation from our tasks and graders, not a guarantee about yours. Full list of general limits, with the finance/procurement note and the paid-tier disclosure, is on the <a href="/#pricing">main page</a>.</p>
+  </div>
+</section>
+
+<!-- Final CTA — byte-identical reuse from index.html -->
+<section style="background: #15171C; color: #F5F3EE; padding: 96px 32px; text-align: center">
+  <div style="max-width: 720px; margin: 0 auto">
+    <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: clamp(32px, 3.6vw, 48px); letter-spacing: -0.03em; line-height: 1.1; margin: 0 0 20px; text-wrap: balance">Undercut the top tier. Not the quality bar.</h2>
+    <p style="font-size: 16px; line-height: 1.6; color: #8A8F98; margin: 0 0 36px">Nothing about this page expires. What does keep happening is the token bill, one session at a time, on whatever Aider is currently doing with mechanical work.</p>
+    <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap">
+      <button type="button" onclick="undercutCopy(this)" data-copy="curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md -o CONVENTIONS.md && printf 'read: CONVENTIONS.md\n' >> .aider.conf.yml" style="display: inline-flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 14px; background: #F5F3EE; color: #15171C; border: none; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; cursor: pointer; transition: background-color .15s ease"><span style="font-weight: 800">Install</span><span style="color: #4a4e57">curl SKILL.md &gt; CONVENTIONS.md, add read: to .aider.conf.yml</span></button>
+      <a href="https://github.com/undercutsh/firstpass" style="display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #F5F3EE; text-decoration: none; border: 1px solid #2A2D35; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; transition: border-color .15s ease">View on GitHub</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer — byte-identical reuse from index.html -->
+<footer style="padding: 64px 32px 48px">
+  <div style="max-width: 1160px; margin: 0 auto">
+    <div style="display: flex; justify-content: space-between; gap: 48px; flex-wrap: wrap; margin: 0 0 48px">
+      <div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 17px; margin: 0 0 10px">undercut</div>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #63666C; margin: 0">MIT License &middot; <a href="https://github.com/undercutsh/firstpass" style="color: #63666C">github.com/undercutsh/firstpass</a></p>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #63666C; margin: 6px 0 0">Built by <a rel="me author" href="https://iamjustinwinter.com/" style="color: #63666C">Justin Winter</a></p>
+        <a id="uc-github-stars" href="https://github.com/undercutsh/firstpass" target="_blank" rel="noopener" class="badge badge-neutral" style="margin-top: 10px; text-decoration: none" hidden>★ <span id="uc-star-count"></span> stars on GitHub</a>
+      </div>
+      <div style="display: flex; gap: 72px; flex-wrap: wrap; font-size: 14px">
+        <div style="display: grid; gap: 10px; align-content: start">
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #63666C">Product</span>
+          <a href="/#how" style="text-decoration: none; color: #4a4e57">How it works</a>
+          <a href="/#calculator" style="text-decoration: none; color: #4a4e57">Free audit</a>
+          <a href="/#teams" style="text-decoration: none; color: #4a4e57">Teams</a>
+          <a href="/#pricing" style="text-decoration: none; color: #4a4e57">Pricing</a>
+          <a href="#install" style="text-decoration: none; color: #4a4e57">Install</a>
+        </div>
+        <div style="display: grid; gap: 10px; align-content: start">
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #63666C">Proof</span>
+          <a href="/#benchmarks" style="text-decoration: none; color: #4a4e57">Benchmarks</a>
+          <a href="https://github.com/undercutsh/firstpass/tree/main/testing/results" style="text-decoration: none; color: #4a4e57">Raw results</a>
+          <a href="https://github.com/undercutsh/firstpass/blob/main/testing/README.md" style="text-decoration: none; color: #4a4e57">Methodology</a>
+        </div>
+        <div style="display: grid; gap: 10px; align-content: start">
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #63666C">Repo</span>
+          <a href="https://github.com/undercutsh/firstpass" style="text-decoration: none; color: #4a4e57">GitHub</a>
+          <a href="https://github.com/undercutsh/firstpass/releases" style="text-decoration: none; color: #4a4e57">Changelog</a>
+          <a href="https://github.com/undercutsh/firstpass/issues" style="text-decoration: none; color: #4a4e57">Issues</a>
+        </div>
+      </div>
+    </div>
+    <div style="border-top: 1px solid #DFDAD0; padding-top: 24px; display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-size: 12.5px; color: #63666C">
+      <span style="display: flex; gap: 18px; flex-wrap: wrap; align-items: baseline">
+        <span style="font-family: 'JetBrains Mono', monospace" id="uc-copyright-year">&copy; 2026 Undercut &middot; MIT</span>
+        <span style="font-family: 'JetBrains Mono', monospace">Works with: Claude Code &middot; Codex &middot; Cursor &middot; Copilot &middot; OpenCode &middot; Aider</span>
+      </span>
+      <span style="display: flex; gap: 18px; flex-wrap: wrap">
+        <a href="/privacy/" style="color: #63666C; text-decoration: none">Privacy</a>
+        <a href="/terms/" style="color: #63666C; text-decoration: none">Terms</a>
+        <a href="/accessibility" style="color: #63666C; text-decoration: none">Accessibility</a>
+        <a href="/status" style="color: #63666C; text-decoration: none">Status</a>
+        <a href="https://github.com/undercutsh/firstpass/blob/main/testing/README.md" style="color: #63666C; text-decoration: none">Benchmark data</a>
+        <a href="https://github.com/undercutsh/firstpass/blob/main/CHANGELOG.md" style="color: #63666C; text-decoration: none">Changelog</a>
+      </span>
+    </div>
+    <div style="margin-top: 10px; padding-top: 14px; border-top: 1px solid #DFDAD0; display: flex; gap: 18px; flex-wrap: wrap; font-size: 11px; color: #63666C">
+      <span style="font-family: 'JetBrains Mono', monospace">agent &amp; crawler files:</span>
+      <a href="/llms.txt" style="color: #63666C; text-decoration: none">llms.txt</a>
+      <a href="/humans.txt" style="color: #63666C; text-decoration: none">humans.txt</a>
+      <a href="/robots.txt" style="color: #63666C; text-decoration: none">robots.txt</a>
+      <a href="/changelog.xml" style="color: #63666C; text-decoration: none">changelog.xml</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function undercutCopy(btn) {
+    var text = btn.getAttribute('data-copy');
+    var original = btn.textContent;
+    function done() {
+      btn.textContent = 'Copied ✓';
+      setTimeout(function () { btn.textContent = original; }, 1800);
+    }
+    if (navigator.clipboard) { navigator.clipboard.writeText(text).then(done, done); }
+    else { done(); }
+  }
+  (function () {
+    var y = document.getElementById('uc-copyright-year');
+    if (y) y.textContent = '© ' + new Date().getFullYear() + ' Undercut · MIT';
+  })();
+</script>
+
+<!--
+  Footer "★ N stars on GitHub" chip. Live count via GitHub's unauthenticated
+  REST API, cached in sessionStorage for an hour to cut API calls across page
+  views. Fails closed: any error (network, rate limit, bad shape) falls back
+  to a plain "View on GitHub" link -- never a stale/fake number.
+-->
+<script>
+(function () {
+  var CACHE_KEY = 'uc-gh-stars-v1';
+  var TTL_MS = 60 * 60 * 1000;
+
+  function init() {
+    var chip = document.getElementById('uc-github-stars');
+    var countEl = document.getElementById('uc-star-count');
+    if (!chip || !countEl) return;
+
+    function render(count) {
+      countEl.textContent = count.toLocaleString('en-US');
+      chip.hidden = false;
+    }
+    function fallback() {
+      chip.textContent = 'View on GitHub';
+      chip.hidden = false;
+    }
+
+    try {
+      var cached = JSON.parse(sessionStorage.getItem(CACHE_KEY) || 'null');
+      if (cached && typeof cached.count === 'number' && Date.now() - cached.at < TTL_MS) {
+        render(cached.count);
+        return;
+      }
+    } catch (e) {}
+
+    var controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+    var timeoutId = setTimeout(function () { if (controller) controller.abort(); }, 8000);
+
+    fetch('https://api.github.com/repos/undercutsh/firstpass', {
+      headers: { Accept: 'application/vnd.github+json' },
+      signal: controller ? controller.signal : undefined
+    })
+      .then(function (res) {
+        clearTimeout(timeoutId);
+        if (!res.ok) throw new Error('GitHub API error ' + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        var count = data && typeof data.stargazers_count === 'number' ? data.stargazers_count : null;
+        if (count === null) { fallback(); return; }
+        try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ count: count, at: Date.now() })); } catch (e) {}
+        render(count);
+      })
+      .catch(function () {
+        clearTimeout(timeoutId);
+        fallback();
+      });
+  }
+
+  if (document.readyState === 'complete') init();
+  else window.addEventListener('load', init);
+})();
+</script>
+</body>
+</html>
