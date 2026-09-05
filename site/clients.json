@@ -29,6 +29,7 @@
     { "slug": "jetbrains-ai", "detailed": false, "labels": { "faq": "JetBrains AI Assistant", "llms": "JetBrains AI Assistant", "readme": "JetBrains AI Assistant", "agents": "JetBrains AI Assistant" } },
     { "slug": "amazon-q", "detailed": false, "labels": { "faq": "Amazon Q Developer", "llms": "Amazon Q Developer", "readme": "Amazon Q Developer", "agents": "Amazon Q Developer" } },
     { "slug": "firebase-studio", "detailed": false, "labels": { "faq": "Firebase Studio", "llms": "Firebase Studio", "readme": "Firebase Studio", "agents": "Firebase Studio" } },
-    { "slug": "aider", "detailed": false, "labels": { "faq": "Aider", "llms": "Aider", "readme": "Aider", "agents": "Aider" } }
+    { "slug": "aider", "detailed": false, "labels": { "faq": "Aider", "llms": "Aider", "readme": "Aider", "agents": "Aider" } },
+    { "slug": "openhands", "detailed": false, "labels": { "faq": "OpenHands", "llms": "OpenHands", "readme": "OpenHands", "agents": "OpenHands" } }
   ]
 }
