@@ -141,7 +141,7 @@ const ALLOWLIST = [
   'uptime', 'service-uptime', 'txt', 'labelledby', 'describedby', 'programmatic', 'init',
   'conf', 'printf', 'verifiability',
   'lexicographical', 'regex', 'async', 'cloud-VM', 'Jules', 'idx', 'airules', 'Firebase',
-  'Antigravity',
+  'Antigravity', 'jsonc', 'kilocode',
   // Files / identifiers used verbatim in copy
   'SKILL.md', 'AGENTS.md', 'CLAUDE.md', 'CHANGELOG.md', 'WARP.md',
   // People / orgs in credits, socials, contributors
