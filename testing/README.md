@@ -206,7 +206,10 @@ node src/main.js --compare a.json,b.json             # diff two saved runs
    (self-activation rate, not routing quality once active), and it's real:
    a third-party audit of a structurally similar skill (plain `SKILL.md`,
    no lifecycle hook) found it self-activated in 0 of 10 sessions where it
-   was merely installed. Until we publish our own measurement of this,
+   was merely installed. The harness for measuring our own rate now exists
+   (`evals/self-activation/` — task set, two-condition protocol, scaffolding,
+   and Wilson-CI scoring), but no live trials have been run through it yet,
+   so there is still no number here. Until real trials are run and reported,
    treat the numbers above as "what the policy achieves when it runs," not
    as a guarantee it runs unprompted on every session. If it doesn't seem
    to be engaging, see `AGENTS.md`'s Troubleshooting section.

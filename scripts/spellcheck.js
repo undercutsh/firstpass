@@ -126,7 +126,7 @@ const ALLOWLIST = [
   'Windsurf', 'windsurfrules', 'Cascade', 'Junie', 'JetBrains', 'Amp', 'Devin', 'Gemini',
   'Cline', 'clinerules', 'clinerules-workflows',
   'gemini-cli', 'Sourcegraph', 'OpenAI', 'ChatGPT', 'GPT', 'Google', 'Sonnet', 'Opus', 'Haiku',
-  'codeium', 'agentskills', 'ccusage',
+  'codeium', 'agentskills', 'ccusage', 'Warp',
   // Platforms / tooling
   'Vercel', 'vercel-labs', 'GitHub', 'githubusercontent', 'GitLab', 'npm', 'npx', 'Node',
   'JSON', 'YAML', 'yml', 'toml', 'mdc', 'Markdown', 'CI', 'API', 'CLI', "CLI's", 'URL', 'URLs',
@@ -137,10 +137,10 @@ const ALLOWLIST = [
   'subagent-model-routing', 'codebase', 'eval', 'evals', 'Eval', 'eval-harness', 'xhigh',
   'yml', 'Sitemap', 'Edgee', 'Observability', 'dev', 'devs', 'onboarding', 're-runnable',
   'signup', 'agentic', 'git', 'prem', 'div', 'divs', 'img', 'quo', 'ent', 'serverless',
-  'uptime', 'service-uptime', 'txt', 'labelledby', 'describedby', 'programmatic',
+  'uptime', 'service-uptime', 'txt', 'labelledby', 'describedby', 'programmatic', 'init',
   'conf', 'printf', 'verifiability',
   // Files / identifiers used verbatim in copy
-  'SKILL.md', 'AGENTS.md', 'CLAUDE.md', 'CHANGELOG.md',
+  'SKILL.md', 'AGENTS.md', 'CLAUDE.md', 'CHANGELOG.md', 'WARP.md',
   // People / orgs in credits, socials, contributors
   'Winter', 'Justin', 'iamjustinwinter', 'jcwinter', 'justinwinter', "peragwin's", 'soumabali',
 ];
