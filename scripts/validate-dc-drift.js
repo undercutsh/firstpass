@@ -38,20 +38,16 @@
 // Usage:
 //   node scripts/validate-dc-drift.js          # same as --check (read-only)
 //   node scripts/validate-dc-drift.js --check  # exit 1 on drift, no writes
+//
+// The extract*/check* functions below are pure (string/data in, error-string
+// array out) precisely so validate-dc-drift.test.js can feed them
+// deliberately drifted fixtures and assert the drift is actually caught —
+// not just that today's real repo content happens to pass. Only main() at
+// the bottom touches the filesystem or process.exit.
 
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-
-const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const html = readFileSync(path.join(repoRoot, 'site', 'index.html'), 'utf8');
-const md = readFileSync(path.join(repoRoot, 'site', 'index.md'), 'utf8');
-const pricingMd = readFileSync(path.join(repoRoot, 'site', 'pricing.md'), 'utf8');
-
-const errors = [];
-function fail(msg) {
-  errors.push(msg);
-}
 
 // ---------------------------------------------------------------------------
 // Extraction helpers
@@ -59,7 +55,7 @@ function fail(msg) {
 
 // Returns the substring starting at `openIdx` (which must point at the
 // opening bracket char) through its matching close bracket, inclusive.
-function matchBalanced(text, openIdx, openCh, closeCh) {
+export function matchBalanced(text, openIdx, openCh, closeCh) {
   let depth = 0;
   for (let i = openIdx; i < text.length; i++) {
     if (text[i] === openCh) depth++;
@@ -76,7 +72,7 @@ function matchBalanced(text, openIdx, openCh, closeCh) {
 // repo's own content, not external input), so evaluating the literal
 // directly is the only robust way to read data shaped as JS object literals
 // rather than JSON.
-function extractArrayLiteral(text, label, { bareConst = false } = {}) {
+export function extractArrayLiteral(text, label, { bareConst = false } = {}) {
   const re = bareConst
     ? new RegExp(`const\\s+${label}\\s*=\\s*\\[`)
     : new RegExp(`\\b${label}\\s*:\\s*\\[`);
@@ -87,7 +83,7 @@ function extractArrayLiteral(text, label, { bareConst = false } = {}) {
   return new Function(`return (${literal});`)();
 }
 
-function decodeEntities(s) {
+export function decodeEntities(s) {
   return s
     .replace(/&quot;/g, '"')
     .replace(/&amp;/g, '&')
@@ -96,11 +92,11 @@ function decodeEntities(s) {
     .replace(/&#39;/g, "'");
 }
 
-function stripTags(s) {
+export function stripTags(s) {
   return s.replace(/<[^>]+>/g, '');
 }
 
-function normalizeText(s) {
+export function normalizeText(s) {
   return decodeEntities(s)
     .replace(/[‘’]/g, "'")
     .replace(/[“”]/g, '"')
@@ -112,19 +108,15 @@ function normalizeText(s) {
 // Locate the x-dc script and dc-fallback block
 // ---------------------------------------------------------------------------
 
-const dcScriptMatch = /<script type="text\/x-dc"[^>]*>([\s\S]*?)<\/script>/.exec(html);
-if (!dcScriptMatch) {
-  console.error('validate-dc-drift.js: could not find <script type="text/x-dc"> in site/index.html');
-  process.exit(1);
+export function extractDcScript(html) {
+  const m = /<script type="text\/x-dc"[^>]*>([\s\S]*?)<\/script>/.exec(html);
+  if (!m) throw new Error('could not find <script type="text/x-dc"> in site/index.html');
+  return m[1];
 }
-const dcScript = dcScriptMatch[1];
 
-const fallbackOpenMatch = /<div id="dc-fallback"[^>]*>/.exec(html);
-if (!fallbackOpenMatch) {
-  console.error('validate-dc-drift.js: could not find <div id="dc-fallback"> in site/index.html');
-  process.exit(1);
-}
-const fallbackBlock = (() => {
+export function extractFallbackBlock(html) {
+  const fallbackOpenMatch = /<div id="dc-fallback"[^>]*>/.exec(html);
+  if (!fallbackOpenMatch) throw new Error('could not find <div id="dc-fallback"> in site/index.html');
   // Balance <div ...> / </div> tags (not just brackets) since the fallback
   // block contains a nested <div> for the FAQ section.
   const startIdx = fallbackOpenMatch.index;
@@ -138,22 +130,20 @@ const fallbackBlock = (() => {
     if (depth === 0) return html.slice(startIdx, tagRe.lastIndex);
   }
   throw new Error('unbalanced <div id="dc-fallback"> — could not find its closing tag');
-})();
+}
 
 // ---------------------------------------------------------------------------
 // 1. Demo log (ladderRows)
 // ---------------------------------------------------------------------------
 
-const ladderRows = extractArrayLiteral(dcScript, 'ladderRows');
-
 // One line of raw text per row from each substitute, in document order.
-function fallbackDemoLogLines() {
+export function fallbackDemoLogLines(fallbackBlock) {
   const ulMatch = /Example run[\s\S]*?<ul[^>]*>([\s\S]*?)<\/ul>/.exec(fallbackBlock);
   if (!ulMatch) throw new Error('could not find the demo-log <ul> in #dc-fallback');
   return [...ulMatch[1].matchAll(/<li>([\s\S]*?)<\/li>/g)].map((m) => normalizeText(stripTags(m[1])));
 }
 
-function mdDemoLogLines() {
+export function mdDemoLogLines(md) {
   const secMatch = /## Example run\n([\s\S]*?)(?=\n## )/.exec(md);
   if (!secMatch) throw new Error('could not find "## Example run" section in site/index.md');
   return secMatch[1]
@@ -163,9 +153,10 @@ function mdDemoLogLines() {
     .map((l) => normalizeText(l.slice(2)));
 }
 
-function checkDemoLog(sourceName, lines) {
+export function checkDemoLog(sourceName, lines, ladderRows) {
+  const errors = [];
   if (lines.length !== ladderRows.length) {
-    fail(
+    errors.push(
       `demo log: ${sourceName} has ${lines.length} row(s), x-dc's ladderRows has ${ladderRows.length}`
     );
   }
@@ -174,31 +165,27 @@ function checkDemoLog(sourceName, lines) {
     if (line === undefined) return; // count mismatch already reported
     const strippedResult = normalizeText(row.result).replace(/^[✓↑]\s*/, '');
     if (!line.includes(normalizeText(row.unit))) {
-      fail(`demo log row ${i + 1}: ${sourceName} is missing unit "${row.unit}" (line: "${line}")`);
+      errors.push(`demo log row ${i + 1}: ${sourceName} is missing unit "${row.unit}" (line: "${line}")`);
     }
     if (!line.includes(normalizeText(row.flags))) {
-      fail(
+      errors.push(
         `demo log row ${i + 1} (${row.unit}): ${sourceName} doesn't contain flags text "${row.flags}" (line: "${line}")`
       );
     }
     if (!line.includes(strippedResult)) {
-      fail(
+      errors.push(
         `demo log row ${i + 1} (${row.unit}): ${sourceName} doesn't contain result "${strippedResult}" (line: "${line}")`
       );
     }
   });
+  return errors;
 }
-
-checkDemoLog('#dc-fallback', fallbackDemoLogLines());
-checkDemoLog('site/index.md', mdDemoLogLines());
 
 // ---------------------------------------------------------------------------
 // 2. Install-client picker (INSTALL_CLIENTS)
 // ---------------------------------------------------------------------------
 
-const installClients = extractArrayLiteral(dcScript, 'INSTALL_CLIENTS', { bareConst: true });
-
-function fallbackInstallClients() {
+export function fallbackInstallClients(fallbackBlock) {
   const ulMatch = /Install for your agent[\s\S]*?<ul[^>]*>([\s\S]*?)<\/ul>/.exec(fallbackBlock);
   if (!ulMatch) throw new Error('could not find the install-client <ul> in #dc-fallback');
   return [...ulMatch[1].matchAll(/<li><strong>([\s\S]*?)<\/strong>\s*—\s*<code>([\s\S]*?)<\/code><\/li>/g)].map(
@@ -206,7 +193,7 @@ function fallbackInstallClients() {
   );
 }
 
-function mdInstallClients() {
+export function mdInstallClients(md) {
   const secMatch = /### Install for your agent\n([\s\S]*?)(?=\n## |\n### )/.exec(md);
   if (!secMatch) throw new Error('could not find "### Install for your agent" section in site/index.md');
   const rows = secMatch[1]
@@ -233,25 +220,26 @@ function byLabel(list) {
   return map;
 }
 
-function checkInstallClients(sourceName, list, { checkNote }) {
+export function checkInstallClients(sourceName, list, installClients, { checkNote }) {
+  const errors = [];
   const map = byLabel(list);
   for (const client of installClients) {
     const label = normalizeText(client.label);
     const entry = map.get(label);
     if (!entry) {
-      fail(`install client "${label}": missing from ${sourceName}`);
+      errors.push(`install client "${label}": missing from ${sourceName}`);
       continue;
     }
     const expectedCmd = normalizeText(client.cmd);
     if (entry.cmd !== expectedCmd) {
-      fail(
+      errors.push(
         `install client "${label}": command differs in ${sourceName}\n    x-dc:        ${expectedCmd}\n    ${sourceName}: ${entry.cmd}`
       );
     }
     if (checkNote) {
       const expectedNote = normalizeText(client.note.replace(/`/g, ''));
       if (entry.note !== expectedNote) {
-        fail(
+        errors.push(
           `install client "${label}": note differs in ${sourceName}\n    x-dc:        ${expectedNote}\n    ${sourceName}: ${entry.note}`
         );
       }
@@ -259,13 +247,11 @@ function checkInstallClients(sourceName, list, { checkNote }) {
   }
   for (const item of list) {
     if (!installClients.some((c) => normalizeText(c.label) === item.label)) {
-      fail(`install client "${item.label}" in ${sourceName} has no matching entry in x-dc's INSTALL_CLIENTS`);
+      errors.push(`install client "${item.label}" in ${sourceName} has no matching entry in x-dc's INSTALL_CLIENTS`);
     }
   }
+  return errors;
 }
-
-checkInstallClients('#dc-fallback', fallbackInstallClients(), { checkNote: false });
-checkInstallClients('site/index.md', mdInstallClients(), { checkNote: true });
 
 // ---------------------------------------------------------------------------
 // 3. Pricing grid's Support row (Community / Email / Dedicated) vs pricing.md
@@ -273,11 +259,13 @@ checkInstallClients('site/index.md', mdInstallClients(), { checkNote: true });
 //    rest of pricingGrid isn't diffed the same way.
 // ---------------------------------------------------------------------------
 
-const pricingGrid = extractArrayLiteral(dcScript, 'pricingGrid');
-const supportRow = pricingGrid.find((row) => normalizeText(row.feature) === 'Support');
-if (!supportRow) {
-  fail('pricingGrid: no row with feature "Support" found — pricing.md drift check can\'t run');
-} else {
+export function checkPricingSupportRow(pricingGrid, pricingMd) {
+  const errors = [];
+  const supportRow = pricingGrid.find((row) => normalizeText(row.feature) === 'Support');
+  if (!supportRow) {
+    errors.push('pricingGrid: no row with feature "Support" found — pricing.md drift check can\'t run');
+    return errors;
+  }
   const tiers = [
     { key: 'free', heading: '## Free', value: supportRow.free },
     { key: 'team', heading: '## Teams', value: supportRow.team },
@@ -287,32 +275,31 @@ if (!supportRow) {
     const secRe = new RegExp(`${heading}\\n([\\s\\S]*?)(?=\\n## |$)`);
     const secMatch = secRe.exec(pricingMd);
     if (!secMatch) {
-      fail(`pricing.md: could not find "${heading}" section to check the Support field`);
+      errors.push(`pricing.md: could not find "${heading}" section to check the Support field`);
       continue;
     }
     const includesMatch = /- \*\*Includes:\*\*\s*(.+)/.exec(secMatch[1]);
     if (!includesMatch) {
-      fail(`pricing.md: "${heading}" section has no "- **Includes:**" line`);
+      errors.push(`pricing.md: "${heading}" section has no "- **Includes:**" line`);
       continue;
     }
     const includesText = includesMatch[1].toLowerCase();
     const wordMatch = /^[a-z]+/.exec(value.toLowerCase());
     const word = wordMatch ? wordMatch[0] : value.toLowerCase();
     if (!includesText.includes(word) || !includesText.includes('support')) {
-      fail(
+      errors.push(
         `pricing.md drift: pricingGrid's Support row says "${heading.replace('## ', '')}" = "${value}", but pricing.md's ${heading} Includes line doesn't mention "${word}" support:\n    ${includesMatch[1]}`
       );
     }
   }
+  return errors;
 }
 
 // ---------------------------------------------------------------------------
 // 4. FAQ subset in #dc-fallback vs x-dc's faqs array
 // ---------------------------------------------------------------------------
 
-const faqs = extractArrayLiteral(dcScript, 'faqs');
-
-function fallbackFaqPairs() {
+export function fallbackFaqPairs(fallbackBlock) {
   const secMatch = /Frequently asked[\s\S]*?<div[^>]*>([\s\S]*?)<\/div>/.exec(fallbackBlock);
   if (!secMatch) throw new Error('could not find the FAQ block in #dc-fallback');
   const paras = [...secMatch[1].matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)].map((m) => normalizeText(stripTags(m[1])));
@@ -323,32 +310,86 @@ function fallbackFaqPairs() {
   return pairs;
 }
 
-for (const { q, a } of fallbackFaqPairs()) {
-  const match = faqs.find((f) => normalizeText(f.q) === q);
-  if (!match) {
-    fail(`FAQ: #dc-fallback has a question with no match in x-dc's faqs array: "${q}"`);
-    continue;
+export function checkFaqDrift(pairs, faqs) {
+  const errors = [];
+  for (const { q, a } of pairs) {
+    const match = faqs.find((f) => normalizeText(f.q) === q);
+    if (!match) {
+      errors.push(`FAQ: #dc-fallback has a question with no match in x-dc's faqs array: "${q}"`);
+      continue;
+    }
+    const fullAnswer = normalizeText(match.a);
+    if (!fullAnswer.startsWith(a)) {
+      errors.push(
+        `FAQ drift for "${q}":\n    #dc-fallback answer: ${a}\n    x-dc answer:         ${fullAnswer}\n    (the fallback answer must be the start of the full answer, word for word)`
+      );
+    }
   }
-  const fullAnswer = normalizeText(match.a);
-  if (!fullAnswer.startsWith(a)) {
-    fail(
-      `FAQ drift for "${q}":\n    #dc-fallback answer: ${a}\n    x-dc answer:         ${fullAnswer}\n    (the fallback answer must be the start of the full answer, word for word)`
-    );
-  }
+  return errors;
 }
 
 // ---------------------------------------------------------------------------
+// Orchestration — pure, given the three raw source documents.
+// ---------------------------------------------------------------------------
 
-if (errors.length > 0) {
-  console.error('x-dc content has drifted from its static substitutes (#dc-fallback / site/index.md / site/pricing.md):\n');
-  for (const e of errors) console.error(`  - ${e}\n`);
-  console.error(
-    `${errors.length} drift issue(s) found. Update the static substitute(s) to match the <x-dc> content in site/index.html, or update x-dc if the substitute is the source of truth.`
-  );
-  process.exit(1);
-} else {
-  console.log(
-    `x-dc content is in sync with its static substitutes (${ladderRows.length} demo-log rows, ${installClients.length} install clients, pricingGrid Support row, ${fallbackFaqPairs().length} FAQ pairs checked).`
-  );
-  process.exit(0);
+export function checkAll({ html, md, pricingMd }) {
+  const errors = [];
+  const dcScript = extractDcScript(html);
+  const fallbackBlock = extractFallbackBlock(html);
+
+  const ladderRows = extractArrayLiteral(dcScript, 'ladderRows');
+  errors.push(...checkDemoLog('#dc-fallback', fallbackDemoLogLines(fallbackBlock), ladderRows));
+  errors.push(...checkDemoLog('site/index.md', mdDemoLogLines(md), ladderRows));
+
+  const installClients = extractArrayLiteral(dcScript, 'INSTALL_CLIENTS', { bareConst: true });
+  errors.push(...checkInstallClients('#dc-fallback', fallbackInstallClients(fallbackBlock), installClients, { checkNote: false }));
+  errors.push(...checkInstallClients('site/index.md', mdInstallClients(md), installClients, { checkNote: true }));
+
+  const pricingGrid = extractArrayLiteral(dcScript, 'pricingGrid');
+  errors.push(...checkPricingSupportRow(pricingGrid, pricingMd));
+
+  const faqs = extractArrayLiteral(dcScript, 'faqs');
+  const faqPairCount = fallbackFaqPairs(fallbackBlock).length;
+  errors.push(...checkFaqDrift(fallbackFaqPairs(fallbackBlock), faqs));
+
+  return { errors, counts: { ladderRows: ladderRows.length, installClients: installClients.length, faqPairs: faqPairCount } };
+}
+
+// ---------------------------------------------------------------------------
+// main() — filesystem + CLI, only runs when invoked directly.
+// ---------------------------------------------------------------------------
+
+function main() {
+  const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+  const html = readFileSync(path.join(repoRoot, 'site', 'index.html'), 'utf8');
+  const md = readFileSync(path.join(repoRoot, 'site', 'index.md'), 'utf8');
+  const pricingMd = readFileSync(path.join(repoRoot, 'site', 'pricing.md'), 'utf8');
+
+  let result;
+  try {
+    result = checkAll({ html, md, pricingMd });
+  } catch (e) {
+    console.error(`validate-dc-drift.js: ${e.message}`);
+    process.exit(1);
+  }
+
+  const { errors, counts } = result;
+
+  if (errors.length > 0) {
+    console.error('x-dc content has drifted from its static substitutes (#dc-fallback / site/index.md / site/pricing.md):\n');
+    for (const e of errors) console.error(`  - ${e}\n`);
+    console.error(
+      `${errors.length} drift issue(s) found. Update the static substitute(s) to match the <x-dc> content in site/index.html, or update x-dc if the substitute is the source of truth.`
+    );
+    process.exit(1);
+  } else {
+    console.log(
+      `x-dc content is in sync with its static substitutes (${counts.ladderRows} demo-log rows, ${counts.installClients} install clients, pricingGrid Support row, ${counts.faqPairs} FAQ pairs checked).`
+    );
+    process.exit(0);
+  }
+}
+
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main();
 }
