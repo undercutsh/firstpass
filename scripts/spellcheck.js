@@ -139,7 +139,8 @@ const ALLOWLIST = [
   'yml', 'Sitemap', 'Edgee', 'Observability', 'dev', 'devs', 'onboarding', 're-runnable',
   'signup', 'agentic', 'git', 'prem', 'div', 'divs', 'img', 'quo', 'ent', 'serverless',
   'uptime', 'service-uptime', 'txt', 'labelledby', 'describedby', 'programmatic', 'init',
-  'lexicographical', 'regex', 'async', 'cloud-VM', 'Jules',
+  'lexicographical', 'regex', 'async', 'cloud-VM', 'Jules', 'idx', 'airules', 'Firebase',
+  'Antigravity',
   // Files / identifiers used verbatim in copy
   'SKILL.md', 'AGENTS.md', 'CLAUDE.md', 'CHANGELOG.md', 'WARP.md',
   // People / orgs in credits, socials, contributors
