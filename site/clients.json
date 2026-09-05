@@ -310,6 +310,16 @@
         "readme": "Kilo Code",
         "agents": "Kilo Code"
       }
+    },
+    {
+      "slug": "augment-code",
+      "detailed": false,
+      "labels": {
+        "faq": "Augment Code",
+        "llms": "Augment Code",
+        "readme": "Augment Code",
+        "agents": "Augment Code"
+      }
     }
   ]
 }
