@@ -150,11 +150,8 @@
       <button type="button" class="copybtn" data-copy="mkdir -p ~/.qoder/skills && cp -r firstpass/skills/firstpass ~/.qoder/skills/firstpass" onclick="undercutCopy(this)" aria-label="Copy command: mkdir -p ~/.qoder/skills && cp -r firstpass/skills/firstpass ~/.qoder/skills/firstpass">Copy</button>
     </div>
 
-    <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 3 &mdash; skills CLI</h3>
-    <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0 0 12px">The cross-agent <code style="background:#2A2D35;color:#F5F3EE">skills</code> installer lists Qoder as a supported target and writes directly into <code style="background:#2A2D35;color:#F5F3EE">.qoder/skills/</code> (or <code style="background:#2A2D35;color:#F5F3EE">~/.qoder/skills/</code> with a global flag) when you point it at Qoder explicitly.</p>
-    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #101216; border: 1px solid #2A2D35; padding: 18px 22px; font-family: 'JetBrains Mono', monospace; font-size: 15px; margin: 0 0 28px; flex-wrap: wrap">
-      <span><span style="color: #8A8F98">$ </span>npx skills add undercutsh/firstpass -a qoder</span>
-      <button type="button" class="copybtn" data-copy="npx skills add undercutsh/firstpass -a qoder" onclick="undercutCopy(this)" aria-label="Copy command: npx skills add undercutsh/firstpass -a qoder">Copy</button>
+    <div class="callout" style="border-color: #2A2D35; background: #101216; margin: 0 0 32px">
+      <p style="font-size: 14px; line-height: 1.6; color: #b9bcc2; margin: 0"><strong style="color: #F5F3EE">No <code style="background:#2A2D35;color:#F5F3EE">npx skills add</code> path yet.</strong> <a href="https://www.skills.sh" style="color: #F5F3EE">skills.sh</a> doesn't list Qoder as a supported install target as of this writing &mdash; Option 1 or 2 above, both copied directly from Qoder's own documented <code style="background:#2A2D35;color:#F5F3EE">.qoder/skills/</code> path, are the confirmed way in for now.</p>
     </div>
 
     <div class="callout" style="border-color: #2A2D35; background: #101216; margin: 0 0 32px">
@@ -293,7 +290,7 @@
     <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: clamp(32px, 3.6vw, 48px); letter-spacing: -0.03em; line-height: 1.1; margin: 0 0 20px; text-wrap: balance">Undercut the top tier. Not the quality bar.</h2>
     <p style="font-size: 16px; line-height: 1.6; color: #8A8F98; margin: 0 0 36px">Nothing about this page expires. What does keep happening is the token bill, one session at a time, on whatever Qoder is currently doing with mechanical work.</p>
     <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap">
-      <button type="button" onclick="undercutCopy(this)" data-copy="npx skills add undercutsh/firstpass -a qoder" style="display: inline-flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 14px; background: #F5F3EE; color: #15171C; border: none; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; cursor: pointer; transition: background-color .15s ease"><span style="font-weight: 800">Install</span><span style="color: #4a4e57">npx skills add undercutsh/firstpass -a qoder</span></button>
+      <button type="button" onclick="undercutCopy(this)" data-copy="mkdir -p .qoder/skills && cp -r firstpass/skills/firstpass ./.qoder/skills/firstpass" style="display: inline-flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 14px; background: #F5F3EE; color: #15171C; border: none; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; cursor: pointer; transition: background-color .15s ease"><span style="font-weight: 800">Install</span><span style="color: #4a4e57">cp firstpass/skills/firstpass to .qoder/skills/</span></button>
       <a href="https://github.com/undercutsh/firstpass" style="display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #F5F3EE; text-decoration: none; border: 1px solid #2A2D35; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; transition: border-color .15s ease">View on GitHub</a>
     </div>
   </div>
