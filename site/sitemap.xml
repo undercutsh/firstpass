@@ -97,6 +97,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://getundercut.sh/amazon-q</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://getundercut.sh/warp</loc>
     <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
