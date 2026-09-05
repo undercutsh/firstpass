@@ -139,8 +139,10 @@ Every client uses its own directory:
   `.github/copilot-instructions.md` or `AGENTS.md`
 
 Full install steps for these plus OpenCode, Gemini CLI, Windsurf, JetBrains
-Junie, Amp, and Devin — exact commands, a verify-your-install prompt, and
-troubleshooting — are in
+Junie, Amp, Devin, and 18 more clients (Cline, Zed, Warp, Cody, Continue,
+Roo Code, Kiro, Void, Trae, Bolt, Factory, Lovable, Qoder, Tabnine, Jules,
+JetBrains AI Assistant, Amazon Q Developer, and Firebase Studio) — exact
+commands, a verify-your-install prompt, and troubleshooting — are in
 [`AGENTS.md` → Client install matrix](AGENTS.md#client-install-matrix).
 
 **For AI coding agents working in this repo:** see [`AGENTS.md`](AGENTS.md)

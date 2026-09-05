@@ -121,14 +121,17 @@ directory your client scans (below, per client). The manual copy is also
 the fallback when `npx skills add` can't reach the network (see
 Troubleshooting).
 
-All 10 clients below are sourced from this repo's own verified companion
-pages (`site/claude-code.html`, `site/codex.html`, `site/cursor.html`,
-`site/copilot.html`, `site/opencode.html`, `site/gemini-cli.html`,
-`site/windsurf.html`, `site/junie.html`, `site/amp.html`,
-`site/devin.html`) — read those for the full reasoning and citations.
-Gemini CLI, Windsurf, JetBrains Junie, Amp, and Devin were researched
-fresh for this section (dated 2026-08); their companion pages and the
-sources inlined below each one carry the citations.
+The 10 clients detailed in full below are sourced from this repo's own
+verified companion pages (`site/claude-code.html`, `site/codex.html`,
+`site/cursor.html`, `site/copilot.html`, `site/opencode.html`,
+`site/gemini-cli.html`, `site/windsurf.html`, `site/junie.html`,
+`site/amp.html`, `site/devin.html`) — read those for the full reasoning and
+citations. Gemini CLI, Windsurf, JetBrains Junie, Amp, and Devin were
+researched fresh for this section (dated 2026-08); their companion pages
+and the sources inlined below each one carry the citations. A further 18
+clients have companion pages with the same research-and-citation bar but
+are summarized only in the table further down (see "Additional clients")
+rather than expanded here — read each one's page for its full reasoning.
 
 <details>
 <summary><strong>Claude Code</strong></summary>
@@ -349,6 +352,39 @@ mkdir -p .devin/skills && cp -r firstpass/skills/firstpass ./.devin/skills/first
 Source: `site/devin.html`. Researched fresh 2026-08.
 
 </details>
+
+### Additional clients
+
+18 more companion pages landed on 2026-09-05, each independently
+researched and cited on its own page — same bar as the 10 above, just not
+expanded inline here. Read the linked page for the confirmed discovery
+path, honest limits, and citations before assuming the summary below is
+the whole story.
+
+| Client | Discovery mechanism (summary) | Source |
+| --- | --- | --- |
+| Cline | Reads `SKILL.md` under `.cline/skills/<name>/` | `site/cline.html` |
+| Zed | Reads `SKILL.md` under `.agents/skills/<name>/` (cross-agent convention) | `site/zed.html` |
+| Warp | No skills directory; append policy text to root `AGENTS.md` | `site/warp.html` |
+| Cody | No always-on auto-read file; save as a Sourcegraph Prompt (explicit-invoke) or append to a shared repo's `AGENTS.md` for other clients | `site/cody.html` |
+| Continue | Reads a rule dropped into `.continue/rules/` | `site/continue.html` |
+| Roo Code | Reads `SKILL.md` under `.roo/skills/<name>/` | `site/roo-code.html` |
+| Kiro | Reads `SKILL.md` under `.kiro/skills/<name>/` | `site/kiro.html` |
+| Void | No skills directory; append policy text to `.voidrules` | `site/void.html` |
+| Trae | Reads `SKILL.md` under `.trae/skills/<name>/` | `site/trae.html` |
+| Bolt | No filesystem path; import via Bolt's own Skills panel ("Import from GitHub" or "Import from file") | `site/bolt.html` |
+| Factory | Reads `SKILL.md`/`models.md` from `.factory/skills/firstpass/` | `site/factory.html` |
+| Lovable | No skills directory; append policy text to root `AGENTS.md` | `site/lovable.html` |
+| Qoder | Reads `SKILL.md` under `.qoder/skills/<name>/` | `site/qoder.html` |
+| Tabnine | Reads `SKILL.md`/`models.md` from `.tabnine/agent/skills/firstpass/` | `site/tabnine.html` |
+| Jules | No skills directory; append policy text to root `AGENTS.md` | `site/jules.html` |
+| JetBrains AI Assistant | No skills directory; save as a rule at `.aiassistant/rules/firstpass.md` | `site/jetbrains-ai.html` |
+| Amazon Q Developer | No skills directory; save as a rule at `.amazonq/rules/undercut.md` | `site/amazon-q.html` |
+| Firebase Studio | No skills directory; append policy text to `.idx/airules.md` | `site/firebase-studio.html` |
+
+Note: JetBrains AI Assistant (above) is a separate product from JetBrains
+Junie (detailed in full above) — don't conflate the two when reading the
+matrix.
 
 ### Verify your install
 
