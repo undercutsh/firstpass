@@ -124,9 +124,10 @@ const ALLOWLIST = [
   // AI vendors / models / agents referenced across the companion pages
   'Claude', 'Anthropic', 'anthropics', 'Codex', 'Cursor', 'cursorrules', 'Copilot', 'OpenCode',
   'Windsurf', 'windsurfrules', 'Cascade', 'Junie', 'JetBrains', 'Amp', 'Devin', 'Gemini',
-  'Cline', 'clinerules', 'clinerules-workflows',
+  'Cline', 'clinerules', 'clinerules-workflows', 'Cody', 'ampcode', 'vscode',
   'gemini-cli', 'Sourcegraph', 'OpenAI', 'ChatGPT', 'GPT', 'Google', 'Sonnet', 'Opus', 'Haiku',
-  'codeium', 'agentskills', 'ccusage', 'Warp',
+  'codeium', 'agentskills', 'ccusage', 'Kiro', "Kiro's", 'kiro', 'kiro-cli', 'AWS', 'Warp', 'Ollama', 'Trae', 'StackBlitz', 'mdx',
+  'Roo', "Roo's", 'roo', 'roorules', 'Qoder', "Qoder's", 'qoder', 'aiassistant', 'kt', 'amazonq',
   // Platforms / tooling
   'Vercel', 'vercel-labs', 'GitHub', 'githubusercontent', 'GitLab', 'npm', 'npx', 'Node',
   'JSON', 'YAML', 'yml', 'toml', 'mdc', 'Markdown', 'CI', 'API', 'CLI', "CLI's", 'URL', 'URLs',
@@ -139,6 +140,8 @@ const ALLOWLIST = [
   'signup', 'agentic', 'git', 'prem', 'div', 'divs', 'img', 'quo', 'ent', 'serverless',
   'uptime', 'service-uptime', 'txt', 'labelledby', 'describedby', 'programmatic', 'init',
   'conf', 'printf', 'verifiability',
+  'lexicographical', 'regex', 'async', 'cloud-VM', 'Jules', 'idx', 'airules', 'Firebase',
+  'Antigravity',
   // Files / identifiers used verbatim in copy
   'SKILL.md', 'AGENTS.md', 'CLAUDE.md', 'CHANGELOG.md', 'WARP.md',
   // People / orgs in credits, socials, contributors

@@ -39,6 +39,8 @@ jobs:
         run: node scripts/generate-changelog-feed.js --check
       - name: Spellcheck site copy (site/*.html)
         run: node scripts/spellcheck.js
+      - name: x-dc content in sync with static substitutes (fallback/index.md/pricing.md)
+        run: node scripts/validate-dc-drift.js --check
       - name: models.md in sync with evals/src/config.js
         run: node scripts/sync-models-md.js --check
       # Heavier eval-harness steps last, cheapest-of-these first: unit tests

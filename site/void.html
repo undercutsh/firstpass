@@ -4,26 +4,26 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#15171c">
-<title>Undercut for JetBrains Junie — tiered dispatch, free MIT skill</title>
-<meta name="description" content="Undercut is a free, MIT-licensed SKILL.md Junie reads via Agent Skills support, routing work to the cheapest model that passes verification — up to −95% cost.">
-<link rel="canonical" href="https://getundercut.sh/junie">
+<title>Undercut for Void — tiered dispatch, free MIT skill</title>
+<meta name="description" content="Undercut is a free, MIT-licensed SKILL.md you fold into Void's .voidrules file, routing work to the cheapest model that passes verification — up to −95% cost.">
+<link rel="canonical" href="https://getundercut.sh/void">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="alternate" type="application/rss+xml" title="Undercut changelog" href="https://getundercut.sh/changelog.xml">
 <link rel="apple-touch-icon" href="/favicon.svg">
 <link rel="mask-icon" href="/favicon.svg" color="#2E9E5B">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Undercut">
-<meta property="og:title" content="Undercut for JetBrains Junie — tiered dispatch, free MIT skill">
-<meta property="og:description" content="Routes JetBrains AI Assistant's Junie agent to the cheapest model that can pass verification. Measured up to −95% cost on public benchmarks at equal-or-better pass rate.">
-<meta property="og:url" content="https://getundercut.sh/junie">
+<meta property="og:title" content="Undercut for Void — tiered dispatch, free MIT skill">
+<meta property="og:description" content="Routes each unit of work in Void's .voidrules file to the cheapest model that can pass verification. Measured up to −95% cost on public benchmarks at equal-or-better pass rate.">
+<meta property="og:url" content="https://getundercut.sh/void">
 <meta property="og:image" content="https://getundercut.sh/og-image.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://getundercut.sh/og-image.png">
-<meta name="twitter:title" content="Undercut for JetBrains Junie — tiered dispatch, free MIT skill">
-<meta name="twitter:description" content="Routes JetBrains AI Assistant's Junie agent to the cheapest model that can pass verification. Measured up to −95% cost on public benchmarks.">
+<meta name="twitter:title" content="Undercut for Void — tiered dispatch, free MIT skill">
+<meta name="twitter:description" content="Routes each unit of work in Void's .voidrules file to the cheapest model that can pass verification. Measured up to −95% cost on public benchmarks.">
 <link rel="author" href="https://iamjustinwinter.com/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,8 +38,8 @@
   "alternateName": "tiered-dispatch",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Any",
-  "url": "https://getundercut.sh/junie",
-  "description": "Confidence-gated model routing for JetBrains AI Assistant / Junie — a SKILL.md that runs every unit of work at the cheapest model that can pass verification.",
+  "url": "https://getundercut.sh/void",
+  "description": "Confidence-gated model routing for Void — a SKILL.md whose text you fold into Void's .voidrules file, running every unit of work at the cheapest model that can pass verification.",
   "license": "https://opensource.org/licenses/MIT",
   "codeRepository": "https://github.com/undercutsh/firstpass",
   "author": {
@@ -55,7 +55,7 @@
   "@type": "BreadcrumbList",
   "itemListElement": [
     { "@type": "ListItem", "position": 1, "name": "Undercut", "item": "https://getundercut.sh/" },
-    { "@type": "ListItem", "position": 2, "name": "JetBrains Junie", "item": "https://getundercut.sh/junie" }
+    { "@type": "ListItem", "position": 2, "name": "Void", "item": "https://getundercut.sh/void" }
   ]
 }
 </script>
@@ -79,6 +79,7 @@
   .step-row:hover { background-color: rgba(245,243,238,0.05); }
   .badge { display: inline-flex; align-items: center; justify-content: center; height: 20px; padding: 0 8px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; background: rgba(46,158,91,0.08); color: #227644; }
   .badge-neutral { background: rgba(138,143,152,0.16); color: #4a4e57; }
+  .badge-amber { background: rgba(199,125,46,0.12); color: #955d22; }
 </style>
 </head>
 <body>
@@ -92,76 +93,81 @@
   </div>
 </nav>
 
-<!-- Hero — net-new, Junie specific -->
+<!-- Hero — net-new, Void specific. Leads with the status flag rather than burying it, because Void is archived. -->
 <header style="background: #15171C; color: #F5F3EE; padding: 80px 32px 88px">
   <div class="wrap">
-    <p class="mono" style="margin: 0 0 16px">Undercut for JetBrains AI Assistant</p>
-    <h1 style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: clamp(34px, 4.4vw, 58px); line-height: 1.05; letter-spacing: -0.03em; margin: 0 0 20px; text-wrap: balance">Junie already reads Agent Skills. Give it one that stops overpaying.</h1>
-    <p style="font-size: 17px; line-height: 1.55; color: #b9bcc2; margin: 0 0 28px; max-width: 60ch">Undercut is a free, MIT-licensed policy file JetBrains AI Assistant's Junie agent follows at dispatch time — cheap tier first, escalate only on evidence, never on a vibe. One self-reported <code style="background:#2A2D35;color:#F5F3EE">ccusage</code>-style breakdown of default routing behavior in a different agent showed 93.8% of tokens going to the top-tier model by default (<a href="https://github.com/anthropics/claude-code/issues/27665" style="color:#b9bcc2">anthropics/claude-code#27665</a>) — one account's data, from Claude Code rather than Junie, but the pattern of defaulting to the priciest tier for mechanical work is the reason this exists.</p>
+    <p class="mono" style="margin: 0 0 16px">Undercut for Void</p>
+    <h1 style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: clamp(34px, 4.4vw, 58px); line-height: 1.05; letter-spacing: -0.03em; margin: 0 0 20px; text-wrap: balance">Void reads one plain rules file. That's the whole surface — and worth knowing before you install anything.</h1>
+    <p style="font-size: 17px; line-height: 1.55; color: #b9bcc2; margin: 0 0 28px; max-width: 60ch">Undercut is a free, MIT-licensed routing policy you fold into <code style="background:#2A2D35;color:#F5F3EE">.voidrules</code> — the single root-level file Void's own GitHub issue history documents it reading, the same shape as the old <code style="background:#2A2D35;color:#F5F3EE">.cursorrules</code> convention Cursor itself has since deprecated. Cheap tier first, escalate only on evidence, never on a vibe.</p>
+    <div style="display: flex; align-items: flex-start; gap: 12px; background: rgba(199,125,46,0.1); border: 1px solid #955d22; border-radius: 8px; padding: 14px 18px; margin: 0 0 28px; max-width: 60ch">
+      <span class="badge badge-amber" style="flex-shrink: 0; margin-top: 2px">Status</span>
+      <span style="font-size: 14px; line-height: 1.6; color: #F5F3EE">Void's own <a href="https://github.com/voideditor/void" style="color: #F5F3EE">GitHub repository</a> was archived and marked deprecated by its maintainers, so nothing below should be read as describing an actively developed product — see <a href="#limits" style="color: #F5F3EE">Honest limits</a>.</span>
+    </div>
     <div style="display: flex; gap: 14px; flex-wrap: wrap">
-      <a href="#install" style="display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; background: #F5F3EE; color: #15171C; border: none; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; text-decoration: none; transition: background-color .15s ease">Install for Junie</a>
+      <a href="#install" style="display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; background: #F5F3EE; color: #15171C; border: none; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; text-decoration: none; transition: background-color .15s ease">Install for Void</a>
       <a href="/#benchmarks" style="display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #F5F3EE; text-decoration: none; border: 1px solid #2A2D35; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; transition: border-color .15s ease">See the benchmarks</a>
     </div>
   </div>
 </header>
 
-<!-- Compatibility bar — reuse from index.html, Junie added and highlighted for this page -->
+<!-- Compatibility bar — byte-identical reuse from index.html, Void added and highlighted -->
 <section style="border-bottom: 1px solid #DFDAD0; padding: 26px 32px">
   <div style="max-width: 1160px; margin: 0 auto; display: flex; align-items: baseline; gap: 32px; flex-wrap: wrap">
-    <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #63666C">Works anywhere a SKILL.md is read</span>
+    <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #63666C">Works anywhere a routing policy can be read</span>
     <div style="display: flex; gap: 32px; flex-wrap: wrap; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500">
       <span style="display: flex; align-items: center; gap: 9px; color: #63666C; filter: grayscale(1); opacity: 0.75"><img src="https://cdn.simpleicons.org/claude" width="16" height="16" style="display: block" alt="">Claude Code</span>
       <span style="display: flex; align-items: center; gap: 9px; color: #63666C; filter: grayscale(1); opacity: 0.75"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="1" width="14" height="14" rx="7" stroke="currentColor" stroke-width="1.4"></rect><path d="M6.5 5.5 L4.5 8 L6.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M9.5 5.5 L11.5 8 L9.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>Codex</span>
       <span style="display: flex; align-items: center; gap: 9px; color: #63666C; filter: grayscale(1); opacity: 0.75"><img src="https://cdn.simpleicons.org/cursor" width="16" height="16" style="display: block" alt="">Cursor</span>
       <span style="display: flex; align-items: center; gap: 9px; color: #63666C; filter: grayscale(1); opacity: 0.75"><img src="https://cdn.simpleicons.org/githubcopilot" width="16" height="16" style="display: block" alt="">Copilot</span>
-      <span style="display: flex; align-items: center; gap: 9px; color: #63666C; opacity: 0.85"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="1" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.4"></rect><path d="M4.5 5.5 L7 8 L4.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M8.5 10.5 H11.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path></svg>OpenCode</span>
-      <span style="display: flex; align-items: center; gap: 9px; color: #15171C; opacity: 1"><img src="https://cdn.simpleicons.org/jetbrains" width="16" height="16" style="display: block" alt="">Junie</span>
+      <span style="display: flex; align-items: center; gap: 9px; color: #63666C; filter: grayscale(1); opacity: 0.75"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="1" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.4"></rect><path d="M4.5 5.5 L7 8 L4.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M8.5 10.5 H11.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path></svg>OpenCode</span>
+      <span style="display: flex; align-items: center; gap: 9px; color: #15171C; opacity: 1"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="1" width="14" height="14" rx="3" stroke="currentColor" stroke-width="1.4"></rect><path d="M4.5 5 L8 11 L11.5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></svg>Void</span>
     </div>
   </div>
 </section>
 
-<!-- Mechanism-grounding block — net-new, Junie specific -->
+<!-- Mechanism-grounding block — net-new, Void specific. No SKILL.md/Skills claim, because none is confirmed. -->
 <section style="padding: 80px 32px; border-bottom: 1px solid #DFDAD0; background: #FBFAF7">
   <div class="wrap">
-    <p class="mono" style="margin: 0 0 14px; color: #63666C">How this maps onto JetBrains AI Assistant</p>
-    <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 30px; letter-spacing: -0.02em; margin: 0 0 24px; text-wrap: balance">Same rubric. Junie's own Agent Skills support underneath it.</h2>
-    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 20px; max-width: 70ch">Junie, the agentic coding assistant inside JetBrains AI Assistant, <a href="https://junie.jetbrains.com/docs/agent-skills.html" style="color:#4a4e57">documents support for Agent Skills</a> with three confirmed discovery paths: project-level <code>&lt;projectRoot&gt;/.junie/skills/&lt;name&gt;/</code>, user-level <code>~/.junie/skills/&lt;name&gt;/</code> (<code>%USERPROFILE%\.junie\skills\&lt;name&gt;\</code> on Windows), and the cross-agent <code>.agents/skills/</code> convention shared with several other tools. Project-level wins on a name collision. That's a direct fit for something already shipped as a <code>SKILL.md</code> — no translation needed.</p>
-    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 20px; max-width: 70ch">If no skill applies to a given task, Junie falls back to plain guidelines in <code>.junie/guidelines.md</code> or a root <code>AGENTS.md</code> — but a scored, versioned rubric is exactly what Agent Skills exist for, so the skill install below is the reliable path, not the fallback.</p>
-    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0; max-width: 70ch">Undercut's tier names — <strong>cheap, standard, frontier, apex</strong> — are generic on purpose. JetBrains AI Assistant is multi-model, not a single vendor's own models — the plan and IDE decide which providers are on offer. <a href="https://github.com/undercutsh/firstpass/blob/main/skills/firstpass/models.md">models.md</a> gives the rule of thumb rather than a fixed mapping for Junie specifically: cheap resolves to the smallest/fastest model available in your model picker, standard to your default work model, frontier to the highest-reasoning model on offer, and apex to a single tie-break call on the strongest model available. Nothing here sits between Junie and its model backend — it's a policy file the agent reads at dispatch time, same as any other skill, no proxy, no network hop.</p>
+    <p class="mono" style="margin: 0 0 14px; color: #63666C">How this maps onto Void</p>
+    <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 30px; letter-spacing: -0.02em; margin: 0 0 24px; text-wrap: balance">A single .voidrules file — not a Skills system.</h2>
+    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 20px; max-width: 70ch">Void is an open-source VS Code fork, and its confirmed context mechanism is a single <code>.voidrules</code> file at the project root — the same one-file-of-plain-text shape as Cursor's original <code>.cursorrules</code>, which Cursor itself later replaced with directory-based Project Rules. We could not find current, maintainer-published documentation spelling out exactly how <code>.voidrules</code> is spliced into a request; what we found instead is a Void GitHub issue (<a href="https://github.com/voideditor/void/issues/585">voideditor/void#585</a>) from a user reporting that an overly long <code>.voidrules</code> file could make the model stop responding or burn excess tokens, and a separate feature request (<a href="https://github.com/voideditor/void/issues/643">voideditor/void#643</a>) proposing a modern, directory-based rules system closer to Cursor's or Windsurf's. That proposal was never shipped.</p>
+    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 20px; max-width: 70ch"><strong>There is no confirmed <code>SKILL.md</code> or Agent Skills discovery mechanism in Void</strong> — nothing like the <code>.claude/skills/</code>, <code>.cursor/skills/</code>, or <code>.gemini/skills/</code> directories other companion pages on this site install into. Undercut still ships as a <code>SKILL.md</code> file (that's the canonical, versioned copy in the repo), but for Void the practical install is folding that file's text into the one place Void is documented to read: the root <code>.voidrules</code> file. Given the token-bloat report above, keep it short if you're already running a large <code>.voidrules</code>.</p>
+    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0; max-width: 70ch">Undercut's tier names — <strong>cheap, standard, frontier, apex</strong> — stay generic on purpose. Void is a bring-your-own-key editor wired to whichever provider you configure, so <a href="https://github.com/undercutsh/firstpass/blob/main/skills/firstpass/models.md">models.md</a> gives a rule of thumb rather than one fixed mapping: cheap resolves to the smallest/fastest model on your roster, standard to your default work model, frontier to the highest-reasoning model you've configured, apex to a single batched tie-break call. Nothing here sits between Void and your model backend — it's plain text Void reads into context, no proxy, no network hop, nothing to route around if you remove it.</p>
   </div>
 </section>
 
-<!-- Install — net-new, Junie specific mechanics -->
+<!-- Install — net-new, Void specific mechanics. Manual .voidrules append is the confirmed path; the skills CLI is offered but flagged unverified for Void, since Void has no known skill-directory target. -->
 <section id="install" style="background: #15171C; color: #F5F3EE; padding: 80px 32px">
   <div class="wrap">
-    <p class="mono" style="margin: 0 0 14px">Install for JetBrains AI Assistant</p>
+    <p class="mono" style="margin: 0 0 14px">Install for Void</p>
     <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 30px; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 32px; text-wrap: balance">Free. MIT. Nothing installs, nothing proxies your traffic.</h2>
 
-    <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 1 — project-level skill (recommended)</h3>
-    <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0 0 12px">Junie's own docs confirm project-scoped discovery at <code style="background:#2A2D35;color:#F5F3EE">.junie/skills/&lt;name&gt;/</code>. Undercut's skill is already named <code style="background:#2A2D35;color:#F5F3EE">firstpass</code>, so the directory copies straight across — no renaming, no rewriting frontmatter — and it takes priority over a user-level or cross-agent copy if there's ever a name collision.</p>
+    <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 1 — append to .voidrules (recommended, matches Void's confirmed mechanism)</h3>
+    <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0 0 12px">Run this from the repo root. This puts the routing policy in the one file Void is documented to read.</p>
     <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #101216; border: 1px solid #2A2D35; padding: 18px 22px; font-family: 'JetBrains Mono', monospace; font-size: 15px; margin: 0 0 28px; flex-wrap: wrap">
-      <span><span style="color: #8A8F98">$ </span>mkdir -p .junie/skills && cp -r firstpass/skills/firstpass ./.junie/skills/firstpass</span>
-      <button type="button" class="copybtn" data-copy="mkdir -p .junie/skills && cp -r firstpass/skills/firstpass ./.junie/skills/firstpass" onclick="undercutCopy(this)" aria-label="Copy command: mkdir -p .junie/skills && cp -r firstpass/skills/firstpass ./.junie/skills/firstpass">Copy</button>
+      <span><span style="color: #8A8F98">$ </span>curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md &gt;&gt; .voidrules</span>
+      <button type="button" class="copybtn" data-copy="curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> .voidrules" onclick="undercutCopy(this)" aria-label="Copy command: curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> .voidrules">Copy</button>
     </div>
 
-    <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 2 — the cross-agent convention Junie also scans</h3>
-    <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0 0 12px">Junie's docs also list <code style="background:#2A2D35;color:#F5F3EE">.agents/skills/</code> as a recognized discovery path — the same convention several other agents in this compatibility bar read. If a repo already carries a skill installed that way for another tool, Junie should pick it up with nothing extra to install.</p>
-    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #101216; border: 1px solid #2A2D35; padding: 18px 22px; font-family: 'JetBrains Mono', monospace; font-size: 15px; margin: 0 0 28px; flex-wrap: wrap">
-      <span><span style="color: #8A8F98">$ </span>mkdir -p .agents/skills && cp -r firstpass/skills/firstpass ./.agents/skills/firstpass</span>
-      <button type="button" class="copybtn" data-copy="mkdir -p .agents/skills && cp -r firstpass/skills/firstpass ./.agents/skills/firstpass" onclick="undercutCopy(this)" aria-label="Copy command: mkdir -p .agents/skills && cp -r firstpass/skills/firstpass ./.agents/skills/firstpass">Copy</button>
-    </div>
+    <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 2 — manual copy, no network call</h3>
+    <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0 0 12px">Prefer not to pipe a download straight into a file? Open <a href="https://github.com/undercutsh/firstpass/blob/main/skills/firstpass/SKILL.md" style="color: #F5F3EE">skills/firstpass/SKILL.md</a> on GitHub, copy its body, and paste it into <code style="background:#2A2D35;color:#F5F3EE">.voidrules</code> at your project root yourself (create the file if it doesn't exist yet).</p>
 
-    <div class="callout" style="border-color: #2A2D35; background: #101216; margin: 0 0 32px">
-      <p style="font-size: 14px; line-height: 1.6; color: #b9bcc2; margin: 0"><strong style="color: #F5F3EE">Working across machines?</strong> Junie also reads a user-level skills directory — <code style="background:#2A2D35;color:#F5F3EE">~/.junie/skills/&lt;name&gt;/</code> on macOS/Linux, <code style="background:#2A2D35;color:#F5F3EE">%USERPROFILE%\.junie\skills\&lt;name&gt;\</code> on Windows — for a skill you want available in every project without installing it per-repo. If no skill applies to the task at hand, Junie falls back to plain guidelines in <code style="background:#2A2D35;color:#F5F3EE">.junie/guidelines.md</code> or a root <code style="background:#2A2D35;color:#F5F3EE">AGENTS.md</code>, but the rubric is written as a skill, not guideline prose, so install it as a skill first.</p>
+    <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 32px 0 14px; color: #b9bcc2">Option 3 — skills CLI (unverified for Void)</h3>
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #101216; border: 1px solid #2A2D35; padding: 18px 22px; font-family: 'JetBrains Mono', monospace; font-size: 15px; margin: 0 0 12px; flex-wrap: wrap">
+      <span><span style="color: #8A8F98">$ </span>npx skills add undercutsh/firstpass</span>
+      <button type="button" class="copybtn" data-copy="npx skills add undercutsh/firstpass" onclick="undercutCopy(this)" aria-label="Copy command: npx skills add undercutsh/firstpass">Copy</button>
+    </div>
+    <div class="callout" style="border-color: #955d22; background: rgba(199,125,46,0.08); margin: 0 0 32px">
+      <p style="font-size: 14px; line-height: 1.6; color: #b9bcc2; margin: 0"><strong style="color: #F5F3EE">Treat this as unverified for Void specifically.</strong> The <code style="background:#2A2D35;color:#F5F3EE">skills</code> CLI writes into a <code style="background:#2A2D35;color:#F5F3EE">skills/</code>-style directory built for tools with a documented Skills-discovery mechanism (Claude Code, Cursor, Cline, Gemini CLI, and similar). We found no evidence Void reads any such directory — its confirmed mechanism is the single <code style="background:#2A2D35;color:#F5F3EE">.voidrules</code> file above. Running the CLI won't error, but there's no confirmation Void will ever open what it writes. Use Option 1 or 2 instead unless you've confirmed otherwise for your Void build.</p>
     </div>
 
     <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 20px; color: #b9bcc2">Validate it yourself</h3>
     <ol style="margin: 0 0 36px; padding: 0; list-style: none; display: grid; gap: 0">
       <li class="step-row" style="display: flex; align-items: center; gap: 18px; padding: 10px 14px; margin: 0 -14px; border-top: 1px solid #2A2D35; font-size: 15px; line-height: 1.6; color: #b9bcc2; border-radius: 8px"><span style="font-family: 'JetBrains Mono', monospace; color: #2E9E5B; font-weight: 700">1</span><span>Read the published results — <code style="background:#2A2D35;color:#F5F3EE">testing/README.md</code> and the raw JSON in <code style="background:#2A2D35;color:#F5F3EE">testing/results/</code></span></li>
       <li class="step-row" style="display: flex; align-items: center; gap: 18px; padding: 10px 14px; margin: 0 -14px; border-top: 1px solid #2A2D35; font-size: 15px; line-height: 1.6; color: #b9bcc2; border-radius: 8px"><span style="font-family: 'JetBrains Mono', monospace; color: #2E9E5B; font-weight: 700">2</span><span>Reproduce for free, no API key, no spend: <code style="background:#2A2D35;color:#F5F3EE">node src/main.js --mock</code></span></li>
-      <li class="step-row" style="display: flex; align-items: center; gap: 18px; padding: 10px 14px; margin: 0 -14px; border-top: 1px solid #2A2D35; border-bottom: 1px solid #2A2D35; font-size: 15px; line-height: 1.6; color: #b9bcc2; border-radius: 8px"><span style="font-family: 'JetBrains Mono', monospace; color: #2E9E5B; font-weight: 700">3</span><span>Open a small task in Junie with the skill installed and check which model tier it picks in the run log — a single-model smoke test is pennies</span></li>
+      <li class="step-row" style="display: flex; align-items: center; gap: 18px; padding: 10px 14px; margin: 0 -14px; border-top: 1px solid #2A2D35; border-bottom: 1px solid #2A2D35; font-size: 15px; line-height: 1.6; color: #b9bcc2; border-radius: 8px"><span style="font-family: 'JetBrains Mono', monospace; color: #2E9E5B; font-weight: 700">3</span><span>Open a small session in your Void build and confirm it actually reads <code style="background:#2A2D35;color:#F5F3EE">.voidrules</code> back to you before trusting it on real work</span></li>
     </ol>
-    <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0"><strong style="color: #F5F3EE">Zero lock-in.</strong> It's a policy Junie reads — remove the skill and you're back to status quo.</p>
+    <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0"><strong style="color: #F5F3EE">Zero lock-in.</strong> It's plain text in a rules file — delete the block and you're back to status quo.</p>
   </div>
 </section>
 
@@ -272,12 +278,13 @@
   </div>
 </section>
 
-<!-- What it doesn't do — condensed reuse, links out rather than duplicating -->
-<section style="padding: 64px 32px; border-bottom: 1px solid #DFDAD0; background: #FBFAF7">
+<!-- What it doesn't do — condensed reuse, links out rather than duplicating; leads with the guardrail sentences shared with sibling pages, then the Void-specific caveats. -->
+<section id="limits" style="padding: 64px 32px; border-bottom: 1px solid #DFDAD0; background: #FBFAF7">
   <div class="wrap">
     <p class="mono" style="margin: 0 0 14px; color: #63666C">Honest limits</p>
     <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 26px; letter-spacing: -0.02em; margin: 0 0 18px">What this doesn't do.</h2>
-    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 8px; max-width: 70ch">Not a proxy, not a gateway, doesn't auto-flag in production (Junie scores the flags itself &mdash; measured robust to getting them wrong, see above), and doesn't promise a dollar figure for your workload. The Agent Skills discovery paths above come from JetBrains' own docs, researched fresh rather than run end-to-end by us &mdash; if you hit a mismatch, see the note in the PR. Full list, with the finance/procurement note and the paid-tier disclosure, is on the <a href="/#pricing">main page</a>.</p>
+    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 8px; max-width: 70ch">Not a proxy, not a gateway, doesn't auto-flag in production (whatever's behind Void scores the flags itself, and that path is unmeasured for Void specifically — see below), and doesn't promise a dollar figure for your workload. This page describes a policy, not a guarantee: nothing here proves Void will route correctly on your workload, only that the same rubric is verifiable and reproducible against the mock harness linked above.</p>
+    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 8px; max-width: 70ch"><strong>Void-specific:</strong> Void's own GitHub repository was archived and its README marks the project deprecated and no longer accepting contributions, so treat everything above as a description of the last documented behavior, not an actively maintained integration — future Void releases, if any, aren't something we can test against. We could not confirm a native <code>SKILL.md</code> or Agent Skills discovery mechanism in Void the way other companion pages on this site can for their tools; the <code>.voidrules</code> mechanism described above comes from a maintainer-facing GitHub issue thread, not a published spec, and a directory-based rules system that would have superseded it (<a href="https://github.com/voideditor/void/issues/643">#643</a>) was proposed but never shipped. A separate report (<a href="https://github.com/voideditor/void/issues/585">#585</a>) says an overly long <code>.voidrules</code> file can degrade responses or burn tokens — keep the pasted policy text short if you hit that. We have not run Void ourselves to confirm any of this end-to-end; verify against your own build before relying on it. Full list of general limits, with the finance/procurement note and the paid-tier disclosure, is on the <a href="/#pricing">main page</a>.</p>
   </div>
 </section>
 
@@ -285,9 +292,9 @@
 <section style="background: #15171C; color: #F5F3EE; padding: 96px 32px; text-align: center">
   <div style="max-width: 720px; margin: 0 auto">
     <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: clamp(32px, 3.6vw, 48px); letter-spacing: -0.03em; line-height: 1.1; margin: 0 0 20px; text-wrap: balance">Undercut the top tier. Not the quality bar.</h2>
-    <p style="font-size: 16px; line-height: 1.6; color: #8A8F98; margin: 0 0 36px">Nothing about this page expires. What does keep happening is the token bill, one session at a time, on whatever Junie is currently doing with mechanical work.</p>
+    <p style="font-size: 16px; line-height: 1.6; color: #8A8F98; margin: 0 0 36px">Nothing about this page expires. What does keep happening &mdash; wherever Void is still running for you &mdash; is the token bill, one session at a time, on mechanical work.</p>
     <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap">
-      <button type="button" onclick="undercutCopy(this)" data-copy="mkdir -p .junie/skills && cp -r firstpass/skills/firstpass ./.junie/skills/firstpass" style="display: inline-flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 14px; background: #F5F3EE; color: #15171C; border: none; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; cursor: pointer; transition: background-color .15s ease"><span style="font-weight: 800">Install</span><span style="color: #4a4e57">mkdir -p .junie/skills && cp -r firstpass/skills/firstpass ./.junie/skills/firstpass</span></button>
+      <button type="button" onclick="undercutCopy(this)" data-copy="curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md >> .voidrules" style="display: inline-flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 14px; background: #F5F3EE; color: #15171C; border: none; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; cursor: pointer; transition: background-color .15s ease"><span style="font-weight: 800">Install</span><span style="color: #4a4e57">curl ... &gt;&gt; .voidrules</span></button>
       <a href="https://github.com/undercutsh/firstpass" style="display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #F5F3EE; text-decoration: none; border: 1px solid #2A2D35; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; transition: border-color .15s ease">View on GitHub</a>
     </div>
   </div>
@@ -329,7 +336,7 @@
     <div style="border-top: 1px solid #DFDAD0; padding-top: 24px; display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-size: 12.5px; color: #63666C">
       <span style="display: flex; gap: 18px; flex-wrap: wrap; align-items: baseline">
         <span style="font-family: 'JetBrains Mono', monospace" id="uc-copyright-year">&copy; 2026 Undercut &middot; MIT</span>
-        <span style="font-family: 'JetBrains Mono', monospace">Works with: Claude Code &middot; Codex &middot; Cursor &middot; Copilot &middot; OpenCode &middot; JetBrains AI Assistant</span>
+        <span style="font-family: 'JetBrains Mono', monospace">Works with: Claude Code &middot; Codex &middot; Cursor &middot; Copilot &middot; OpenCode &middot; Void</span>
       </span>
       <span style="display: flex; gap: 18px; flex-wrap: wrap">
         <a href="/privacy/" style="color: #63666C; text-decoration: none">Privacy</a>

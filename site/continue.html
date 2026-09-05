@@ -4,26 +4,26 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#15171c">
-<title>Undercut for JetBrains Junie — tiered dispatch, free MIT skill</title>
-<meta name="description" content="Undercut is a free, MIT-licensed SKILL.md Junie reads via Agent Skills support, routing work to the cheapest model that passes verification — up to −95% cost.">
-<link rel="canonical" href="https://getundercut.sh/junie">
+<title>Undercut for Continue — tiered dispatch, free MIT skill</title>
+<meta name="description" content="Undercut is a free, MIT-licensed rule for Continue's .continue/rules, routing work to the cheapest model that passes verification — up to −95% cost.">
+<link rel="canonical" href="https://getundercut.sh/continue">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="alternate" type="application/rss+xml" title="Undercut changelog" href="https://getundercut.sh/changelog.xml">
 <link rel="apple-touch-icon" href="/favicon.svg">
 <link rel="mask-icon" href="/favicon.svg" color="#2E9E5B">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Undercut">
-<meta property="og:title" content="Undercut for JetBrains Junie — tiered dispatch, free MIT skill">
-<meta property="og:description" content="Routes JetBrains AI Assistant's Junie agent to the cheapest model that can pass verification. Measured up to −95% cost on public benchmarks at equal-or-better pass rate.">
-<meta property="og:url" content="https://getundercut.sh/junie">
+<meta property="og:title" content="Undercut for Continue — tiered dispatch, free MIT skill">
+<meta property="og:description" content="Routes each unit of Continue's work to the cheapest model that can pass verification. Measured up to −95% cost on public benchmarks at equal-or-better pass rate.">
+<meta property="og:url" content="https://getundercut.sh/continue">
 <meta property="og:image" content="https://getundercut.sh/og-image.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://getundercut.sh/og-image.png">
-<meta name="twitter:title" content="Undercut for JetBrains Junie — tiered dispatch, free MIT skill">
-<meta name="twitter:description" content="Routes JetBrains AI Assistant's Junie agent to the cheapest model that can pass verification. Measured up to −95% cost on public benchmarks.">
+<meta name="twitter:title" content="Undercut for Continue — tiered dispatch, free MIT skill">
+<meta name="twitter:description" content="Routes each unit of Continue's work to the cheapest model that can pass verification. Measured up to −95% cost on public benchmarks.">
 <link rel="author" href="https://iamjustinwinter.com/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,8 +38,8 @@
   "alternateName": "tiered-dispatch",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Any",
-  "url": "https://getundercut.sh/junie",
-  "description": "Confidence-gated model routing for JetBrains AI Assistant / Junie — a SKILL.md that runs every unit of work at the cheapest model that can pass verification.",
+  "url": "https://getundercut.sh/continue",
+  "description": "Confidence-gated model routing for Continue — a rule file dropped into .continue/rules that runs every unit of work at the cheapest model that can pass verification.",
   "license": "https://opensource.org/licenses/MIT",
   "codeRepository": "https://github.com/undercutsh/firstpass",
   "author": {
@@ -55,7 +55,7 @@
   "@type": "BreadcrumbList",
   "itemListElement": [
     { "@type": "ListItem", "position": 1, "name": "Undercut", "item": "https://getundercut.sh/" },
-    { "@type": "ListItem", "position": 2, "name": "JetBrains Junie", "item": "https://getundercut.sh/junie" }
+    { "@type": "ListItem", "position": 2, "name": "Continue", "item": "https://getundercut.sh/continue" }
   ]
 }
 </script>
@@ -92,76 +92,77 @@
   </div>
 </nav>
 
-<!-- Hero — net-new, Junie specific -->
+<!-- Hero — net-new, Continue specific -->
 <header style="background: #15171C; color: #F5F3EE; padding: 80px 32px 88px">
   <div class="wrap">
-    <p class="mono" style="margin: 0 0 16px">Undercut for JetBrains AI Assistant</p>
-    <h1 style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: clamp(34px, 4.4vw, 58px); line-height: 1.05; letter-spacing: -0.03em; margin: 0 0 20px; text-wrap: balance">Junie already reads Agent Skills. Give it one that stops overpaying.</h1>
-    <p style="font-size: 17px; line-height: 1.55; color: #b9bcc2; margin: 0 0 28px; max-width: 60ch">Undercut is a free, MIT-licensed policy file JetBrains AI Assistant's Junie agent follows at dispatch time — cheap tier first, escalate only on evidence, never on a vibe. One self-reported <code style="background:#2A2D35;color:#F5F3EE">ccusage</code>-style breakdown of default routing behavior in a different agent showed 93.8% of tokens going to the top-tier model by default (<a href="https://github.com/anthropics/claude-code/issues/27665" style="color:#b9bcc2">anthropics/claude-code#27665</a>) — one account's data, from Claude Code rather than Junie, but the pattern of defaulting to the priciest tier for mechanical work is the reason this exists.</p>
+    <p class="mono" style="margin: 0 0 16px">Undercut for Continue</p>
+    <h1 style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: clamp(34px, 4.4vw, 58px); line-height: 1.05; letter-spacing: -0.03em; margin: 0 0 20px; text-wrap: balance">Continue already reads a rules folder. Give it one that stops overpaying.</h1>
+    <p style="font-size: 17px; line-height: 1.55; color: #b9bcc2; margin: 0 0 28px; max-width: 60ch">Undercut is a free, MIT-licensed routing rule you drop into <code style="background:#2A2D35;color:#F5F3EE">.continue/rules/</code> &mdash; the folder Continue auto-discovers on every session and folds into the system message &mdash; cheap tier first, escalate only on evidence, never on a vibe. Continue is bring-your-own-model by design, so it has no single built-in cost dial to compare against; this exists because the same overpay-by-default pattern we measured elsewhere in the agent ecosystem (one self-reported <code style="background:#2A2D35;color:#F5F3EE">ccusage</code> breakdown from a different agent showed 93.8% of tokens going to the top-tier model by default, <a href="https://github.com/anthropics/claude-code/issues/27665" style="color:#b9bcc2">anthropics/claude-code#27665</a> &mdash; one account's data, not Continue's own) shows up anywhere an agent defaults every task to its strongest model.</p>
     <div style="display: flex; gap: 14px; flex-wrap: wrap">
-      <a href="#install" style="display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; background: #F5F3EE; color: #15171C; border: none; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; text-decoration: none; transition: background-color .15s ease">Install for Junie</a>
+      <a href="#install" style="display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; background: #F5F3EE; color: #15171C; border: none; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; text-decoration: none; transition: background-color .15s ease">Install for Continue</a>
       <a href="/#benchmarks" style="display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #F5F3EE; text-decoration: none; border: 1px solid #2A2D35; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; transition: border-color .15s ease">See the benchmarks</a>
     </div>
   </div>
 </header>
 
-<!-- Compatibility bar — reuse from index.html, Junie added and highlighted for this page -->
+<!-- Compatibility bar — byte-identical reuse from index.html, Continue added and highlighted -->
 <section style="border-bottom: 1px solid #DFDAD0; padding: 26px 32px">
   <div style="max-width: 1160px; margin: 0 auto; display: flex; align-items: baseline; gap: 32px; flex-wrap: wrap">
-    <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #63666C">Works anywhere a SKILL.md is read</span>
+    <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #63666C">Works anywhere a routing rule can be read</span>
     <div style="display: flex; gap: 32px; flex-wrap: wrap; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500">
       <span style="display: flex; align-items: center; gap: 9px; color: #63666C; filter: grayscale(1); opacity: 0.75"><img src="https://cdn.simpleicons.org/claude" width="16" height="16" style="display: block" alt="">Claude Code</span>
       <span style="display: flex; align-items: center; gap: 9px; color: #63666C; filter: grayscale(1); opacity: 0.75"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="1" width="14" height="14" rx="7" stroke="currentColor" stroke-width="1.4"></rect><path d="M6.5 5.5 L4.5 8 L6.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M9.5 5.5 L11.5 8 L9.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>Codex</span>
       <span style="display: flex; align-items: center; gap: 9px; color: #63666C; filter: grayscale(1); opacity: 0.75"><img src="https://cdn.simpleicons.org/cursor" width="16" height="16" style="display: block" alt="">Cursor</span>
       <span style="display: flex; align-items: center; gap: 9px; color: #63666C; filter: grayscale(1); opacity: 0.75"><img src="https://cdn.simpleicons.org/githubcopilot" width="16" height="16" style="display: block" alt="">Copilot</span>
-      <span style="display: flex; align-items: center; gap: 9px; color: #63666C; opacity: 0.85"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="1" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.4"></rect><path d="M4.5 5.5 L7 8 L4.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M8.5 10.5 H11.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path></svg>OpenCode</span>
-      <span style="display: flex; align-items: center; gap: 9px; color: #15171C; opacity: 1"><img src="https://cdn.simpleicons.org/jetbrains" width="16" height="16" style="display: block" alt="">Junie</span>
+      <span style="display: flex; align-items: center; gap: 9px; color: #63666C; filter: grayscale(1); opacity: 0.75"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="1" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.4"></rect><path d="M4.5 5.5 L7 8 L4.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M8.5 10.5 H11.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path></svg>OpenCode</span>
+      <span style="display: flex; align-items: center; gap: 9px; color: #15171C; opacity: 1"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="1" width="14" height="14" rx="3" stroke="currentColor" stroke-width="1.4"></rect><path d="M5 8 H11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path><path d="M8.5 5.5 L11 8 L8.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>Continue</span>
     </div>
   </div>
 </section>
 
-<!-- Mechanism-grounding block — net-new, Junie specific -->
+<!-- Mechanism-grounding block — net-new, Continue specific -->
 <section style="padding: 80px 32px; border-bottom: 1px solid #DFDAD0; background: #FBFAF7">
   <div class="wrap">
-    <p class="mono" style="margin: 0 0 14px; color: #63666C">How this maps onto JetBrains AI Assistant</p>
-    <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 30px; letter-spacing: -0.02em; margin: 0 0 24px; text-wrap: balance">Same rubric. Junie's own Agent Skills support underneath it.</h2>
-    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 20px; max-width: 70ch">Junie, the agentic coding assistant inside JetBrains AI Assistant, <a href="https://junie.jetbrains.com/docs/agent-skills.html" style="color:#4a4e57">documents support for Agent Skills</a> with three confirmed discovery paths: project-level <code>&lt;projectRoot&gt;/.junie/skills/&lt;name&gt;/</code>, user-level <code>~/.junie/skills/&lt;name&gt;/</code> (<code>%USERPROFILE%\.junie\skills\&lt;name&gt;\</code> on Windows), and the cross-agent <code>.agents/skills/</code> convention shared with several other tools. Project-level wins on a name collision. That's a direct fit for something already shipped as a <code>SKILL.md</code> — no translation needed.</p>
-    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 20px; max-width: 70ch">If no skill applies to a given task, Junie falls back to plain guidelines in <code>.junie/guidelines.md</code> or a root <code>AGENTS.md</code> — but a scored, versioned rubric is exactly what Agent Skills exist for, so the skill install below is the reliable path, not the fallback.</p>
-    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0; max-width: 70ch">Undercut's tier names — <strong>cheap, standard, frontier, apex</strong> — are generic on purpose. JetBrains AI Assistant is multi-model, not a single vendor's own models — the plan and IDE decide which providers are on offer. <a href="https://github.com/undercutsh/firstpass/blob/main/skills/firstpass/models.md">models.md</a> gives the rule of thumb rather than a fixed mapping for Junie specifically: cheap resolves to the smallest/fastest model available in your model picker, standard to your default work model, frontier to the highest-reasoning model on offer, and apex to a single tie-break call on the strongest model available. Nothing here sits between Junie and its model backend — it's a policy file the agent reads at dispatch time, same as any other skill, no proxy, no network hop.</p>
+    <p class="mono" style="margin: 0 0 14px; color: #63666C">How this maps onto Continue</p>
+    <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 30px; letter-spacing: -0.02em; margin: 0 0 24px; text-wrap: balance">.continue/rules/ is the confirmed, auto-discovered path.</h2>
+    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 20px; max-width: 70ch">Continue's documented mechanism is a project-level <strong>.continue/rules/</strong> folder at the workspace root: any Markdown file dropped in there is auto-discovered when Continue starts and concatenated into the system message for Agent, Chat, and Edit requests alike &mdash; no config-file edit required (per <a href="https://docs.continue.dev/customize/deep-dives/rules">Continue's own rules docs</a>). Each rule file carries YAML frontmatter &mdash; <code>name</code> (required), plus optional <code>description</code>, <code>globs</code>, <code>regex</code>, and <code>alwaysApply</code> &mdash; and files load in lexicographical order, so a numeric prefix (<code>01-&hellip;</code>, <code>02-&hellip;</code>) controls sequencing when you're running more than one. Undercut's <code>SKILL.md</code> already ships a <code>name:</code> and <code>description:</code> frontmatter block for other clients, which happens to satisfy Continue's required fields as-is &mdash; no rewrite needed, just a copy.</p>
+    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 20px; max-width: 70ch">Continue's <code>config.yaml</code> also supports referencing a rule with a <code>rules:</code> block (<code>uses: author/rule-name</code> for a published Continue Hub block, or <code>uses: file://path/to/rule.md</code> for a local file) &mdash; a second, more explicit path if you'd rather wire it through config than rely on folder auto-discovery. Both read the same Markdown file; Install below covers the folder path, since it needs no config edit at all.</p>
+    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 20px; max-width: 70ch">Undercut's tier names &mdash; <strong>cheap, standard, frontier, apex</strong> &mdash; are generic on purpose. Continue is explicitly bring-your-own-model &mdash; you wire up any provider (Anthropic, OpenAI, local Ollama models, and more) in <code>config.yaml</code> yourself, so there's no single fixed lineup to map onto. <a href="https://github.com/undercutsh/firstpass/blob/main/skills/firstpass/models.md">models.md</a> gives the rule of thumb instead of a fixed slug: cheap resolves to the smallest/fastest model in whatever provider lineup you've configured, standard to your default work model, frontier to the highest-reasoning model you have access to, and apex is reserved for the single batched tie-break call when the ladder is exhausted.</p>
+    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0; max-width: 70ch">Nothing about this sits between Continue and whichever model backend you've configured. It's plain markdown text Continue reads into its system message, same as any other rule &mdash; no proxy, no network hop, nothing to route around if you delete the file.</p>
   </div>
 </section>
 
-<!-- Install — net-new, Junie specific mechanics -->
+<!-- Install — net-new, Continue specific mechanics -->
 <section id="install" style="background: #15171C; color: #F5F3EE; padding: 80px 32px">
   <div class="wrap">
-    <p class="mono" style="margin: 0 0 14px">Install for JetBrains AI Assistant</p>
+    <p class="mono" style="margin: 0 0 14px">Install for Continue</p>
     <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 30px; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 32px; text-wrap: balance">Free. MIT. Nothing installs, nothing proxies your traffic.</h2>
 
-    <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 1 — project-level skill (recommended)</h3>
-    <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0 0 12px">Junie's own docs confirm project-scoped discovery at <code style="background:#2A2D35;color:#F5F3EE">.junie/skills/&lt;name&gt;/</code>. Undercut's skill is already named <code style="background:#2A2D35;color:#F5F3EE">firstpass</code>, so the directory copies straight across — no renaming, no rewriting frontmatter — and it takes priority over a user-level or cross-agent copy if there's ever a name collision.</p>
+    <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 1 &mdash; drop it in .continue/rules/ (recommended, confirmed path)</h3>
+    <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0 0 12px">Run this from the repo root. Continue auto-discovers every Markdown file under <code style="background:#2A2D35;color:#F5F3EE">.continue/rules/</code> and loads it at session start &mdash; no <code style="background:#2A2D35;color:#F5F3EE">config.yaml</code> edit needed.</p>
     <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #101216; border: 1px solid #2A2D35; padding: 18px 22px; font-family: 'JetBrains Mono', monospace; font-size: 15px; margin: 0 0 28px; flex-wrap: wrap">
-      <span><span style="color: #8A8F98">$ </span>mkdir -p .junie/skills && cp -r firstpass/skills/firstpass ./.junie/skills/firstpass</span>
-      <button type="button" class="copybtn" data-copy="mkdir -p .junie/skills && cp -r firstpass/skills/firstpass ./.junie/skills/firstpass" onclick="undercutCopy(this)" aria-label="Copy command: mkdir -p .junie/skills && cp -r firstpass/skills/firstpass ./.junie/skills/firstpass">Copy</button>
+      <span><span style="color: #8A8F98">$ </span>mkdir -p .continue/rules && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md -o .continue/rules/firstpass.md</span>
+      <button type="button" class="copybtn" data-copy="mkdir -p .continue/rules && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md -o .continue/rules/firstpass.md" onclick="undercutCopy(this)" aria-label="Copy command: mkdir -p .continue/rules && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md -o .continue/rules/firstpass.md">Copy</button>
     </div>
 
-    <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 2 — the cross-agent convention Junie also scans</h3>
-    <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0 0 12px">Junie's docs also list <code style="background:#2A2D35;color:#F5F3EE">.agents/skills/</code> as a recognized discovery path — the same convention several other agents in this compatibility bar read. If a repo already carries a skill installed that way for another tool, Junie should pick it up with nothing extra to install.</p>
-    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #101216; border: 1px solid #2A2D35; padding: 18px 22px; font-family: 'JetBrains Mono', monospace; font-size: 15px; margin: 0 0 28px; flex-wrap: wrap">
-      <span><span style="color: #8A8F98">$ </span>mkdir -p .agents/skills && cp -r firstpass/skills/firstpass ./.agents/skills/firstpass</span>
-      <button type="button" class="copybtn" data-copy="mkdir -p .agents/skills && cp -r firstpass/skills/firstpass ./.agents/skills/firstpass" onclick="undercutCopy(this)" aria-label="Copy command: mkdir -p .agents/skills && cp -r firstpass/skills/firstpass ./.agents/skills/firstpass">Copy</button>
+    <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 14px; color: #b9bcc2">Option 2 &mdash; reference it from config.yaml</h3>
+    <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0 0 12px">If you'd rather wire it through config than rely on folder auto-discovery, add a <code style="background:#2A2D35;color:#F5F3EE">rules:</code> entry pointing at a local file &mdash; per <a href="https://docs.continue.dev/reference" style="color: #F5F3EE">Continue's own config reference</a>, this is the same <code style="background:#2A2D35;color:#F5F3EE">uses: file://&hellip;</code> syntax used to pull a published Continue Hub rule block.</p>
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #101216; border: 1px solid #2A2D35; padding: 18px 22px; font-family: 'JetBrains Mono', monospace; font-size: 14px; margin: 0 0 28px; flex-wrap: wrap; white-space: pre">
+      <span>rules:
+  - uses: file://.continue/rules/firstpass.md</span>
     </div>
 
     <div class="callout" style="border-color: #2A2D35; background: #101216; margin: 0 0 32px">
-      <p style="font-size: 14px; line-height: 1.6; color: #b9bcc2; margin: 0"><strong style="color: #F5F3EE">Working across machines?</strong> Junie also reads a user-level skills directory — <code style="background:#2A2D35;color:#F5F3EE">~/.junie/skills/&lt;name&gt;/</code> on macOS/Linux, <code style="background:#2A2D35;color:#F5F3EE">%USERPROFILE%\.junie\skills\&lt;name&gt;\</code> on Windows — for a skill you want available in every project without installing it per-repo. If no skill applies to the task at hand, Junie falls back to plain guidelines in <code style="background:#2A2D35;color:#F5F3EE">.junie/guidelines.md</code> or a root <code style="background:#2A2D35;color:#F5F3EE">AGENTS.md</code>, but the rubric is written as a skill, not guideline prose, so install it as a skill first.</p>
+      <p style="font-size: 14px; line-height: 1.6; color: #b9bcc2; margin: 0"><strong style="color: #F5F3EE">What's still unverified:</strong> <a href="https://www.skills.sh" style="color: #F5F3EE">skills.sh</a> doesn't currently list Continue among its supported install targets, so <code style="background:#2A2D35;color:#F5F3EE">npx skills add undercutsh/firstpass</code> has no confirmed Continue path yet &mdash; use Option 1 above instead, directly confirmed against Continue's own rules docs. Whether a global, machine-wide rules folder (analogous to a home-directory config) exists alongside the project-level <code style="background:#2A2D35;color:#F5F3EE">.continue/rules/</code> is also not documented anywhere we could find; treat this as project-scoped only until Continue's docs say otherwise.</p>
     </div>
 
     <h3 style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin: 0 0 20px; color: #b9bcc2">Validate it yourself</h3>
     <ol style="margin: 0 0 36px; padding: 0; list-style: none; display: grid; gap: 0">
-      <li class="step-row" style="display: flex; align-items: center; gap: 18px; padding: 10px 14px; margin: 0 -14px; border-top: 1px solid #2A2D35; font-size: 15px; line-height: 1.6; color: #b9bcc2; border-radius: 8px"><span style="font-family: 'JetBrains Mono', monospace; color: #2E9E5B; font-weight: 700">1</span><span>Read the published results — <code style="background:#2A2D35;color:#F5F3EE">testing/README.md</code> and the raw JSON in <code style="background:#2A2D35;color:#F5F3EE">testing/results/</code></span></li>
+      <li class="step-row" style="display: flex; align-items: center; gap: 18px; padding: 10px 14px; margin: 0 -14px; border-top: 1px solid #2A2D35; font-size: 15px; line-height: 1.6; color: #b9bcc2; border-radius: 8px"><span style="font-family: 'JetBrains Mono', monospace; color: #2E9E5B; font-weight: 700">1</span><span>Read the published results &mdash; <code style="background:#2A2D35;color:#F5F3EE">testing/README.md</code> and the raw JSON in <code style="background:#2A2D35;color:#F5F3EE">testing/results/</code></span></li>
       <li class="step-row" style="display: flex; align-items: center; gap: 18px; padding: 10px 14px; margin: 0 -14px; border-top: 1px solid #2A2D35; font-size: 15px; line-height: 1.6; color: #b9bcc2; border-radius: 8px"><span style="font-family: 'JetBrains Mono', monospace; color: #2E9E5B; font-weight: 700">2</span><span>Reproduce for free, no API key, no spend: <code style="background:#2A2D35;color:#F5F3EE">node src/main.js --mock</code></span></li>
-      <li class="step-row" style="display: flex; align-items: center; gap: 18px; padding: 10px 14px; margin: 0 -14px; border-top: 1px solid #2A2D35; border-bottom: 1px solid #2A2D35; font-size: 15px; line-height: 1.6; color: #b9bcc2; border-radius: 8px"><span style="font-family: 'JetBrains Mono', monospace; color: #2E9E5B; font-weight: 700">3</span><span>Open a small task in Junie with the skill installed and check which model tier it picks in the run log — a single-model smoke test is pennies</span></li>
+      <li class="step-row" style="display: flex; align-items: center; gap: 18px; padding: 10px 14px; margin: 0 -14px; border-top: 1px solid #2A2D35; border-bottom: 1px solid #2A2D35; font-size: 15px; line-height: 1.6; color: #b9bcc2; border-radius: 8px"><span style="font-family: 'JetBrains Mono', monospace; color: #2E9E5B; font-weight: 700">3</span><span>Open Continue's rules panel in the IDE and confirm <code style="background:#2A2D35;color:#F5F3EE">firstpass</code> shows up as an active rule before starting mechanical work</span></li>
     </ol>
-    <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0"><strong style="color: #F5F3EE">Zero lock-in.</strong> It's a policy Junie reads — remove the skill and you're back to status quo.</p>
+    <p style="font-size: 15px; line-height: 1.6; color: #b9bcc2; margin: 0"><strong style="color: #F5F3EE">Zero lock-in.</strong> It's markdown text Continue reads &mdash; delete the file and you're back to status quo.</p>
   </div>
 </section>
 
@@ -277,7 +278,7 @@
   <div class="wrap">
     <p class="mono" style="margin: 0 0 14px; color: #63666C">Honest limits</p>
     <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 26px; letter-spacing: -0.02em; margin: 0 0 18px">What this doesn't do.</h2>
-    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 8px; max-width: 70ch">Not a proxy, not a gateway, doesn't auto-flag in production (Junie scores the flags itself &mdash; measured robust to getting them wrong, see above), and doesn't promise a dollar figure for your workload. The Agent Skills discovery paths above come from JetBrains' own docs, researched fresh rather than run end-to-end by us &mdash; if you hit a mismatch, see the note in the PR. Full list, with the finance/procurement note and the paid-tier disclosure, is on the <a href="/#pricing">main page</a>.</p>
+    <p style="font-size: 15.5px; line-height: 1.65; color: #4a4e57; margin: 0 0 8px; max-width: 70ch">Not a proxy, not a gateway, doesn't auto-flag in production &mdash; and Continue's own reliability at scoring the flags hasn't been separately measured the way Claude Code's has (see above); treat that as unverified until tested. It also doesn't pick a model for you: Continue is bring-your-own-model, so resolving each tier to a concrete provider and model is still a choice you make in Continue's own <code>config.yaml</code>. And it doesn't promise a dollar figure for your workload. Full list of general limits, with the finance/procurement note and the paid-tier disclosure, is on the <a href="/#pricing">main page</a>.</p>
   </div>
 </section>
 
@@ -285,15 +286,15 @@
 <section style="background: #15171C; color: #F5F3EE; padding: 96px 32px; text-align: center">
   <div style="max-width: 720px; margin: 0 auto">
     <h2 style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: clamp(32px, 3.6vw, 48px); letter-spacing: -0.03em; line-height: 1.1; margin: 0 0 20px; text-wrap: balance">Undercut the top tier. Not the quality bar.</h2>
-    <p style="font-size: 16px; line-height: 1.6; color: #8A8F98; margin: 0 0 36px">Nothing about this page expires. What does keep happening is the token bill, one session at a time, on whatever Junie is currently doing with mechanical work.</p>
+    <p style="font-size: 16px; line-height: 1.6; color: #8A8F98; margin: 0 0 36px">Nothing about this page expires. What does keep happening is the token bill, one session at a time, on whatever Continue is currently doing with mechanical work.</p>
     <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap">
-      <button type="button" onclick="undercutCopy(this)" data-copy="mkdir -p .junie/skills && cp -r firstpass/skills/firstpass ./.junie/skills/firstpass" style="display: inline-flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 14px; background: #F5F3EE; color: #15171C; border: none; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; cursor: pointer; transition: background-color .15s ease"><span style="font-weight: 800">Install</span><span style="color: #4a4e57">mkdir -p .junie/skills && cp -r firstpass/skills/firstpass ./.junie/skills/firstpass</span></button>
+      <button type="button" onclick="undercutCopy(this)" data-copy="mkdir -p .continue/rules && curl -fsSL https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md -o .continue/rules/firstpass.md" style="display: inline-flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 14px; background: #F5F3EE; color: #15171C; border: none; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; cursor: pointer; transition: background-color .15s ease"><span style="font-weight: 800">Install</span><span style="color: #4a4e57">add to .continue/rules/</span></button>
       <a href="https://github.com/undercutsh/firstpass" style="display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #F5F3EE; text-decoration: none; border: 1px solid #2A2D35; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; transition: border-color .15s ease">View on GitHub</a>
     </div>
   </div>
 </section>
 
-<!-- Footer — byte-identical reuse from index.html -->
+<!-- Footer — byte-identical reuse from index.html, Continue added to "Works with" -->
 <footer style="padding: 64px 32px 48px">
   <div style="max-width: 1160px; margin: 0 auto">
     <div style="display: flex; justify-content: space-between; gap: 48px; flex-wrap: wrap; margin: 0 0 48px">
@@ -329,7 +330,7 @@
     <div style="border-top: 1px solid #DFDAD0; padding-top: 24px; display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-size: 12.5px; color: #63666C">
       <span style="display: flex; gap: 18px; flex-wrap: wrap; align-items: baseline">
         <span style="font-family: 'JetBrains Mono', monospace" id="uc-copyright-year">&copy; 2026 Undercut &middot; MIT</span>
-        <span style="font-family: 'JetBrains Mono', monospace">Works with: Claude Code &middot; Codex &middot; Cursor &middot; Copilot &middot; OpenCode &middot; JetBrains AI Assistant</span>
+        <span style="font-family: 'JetBrains Mono', monospace">Works with: Claude Code &middot; Codex &middot; Cursor &middot; Copilot &middot; OpenCode &middot; Continue</span>
       </span>
       <span style="display: flex; gap: 18px; flex-wrap: wrap">
         <a href="/privacy/" style="color: #63666C; text-decoration: none">Privacy</a>
