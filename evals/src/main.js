@@ -9,6 +9,13 @@ import { hasKey, verifyModels, chat } from './llm.js';
 import { runSuite, makeAttempter, mockAttempter, mockApex } from './runner.js';
 import { createPolicy } from './policy.js';
 import { runFlagTest, printFlagReport } from './flagtest.js';
+import {
+  scaffoldResults,
+  validateResults,
+  summarizeSelfActivation,
+  printSelfActivationTasks,
+  printSelfActivationReport,
+} from './selfactivation.js';
 import { codeSuite } from './suites/code.js';
 import { reasoningSuite } from './suites/reasoning.js';
 import { mechanicalSuite } from './suites/mechanical.js';
@@ -25,13 +32,17 @@ const SUITES = { code: codeSuite, reasoning: reasoningSuite, mechanical: mechani
 const RESULTS_DIR = path.join(import.meta.dirname, '..', 'results');
 
 function parseArgs(argv) {
-  const a = { smoke: false, verifyOnly: false, mock: false, flagtest: false, seeds: null, vendors: null, arms: null, suites: null, policy: 'latest', compare: null, baseline: null, dispatcher: 'cheap', benchmark: null };
+  const a = { smoke: false, verifyOnly: false, mock: false, flagtest: false, seeds: null, vendors: null, arms: null, suites: null, policy: 'latest', compare: null, baseline: null, dispatcher: 'cheap', benchmark: null, selfactivation: false, selfactivationInit: null, selfactivationReport: null, selfactivationN: 10 };
   for (let i = 0; i < argv.length; i++) {
     switch (argv[i]) {
       case '--smoke': a.smoke = true; break;
       case '--verify-only': a.verifyOnly = true; break;
       case '--mock': a.mock = true; break;
       case '--flagtest': a.flagtest = true; break;
+      case '--selfactivation': a.selfactivation = true; break;
+      case '--selfactivation-init': a.selfactivationInit = argv[++i]; break;
+      case '--selfactivation-report': a.selfactivationReport = argv[++i]; break;
+      case '--selfactivation-n': a.selfactivationN = Number(argv[++i]); break;
       case '--seeds': a.seeds = Number(argv[++i]); break;
       case '--vendors': a.vendors = argv[++i].split(','); break;
       case '--arms': a.arms = argv[++i].split(','); break;
@@ -95,6 +106,35 @@ async function main() {
   if (args.compare) {
     const [a, b] = args.compare.split(',').map((f) => loadResults(f.trim()));
     printComparison(a, b);
+    return;
+  }
+
+  // --selfactivation: no LLM calls, no key needed. This measures a different
+  // question than everything else in this file (see selfactivation.js's
+  // header) — whether a real host agent's own skill-matcher loads SKILL.md
+  // unprompted. That can only be observed in a live agent session this
+  // harness cannot spawn, so these three modes are the harness's job:
+  //   --selfactivation                 print the protocol + every prompt
+  //   --selfactivation-init <file>     scaffold a blank results file (all
+  //                                    trials `activated: null`, i.e. pending)
+  //   --selfactivation-report <file>   compute rates from a FILLED-IN file
+  if (args.selfactivationInit) {
+    const scaffold = scaffoldResults({ n: args.selfactivationN });
+    mkdirSync(path.dirname(path.resolve(args.selfactivationInit)), { recursive: true });
+    writeFileSync(args.selfactivationInit, JSON.stringify(scaffold, null, 2));
+    console.log(`Scaffolded ${scaffold.trials.length} pending trials (${scaffold.meta.tasks} tasks × 2 conditions × ${args.selfactivationN} trials) to ${args.selfactivationInit}`);
+    console.log('Every trial starts activated: null. Fill in true/false + evidence per evals/self-activation/README.md before running --selfactivation-report.');
+    return;
+  }
+  if (args.selfactivationReport) {
+    const data = loadResults(args.selfactivationReport);
+    validateResults(data);
+    const summary = summarizeSelfActivation(data.trials);
+    printSelfActivationReport(summary);
+    return;
+  }
+  if (args.selfactivation) {
+    printSelfActivationTasks();
     return;
   }
 
