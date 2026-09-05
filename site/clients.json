@@ -320,6 +320,16 @@
         "readme": "Augment Code",
         "agents": "Augment Code"
       }
+    },
+    {
+      "slug": "goose",
+      "detailed": false,
+      "labels": {
+        "faq": "Goose",
+        "llms": "Goose",
+        "readme": "Goose",
+        "agents": "Goose"
+      }
     }
   ]
 }
