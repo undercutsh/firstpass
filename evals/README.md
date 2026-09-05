@@ -136,6 +136,26 @@ as
 Licensed CC-BY-4.0, which permits redistributing this subset with
 attribution — provided in `src/data/mbpp-subset.js`'s header.
 
+## Self-activation measurement (`evals/self-activation/`)
+
+Everything above measures the tiered-dispatch *policy* once it's running.
+It says nothing about whether a real host agent's own skill-matcher ever
+loads `skills/firstpass/SKILL.md` unprompted — a different, previously
+untested question flagged in `business/roadmap.md`'s Trust & rigor section.
+See `evals/self-activation/README.md` for the full methodology; in short:
+
+```sh
+node src/main.js --selfactivation                                  # print the task set + both condition prompts
+node src/main.js --selfactivation-init <file> --selfactivation-n 10  # scaffold a blank (all-pending) results file
+node src/main.js --selfactivation-report <file>                     # rate + Wilson CI, once a human has filled it in
+```
+
+This one requires no `OPENROUTER_API_KEY` and makes no LLM calls — the
+activation event it measures can only happen inside a real live agent
+session, which this harness cannot spawn. It ships the protocol, task set,
+and scoring, not a number; the number requires someone to actually run the
+trials.
+
 ## Model roster
 
 `src/config.js` maps each vendor's tiers to OpenRouter slugs (August 2026
