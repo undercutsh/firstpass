@@ -41,6 +41,8 @@ jobs:
         run: node scripts/spellcheck.js
       - name: x-dc content in sync with static substitutes (fallback/index.md/pricing.md)
         run: node scripts/validate-dc-drift.js --check
+      - name: Client list in sync across FAQ/llms.txt/README.md/AGENTS.md
+        run: node scripts/validate-client-list.js --check
       - name: models.md in sync with evals/src/config.js
         run: node scripts/sync-models-md.js --check
       # Heavier eval-harness steps last, cheapest-of-these first: unit tests
