@@ -128,7 +128,7 @@ verified companion pages (`site/claude-code.html`, `site/codex.html`,
 `site/amp.html`, `site/devin.html`) — read those for the full reasoning and
 citations. Gemini CLI, Windsurf, JetBrains Junie, Amp, and Devin were
 researched fresh for this section (dated 2026-08); their companion pages
-and the sources inlined below each one carry the citations. A further 18
+and the sources inlined below each one carry the citations. A further 20
 clients have companion pages with the same research-and-citation bar but
 are summarized only in the table further down (see "Additional clients")
 rather than expanded here — read each one's page for its full reasoning.
@@ -355,7 +355,7 @@ Source: `site/devin.html`. Researched fresh 2026-08.
 
 ### Additional clients
 
-19 more companion pages landed on 2026-09-05, each independently
+20 more companion pages landed on 2026-09-05, each independently
 researched and cited on its own page — same bar as the 10 above, just not
 expanded inline here. Read the linked page for the confirmed discovery
 path, honest limits, and citations before assuming the summary below is
@@ -382,6 +382,7 @@ the whole story.
 | Amazon Q Developer | No skills directory; save as a rule at `.amazonq/rules/undercut.md` | `site/amazon-q.html` |
 | Firebase Studio | No skills directory; append policy text to `.idx/airules.md` | `site/firebase-studio.html` |
 | Aider | No Agent Skills directory; load `CONVENTIONS.md` explicitly via `--read`/`/read`, or set a `read:` entry in `.aider.conf.yml` for it to load automatically every session | `site/aider.html` |
+| OpenHands | Reads `SKILL.md` under `.agents/skills/<name>/` (Agent Skills spec); legacy `.openhands/skills/` still works | `site/openhands.html` |
 
 Note: JetBrains AI Assistant (above) is a separate product from JetBrains
 Junie (detailed in full above) — don't conflate the two when reading the
