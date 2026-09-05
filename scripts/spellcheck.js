@@ -124,7 +124,7 @@ const ALLOWLIST = [
   // AI vendors / models / agents referenced across the companion pages
   'Claude', 'Anthropic', 'anthropics', 'Codex', 'Cursor', 'cursorrules', 'Copilot', 'OpenCode',
   'Windsurf', 'windsurfrules', 'Cascade', 'Junie', 'JetBrains', 'Amp', 'Devin', 'Gemini',
-  'Cline', 'clinerules', 'clinerules-workflows',
+  'Cline', 'clinerules', 'clinerules-workflows', 'Cody', 'ampcode', 'vscode',
   'gemini-cli', 'Sourcegraph', 'OpenAI', 'ChatGPT', 'GPT', 'Google', 'Sonnet', 'Opus', 'Haiku',
   'codeium', 'agentskills', 'ccusage', 'Warp',
   // Platforms / tooling
