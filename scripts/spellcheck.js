@@ -126,7 +126,8 @@ const ALLOWLIST = [
   'Windsurf', 'windsurfrules', 'Cascade', 'Junie', 'JetBrains', 'Amp', 'Devin', 'Gemini',
   'Cline', 'clinerules', 'clinerules-workflows', 'Cody', 'ampcode', 'vscode',
   'gemini-cli', 'Sourcegraph', 'OpenAI', 'ChatGPT', 'GPT', 'Google', 'Sonnet', 'Opus', 'Haiku',
-  'codeium', 'agentskills', 'ccusage', 'Kiro', "Kiro's", 'kiro', 'kiro-cli', 'AWS', 'Warp', 'Ollama',
+  'codeium', 'agentskills', 'ccusage', 'Kiro', "Kiro's", 'kiro', 'kiro-cli', 'AWS', 'Warp', 'Ollama', 'Trae', 'StackBlitz', 'mdx',
+  'Roo', "Roo's", 'roo', 'roorules',
   // Platforms / tooling
   'Vercel', 'vercel-labs', 'GitHub', 'githubusercontent', 'GitLab', 'npm', 'npx', 'Node',
   'JSON', 'YAML', 'yml', 'toml', 'mdc', 'Markdown', 'CI', 'API', 'CLI', "CLI's", 'URL', 'URLs',
