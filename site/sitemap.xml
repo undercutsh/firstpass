@@ -79,6 +79,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://getundercut.sh/kiro</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://getundercut.sh/warp</loc>
     <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
@@ -98,6 +104,24 @@
   </url>
   <url>
     <loc>https://getundercut.sh/cody</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://getundercut.sh/continue</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://getundercut.sh/trae</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://getundercut.sh/void</loc>
     <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
