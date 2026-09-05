@@ -125,7 +125,7 @@ const ALLOWLIST = [
   'Claude', 'Anthropic', 'anthropics', 'Codex', 'Cursor', 'cursorrules', 'Copilot', 'OpenCode',
   'Windsurf', 'windsurfrules', 'Cascade', 'Junie', 'JetBrains', 'Amp', 'Devin', 'Gemini',
   'gemini-cli', 'Sourcegraph', 'OpenAI', 'ChatGPT', 'GPT', 'Google', 'Sonnet', 'Opus', 'Haiku',
-  'codeium', 'agentskills', 'ccusage',
+  'codeium', 'agentskills', 'ccusage', 'Kiro', "Kiro's", 'kiro', 'kiro-cli', 'AWS',
   // Platforms / tooling
   'Vercel', 'vercel-labs', 'GitHub', 'githubusercontent', 'GitLab', 'npm', 'npx', 'Node',
   'JSON', 'YAML', 'yml', 'toml', 'mdc', 'Markdown', 'CI', 'API', 'CLI', "CLI's", 'URL', 'URLs',
