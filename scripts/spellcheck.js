@@ -121,6 +121,7 @@ function inDictionary(word) {
 const ALLOWLIST = [
   // Product / brand
   'Undercut', 'undercut', 'getundercut', 'firstpass', 'undercutsh', 'undercuts', 'undercutting',
+  'Repl',
   // AI vendors / models / agents referenced across the companion pages
   'Claude', 'Anthropic', 'anthropics', 'Codex', 'Cursor', 'cursorrules', 'Copilot', 'OpenCode',
   'Windsurf', 'windsurfrules', 'Cascade', 'Junie', 'JetBrains', 'Amp', 'Devin', 'Gemini',

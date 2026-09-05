@@ -330,6 +330,16 @@
         "readme": "Goose",
         "agents": "Goose"
       }
+    },
+    {
+      "slug": "replit",
+      "detailed": false,
+      "labels": {
+        "faq": "Replit Agent",
+        "llms": "Replit Agent",
+        "readme": "Replit Agent",
+        "agents": "Replit Agent"
+      }
     }
   ]
 }
