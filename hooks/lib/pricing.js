@@ -87,4 +87,24 @@ function isKnownModel(model) {
   return Object.prototype.hasOwnProperty.call(PER_MTOK, model);
 }
 
-module.exports = { costForUsage, tierForModel, isKnownModel, PER_MTOK, MODEL_TO_TIER };
+// Counterfactual for "what would this same work have cost if it had NOT
+// been tiered" -- i.e. run at frontier regardless of the six-flag score.
+// This is necessarily an ESTIMATE (we don't know a frontier run would take
+// the same token count) but it's the standard methodology already used in
+// testing/results/ -- same real token counts, substituted frontier price.
+// Never presented as a real number; callers must label it as estimated.
+const FRONTIER_MODEL = "claude-opus-5";
+
+function frontierEquivalentCost(usage) {
+  return costForUsage(FRONTIER_MODEL, usage);
+}
+
+module.exports = {
+  costForUsage,
+  tierForModel,
+  isKnownModel,
+  frontierEquivalentCost,
+  FRONTIER_MODEL,
+  PER_MTOK,
+  MODEL_TO_TIER,
+};

@@ -7,27 +7,20 @@
 // -- see the design doc and the chat message alongside this build.
 
 const { rowsForSession } = require("./lib/ledger");
+const { summarize, formatSavingsLine } = require("./lib/savings");
+const { terminalLink } = require("./lib/links");
 
 function formatReceipt(rows) {
-  const total = rows.length;
-  const cheapOrStandard = rows.filter((r) => r.tier === "cheap" || r.tier === "standard").length;
-  const escalated = total - cheapOrStandard;
-
-  const known = rows.filter((r) => typeof r.cost_usd === "number");
-  const totalCost = known.reduce((sum, r) => sum + r.cost_usd, 0);
-
-  const costLine =
-    known.length > 0
-      ? `  ~$${totalCost.toFixed(2)} spent${known.length < total ? ` (${total - known.length} unpriced)` : ""}`
-      : null;
+  const summary = summarize(rows);
+  const savingsLine = formatSavingsLine(summary);
 
   const lines = [
     "── undercut ──────────────────────────────",
-    `  ${cheapOrStandard} of ${total} dispatches -> cheap/standard tier`,
+    `  ${summary.cheapOrStandard} of ${summary.total} dispatches -> cheap/standard tier`,
   ];
-  if (escalated > 0) lines.push(`  ${escalated} escalated to frontier/apex`);
-  if (costLine) lines.push(costLine);
-  lines.push("  github.com/undercutsh/firstpass");
+  if (summary.escalated > 0) lines.push(`  ${summary.escalated} escalated to frontier/apex`);
+  if (savingsLine) lines.push(`  ${savingsLine}`);
+  lines.push(`  ${terminalLink()}`);
   lines.push("────────────────────────────────────────────");
 
   return lines.join("\n");

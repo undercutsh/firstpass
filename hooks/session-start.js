@@ -10,6 +10,8 @@
 // wording as final/shipped.
 
 const { readAllRows, hasShownFirstActivation, markFirstActivationShown, lastDigestShownAt, markDigestShownNow } = require("./lib/ledger");
+const { summarize, formatSavingsLine } = require("./lib/savings");
+const { markdownLink } = require("./lib/links");
 
 const RUBRIC_CONTEXT = `Before any multi-agent fan-out, swarm, or Workflow orchestration, or when assigning a model tier to a delegated unit of work: score six flags (Unverifiable, Ambiguous, Blast radius, Cross-cutting, Novel, Format-strict) to pick a base tier (cheap/standard/frontier/apex). Escalate only on an objective trigger (verification failure x2, measured disagreement, explicit uncertainty) -- never de-escalate, max one retry per tier. See skills/firstpass/SKILL.md for the full rubric.`;
 
@@ -23,9 +25,8 @@ function buildFeedbackContext() {
   if (!hasShownFirstActivation()) {
     markFirstActivationShown();
     return [
-      "undercut hooks installed -- this will track routing decisions locally (nothing leaves this machine).",
+      `${markdownLink()} hooks installed -- this will track routing decisions locally (nothing leaves this machine).`,
       "You'll see a short summary at the end of sessions that route work, and at most one digest per day.",
-      "github.com/undercutsh/firstpass",
     ].join("\n");
   }
 
@@ -46,15 +47,11 @@ function buildFeedbackContext() {
 
   markDigestShownNow();
 
-  const cheapOrStandard = rows.filter((r) => r.tier === "cheap" || r.tier === "standard").length;
-  const known = rows.filter((r) => typeof r.cost_usd === "number");
-  const totalCost = known.reduce((sum, r) => sum + r.cost_usd, 0);
-  const costPart =
-    known.length === rows.length
-      ? `~$${totalCost.toFixed(2)}`
-      : `~$${totalCost.toFixed(2)} (${rows.length - known.length} unpriced)`;
+  const summary = summarize(rows);
+  const savingsLine = formatSavingsLine(summary);
+  const savingsPart = savingsLine ? `, ${savingsLine}` : "";
 
-  return `undercut: yesterday -- ${rows.length} dispatches, ${cheapOrStandard} at cheap/standard tier, ${costPart} spent -- github.com/undercutsh/firstpass`;
+  return `${markdownLink()}: yesterday -- ${summary.total} dispatches, ${summary.cheapOrStandard} at cheap/standard tier${savingsPart}`;
 }
 
 async function main() {

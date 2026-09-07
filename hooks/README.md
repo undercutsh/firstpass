@@ -10,8 +10,10 @@ This is a small local Claude Code hooks package that does two things:
    structurally similar skill self-activated in 0 of 10 sessions without
    forced injection).
 2. **Answers "is this even doing anything"** with a session-end receipt and
-   an at-most-once-a-day digest, built from real local token/cost data —
-   never an estimate, never a guess.
+   an at-most-once-a-day digest. What actually ran is always real local
+   token/cost data, never a guess; the "savings" figure alongside it is
+   explicitly labeled an estimate (same token counts, priced at frontier
+   rates as a counterfactual) — never presented as a real number.
 
 Everything here is local. No network calls, no telemetry, no second model.
 The ledger (`~/.undercut/ledger.jsonl`) only ever gets written to and read
@@ -19,9 +21,15 @@ from this machine.
 
 ## What's in here
 
-- `lib/pricing.js` — per-model $/MTok table + cost/tier lookup helpers.
+- `lib/pricing.js` — per-model $/MTok table + cost/tier lookup helpers,
+  plus a frontier-rate counterfactual for the savings estimate.
 - `lib/ledger.js` — local JSONL read/write, first-activation and
-  daily-digest marker files.
+  daily-digest marker files, plan-cost config.
+- `lib/savings.js` — shared "real cost vs. frontier-equivalent" math used
+  by both the receipt and the digest.
+- `lib/links.js` — never print a bare URL; hyperlink the app name instead
+  (markdown link in injected context, terminal OSC 8 hyperlink in the
+  printed receipt — both degrade to plain text, never a raw URL).
 - `session-start.js` — injects a condensed rubric via `additionalContext`;
   also shows the one-time first-activation message and the daily digest.
 - `subagent-stop.js` — reads the completed subagent's own transcript,
@@ -29,6 +37,20 @@ from this machine.
   ledger row.
 - `stop.js` — prints a session-end receipt when the session had ≥1
   dispatch (never on a session with nothing to route).
+
+## Optional: express savings against your plan cost
+
+By default, the savings estimate is plan-independent (`est. $X saved vs.
+running everything at frontier`). If you set `UNDERCUT_PLAN_MONTHLY_USD`
+(e.g. `export UNDERCUT_PLAN_MONTHLY_USD=200` for a $200/mo plan) in your
+shell profile, the receipt and digest instead frame it as a share of that
+cost (`est. $X in frontier-rate value saved -- Y% of your $200/mo plan`).
+
+This is never framed as "we reduced your bill by $X" — Claude subscription
+plans are flat-rate, so token savings don't literally reduce an invoice.
+It's an honest "value delivered relative to what you pay," not a refund
+claim. There's no API for a hook to detect which plan you're on, so this
+is opt-in and self-reported.
 
 ## Install (opt-in, per machine)
 

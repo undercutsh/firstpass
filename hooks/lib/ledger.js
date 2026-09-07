@@ -69,6 +69,17 @@ function markDigestShownNow() {
   fs.writeFileSync(LAST_DIGEST_MARKER, new Date().toISOString(), "utf8");
 }
 
+// Plan cost is set by the user via env var, not detected -- Claude Code
+// hooks have no API to read which subscription plan a session is on.
+// Unset by default; the digest/receipt fall back to a plan-independent
+// dollar estimate when this isn't configured. See hooks/README.md.
+function planMonthlyCostUsd() {
+  const raw = process.env.UNDERCUT_PLAN_MONTHLY_USD;
+  if (!raw) return null;
+  const n = Number(raw);
+  return Number.isFinite(n) && n > 0 ? n : null;
+}
+
 module.exports = {
   UNDERCUT_DIR,
   LEDGER_PATH,
@@ -80,4 +91,5 @@ module.exports = {
   markFirstActivationShown,
   lastDigestShownAt,
   markDigestShownNow,
+  planMonthlyCostUsd,
 };
