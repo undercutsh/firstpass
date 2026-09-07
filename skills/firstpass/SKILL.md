@@ -62,6 +62,12 @@ with strict JSON, Google flash-lite nails it), so a hardcoded "format →
 standard" rule over-pays on half the vendors. Start cheap, escalate only on
 failure. This keeps the rule model-agnostic and immune to model-card churn.
 
+**Narrate the routing decision.** Before dispatching non-trivial delegated
+work, state the tier and the flags that produced it in one short line, e.g.
+`Routing: standard (cross-cutting, ambiguous)`. This costs nothing, needs no
+tooling, and is the only way a user watching the session can tell the rubric
+actually ran rather than being silently skipped.
+
 ## Step 2 — Escalation triggers (the "confidence threshold", made objective)
 
 Escalate exactly ONE tier when ANY of these fires:
