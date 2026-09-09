@@ -22,7 +22,9 @@ from this machine.
 ## What's in here
 
 - `lib/pricing.js` — per-model $/MTok table + cost/tier lookup helpers,
-  plus a frontier-rate counterfactual for the savings estimate.
+  plus a frontier-rate counterfactual for the savings estimate. Model IDs
+  are normalized (trailing `-YYYYMMDD` snapshot suffix stripped) before
+  every lookup — Claude Code logs some models dated and some not.
 - `lib/ledger.js` — local JSONL read/write, first-activation and
   daily-digest marker files, plan-cost config.
 - `lib/savings.js` — shared "real cost vs. frontier-equivalent" math used
