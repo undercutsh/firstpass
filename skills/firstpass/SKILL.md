@@ -105,6 +105,19 @@ model reproduced only 90% of ground-truth flags (60% on FORMAT-STRICT) yet
 still routed 100% of units to the correct tier under this design. No custom
 flagging model is required — the escalator is the safety net.
 
+## Narrate the routing decision
+
+Before starting non-trivial delegated work, state the tier and the flags
+that produced it in one short line, e.g.:
+
+```
+Routing: standard (cross-cutting, ambiguous)
+```
+
+This is the cheapest, most universal answer to "is this even doing
+anything" — no hooks, no ledger, no opt-in step, works on every client this
+skill supports. State it once per dispatch, not per retry.
+
 ## Worker prompt template (append to every dispatched unit)
 
 ```
