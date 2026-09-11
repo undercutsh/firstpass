@@ -73,7 +73,7 @@ Even when the rubric flags are scored imperfectly (stock dispatchers: Haiku 90% 
 
 ## For teams (in development)
 
-Org-wide routing policy enforcement, per-account savings metering, a verifiable escalation ledger, an always-updated tier→model map, and SSO/directory sync. Free for individuals stays free — Teams is a paid layer above it, not a gate in front of it.
+Org-wide routing policy enforcement, per-account savings metering, a verifiable escalation ledger, automatic tier→model mapping updates (vs. manual on Free), and SSO/directory sync. Free for individuals stays free — Teams is a paid layer above it, not a gate in front of it.
 
 ## Pricing
 
