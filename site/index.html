@@ -481,6 +481,15 @@
   .agent-chip { display: inline-block; font-family: 'Fragment Mono', Menlo, monospace; font-size: 12px; color: var(--mute); background: var(--card); border: 1px solid var(--rule); border-radius: 999px; padding: 6px 12px; white-space: nowrap; }
   @media (prefers-reduced-motion: reduce) { .agent-marquee-track { animation: none; } }
 
+  /* Pre-existing dispatch-log rows/caret: same reduced-motion guard as
+     everything else on this page. Force the resting, fully-visible frame
+     rather than freezing mid-fade at whatever opacity the row's own
+     animation-delay landed on. */
+  @media (prefers-reduced-motion: reduce) {
+    .term .row { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .caret { animation: none !important; opacity: 0.9 !important; }
+  }
+
   /* ---- compatibility strip ------------------------------------------- */
   .compat { display: flex; align-items: center; gap: 10px; color: var(--mute); font-family: 'Fragment Mono', Menlo, monospace; font-size: 13px; filter: grayscale(1); opacity: 0.8; transition: opacity 180ms ease-out, filter 180ms ease-out, color 180ms ease-out; }
   .compat:hover { color: var(--ink); filter: grayscale(0); opacity: 1; }
@@ -505,6 +514,80 @@
   .pricegrid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 3fr) minmax(0, 3fr); gap: 20px; align-items: stretch; }
   @media (max-width: 1040px) { .pricegrid { grid-template-columns: minmax(0, 1fr); } .price-hero .amt { font-size: clamp(64px, 16vw, 96px); } }
   .tick { flex-shrink: 0; }
+
+  /* ---- diagram motion ------------------------------------------------
+     Additive only. Every figure below is already complete and legible as a
+     static illustration; nothing here carries information that isn't in the
+     resting frame. All of it lives inside prefers-reduced-motion:
+     no-preference, so a reduced-motion user (or a browser that never applies
+     this stylesheet) gets the plain static diagram, not a frozen mid-frame.
+     Rules: transform/opacity/clip-path/stroke-dashoffset only — never a
+     layout property — so nothing reflows and no figure changes height.
+     Any element that only exists for motion carries opacity="0" as a
+     presentation attribute, so it is invisible at rest by default. */
+  @media (prefers-reduced-motion: no-preference) {
+    /* Hero: a few units drift from the gate exit down onto the cheap band.
+       Waypoints trace the same cubic the static teal dashed path draws. */
+    @keyframes uc-drift {
+      0%   { opacity: 0; transform: translate(0px, 0px); }
+      5%   { opacity: 1; }
+      12%  { transform: translate(38px, 0px); }
+      30%  { transform: translate(54px, 46px); }
+      52%  { transform: translate(46px, 148px); }
+      74%  { transform: translate(18px, 253px); }
+      88%  { opacity: 1; transform: translate(-22px, 310px); }
+      94%  { opacity: 0; transform: translate(-22px, 310px); }
+      100% { opacity: 0; transform: translate(-22px, 310px); }
+    }
+    .uc-unit { animation: uc-drift 9s cubic-bezier(0.4, 0.05, 0.6, 0.95) infinite; animation-delay: var(--uc-d, 0s); }
+
+    /* Escalation arrows "fire" once per cycle: a short bright segment travels
+       the length of the arrow. The arrow itself stays solid underneath, so the
+       resting frame is unchanged. pathLength="100" normalises the dash maths
+       so one keyframe set fits arrows of different geometry. */
+    @keyframes uc-pulse {
+      0%   { stroke-dashoffset: 16; opacity: 0; }
+      3%   { opacity: 0.95; }
+      20%  { stroke-dashoffset: -100; opacity: 0.95; }
+      25%  { stroke-dashoffset: -100; opacity: 0; }
+      100% { stroke-dashoffset: -100; opacity: 0; }
+    }
+    .uc-pulse { animation: uc-pulse 9s linear infinite; animation-delay: var(--uc-d, 0s); }
+
+    /* How it works: a soft opacity wave across the six gate ticks, as if a
+       unit were being checked against each flag in turn. */
+    @keyframes uc-tick-wave {
+      0%, 22%, 100% { opacity: 1; }
+      6%  { opacity: 0.35; }
+      14% { opacity: 1; }
+    }
+    .uc-tick { animation: uc-tick-wave 8s ease-in-out infinite; animation-delay: var(--uc-d, 0s); }
+
+    /* Vs cap-based routers: the spend meter drifts up to the 92% it reports
+       and eases back — a needle, not a progress bar. Rests at exactly 92%. */
+    @keyframes uc-creep {
+      0%, 100% { transform: scaleX(0.92); }
+      55% { transform: scaleX(1); }
+    }
+    .uc-creep { transform-origin: left center; animation: uc-creep 9s ease-in-out infinite; }
+
+    /* Narration terminal: the routing line types itself in, then holds for
+       most of a very slow cycle. Clipped, so the row box never changes. */
+    @keyframes uc-type {
+      0%  { clip-path: inset(0 100% 0 0); }
+      18% { clip-path: inset(0 0 0 0); }
+      100% { clip-path: inset(0 0 0 0); }
+    }
+    .uc-type { animation: uc-type 18s steps(44, end) infinite; }
+
+    /* The problem: the 938-cell frontier block settles in as the figure
+       scrolls into view. Scroll-driven only — browsers without a view()
+       timeline get the static grid rather than a stray on-load animation. */
+    @supports (animation-timeline: view()) {
+      @keyframes uc-settle { from { opacity: 0.3; } to { opacity: 1; } }
+      .uc-settle { animation: uc-settle 1s linear both; animation-timeline: view(); animation-range: entry 15% entry 90%; }
+    }
+  }
 </style>
 </helmet>
 
@@ -801,6 +884,7 @@
   <path d="M262 130 H300 C 340 130, 300 420, 240 440" stroke="#00959c" stroke-width="1.25" fill="none" stroke-dasharray="3 4"></path>
   <path d="M262 130 H300 C 380 130, 420 300, 520 318" stroke="#13161b" stroke-width="1" fill="none" stroke-dasharray="2 5"></path>
   <path d="M455 452 V 300 H 470" stroke="#c26e12" stroke-width="1.5" fill="none" marker-end="url(#uc-arr-a)"></path>
+  <path class="uc-pulse" d="M455 452 V 300 H 470" pathLength="100" stroke="#e2963a" stroke-width="3.5" stroke-linecap="round" fill="none" stroke-dasharray="14 400" opacity="0" aria-hidden="true"></path>
   <rect x="446" y="452" width="8" height="8" rx="1" fill="#c26e12"></rect>
   <text x="262" y="292" font-size="11" fill="#c26e12">ESCALATE +1 · RESIDUE ONLY</text>
   <text x="262" y="308" font-size="11" fill="#6e7278">verification failed ×2</text>
@@ -810,6 +894,9 @@
   <text x="478" y="372" font-size="11" fill="#6e7278">1–2 flags</text>
   <text x="628" y="224" font-size="12" fill="#c26e12" font-weight="700">FRONTIER</text>
   <text x="628" y="242" font-size="11" fill="#6e7278">3+ flags</text>
+  <rect class="uc-unit" x="258" y="127" width="6" height="6" rx="1" fill="#00959c" opacity="0" aria-hidden="true"></rect>
+  <rect class="uc-unit" style="--uc-d: 3s" x="258" y="127" width="6" height="6" rx="1" fill="#00959c" opacity="0" aria-hidden="true"></rect>
+  <rect class="uc-unit" style="--uc-d: 6s" x="258" y="127" width="6" height="6" rx="1" fill="#00959c" opacity="0" aria-hidden="true"></rect>
   <line x1="0" y1="580" x2="620" y2="580" stroke="#13161b" stroke-width="1.25"></line>
   <text x="0" y="604" font-size="11" fill="#6e7278">200 UNITS OF DELEGATED WORK · RESTING FRAME OF A LIVE DISPATCH</text>
 </svg>
@@ -1005,6 +1092,7 @@
         <div class="mono tiny">OF ONE SUBSCRIBER'S TOKENS · TOP-TIER MODEL · SELF-REPORTED</div>
         <svg class="fig" viewBox="0 0 490 262" role="img" aria-label="A grid of 1000 squares: 938 of them, in amber, are tokens that went to the top-tier model; the remaining 62, in teal, are everything else.">
   <g transform="translate(0,8)">
+  <g class="uc-settle">
 <rect x="0.0" y="0.0" width="6.5" height="6.5" rx="1" fill="#c26e12"></rect>
 <rect x="8.5" y="0.0" width="6.5" height="6.5" rx="1" fill="#c26e12"></rect>
 <rect x="17.0" y="0.0" width="6.5" height="6.5" rx="1" fill="#c26e12"></rect>
@@ -1943,6 +2031,7 @@
 <rect x="127.5" y="195.5" width="6.5" height="6.5" rx="1" fill="#c26e12"></rect>
 <rect x="136.0" y="195.5" width="6.5" height="6.5" rx="1" fill="#c26e12"></rect>
 <rect x="144.5" y="195.5" width="6.5" height="6.5" rx="1" fill="#c26e12"></rect>
+  </g>
 <rect x="153.0" y="195.5" width="6.5" height="6.5" rx="1" fill="#00959c"></rect>
 <rect x="161.5" y="195.5" width="6.5" height="6.5" rx="1" fill="#00959c"></rect>
 <rect x="170.0" y="195.5" width="6.5" height="6.5" rx="1" fill="#00959c"></rect>
@@ -2103,7 +2192,7 @@
           <div style="display: flex; justify-content: space-between; gap: 12px; padding: 8px 12px; border: 1px solid var(--rule); border-radius: 4px"><span class="muted">design auth flow</span><span class="badge">frontier · $$$</span></div>
           <div style="margin-top: 8px">
             <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--mute); margin-bottom: 6px"><span>budget</span><span style="color: var(--frontier)">92% — approaching hard stop</span></div>
-            <div style="height: 10px; border: 1px solid var(--rule); position: relative"><div style="position: absolute; inset: 1px auto 1px 1px; width: 92%; background: var(--frontier)"></div></div>
+            <div style="height: 10px; border: 1px solid var(--rule); position: relative"><div class="uc-creep" style="position: absolute; inset: 1px auto 1px 1px; width: 92%; background: var(--frontier)"></div></div>
           </div>
           <div style="border: 1px dashed var(--frontier); border-radius: 4px; color: var(--frontier); padding: 8px 12px; text-align: center">⛔ hard stop — session halted mid-task</div>
         </div>
@@ -2430,37 +2519,37 @@
     <text x="0" y="-16" font-size="11" fill="#9a9ea4">02 · SIX-FLAG GATE · COUNT THE HITS</text>
     <rect x="0" y="0" width="260" height="372" rx="4" fill="none" stroke="#f2f0ec" stroke-width="1.25"></rect>
     <g transform="translate(16,22)">
-      <rect x="0" y="0" width="18" height="18" rx="3" fill="none" stroke="#f2f0ec" stroke-width="1.25"></rect>
+      <rect class="uc-tick" style="--uc-d: 0s" x="0" y="0" width="18" height="18" rx="3" fill="none" stroke="#f2f0ec" stroke-width="1.25"></rect>
       
       <text x="30" y="14" class="sans" font-size="15" fill="#f2f0ec" font-weight="400">Unverifiable</text>
       <line x1="0" y1="34" x2="228" y2="34" stroke="#2f343c" stroke-width="1"></line>
     </g>
     <g transform="translate(16,80)">
-      <rect x="0" y="0" width="18" height="18" rx="3" fill="#f2f0ec" stroke="#f2f0ec" stroke-width="1.25"></rect>
+      <rect class="uc-tick" style="--uc-d: 0.35s" x="0" y="0" width="18" height="18" rx="3" fill="#f2f0ec" stroke="#f2f0ec" stroke-width="1.25"></rect>
       <path d="M4 9 l3.5 3.5 L14 5" stroke="#1c2027" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
       <text x="30" y="14" class="sans" font-size="15" fill="#f2f0ec" font-weight="600">Ambiguous</text>
       <line x1="0" y1="34" x2="228" y2="34" stroke="#2f343c" stroke-width="1"></line>
     </g>
     <g transform="translate(16,138)">
-      <rect x="0" y="0" width="18" height="18" rx="3" fill="none" stroke="#f2f0ec" stroke-width="1.25"></rect>
+      <rect class="uc-tick" style="--uc-d: 0.7s" x="0" y="0" width="18" height="18" rx="3" fill="none" stroke="#f2f0ec" stroke-width="1.25"></rect>
       
       <text x="30" y="14" class="sans" font-size="15" fill="#f2f0ec" font-weight="400">Blast-radius</text>
       <line x1="0" y1="34" x2="228" y2="34" stroke="#2f343c" stroke-width="1"></line>
     </g>
     <g transform="translate(16,196)">
-      <rect x="0" y="0" width="18" height="18" rx="3" fill="#f2f0ec" stroke="#f2f0ec" stroke-width="1.25"></rect>
+      <rect class="uc-tick" style="--uc-d: 1.05s" x="0" y="0" width="18" height="18" rx="3" fill="#f2f0ec" stroke="#f2f0ec" stroke-width="1.25"></rect>
       <path d="M4 9 l3.5 3.5 L14 5" stroke="#1c2027" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
       <text x="30" y="14" class="sans" font-size="15" fill="#f2f0ec" font-weight="600">Cross-cutting</text>
       <line x1="0" y1="34" x2="228" y2="34" stroke="#2f343c" stroke-width="1"></line>
     </g>
     <g transform="translate(16,254)">
-      <rect x="0" y="0" width="18" height="18" rx="3" fill="none" stroke="#f2f0ec" stroke-width="1.25"></rect>
+      <rect class="uc-tick" style="--uc-d: 1.4s" x="0" y="0" width="18" height="18" rx="3" fill="none" stroke="#f2f0ec" stroke-width="1.25"></rect>
       
       <text x="30" y="14" class="sans" font-size="15" fill="#f2f0ec" font-weight="400">Novel</text>
       <line x1="0" y1="34" x2="228" y2="34" stroke="#2f343c" stroke-width="1"></line>
     </g>
     <g transform="translate(16,312)">
-      <rect x="0" y="0" width="18" height="18" rx="3" fill="none" stroke="#f2f0ec" stroke-width="1.25"></rect>
+      <rect class="uc-tick" style="--uc-d: 1.75s" x="0" y="0" width="18" height="18" rx="3" fill="none" stroke="#f2f0ec" stroke-width="1.25"></rect>
       
       <text x="30" y="14" class="sans" font-size="15" fill="#f2f0ec" font-weight="400">Format-strict</text>
       <line x1="0" y1="34" x2="228" y2="34" stroke="#2f343c" stroke-width="1"></line>
@@ -2504,7 +2593,9 @@
     <text x="436" y="370" font-size="10" fill="#9a9ea4">2</text>
     <text x="14" y="336" font-size="10" fill="#9a9ea4">population, to scale</text>
     <path d="M280 292 V 232 H 296" stroke="#c26e12" stroke-width="1.5" fill="none" marker-end="url(#uc-hw-a)"></path>
+    <path class="uc-pulse" d="M280 292 V 232 H 296" pathLength="100" stroke="#e2963a" stroke-width="3.5" stroke-linecap="round" fill="none" stroke-dasharray="14 400" opacity="0" aria-hidden="true"></path>
     <path d="M372 172 V 112 H 388" stroke="#c26e12" stroke-width="1.5" fill="none" marker-end="url(#uc-hw-a)"></path>
+    <path class="uc-pulse" style="--uc-d: 1.1s" d="M372 172 V 112 H 388" pathLength="100" stroke="#e2963a" stroke-width="3.5" stroke-linecap="round" fill="none" stroke-dasharray="14 400" opacity="0" aria-hidden="true"></path>
     <text x="150" y="236" font-size="10" fill="#c26e12">+1 TIER</text>
     <text x="298" y="116" font-size="10" fill="#c26e12">+1 TIER</text>
     <path d="M60 292 C 60 120, 340 60, 386 70" stroke="#9a9ea4" stroke-width="1" fill="none" stroke-dasharray="3 4"></path>
@@ -2645,7 +2736,7 @@
           <div class="term-row"><span class="term-n">3</span><span><span class="dim">delegating</span> unit 1/3 → “extract session check into a helper”</span></div>
           <div class="term-row"><span class="term-n">4</span><span><span style="color: var(--paper); font-weight: 700">Routing: cheap (0 flags)</span></span></div>
           <div class="term-row"><span class="term-n">5</span><span><span class="dim">delegating</span> unit 2/3 → “add key lookup across 4 route files”</span></div>
-          <div class="term-row term-hit"><span class="term-n">6</span><span><span class="term-mark">Routing: standard (cross-cutting, ambiguous)</span></span></div>
+          <div class="term-row term-hit"><span class="term-n">6</span><span><span class="term-mark uc-type">Routing: standard (cross-cutting, ambiguous)</span></span></div>
           <div class="term-row"><span class="term-n">7</span><span><span class="dim">working…</span></span></div>
           </div>
         </div>
