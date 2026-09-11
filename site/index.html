@@ -211,10 +211,17 @@
 </head>
 <body>
 <!--
-  Static, dependency-free fallback. The interactive page below (<x-dc>) needs
-  React + the dc-runtime, loaded from a CDN by support.js, to render anything
-  at all — if that fails, support.js reveals this div (see revealStaticFallback
-  in support.js) so the page isn't blank. Hidden by default; no JS, no fonts,
+  NEVER write a literal x-dc opening tag (angle brackets and all) inside an
+  HTML comment anywhere before the real one below. support.js re-reads this
+  file's raw source with a regex and takes the FIRST such tag as the start of
+  the page template — it does not skip comments — so a tag in a comment makes
+  the runtime re-render the page with this comment's text and the fallback
+  div injected above the real content (shipped broken that way once).
+
+  Static, dependency-free fallback. The interactive page below (the x-dc
+  element) needs React + the dc-runtime, loaded from a CDN by support.js, to
+  render anything at all — if that fails, support.js reveals this div (see
+  revealStaticFallback in support.js) so the page isn't blank. Hidden by default; no JS, no fonts,
   no CDN dependency of its own. Also doubles as the one static substitute for
   the hero's animated demo log (ladderRows in the x-dc script below) and for
   the "pick your agent" install-client picker (installClients / cmd / note
@@ -1370,7 +1377,7 @@ class Component extends DCLogic {
 
 <!--
   Floating "Star on GitHub" CTA. Deliberately plain HTML/CSS/JS, outside
-  <x-dc> — same reasoning as #dc-fallback above: it must work even if
+  the x-dc element — same reasoning as #dc-fallback above: it must work even if
   support.js/React never loads, and it's pure site chrome with no data
   binding, so the templating runtime buys nothing here. Pattern sourced
   from code-review-graph.com (see business/competitive-landscape.md's
@@ -1448,10 +1455,10 @@ class Component extends DCLogic {
 </script>
 
 <!--
-  Footer "★ N stars on GitHub" chip. The chip markup lives inside <x-dc>
-  (footer template, no data binding needed for it), so this waits for
+  Footer "★ N stars on GitHub" chip. The chip markup lives inside the x-dc
+  element (footer template, no data binding needed for it), so this waits for
   window 'load' rather than DOMContentLoaded — support.js's own
-  DOMContentLoaded listener replaces <x-dc> with rendered output, and
+  DOMContentLoaded listener replaces the x-dc element with rendered output, and
   'load' always fires after that. Live count via GitHub's unauthenticated
   REST API, cached in sessionStorage for an hour to cut API calls across
   page views. Fails closed: any error (network, rate limit, bad shape)

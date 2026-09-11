@@ -144,6 +144,17 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ### Fixed
 
+- **Homepage rendered an HTML comment and the hidden CDN-failure panel
+  above the real page** — `site/index.html`'s source comment describing
+  `#dc-fallback` mentioned the page template's tag literally, in angle
+  brackets. `support.js` re-fetches the page source after boot and finds
+  the template by regex (first x-dc opening tag in the raw text, comments
+  not skipped), so it re-rendered the root starting from inside that
+  comment: visitors saw the tail of the comment as body text, then the
+  "script didn't load" fallback panel, then the actual page. Reworded the
+  three comments that spelled the tag out, and added a `validate-dc-drift`
+  CI check (with unit tests) that fails on any x-dc opening tag inside an
+  HTML comment so it can't ship again.
 - **`site/.well-known/ai-catalog.json` two stale/inaccurate claims** —
   a content-accuracy pass (prior audit only checked well-formedness)
   found the `notes` field still said "no ... agentic plugin exists
