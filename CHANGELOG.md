@@ -6,7 +6,21 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ## [Unreleased]
 
-### Changed
+### Fixed
+
+- **HumanEval tasks were told to answer in JavaScript.** `evals/src/benchmarks.js`'s
+  `loadHumanEval()` tagged its (Python) tasks with `category: 'code'` — the
+  same category the harness's own synthetic JS suite
+  (`evals/src/suites/code.js`) uses. `policy.js`'s worker-prompt builder reads
+  that category to append a mandatory "ANSWER FORMAT: raw JavaScript function
+  source" instruction, directly contradicting each HumanEval task's own
+  prompt ("Complete the following Python function..."). Found via an
+  OpenRouter-`/benchmarks`-driven routing experiment where cheaper models'
+  HumanEval failures traced back to this exact contradiction. Fixed by
+  giving HumanEval its own `category: 'humaneval'` and adding the correct
+  Python-format instruction for it (mirroring the existing `mbpp` case) —
+  no change to `code`/`mbpp` behavior. `node --test` (155/155) and
+  `node src/main.js --mock` both clean post-fix.
 
 - **All 41 non-homepage `site/*.html` pages rebranded to the "instrument
   paper" visual system** shipped on `site/index.html`: Bricolage

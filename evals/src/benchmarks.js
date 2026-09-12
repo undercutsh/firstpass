@@ -128,7 +128,7 @@ export async function loadHumanEval(n = 20) {
     tasks.push(
       makeTask({
         id: `humaneval:${i}`,
-        category: 'code',
+        category: 'humaneval',
         prompt: `Complete the following Python function. Return the raw Python source code for the function only, no explanation, no markdown fences. The function will be tested with the official hidden test cases.\n\n${prompt}`,
         flags: { unverifiable: false, ambiguous: false, blast: false, crossCutting: false, novel: false },
         answerKey: entry_point,
