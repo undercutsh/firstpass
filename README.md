@@ -114,20 +114,24 @@ the transcript — no hooks, no opt-in step required:
 
 ## What this optimizes
 
-"Build me a minimum-viable CRM I can use for my small business" isn't one
-task. It's a planning phase — what should this even do, which tradeoffs
-matter, what's out of scope — followed by an execution phase: the schema,
-the endpoints, the screens, the tests. The rubric above tiers the second
-kind. It has no opinion on the first.
+Two payrolls hide in every request. Only one gets tiered.
 
-That split matters because in a typical build request, judgment tokens and
-execution tokens can run close to even, and judgment tokens are usually the
-expensive kind to begin with.
+"Build me a minimum-viable CRM I can use for my small business" isn't one
+job — it's a planning phase (what should this even do, which tradeoffs
+matter) billed at judgment rates, then an execution phase (the schema, the
+endpoints, the screens, the tests) that doesn't need to be. The rubric above
+tiers the second phase. It has no opinion on the first, and judgment tokens
+are usually the expensive half to begin with.
+
+<p align="center">
+  <img src="assets/readme/delegation-diagram.svg" alt="Stop doing this: one frontier model handles both the judgment call and every execution unit, all priced at 1.0x, seven of seven units at frontier. Do this instead: the frontier model keeps only the judgment call and delegates execution to Undercut's dispatch, which tiers six units cheap by default and escalates only the one that failed twice, one of seven units at frontier." width="720">
+</p>
 
 **Stop doing this:** one frontier model handles the PRD, the schema, and
-every CRUD screen and test, all priced like the hardest decision in the
-project. It's asking the VPs to write the strategy memo and then also lay
-every brick themselves.
+every CRUD screen and test — a staffing mistake before it's a cost one.
+Sending one model both jobs means every token, from the ambiguous tradeoff
+to the boilerplate screen, gets billed at the rate of the hardest decision
+in the project.
 
 **Do this instead:** the judgment slice (PRD, ambiguous schema tradeoffs)
 stays at frontier — nobody's claiming otherwise, that's still expensive. The
@@ -140,9 +144,10 @@ other verifiable unit: cheap by default, escalated only on evidence.
 | Does the rubric apply? | not yet proven | yes | — |
 | Measured reduction | 0% | 70% | ~35% |
 
-70% off half the tokens is 35% off the whole session — not 70%. Skew more
-execution-heavy than 50/50 and the blended number moves toward 70%; more
-planning-heavy, and it moves toward 0%.
+**A 70%-cheaper tier on half the tokens is ~35% off the session — not 70%.**
+Skew more execution-heavy than 50/50 and the blended number moves toward
+70%; more planning-heavy, and it moves toward 0%. Whichever way your
+workload leans, the number you get is the honest one — not the headline one.
 
 ## Honest limitations
 

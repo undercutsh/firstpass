@@ -61,13 +61,27 @@ A six-flag rubric scores each unit of work and assigns a base tier (0–1 flags 
 
 Even when the rubric flags are scored imperfectly (stock dispatchers: Haiku 90% flag agreement, Sonnet 93%), the shipped policy still routes 100% of units to the correct tier — a wrong flag only ever costs one extra cheap attempt, never a wrong answer or a big bill.
 
+## What this optimizes
+
+Two payrolls hide in every request. Only one gets tiered. "Build me a minimum-viable CRM" isn't one job — it's a planning phase (what should this even do, which tradeoffs matter) billed at judgment rates, then an execution phase (schema, endpoints, screens, tests) that doesn't need to be. The rubric above tiers the second phase only; it has no opinion on the first, and judgment tokens are usually the expensive half to begin with.
+
+Stop doing this: one frontier model handles the PRD, the schema, and every CRUD screen and test — a staffing mistake before it's a cost one. Do this instead: the judgment slice stays at frontier (nobody's claiming otherwise), and the execution slice — usually most of the token volume — gets tiered like every other verifiable unit.
+
+| | Judgment tokens | Execution tokens | Blended |
+|---|---|---|---|
+| Share of the request | 50% | 50% | 100% |
+| Does the rubric apply? | not yet proven | yes | — |
+| Measured reduction | 0% | 70% | ~35% |
+
+A 70%-cheaper tier on half the tokens is ~35% off the session — not 70%. Skew more execution-heavy than 50/50 and the blended number moves toward 70%; more planning-heavy, and it moves toward 0%.
+
 ## What this doesn't do
 
 - Not a proxy. Doesn't enforce anything at the network layer.
 - Not a gateway or compression proxy. Composes with those — routes first, they compress second.
 - Doesn't auto-flag in production. The dispatching agent scores the flags itself.
 - Doesn't help when the cheapest tier lacks the capability entirely (OpenAI + Python is the documented case).
-- Doesn't replace the planning decision — this ladder is for execution units.
+- Doesn't replace the planning decision — this ladder is for execution units, see "What this optimizes" above.
 - Doesn't promise a dollar figure for your workload — real workloads escalate more than benchmarks.
 - Doesn't prove your number until you run it — every figure here is an observation from our tasks and graders, not a guarantee about your codebase.
 
