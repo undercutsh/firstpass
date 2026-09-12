@@ -6,6 +6,21 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ## [Unreleased]
 
+### Added
+
+- **New "What this optimizes" section** (`site/index.html` §08, plus
+  matching content in `README.md` and `skills/firstpass/SKILL.md`) making
+  explicit what was previously only an implicit "planning tier vs.
+  execution tier" split: a single request often mixes judgment work
+  (planning, ambiguous tradeoffs) with verifiable execution work, and the
+  rubric's measured savings apply only to the latter. Includes a worked
+  example (a 50/50 judgment/execution token split with a 70% reduction on
+  the execution half blends to ~35% overall, not 70%) and a "stop doing
+  this / do this instead" illustration contrasting one frontier model
+  handling 100% of a build request against tiered dispatch delegating the
+  execution slice down the ladder. Renumbers site sections §08–§15 to
+  §09–§16 accordingly; no other content changed.
+
 ### Fixed
 
 - **HumanEval tasks were told to answer in JavaScript.** `evals/src/benchmarks.js`'s

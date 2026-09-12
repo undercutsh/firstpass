@@ -112,6 +112,38 @@ the transcript — no hooks, no opt-in step required:
   <img src="assets/readme/dispatch-terminal.svg" alt="Terminal example: Routing: standard (cross-cutting, ambiguous) → dispatched to claude-sonnet-5" width="560">
 </p>
 
+## What this optimizes
+
+"Build me a minimum-viable CRM I can use for my small business" isn't one
+task. It's a planning phase — what should this even do, which tradeoffs
+matter, what's out of scope — followed by an execution phase: the schema,
+the endpoints, the screens, the tests. The rubric above tiers the second
+kind. It has no opinion on the first.
+
+That split matters because in a typical build request, judgment tokens and
+execution tokens can run close to even, and judgment tokens are usually the
+expensive kind to begin with.
+
+**Stop doing this:** one frontier model handles the PRD, the schema, and
+every CRUD screen and test, all priced like the hardest decision in the
+project. It's asking the VPs to write the strategy memo and then also lay
+every brick themselves.
+
+**Do this instead:** the judgment slice (PRD, ambiguous schema tradeoffs)
+stays at frontier — nobody's claiming otherwise, that's still expensive. The
+execution slice — usually most of the token volume — gets tiered like every
+other verifiable unit: cheap by default, escalated only on evidence.
+
+|  | Judgment tokens | Execution tokens | Blended |
+|---|---|---|---|
+| Share of the request | 50% | 50% | 100% |
+| Does the rubric apply? | not yet proven | yes | — |
+| Measured reduction | 0% | 70% | ~35% |
+
+70% off half the tokens is 35% off the whole session — not 70%. Skew more
+execution-heavy than 50/50 and the blended number moves toward 70%; more
+planning-heavy, and it moves toward 0%.
+
 ## Honest limitations
 
 - **Sample sizes are modest** (50/20 tasks × 5 seeds). Direction is

@@ -2688,9 +2688,79 @@
   </div>
 </section>
 
+<section id="scope" data-screen-label="What this optimizes" class="sec">
+  <div class="wrap">
+    <div class="marker"><span class="eyebrow muted">§08</span><span class="line"></span><span class="eyebrow muted">What this optimizes</span></div>
+    <div class="split-57" style="margin-bottom: 40px">
+      <h2 class="h2">One request, two kinds of work.</h2>
+      <div style="min-width: 0; display: flex; flex-direction: column; gap: 14px">
+        <p class="body muted" style="font-size: 15.5px">"Build me a minimum-viable CRM I can use for my small business" isn't one task. It's a planning phase — what should this even do, which tradeoffs matter, what's out of scope — followed by an execution phase: the schema, the endpoints, the screens, the tests. The rubric in §07 tiers the second kind. It has no opinion on the first.</p>
+        <p class="body muted" style="font-size: 15.5px">That split matters because in a typical build request, judgment tokens and execution tokens can run close to even — and judgment tokens are usually the expensive kind to begin with.</p>
+      </div>
+    </div>
+    <div class="g2" style="align-items: stretch">
+      <div class="card" style="padding: 0; display: flex; flex-direction: column">
+        <div style="padding: 14px 20px; border-bottom: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap"><span class="mono" style="font-size: 13px; color: var(--mute)">Stop doing this</span><span class="tiny">one model, every decision and every keystroke</span></div>
+        <div class="mono" style="padding: 20px; font-size: 12.5px; display: grid; gap: 10px; flex: 1">
+          <div style="display: flex; justify-content: space-between; gap: 12px; padding: 8px 12px; border: 1px solid var(--rule); border-radius: 4px"><span class="muted">draft the PRD</span><span class="badge">frontier · $$$</span></div>
+          <div style="display: flex; justify-content: space-between; gap: 12px; padding: 8px 12px; border: 1px solid var(--rule); border-radius: 4px"><span class="muted">design the schema</span><span class="badge">frontier · $$$</span></div>
+          <div style="display: flex; justify-content: space-between; gap: 12px; padding: 8px 12px; border: 1px solid var(--rule); border-radius: 4px"><span class="muted">write the signup endpoint</span><span class="badge">frontier · $$$</span></div>
+          <div style="display: flex; justify-content: space-between; gap: 12px; padding: 8px 12px; border: 1px solid var(--rule); border-radius: 4px"><span class="muted">write 40 CRUD screens</span><span class="badge">frontier · $$$</span></div>
+          <div style="display: flex; justify-content: space-between; gap: 12px; padding: 8px 12px; border: 1px solid var(--rule); border-radius: 4px"><span class="muted">write the test suite</span><span class="badge">frontier · $$$</span></div>
+        </div>
+        <p class="small" style="padding: 16px 20px; border-top: 1px solid var(--rule)">Every token — the ambiguous tradeoff and the boilerplate CRUD screen alike — priced like the hardest decision in the project. It's asking the VPs to write the strategy memo and then also lay every brick themselves.</p>
+      </div>
+      <div class="card card-ink" style="padding: 0; display: flex; flex-direction: column">
+        <div style="padding: 14px 20px; border-bottom: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap"><span class="mono" style="font-size: 13px; font-weight: 600">Do this instead</span><span class="tiny">judgment stays up top, execution gets delegated</span></div>
+        <div class="mono" style="padding: 20px; font-size: 12.5px; display: grid; gap: 10px; flex: 1">
+          <div style="display: flex; justify-content: space-between; gap: 12px; padding: 8px 12px; border: 1px solid var(--rule); border-radius: 4px"><span class="muted">draft the PRD</span><span class="tag tag-frontier">frontier · $$$</span></div>
+          <div style="display: flex; justify-content: space-between; gap: 12px; padding: 8px 12px; border: 1px solid var(--rule); border-radius: 4px"><span class="muted">design the schema — ambiguous tradeoffs</span><span class="tag tag-frontier">frontier · $$$</span></div>
+          <div style="display: flex; justify-content: space-between; gap: 12px; padding: 8px 12px; border: 1px solid var(--rule); border-radius: 4px"><span class="muted">write the signup endpoint</span><span class="tag tag-cheap">cheap · $</span></div>
+          <div style="display: flex; justify-content: space-between; gap: 12px; padding: 8px 12px; border: 1px solid var(--rule); border-radius: 4px"><span class="muted">write 40 CRUD screens</span><span class="tag tag-cheap">cheap · $</span></div>
+          <div style="display: flex; justify-content: space-between; gap: 12px; padding: 8px 12px; border: 1px solid var(--rule); border-radius: 4px; background: rgba(194,110,18,0.06)"><span class="muted">3 screens failed check ×2</span><span style="color: var(--frontier)">↑ +1 tier · residue only</span></div>
+          <div style="display: flex; justify-content: space-between; gap: 12px; padding: 8px 12px; border: 1px solid var(--rule); border-radius: 4px"><span class="muted">write the test suite</span><span class="tag tag-cheap">cheap · $</span></div>
+        </div>
+        <p class="small" style="padding: 16px 20px; border-top: 1px solid var(--rule)">The judgment slice still costs what it costs — nobody's claiming otherwise. The execution slice, usually most of the token volume, gets tiered like every other verifiable unit: cheap by default, escalated only on evidence.</p>
+      </div>
+    </div>
+    <p class="tiny" style="margin-top: 20px; max-width: 74ch">Same rubric as §07, applied only to the units that are actually verifiable. The judgment slice — the PRD, the schema tradeoffs — is a separate, harder problem this doesn't claim to solve yet. See <a href="#limits" class="muted" style="text-decoration: underline; text-underline-offset: 3px">Honest limits, #05</a>.</p>
+    <div class="card" style="margin-top: 28px; padding: 20px 24px">
+      <p class="eyebrow" style="margin: 0 0 14px">Why the blended number is smaller than the headline</p>
+      <div class="scroll-x">
+        <table class="tbl" style="min-width: 520px">
+          <thead>
+            <tr><th> </th><th class="c" style="border-left: 1px solid var(--rule)">Judgment tokens</th><th class="c" style="border-left: 1px solid var(--rule)">Execution tokens</th><th class="c" style="border-left: 1px solid var(--rule)">Blended</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="color: var(--ink)">Share of the request</td>
+              <td class="c" style="border-left: 1px solid var(--rule)">50%</td>
+              <td class="c" style="border-left: 1px solid var(--rule)">50%</td>
+              <td class="c" style="border-left: 1px solid var(--rule)">100%</td>
+            </tr>
+            <tr>
+              <td style="color: var(--ink)">Does the §07 rubric apply?</td>
+              <td class="c" style="border-left: 1px solid var(--rule); color: var(--mute)">not yet proven</td>
+              <td class="c" style="border-left: 1px solid var(--rule); color: var(--cheap)">yes</td>
+              <td class="c" style="border-left: 1px solid var(--rule)">—</td>
+            </tr>
+            <tr>
+              <td style="color: var(--ink)">Measured reduction</td>
+              <td class="c" style="border-left: 1px solid var(--rule)">0%</td>
+              <td class="c" style="border-left: 1px solid var(--rule); color: var(--cheap)">70%</td>
+              <td class="c" style="border-left: 1px solid var(--rule); font-weight: 600">~35%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tiny" style="margin-top: 14px">70% off half the tokens is 35% off the whole session — not 70%. Skew more execution-heavy than 50/50 and the blended number moves toward 70%; more planning-heavy, and it moves toward 0%.</p>
+    </div>
+  </div>
+</section>
+
 <section data-screen-label="Why it holds up" class="sec">
   <div class="wrap-n">
-    <div class="marker"><span class="eyebrow muted">§08</span><span class="line"></span><span class="eyebrow muted">Why it holds up</span></div>
+    <div class="marker"><span class="eyebrow muted">§09</span><span class="line"></span><span class="eyebrow muted">Why it holds up</span></div>
     <h2 class="h2" style="margin-bottom: 20px">Flags steer. Verification and escalation decide.</h2>
     <p class="body muted" style="margin-bottom: 28px">Even when the rubric flags are scored imperfectly, the escalator still routes work to the right tier almost every time — because a wrong flag only ever costs one extra cheap attempt, never a wrong answer or a big bill.</p>
     <details style="border: 1px solid var(--rule); border-radius: 6px">
@@ -2718,7 +2788,7 @@
 
 <section id="how-do-i-know" data-screen-label="How do I know it's working" class="sec">
   <div class="wrap">
-    <div class="marker"><span class="eyebrow muted">§09</span><span class="line"></span><span class="eyebrow muted">How do I know it's working?</span></div>
+    <div class="marker"><span class="eyebrow muted">§10</span><span class="line"></span><span class="eyebrow muted">How do I know it's working?</span></div>
     <div class="split-57">
       <div style="display: flex; flex-direction: column; gap: 22px">
         <h2 class="h2">You don't install a policy file and hope.</h2>
@@ -2769,9 +2839,9 @@
   </div>
 </section>
 
-<section data-screen-label="Honest limits" class="sec">
+<section id="limits" data-screen-label="Honest limits" class="sec">
   <div class="wrap">
-    <div class="marker"><span class="eyebrow muted">§10</span><span class="line"></span><span class="eyebrow muted">Honest limits — and what this means for governance</span></div>
+    <div class="marker"><span class="eyebrow muted">§11</span><span class="line"></span><span class="eyebrow muted">Honest limits — and what this means for governance</span></div>
     <div class="split-57">
       <h2 class="h2">What this doesn't do.</h2>
       <div style="min-width: 0">
@@ -2808,7 +2878,7 @@
         <span class="n">05</span>
         <div>
           <span class="t">Doesn't replace the planning decision</span>
-          <p class="d">Planning is separate from execution routing; this ladder is for execution units.</p>
+          <p class="d">Planning is separate from execution routing; this ladder is for execution units — see <a href="#scope" class="dim" style="text-decoration: underline; text-underline-offset: 3px">what this optimizes</a>.</p>
         </div>
       </div>
       <div>
@@ -2838,7 +2908,7 @@
 
 <section id="teams" data-screen-label="Teams" class="sec">
   <div class="wrap">
-    <div class="marker"><span class="eyebrow muted">§11</span><span class="line"></span><span class="eyebrow muted">For teams — coming soon</span><span class="badge badge-frontier">Coming soon</span><span class="badge">Enterprise — contact us</span></div>
+    <div class="marker"><span class="eyebrow muted">§12</span><span class="line"></span><span class="eyebrow muted">For teams — coming soon</span><span class="badge badge-frontier">Coming soon</span><span class="badge">Enterprise — contact us</span></div>
     <h2 class="h2" style="max-width: 30ch; margin-bottom: 20px">One skill is a habit. A team needs a policy.</h2>
     <p class="body muted" style="margin-bottom: 44px; max-width: 72ch">The free skill only saves what every individual dev remembers to install and follow. Teams turns the same rubric into something the org can point to, measure, and rely on — without adding a network-layer gateway.</p>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; margin-bottom: 32px">
@@ -2873,7 +2943,7 @@
 
 <section id="pricing" data-screen-label="Pricing" class="sec sec-card">
   <div class="wrap">
-    <div class="marker"><span class="eyebrow muted">§12</span><span class="line"></span><span class="eyebrow muted">Pricing</span></div>
+    <div class="marker"><span class="eyebrow muted">§13</span><span class="line"></span><span class="eyebrow muted">Pricing</span></div>
     <h2 class="h2" style="max-width: 30ch; margin-bottom: 16px">Free for individuals, forever. Teams and Enterprise are coming soon.</h2>
     <p class="body muted" style="margin-bottom: 44px; max-width: 70ch">Nothing below is live yet — the skill is; Teams and Enterprise are what we're building toward, priced honestly ahead of shipping instead of dropped on you before it's real.</p>
     <div class="pricegrid">
@@ -2981,7 +3051,7 @@
 
 <section id="install" data-screen-label="Install" class="sec sec-deep">
   <div class="wrap">
-    <div class="marker"><span class="eyebrow dim">§13</span><span class="line"></span><span class="eyebrow dim">Try it</span></div>
+    <div class="marker"><span class="eyebrow dim">§14</span><span class="line"></span><span class="eyebrow dim">Try it</span></div>
     <h2 class="h2" style="max-width: 32ch; margin-bottom: 48px; color: var(--paper)">Free. MIT. Nothing installs, nothing proxies your traffic.</h2>
     <div class="g3" style="align-items: start">
       <div class="step">
@@ -3028,7 +3098,7 @@
 
 <section data-screen-label="Prior art" class="sec">
   <div class="wrap-n">
-    <div class="marker"><span class="eyebrow muted">§14</span><span class="line"></span><span class="eyebrow muted">Prior art</span></div>
+    <div class="marker"><span class="eyebrow muted">§15</span><span class="line"></span><span class="eyebrow muted">Prior art</span></div>
     <h2 class="h2" style="margin-bottom: 24px">Others have tried cheaper-model routing. Here's what's different.</h2>
     <p class="body muted" style="margin-bottom: 32px">peragwin's <a href="https://gist.github.com/peragwin" style="color: var(--ink); text-decoration: underline; text-underline-offset: 3px">subagent-model-routing gist</a> and <a href="https://github.com/soumabali/token-router" style="color: var(--ink); text-decoration: underline; text-underline-offset: 3px">soumabali/token-router</a> both explored assigning cheaper models to subagent work. Undercut adds the objective escalation loop on top: measured disagreement instead of self-reported confidence, hysteresis so a run can't thrash between tiers, residue-only escalation with a structured handoff, a calibration feedback loop, and — the part that's actually rare in this category — published, reproducible A/B results. Anyone can re-verify any cell in the tables above.</p>
     <h3 class="h3" style="margin-bottom: 10px">Not competing with your gateway.</h3>
@@ -3038,7 +3108,7 @@
 
 <section data-screen-label="FAQ" class="sec">
   <div class="wrap-n">
-    <div class="marker"><span class="eyebrow muted">§15</span><span class="line"></span><span class="eyebrow muted">FAQ</span></div>
+    <div class="marker"><span class="eyebrow muted">§16</span><span class="line"></span><span class="eyebrow muted">FAQ</span></div>
     <h2 class="h2" style="margin-bottom: 28px">Frequently asked</h2>
     <sc-for list="{{ faqs }}" as="faq" hint-placeholder-count="5">
       <details style="border-top: 1px solid var(--rule)">
