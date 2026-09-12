@@ -17,6 +17,18 @@ generic tier names — **cheap**, **standard**, **frontier**, and an optional
 actual model IDs for your agent (Claude Code, Codex, Cursor, or other) via
 `models.md` in this same directory.
 
+## Scope: this rubric tiers execution, not judgment
+
+A single request usually mixes two kinds of work: deciding what to build and
+which tradeoffs matter (judgment), and then building it against that decision
+(execution). This entire skill — the six-flag rubric, the escalation
+triggers, the residue-only handoff — applies to the **execution** half. It
+has no validated answer for the judgment half; treat planning/strategy calls
+as frontier-tier by default until that's tested (see "Anti-patterns" and the
+site's Honest limits, #05). Don't let "but the whole session touched a
+frontier model at some point" become an excuse to skip tiering the execution
+units that make up most of the token volume.
+
 ## The two routing decisions
 
 1. **Planning tier** — who decomposes the work and makes judgment calls.

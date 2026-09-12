@@ -2688,9 +2688,129 @@
   </div>
 </section>
 
+<section id="scope" data-screen-label="What this optimizes" class="sec sec-deep">
+  <div class="wrap">
+    <div class="marker"><span class="eyebrow dim">§08</span><span class="line"></span><span class="eyebrow dim">What this optimizes</span></div>
+    <div class="split-75" style="margin-bottom: 36px">
+      <h2 class="h2" style="color: var(--paper)">Two payrolls hide in every request. Only one gets tiered.</h2>
+      <div style="display: flex; flex-direction: column; gap: 14px">
+        <p class="body dim" style="font-size: 16px">"Build me a minimum-viable CRM I can use for my small business" isn't one job — it's a planning phase (what should this even do, which tradeoffs matter) billed at judgment rates, then an execution phase (the schema, the endpoints, the screens, the tests) that doesn't need to be. The §07 rubric tiers the second phase. It has no opinion on the first, and judgment tokens are usually the expensive half to begin with.</p>
+        <p class="tiny">Sending one frontier model both jobs is a staffing mistake before it's a cost one: the fix isn't a cheaper model, it's not billing execution at judgment rates in the first place.</p>
+      </div>
+    </div>
+
+    <div class="card-deep" style="padding: clamp(20px, 2.4vw, 36px) clamp(16px, 2.4vw, 32px)">
+      <svg viewBox="0 0 720 330" role="img" aria-label="Two org charts. Left, stop doing this: one frontier model node connects directly to a judgment box and six execution boxes, all outlined in amber — no delegation layer. Right, do this instead: the frontier node keeps only the judgment box and hands off to an Undercut dispatch node, which fans out to six execution boxes colored by tier — four teal cheap, one plain standard, one amber escalated on evidence." style="display: block; width: 100%; min-width: 640px; height: auto; overflow: visible">
+        <line x1="360" y1="20" x2="360" y2="310" stroke="var(--deep-rule)" stroke-width="1"></line>
+
+        <text x="30" y="34" font-size="12.5" font-weight="700" fill="var(--deep-mute)">STOP DOING THIS</text>
+        <text x="330" y="34" font-size="11" fill="var(--deep-mute)" text-anchor="end">7 / 7 units at frontier</text>
+        <rect x="70" y="46" width="220" height="36" rx="4" fill="none" stroke="var(--frontier)" stroke-width="1.5"></rect>
+        <text x="180" y="69" font-size="12.5" fill="var(--paper)" text-anchor="middle">FRONTIER MODEL — plans + builds</text>
+        <path d="M180 82 V100" stroke="var(--deep-mute)" stroke-width="1.25"></path>
+        <path d="M40 100 H320" stroke="var(--deep-mute)" stroke-width="1.25"></path>
+        <g stroke="var(--deep-mute)" stroke-width="1.25">
+          <path d="M40 100 V118"></path><path d="M87 100 V118"></path><path d="M134 100 V118"></path><path d="M180 100 V118"></path>
+          <path d="M226 100 V118"></path><path d="M273 100 V118"></path><path d="M320 100 V118"></path>
+        </g>
+        <g fill="none" stroke="var(--frontier)" stroke-width="1.25">
+          <rect x="16" y="120" width="48" height="34" rx="3"></rect><rect x="63" y="120" width="48" height="34" rx="3"></rect>
+          <rect x="110" y="120" width="48" height="34" rx="3"></rect><rect x="157" y="120" width="48" height="34" rx="3"></rect>
+          <rect x="204" y="120" width="48" height="34" rx="3"></rect><rect x="251" y="120" width="48" height="34" rx="3"></rect>
+        </g>
+        <rect x="298" y="120" width="48" height="34" rx="3" fill="none" stroke="var(--frontier)" stroke-width="1.5"></rect>
+        <g font-size="9.5" fill="var(--paper)" text-anchor="middle">
+          <text x="40" y="141">SCHEMA</text><text x="87" y="141">API</text><text x="134" y="141">API</text><text x="180" y="141">UI</text>
+          <text x="226" y="141">UI</text><text x="273" y="141">TEST</text><text x="322" y="141">PRD</text>
+        </g>
+        <g font-size="9" fill="var(--frontier)" text-anchor="middle">
+          <text x="40" y="163">1.0×</text><text x="87" y="163">1.0×</text><text x="134" y="163">1.0×</text><text x="180" y="163">1.0×</text>
+          <text x="226" y="163">1.0×</text><text x="273" y="163">1.0×</text><text x="322" y="163">1.0×</text>
+        </g>
+        <line x1="16" y1="182" x2="346" y2="182" stroke="var(--deep-rule)" stroke-width="1"></line>
+        <text x="180" y="200" font-size="10" fill="var(--deep-mute)" text-anchor="middle">NO DELEGATION — JUDGMENT + EXECUTION BOTH AT FRONTIER RATES</text>
+        <text x="30" y="240" font-size="11.5" fill="var(--deep-mute)">"Asking the VPs for a strategy plan</text>
+        <text x="30" y="258" font-size="11.5" fill="var(--deep-mute)">and having them lay every brick</text>
+        <text x="30" y="276" font-size="11.5" fill="var(--deep-mute)">themselves." Every token priced like</text>
+        <text x="30" y="294" font-size="11.5" fill="var(--deep-mute)">the hardest decision in the project.</text>
+
+        <text x="390" y="34" font-size="12.5" font-weight="700" fill="var(--paper)">✓ DO THIS INSTEAD</text>
+        <text x="690" y="34" font-size="11" fill="var(--deep-mute)" text-anchor="end">1 / 7 units at frontier</text>
+        <rect x="450" y="46" width="220" height="36" rx="4" fill="none" stroke="var(--frontier)" stroke-width="1.5"></rect>
+        <text x="560" y="69" font-size="12.5" fill="var(--paper)" text-anchor="middle">FRONTIER MODEL — plans, delegates</text>
+        <path d="M528 82 V96 H440 V118" fill="none" stroke="var(--deep-mute)" stroke-width="1.25"></path>
+        <path d="M560 82 V96 H620 V118" fill="none" stroke="var(--deep-mute)" stroke-width="1.25"></path>
+        <rect x="376" y="120" width="128" height="34" rx="3" fill="none" stroke="var(--frontier)" stroke-width="1.5"></rect>
+        <text x="440" y="141" font-size="9.5" fill="var(--paper)" text-anchor="middle">JUDGMENT · PRD · 1.0×</text>
+        <rect x="512" y="120" width="196" height="34" rx="3" fill="none" stroke="var(--paper)" stroke-width="1.25"></rect>
+        <text x="610" y="141" font-size="9.5" fill="var(--paper)" text-anchor="middle">UNDERCUT DISPATCH · six-flag gate</text>
+        <path d="M610 154 V172" stroke="var(--deep-mute)" stroke-width="1.25"></path>
+        <path d="M400 172 H690" stroke="var(--deep-mute)" stroke-width="1.25"></path>
+        <g stroke="var(--deep-mute)" stroke-width="1.25">
+          <path d="M400 172 V190"></path><path d="M447 172 V190"></path><path d="M494 172 V190"></path><path d="M541 172 V190"></path><path d="M588 172 V190"></path>
+        </g>
+        <path d="M642 172 V190" stroke="var(--frontier)" stroke-width="1.25"></path>
+        <g fill="none" stroke-width="1.25">
+          <rect x="376" y="192" width="48" height="34" rx="3" stroke="var(--cheap)"></rect><rect x="423" y="192" width="48" height="34" rx="3" stroke="var(--cheap)"></rect>
+          <rect x="470" y="192" width="48" height="34" rx="3" stroke="var(--cheap)"></rect><rect x="517" y="192" width="48" height="34" rx="3" stroke="var(--paper)"></rect>
+          <rect x="564" y="192" width="48" height="34" rx="3" stroke="var(--cheap)"></rect>
+        </g>
+        <rect x="618" y="192" width="48" height="34" rx="3" fill="none" stroke="var(--frontier)" stroke-width="1.5"></rect>
+        <g font-size="9.5" fill="var(--paper)" text-anchor="middle">
+          <text x="400" y="213">SCHEMA</text><text x="447" y="213">API</text><text x="494" y="213">API</text><text x="541" y="213">UI</text>
+          <text x="588" y="213">UI</text><text x="642" y="213">TEST</text>
+        </g>
+        <g font-size="9" text-anchor="middle">
+          <text x="400" y="235" fill="var(--cheap)">0.3×</text><text x="447" y="235" fill="var(--cheap)">0.3×</text><text x="494" y="235" fill="var(--cheap)">0.3×</text>
+          <text x="541" y="235" fill="var(--paper)">0.6×</text><text x="588" y="235" fill="var(--cheap)">0.3×</text><text x="642" y="235" fill="var(--frontier)">↑1.0×</text>
+        </g>
+        <line x1="376" y1="252" x2="666" y2="252" stroke="var(--deep-rule)" stroke-width="1"></line>
+        <text x="521" y="270" font-size="10" fill="var(--deep-mute)" text-anchor="middle">CHEAP BY DEFAULT — ONE UNIT ESCALATED ON EVIDENCE</text>
+        <text x="390" y="292" font-size="11.5" fill="var(--deep-mute)">"The VP writes the plan — that costs</text>
+        <text x="390" y="310" font-size="11.5" fill="var(--deep-mute)">VP rates. The team lays the bricks."</text>
+      </svg>
+    </div>
+
+    <p class="tiny" style="margin-top: 20px; max-width: 74ch; color: var(--deep-mute)">Same rubric as §07, applied only to the units that are actually verifiable. The judgment slice — the PRD, the schema tradeoffs — is a separate, harder problem this doesn't claim to solve yet. See <a href="#limits" style="color: var(--paper); text-decoration: underline; text-underline-offset: 3px">Honest limits, #05</a>.</p>
+
+    <div class="card-deep" style="margin-top: 28px; padding: 20px 24px">
+      <p class="eyebrow dim" style="margin: 0 0 6px">The arithmetic, so the number holds up</p>
+      <h3 class="h4" style="color: var(--paper); font-weight: 600; margin: 0 0 16px">A 70%-cheaper tier on half the tokens is ~35% off the session — not 70%.</h3>
+      <div class="scroll-x">
+        <table class="tbl" style="min-width: 520px">
+          <thead>
+            <tr><th style="color: var(--deep-mute)"> </th><th class="c" style="border-left: 1px solid var(--deep-rule); color: var(--deep-mute)">Judgment tokens</th><th class="c" style="border-left: 1px solid var(--deep-rule); color: var(--deep-mute)">Execution tokens</th><th class="c" style="border-left: 1px solid var(--deep-rule); color: var(--deep-mute)">Blended</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="color: var(--paper)">Share of the request</td>
+              <td class="c" style="border-left: 1px solid var(--deep-rule); color: var(--paper)">50%</td>
+              <td class="c" style="border-left: 1px solid var(--deep-rule); color: var(--paper)">50%</td>
+              <td class="c" style="border-left: 1px solid var(--deep-rule); color: var(--paper)">100%</td>
+            </tr>
+            <tr>
+              <td style="color: var(--paper)">Does the §07 rubric apply?</td>
+              <td class="c" style="border-left: 1px solid var(--deep-rule); color: var(--deep-mute)">not yet proven</td>
+              <td class="c" style="border-left: 1px solid var(--deep-rule); color: var(--cheap)">yes</td>
+              <td class="c" style="border-left: 1px solid var(--deep-rule); color: var(--deep-mute)">—</td>
+            </tr>
+            <tr>
+              <td style="color: var(--paper)">Measured reduction</td>
+              <td class="c" style="border-left: 1px solid var(--deep-rule); color: var(--paper)">0%</td>
+              <td class="c" style="border-left: 1px solid var(--deep-rule); color: var(--cheap)">70%</td>
+              <td class="c" style="border-left: 1px solid var(--deep-rule); color: var(--paper); font-weight: 600">~35%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tiny" style="margin-top: 14px; color: var(--deep-mute)">Skew more execution-heavy than 50/50 and the blended number moves toward 70%; more planning-heavy, and it moves toward 0%. Whichever way your workload leans, the number you get is the honest one — not the headline one.</p>
+    </div>
+  </div>
+</section>
+
 <section data-screen-label="Why it holds up" class="sec">
   <div class="wrap-n">
-    <div class="marker"><span class="eyebrow muted">§08</span><span class="line"></span><span class="eyebrow muted">Why it holds up</span></div>
+    <div class="marker"><span class="eyebrow muted">§09</span><span class="line"></span><span class="eyebrow muted">Why it holds up</span></div>
     <h2 class="h2" style="margin-bottom: 20px">Flags steer. Verification and escalation decide.</h2>
     <p class="body muted" style="margin-bottom: 28px">Even when the rubric flags are scored imperfectly, the escalator still routes work to the right tier almost every time — because a wrong flag only ever costs one extra cheap attempt, never a wrong answer or a big bill.</p>
     <details style="border: 1px solid var(--rule); border-radius: 6px">
@@ -2718,7 +2838,7 @@
 
 <section id="how-do-i-know" data-screen-label="How do I know it's working" class="sec">
   <div class="wrap">
-    <div class="marker"><span class="eyebrow muted">§09</span><span class="line"></span><span class="eyebrow muted">How do I know it's working?</span></div>
+    <div class="marker"><span class="eyebrow muted">§10</span><span class="line"></span><span class="eyebrow muted">How do I know it's working?</span></div>
     <div class="split-57">
       <div style="display: flex; flex-direction: column; gap: 22px">
         <h2 class="h2">You don't install a policy file and hope.</h2>
@@ -2769,9 +2889,9 @@
   </div>
 </section>
 
-<section data-screen-label="Honest limits" class="sec">
+<section id="limits" data-screen-label="Honest limits" class="sec">
   <div class="wrap">
-    <div class="marker"><span class="eyebrow muted">§10</span><span class="line"></span><span class="eyebrow muted">Honest limits — and what this means for governance</span></div>
+    <div class="marker"><span class="eyebrow muted">§11</span><span class="line"></span><span class="eyebrow muted">Honest limits — and what this means for governance</span></div>
     <div class="split-57">
       <h2 class="h2">What this doesn't do.</h2>
       <div style="min-width: 0">
@@ -2808,7 +2928,7 @@
         <span class="n">05</span>
         <div>
           <span class="t">Doesn't replace the planning decision</span>
-          <p class="d">Planning is separate from execution routing; this ladder is for execution units.</p>
+          <p class="d">Planning is separate from execution routing; this ladder is for execution units — see <a href="#scope" class="dim" style="text-decoration: underline; text-underline-offset: 3px">what this optimizes</a>.</p>
         </div>
       </div>
       <div>
@@ -2838,7 +2958,7 @@
 
 <section id="teams" data-screen-label="Teams" class="sec">
   <div class="wrap">
-    <div class="marker"><span class="eyebrow muted">§11</span><span class="line"></span><span class="eyebrow muted">For teams — coming soon</span><span class="badge badge-frontier">Coming soon</span><span class="badge">Enterprise — contact us</span></div>
+    <div class="marker"><span class="eyebrow muted">§12</span><span class="line"></span><span class="eyebrow muted">For teams — coming soon</span><span class="badge badge-frontier">Coming soon</span><span class="badge">Enterprise — contact us</span></div>
     <h2 class="h2" style="max-width: 30ch; margin-bottom: 20px">One skill is a habit. A team needs a policy.</h2>
     <p class="body muted" style="margin-bottom: 44px; max-width: 72ch">The free skill only saves what every individual dev remembers to install and follow. Teams turns the same rubric into something the org can point to, measure, and rely on — without adding a network-layer gateway.</p>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; margin-bottom: 32px">
@@ -2873,7 +2993,7 @@
 
 <section id="pricing" data-screen-label="Pricing" class="sec sec-card">
   <div class="wrap">
-    <div class="marker"><span class="eyebrow muted">§12</span><span class="line"></span><span class="eyebrow muted">Pricing</span></div>
+    <div class="marker"><span class="eyebrow muted">§13</span><span class="line"></span><span class="eyebrow muted">Pricing</span></div>
     <h2 class="h2" style="max-width: 30ch; margin-bottom: 16px">Free for individuals, forever. Teams and Enterprise are coming soon.</h2>
     <p class="body muted" style="margin-bottom: 44px; max-width: 70ch">Nothing below is live yet — the skill is; Teams and Enterprise are what we're building toward, priced honestly ahead of shipping instead of dropped on you before it's real.</p>
     <div class="pricegrid">
@@ -2981,7 +3101,7 @@
 
 <section id="install" data-screen-label="Install" class="sec sec-deep">
   <div class="wrap">
-    <div class="marker"><span class="eyebrow dim">§13</span><span class="line"></span><span class="eyebrow dim">Try it</span></div>
+    <div class="marker"><span class="eyebrow dim">§14</span><span class="line"></span><span class="eyebrow dim">Try it</span></div>
     <h2 class="h2" style="max-width: 32ch; margin-bottom: 48px; color: var(--paper)">Free. MIT. Nothing installs, nothing proxies your traffic.</h2>
     <div class="g3" style="align-items: start">
       <div class="step">
@@ -3028,7 +3148,7 @@
 
 <section data-screen-label="Prior art" class="sec">
   <div class="wrap-n">
-    <div class="marker"><span class="eyebrow muted">§14</span><span class="line"></span><span class="eyebrow muted">Prior art</span></div>
+    <div class="marker"><span class="eyebrow muted">§15</span><span class="line"></span><span class="eyebrow muted">Prior art</span></div>
     <h2 class="h2" style="margin-bottom: 24px">Others have tried cheaper-model routing. Here's what's different.</h2>
     <p class="body muted" style="margin-bottom: 32px">peragwin's <a href="https://gist.github.com/peragwin" style="color: var(--ink); text-decoration: underline; text-underline-offset: 3px">subagent-model-routing gist</a> and <a href="https://github.com/soumabali/token-router" style="color: var(--ink); text-decoration: underline; text-underline-offset: 3px">soumabali/token-router</a> both explored assigning cheaper models to subagent work. Undercut adds the objective escalation loop on top: measured disagreement instead of self-reported confidence, hysteresis so a run can't thrash between tiers, residue-only escalation with a structured handoff, a calibration feedback loop, and — the part that's actually rare in this category — published, reproducible A/B results. Anyone can re-verify any cell in the tables above.</p>
     <h3 class="h3" style="margin-bottom: 10px">Not competing with your gateway.</h3>
@@ -3038,7 +3158,7 @@
 
 <section data-screen-label="FAQ" class="sec">
   <div class="wrap-n">
-    <div class="marker"><span class="eyebrow muted">§15</span><span class="line"></span><span class="eyebrow muted">FAQ</span></div>
+    <div class="marker"><span class="eyebrow muted">§16</span><span class="line"></span><span class="eyebrow muted">FAQ</span></div>
     <h2 class="h2" style="margin-bottom: 28px">Frequently asked</h2>
     <sc-for list="{{ faqs }}" as="faq" hint-placeholder-count="5">
       <details style="border-top: 1px solid var(--rule)">
