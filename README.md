@@ -1,6 +1,14 @@
-# Undercut
+<p align="center">
+  <img src="assets/readme/undercut-lockup-horizontal.svg" alt="Undercut" width="220">
+</p>
 
-**Undercut the top-tier model. Never the quality bar.**
+<p align="center"><strong>Undercut the top-tier model. Never the quality bar.</strong></p>
+
+<p align="center">
+  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-13161b"></a>
+  <a href="CHANGELOG.md"><img alt="version" src="https://img.shields.io/badge/version-0.3.0-00959c"></a>
+  <a href="https://getundercut.sh"><img alt="getundercut.sh" src="https://img.shields.io/badge/site-getundercut.sh-13161b"></a>
+</p>
 
 Run every unit of work at the cheapest model that can pass verification.
 Escalate on evidence, not vibes.
@@ -12,6 +20,10 @@ quality, across 4 model families.** Every number below is reproducible from the
 raw data in [`testing/`](testing/).
 
 ## The proof (measured, 2026-08)
+
+<p align="center">
+  <img src="assets/readme/cost-savings.svg" alt="Measured cost reduction from tiered routing vs. all-standard, by benchmark and model family, at equal-or-better pass rate" width="640">
+</p>
 
 We A/B-tested the skill against "one model for everything" on third-party,
 MIT-licensed benchmarks — **official test cases, not ours**. Each cell: same
@@ -89,12 +101,16 @@ never per-item apex calls.
 one extra cheap attempt. A stock dispatcher reproduced only 90% of rubric
 flags yet still routed 100% of units to the correct tier.
 
-```
-cheap ──fail x2──▶ standard ──fail x2──▶ frontier ──unresolved──▶ apex
-  │                    │                     │                 (batched,
-  ▼                    ▼                     ▼   ownership /       residue
- done                 done                  done   judgment       only)
-```
+<p align="center">
+  <img src="assets/readme/ladder-diagram.svg" alt="The escalation ladder: cheap escalates to standard on verification failure or disagreement, standard escalates to frontier the same way, and unresolved residue is batched to a single apex tie-break" width="640">
+</p>
+
+Every non-trivial dispatch narrates the tier it landed on and why, right in
+the transcript — no hooks, no opt-in step required:
+
+<p align="center">
+  <img src="assets/readme/dispatch-terminal.svg" alt="Terminal example: Routing: standard (cross-cutting, ambiguous) → dispatched to claude-sonnet-5" width="560">
+</p>
 
 ## Honest limitations
 

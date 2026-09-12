@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 300" width="720" height="300" role="img" aria-label="The tier ladder: cheap, standard, frontier, apex, with escalation triggers on the right">
+  <title>Escalation ladder</title>
+  <rect x="0" y="0" width="720" height="300" rx="10" fill="#f9f8f6" stroke="#d4d0cb" stroke-width="1"/>
+
+  <!-- ladder rungs, wide at the bottom to narrow at the top, outlined not filled -->
+  <rect x="48" y="216" width="560" height="42" rx="3" fill="none" stroke="#00959c" stroke-width="2.5"/>
+  <text x="68" y="242" font-family="Menlo,Consolas,monospace" font-size="15" font-weight="700" fill="#00959c">cheap</text>
+
+  <rect x="128" y="166" width="400" height="42" rx="3" fill="none" stroke="#13161b" stroke-width="2.5"/>
+  <text x="148" y="192" font-family="Menlo,Consolas,monospace" font-size="15" font-weight="700" fill="#13161b">standard</text>
+
+  <rect x="208" y="116" width="240" height="42" rx="3" fill="none" stroke="#c26e12" stroke-width="2.5"/>
+  <text x="228" y="142" font-family="Menlo,Consolas,monospace" font-size="15" font-weight="700" fill="#c26e12">frontier</text>
+
+  <rect x="288" y="66" width="80" height="42" rx="3" fill="none" stroke="#6e7278" stroke-width="2" stroke-dasharray="3 3"/>
+  <text x="288" y="55" font-family="Menlo,Consolas,monospace" font-size="12" fill="#6e7278">apex (batched)</text>
+
+  <!-- escalation path: one right-angle step per tier transition, amber, never a curve -->
+  <path d="M580 237 V208 H508 V183 H448 V158 H388 V133 H368"
+        fill="none" stroke="#c26e12" stroke-width="2.5"/>
+  <path d="M368 133 l10 -5 v10 z" fill="#c26e12"/>
+
+  <!-- escalation trigger annotations -->
+  <line x1="612" y1="216" x2="612" y2="258" stroke="#d4d0cb" stroke-width="1"/>
+  <text x="624" y="230" font-family="Menlo,Consolas,monospace" font-size="12.5" fill="#4a4e57">verification fails ×2</text>
+  <text x="624" y="248" font-family="Menlo,Consolas,monospace" font-size="12.5" fill="#4a4e57">→ escalate one tier</text>
+
+  <line x1="612" y1="166" x2="612" y2="208" stroke="#d4d0cb" stroke-width="1"/>
+  <text x="624" y="180" font-family="Menlo,Consolas,monospace" font-size="12.5" fill="#4a4e57">low-tier runs disagree</text>
+  <text x="624" y="198" font-family="Menlo,Consolas,monospace" font-size="12.5" fill="#4a4e57">→ escalate one tier</text>
+
+  <text x="48" y="284" font-family="Menlo,Consolas,monospace" font-size="12.5" fill="#6e7278">residue-only escalation — the next tier sees only what failed, never the whole batch</text>
+</svg>
