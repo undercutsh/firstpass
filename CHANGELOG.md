@@ -8,6 +8,13 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ### Added
 
+- **README rebrand** — new logo lockup, badges, and three inline SVG
+  illustrations (`assets/readme/`) matching the site's "instrument paper"
+  visual system: the escalation ladder, a routing-narration terminal
+  example, and a cost-savings chart for the GSM8K/HumanEval results. Plugin
+  `brandColor` updated from the old marketing green (`#2E9E5B`) to the
+  current palette's cheap-tier teal (`#00959C`) to match.
+
 - **`theme-color` meta tag on all 18 `site/*.html` pages** — colors the
   mobile browser chrome/status bar to match the site's dark panel
   background (`#15171c`, the existing dark-section color used
