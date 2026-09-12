@@ -6,6 +6,22 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ## [Unreleased]
 
+### Changed
+
+- **All 41 non-homepage `site/*.html` pages rebranded to the "instrument
+  paper" visual system** shipped on `site/index.html`: Bricolage
+  Grotesque/Fragment Mono replace JetBrains Mono/Inter (headings move to
+  Bricolage, everything measured/labeled stays mono), the old
+  marketing-green/mixed-gray palette is remapped one-for-one onto the
+  current tokens (paper/ink/deep/rule/mute/cheap-teal/frontier-amber), and
+  the nav/footer wordmark gets the same SVG logomark used on the homepage.
+  Copy, links, and layout structure are unchanged — visual tokens only.
+  Applied mechanically via a scripted find/replace over the exact
+  old-token set (colors, font-family strings, the two shared logo-text
+  snippets), verified with a before/after screenshot and the full
+  validator suite. Fixes a spellcheck false-negative gap: `Menlo` is now
+  allowlisted alongside the other design-system font names.
+
 ### Added
 
 - **README rebrand** — new logo lockup, badges, and three inline SVG
