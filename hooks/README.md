@@ -70,7 +70,9 @@ changes.
 
 ## Status
 
-Experimental — dogfooding on our own usage before this is offered to
-anyone else. See `business/undercut-hooks-design-2026-09-07.md` (internal
-repo) for the design rationale, guardrails, and what "done" looks like
-before this ships more broadly.
+Shipped, opt-in. Dogfooded on our own usage first (see
+`business/undercut-hooks-design-2026-09-07.md`, internal repo, for the
+design rationale and guardrails) — two real bugs found and fixed that way
+before this went out. The free skill's promise doesn't change either way:
+install this and you get the receipt; don't, and the core skill works
+exactly as it always has.

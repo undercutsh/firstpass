@@ -8,6 +8,20 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ### Added
 
+- **Undercut Hooks (`hooks/`), shipped, opt-in** — a local Claude Code hooks
+  package that (1) force-injects the condensed rubric every session instead
+  of relying on skill-matcher self-activation, and (2) prints a session-end
+  receipt plus an at-most-once-a-day digest, using real local token/cost
+  data (never a guess) with any savings figure explicitly labeled an
+  estimate. No network calls, no telemetry, nothing leaves the machine —
+  architecturally separate from the core skill, so the free skill's
+  zero-infrastructure promise holds whether or not this is installed.
+  Previously sat as an unmerged draft PR labeled "experimental/dogfooding";
+  now merged to `main` and referenced from `README.md`, `site/index.html`,
+  `site/index.md`, and `site/llms.txt`. Two real bugs (a model-ID
+  normalization gap and an escalated-count inversion in the savings math)
+  were found and fixed during dogfooding before this went out — see
+  `undercutsh/internal` `business/undercut-hooks-design-2026-09-07.md`.
 - **`gradeJudge()` in `evals/src/tasks.js`** — a hardened, reusable judge-based
   grader for `unverifiable: true` tasks, joining the existing mechanical
   graders (`gradeCode`, `gradeExact`, `gradeJsonSubset`). Closes Open

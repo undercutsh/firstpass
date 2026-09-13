@@ -395,6 +395,7 @@
   .badge { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border: 1px solid var(--rule); border-radius: 4px; font-family: 'Fragment Mono', Menlo, monospace; font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--mute); white-space: nowrap; }
   .badge-frontier { border-color: var(--frontier); color: var(--frontier); }
   .badge-ink { border-color: var(--ink); color: var(--ink); }
+  .badge-pass { border-color: var(--pass); color: var(--pass); }
   .chip-deep { display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border: 1px solid var(--deep-rule); border-radius: 4px; font-family: 'Fragment Mono', Menlo, monospace; font-size: 12px; color: var(--paper); }
 
   /* ---- surfaces ------------------------------------------------------ */
@@ -2865,10 +2866,10 @@
         </div>
         <div class="card">
           <div style="display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 10px">
-            <span class="badge badge-frontier">In testing</span>
-            <h3 class="h4 mono">A local, opt-in receipt — not shipped yet</h3>
+            <span class="badge badge-pass">Opt-in</span>
+            <h3 class="h4 mono">A local receipt, for Claude Code</h3>
           </div>
-          <p class="small">We're dogfooding a small local hooks package that prints a session-end receipt and an at-most-once-a-day digest — real token counts your machine actually saw, never a guess, with any savings figure always labeled as an estimate. Nothing in it leaves your machine. It's not public yet; we're validating it on our own usage before offering it to anyone else.</p>
+          <p class="small">A small local hooks package prints a session-end receipt and an at-most-once-a-day digest — real token counts your machine actually saw, never a guess, with any savings figure always labeled as an estimate. Nothing in it leaves your machine. <a href="https://github.com/undercutsh/firstpass/tree/main/hooks" class="muted" style="text-decoration: underline; text-underline-offset: 3px">Install it from the repo</a> — the core skill's zero-infrastructure promise doesn't change if you don't.</p>
         </div>
       </div>
     </div>
