@@ -6,6 +6,28 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ## [Unreleased]
 
+### Changed
+
+- **Open-weight standard tier: `deepseek/deepseek-v4-flash` → `z-ai/glm-5.3-flash`**
+  (`evals/src/config.js`, regenerated into `skills/firstpass/models.md`).
+  Integrates the live-routing research's strongest result: a standard-tier
+  isolation test (cheap tier held constant, 15/25 tasks escalated past cheap
+  identically in both arms) found the prior pick resolved only 13% of what
+  reached standard before escalating further, vs. 73% for the new pick, at
+  3.2x lower cost and the same 100% eventual pass rate. See
+  `undercutsh/internal` `business/openrouter-live-routing-research-
+  2026-09-12.md`, Finding #6.
+- **Numeric consistency pass on the judgment/execution split**
+  (`site/index.html`, `README.md`, `site/index.md`): the "what this
+  optimizes" worked example used an illustrative, rounded "70%" execution-
+  reduction figure sitting a few sections away from the site's real,
+  measured "up to −71%" headline (GSM8K/OpenAI) — two numbers close enough
+  to read as inconsistent without being the same claim. Now the worked
+  example cites and links directly to the measured −71% figure instead of
+  a separate rounded number (blended result: ~36%, not ~35%), and "The
+  proof" section links forward to the scoping section so the two read as
+  one claim, not two.
+
 ### Added
 
 - **New "What this optimizes" section** (`site/index.html` §08, plus

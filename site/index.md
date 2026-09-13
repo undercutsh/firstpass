@@ -71,9 +71,9 @@ Stop doing this: one frontier model handles the PRD, the schema, and every CRUD 
 |---|---|---|---|
 | Share of the request | 50% | 50% | 100% |
 | Does the rubric apply? | not yet proven | yes | — |
-| Measured reduction | 0% | 70% | ~35% |
+| Measured reduction (GSM8K/OpenAI, see "The proof" above) | 0% | 71% | ~36% |
 
-A 70%-cheaper tier on half the tokens is ~35% off the session — not 70%. Skew more execution-heavy than 50/50 and the blended number moves toward 70%; more planning-heavy, and it moves toward 0%.
+The measured up to −71% is on execution work. Half your tokens at that reduction is ~36% off the whole session — not 71%. Skew more execution-heavy than 50/50 and the blended number moves toward 71%; more planning-heavy, and it moves toward 0%.
 
 ## What this doesn't do
 
