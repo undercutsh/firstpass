@@ -2,7 +2,7 @@
 title: "Undercut — tiered dispatch for coding agents"
 description: "A routing policy your coding agent follows — cheap tier first, escalate only on evidence. Measured up to −95% cost on public benchmarks at equal-or-better pass rate."
 canonical: "https://getundercut.sh/"
-last-updated: "2026-09-04"
+last-updated: "2026-09-13"
 ---
 
 # Undercut — cut your AI coding bill up to 71%. Not your pass rate.
@@ -123,6 +123,10 @@ Per-client commands (same set the interactive picker at https://getundercut.sh/#
 | Devin | `mkdir -p .devin/skills && cp -r firstpass/skills/firstpass ./.devin/skills/firstpass` | Devin CLI/Desktop skills live at `.devin/skills/firstpass/SKILL.md`. |
 
 Client-specific setup guide, one page per agent: [Claude Code](https://getundercut.sh/claude-code) · [Codex CLI](https://getundercut.sh/codex) · [Cursor](https://getundercut.sh/cursor) · [GitHub Copilot](https://getundercut.sh/copilot) · [OpenCode](https://getundercut.sh/opencode) · [Gemini CLI](https://getundercut.sh/gemini-cli) · [Windsurf](https://getundercut.sh/windsurf) · [JetBrains Junie](https://getundercut.sh/junie) · [Amp](https://getundercut.sh/amp) · [Devin](https://getundercut.sh/devin)
+
+### Optional, for Claude Code — hooks
+
+A local, opt-in package (`hooks/` in the repo) guarantees the rubric is in context every session and prints a session-end receipt with real token/cost data — never a guess. No network calls, no telemetry, nothing leaves your machine. Skip it entirely and the core skill works exactly as described above. Install steps: https://github.com/undercutsh/firstpass/tree/main/hooks
 
 ## Links
 

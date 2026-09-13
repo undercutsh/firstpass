@@ -207,6 +207,13 @@ for build/test commands and repo conventions.
 [getundercut.sh/developers](https://getundercut.sh/developers) — there isn't
 one yet; here's what exists today and where to hear about it when it ships.
 
+**Optional, for Claude Code — [`hooks/`](hooks/):** a local, opt-in package
+that guarantees the rubric is in context every session and prints a
+session-end receipt with real token/cost data (never a guess). No network
+calls, no telemetry, nothing leaves your machine. Skip it entirely and the
+core skill works exactly as described above — see [`hooks/README.md`](hooks/README.md)
+for install steps.
+
 ## What this is and isn't
 
 This is policy the orchestrating agent follows at dispatch time. It is not a

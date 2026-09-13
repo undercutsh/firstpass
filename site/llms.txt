@@ -31,6 +31,7 @@ Most real requests mix both kinds of work in one session — a planning/judgment
 - [Readme](https://raw.githubusercontent.com/undercutsh/firstpass/main/README.md)
 - [Evaluation results + methodology](https://raw.githubusercontent.com/undercutsh/firstpass/main/testing/README.md)
 - [SKILL (the product)](https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md)
+- [Hooks (optional, local, Claude Code only — session-start narration + a real-data receipt)](https://raw.githubusercontent.com/undercutsh/firstpass/main/hooks/README.md)
 - [Developers (no public API/MCP server yet — what exists today)](https://getundercut.sh/developers)
 - [Agent instructions for this codebase (AGENTS.md)](https://raw.githubusercontent.com/undercutsh/firstpass/main/AGENTS.md)
 - [Pricing (machine-readable)](https://getundercut.sh/pricing.md)
