@@ -34,7 +34,16 @@ export const VENDORS = {
     label: 'Open-weight',
     tiers: {
       cheap: 'qwen/qwen3-coder-30b-a3b-instruct',
-      standard: 'deepseek/deepseek-v4-flash',
+      // Was deepseek/deepseek-v4-flash. Swapped 2026-09 after a standard-tier
+      // isolation experiment (cheap tier held constant across both arms,
+      // 15/25 tasks escalated past cheap identically in each) found
+      // deepseek-v4-flash-0731 resolved only 2/15 (13%) of what reached
+      // standard before escalating further, at $0.01020/task, vs.
+      // glm-5.3-flash resolving 11/15 (73%) at $0.00316/task (3.2x
+      // cheaper) — same 100% eventual pass rate either way. See
+      // undercutsh/internal business/openrouter-live-routing-research-
+      // 2026-09-12.md, Finding #6.
+      standard: 'z-ai/glm-5.3-flash',
       frontier: 'deepseek/deepseek-v4-pro',
       apex: 'z-ai/glm-5.2',
     },

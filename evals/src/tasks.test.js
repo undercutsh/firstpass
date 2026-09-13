@@ -13,7 +13,7 @@
 
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
-import { extractJson, gradeJsonSubset, gradeCode, gradeExact, makeTask } from './tasks.js';
+import { extractJson, gradeJsonSubset, gradeCode, gradeExact, gradeJudge, makeTask } from './tasks.js';
 
 // --- extractJson() -----------------------------------------------------
 
@@ -317,5 +317,74 @@ describe('makeTask', () => {
     assert.equal(task.prompt, 'do the thing');
     assert.equal(task.answerKey, 'key');
     assert.equal(task.grader, grader);
+  });
+});
+
+// --- gradeJudge() --------------------------------------------------------
+// Regression coverage for business/openrouter-live-routing-research-
+// 2026-09-12.md Finding #8: a malformed/truncated judge response must
+// retry the JUDGE call, never read as a worker failure.
+
+describe('gradeJudge', () => {
+  test('passes on a valid high score, first attempt, no retries used', async () => {
+    const callJudge = async () => JSON.stringify({ score: 5, reason: 'clearly correct' });
+    const result = await gradeJudge('rubric', callJudge);
+    assert.equal(result.pass, true);
+    assert.equal(result.score, 5);
+    assert.equal(result.judgeRetries, 0);
+    assert.match(result.reason, /clearly correct/);
+  });
+
+  test('fails on a valid low score — a real graded failure, not a judge failure', async () => {
+    const callJudge = async () => JSON.stringify({ score: 1, reason: 'missed the requirement' });
+    const result = await gradeJudge('rubric', callJudge);
+    assert.equal(result.pass, false);
+    assert.equal(result.score, 1);
+    assert.equal(result.judgeFailure, undefined);
+  });
+
+  test('respects a custom passThreshold', async () => {
+    const callJudge = async () => JSON.stringify({ score: 3, reason: 'partially there' });
+    const lenient = await gradeJudge('rubric', callJudge, { passThreshold: 3 });
+    const strict = await gradeJudge('rubric', callJudge, { passThreshold: 4 });
+    assert.equal(lenient.pass, true);
+    assert.equal(strict.pass, false);
+  });
+
+  test('retries the JUDGE call on a malformed response, then passes — never touches the worker', async () => {
+    let calls = 0;
+    const callJudge = async () => {
+      calls++;
+      if (calls === 1) return '{"score":null}'; // e.g. truncated mid-field
+      return JSON.stringify({ score: 4, reason: 'good on retry' });
+    };
+    const result = await gradeJudge('rubric', callJudge);
+    assert.equal(calls, 2);
+    assert.equal(result.pass, true);
+    assert.equal(result.judgeRetries, 1);
+  });
+
+  test('reports judgeFailure (not a graded fail) when every attempt is malformed', async () => {
+    let calls = 0;
+    const callJudge = async () => {
+      calls++;
+      return '{}'; // no usable score/reason on any attempt
+    };
+    const result = await gradeJudge('rubric', callJudge, { maxRetries: 2 });
+    assert.equal(calls, 3); // initial attempt + 2 retries
+    assert.equal(result.pass, false);
+    assert.equal(result.judgeFailure, true);
+    assert.equal(result.score, null);
+    assert.match(result.reason, /judge failure, not a graded worker failure/);
+  });
+
+  test('defaults to zero retries when maxRetries is not set explicitly to more', async () => {
+    let calls = 0;
+    const callJudge = async () => {
+      calls++;
+      return JSON.stringify({ score: 5, reason: 'ok' });
+    };
+    await gradeJudge('rubric', callJudge, { maxRetries: 0 });
+    assert.equal(calls, 1);
   });
 });
