@@ -21,7 +21,7 @@ last-updated: "2026-08-29"
 - **Price:** $29 / user / month, billed monthly
 - **Trial:** 14 days, once it ships
 - **Status:** in development — not yet live; join the waitlist at https://getundercut.sh/#pricing
-- **Includes:** everything in Free, for every seat, plus org-wide routing policy enforcement, per-account savings metering and reporting, a verifiable escalation ledger, an always-updated tier→model mapping, SSO/directory sync, and email support
+- **Includes:** everything in Free, for every seat, plus org-wide routing policy enforcement, per-account savings metering and reporting, a verifiable escalation ledger, automatic tier→model mapping updates (vs. manual on Free), SSO/directory sync, and email support
 
 ## Enterprise
 

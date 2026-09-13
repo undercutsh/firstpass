@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 200" width="640" height="200" role="img" aria-label="Terminal example: Undercut narrating a routing decision before dispatch">
+  <title>Routing narration example</title>
+  <rect x="0" y="0" width="640" height="200" rx="10" fill="#1c2027" stroke="#2a2d35" stroke-width="1"/>
+
+  <!-- window chrome dots -->
+  <circle cx="26" cy="26" r="6" fill="#3a3e47"/>
+  <circle cx="46" cy="26" r="6" fill="#3a3e47"/>
+  <circle cx="66" cy="26" r="6" fill="#3a3e47"/>
+
+  <text x="26" y="66" font-family="Menlo,Consolas,monospace" font-size="14" fill="#6e7278">$ reviewing the auth module for edge cases…</text>
+
+  <text x="26" y="98" font-family="Menlo,Consolas,monospace" font-size="14" font-weight="700" fill="#00959c">Routing:</text>
+  <text x="94" y="98" font-family="Menlo,Consolas,monospace" font-size="14" fill="#f2f0ec">standard (cross-cutting, ambiguous)</text>
+
+  <text x="26" y="130" font-family="Menlo,Consolas,monospace" font-size="14" fill="#6e7278">→ dispatched to claude-sonnet-5</text>
+
+  <text x="26" y="162" font-family="Menlo,Consolas,monospace" font-size="14" fill="#6e7278">→ verification: schema check passed on first attempt</text>
+
+  <rect x="26" y="176" width="8" height="14" fill="#00959c"/>
+</svg>

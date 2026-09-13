@@ -25,6 +25,8 @@ Reach for Undercut when an orchestrating agent is dispatching many small units o
 
 It is not a fit when: the work can't be mechanically verified (open-ended design, ambiguous product decisions), or you're looking for token/context compression rather than model-tier selection — see [the landscape](https://getundercut.sh/#the-landscape) for how it compares to compression tools, multi-provider gateways, and spend-observability tools.
 
+Most real requests mix both kinds of work in one session — a planning/judgment phase (PRD, ambiguous tradeoffs) followed by an execution phase (schema, endpoints, screens, tests). Undercut tiers only the execution phase; treat planning/judgment units as frontier-tier by default. See [what this optimizes](https://getundercut.sh/#scope).
+
 ## Docs
 - [Readme](https://raw.githubusercontent.com/undercutsh/firstpass/main/README.md)
 - [Evaluation results + methodology](https://raw.githubusercontent.com/undercutsh/firstpass/main/testing/README.md)

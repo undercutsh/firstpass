@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 260" width="720" height="260" role="img" aria-label="Measured cost reduction from tiered routing versus all-standard, by benchmark and model family, at equal or better pass rate">
+  <title>Measured cost reduction, GSM8K and HumanEval</title>
+  <rect x="0" y="0" width="720" height="260" rx="10" fill="#f9f8f6" stroke="#d4d0cb" stroke-width="1"/>
+  <text x="24" y="30" font-family="Menlo,Consolas,monospace" font-size="13" fill="#6e7278">cost, tiered vs. all-standard — same tasks, same grader, equal-or-better pass rate</text>
+
+  <!-- baseline axis -->
+  <line x1="220" y1="52" x2="220" y2="230" stroke="#d4d0cb" stroke-width="1"/>
+
+  <!-- GSM8K rows -->
+  <text x="24" y="70" font-family="Menlo,Consolas,monospace" font-size="13" font-weight="700" fill="#13161b">GSM8K</text>
+  <text x="24" y="88" font-family="Menlo,Consolas,monospace" font-size="11.5" fill="#6e7278">math reasoning</text>
+
+  <text x="228" y="66" font-family="Menlo,Consolas,monospace" font-size="12" fill="#4a4e57">OpenAI</text>
+  <rect x="228" y="70" width="146" height="14" fill="#00959c"/>
+  <text x="382" y="81" font-family="Menlo,Consolas,monospace" font-size="12" font-weight="700" fill="#00959c">−71%</text>
+
+  <text x="228" y="96" font-family="Menlo,Consolas,monospace" font-size="12" fill="#4a4e57">Gemini</text>
+  <rect x="228" y="100" width="121" height="14" fill="#00959c"/>
+  <text x="357" y="111" font-family="Menlo,Consolas,monospace" font-size="12" font-weight="700" fill="#00959c">−59%</text>
+
+  <text x="228" y="126" font-family="Menlo,Consolas,monospace" font-size="12" fill="#4a4e57">Anthropic</text>
+  <rect x="228" y="130" width="8" height="14" fill="#00959c"/>
+  <text x="245" y="141" font-family="Menlo,Consolas,monospace" font-size="12" font-weight="700" fill="#00959c">−4%</text>
+
+  <!-- HumanEval rows -->
+  <text x="24" y="176" font-family="Menlo,Consolas,monospace" font-size="13" font-weight="700" fill="#13161b">HumanEval</text>
+  <text x="24" y="194" font-family="Menlo,Consolas,monospace" font-size="11.5" fill="#6e7278">Python code</text>
+
+  <text x="228" y="172" font-family="Menlo,Consolas,monospace" font-size="12" fill="#4a4e57">Gemini</text>
+  <rect x="228" y="176" width="196" height="14" fill="#00959c"/>
+  <text x="432" y="187" font-family="Menlo,Consolas,monospace" font-size="12" font-weight="700" fill="#00959c">−95%</text>
+
+  <text x="228" y="202" font-family="Menlo,Consolas,monospace" font-size="12" fill="#4a4e57">Anthropic</text>
+  <rect x="228" y="206" width="126" height="14" fill="#00959c"/>
+  <text x="362" y="217" font-family="Menlo,Consolas,monospace" font-size="12" font-weight="700" fill="#00959c">−61%</text>
+
+  <text x="24" y="246" font-family="Menlo,Consolas,monospace" font-size="11.5" fill="#6e7278">pass rate held or improved in every row — raw data in testing/results/</text>
+</svg>

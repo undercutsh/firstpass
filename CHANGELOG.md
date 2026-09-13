@@ -8,6 +8,103 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ### Added
 
+- **`gradeJudge()` in `evals/src/tasks.js`** — a hardened, reusable judge-based
+  grader for `unverifiable: true` tasks, joining the existing mechanical
+  graders (`gradeCode`, `gradeExact`, `gradeJsonSubset`). Closes Open
+  Question #1 from the live-routing research (Finding #8): a malformed or
+  truncated judge response now retries the JUDGE call (never the worker),
+  and reports `judgeFailure: true` distinctly from a real graded failure
+  when the judge never produces a valid verdict — so a judge-plumbing bug
+  can't silently masquerade as an escalation-worthy worker failure the way
+  it did in the original pilot. 6 new unit tests.
+
+### Changed
+
+- **Open-weight standard tier: `deepseek/deepseek-v4-flash` → `z-ai/glm-5.3-flash`**
+  (`evals/src/config.js`, regenerated into `skills/firstpass/models.md`).
+  Integrates the live-routing research's strongest result: a standard-tier
+  isolation test (cheap tier held constant, 15/25 tasks escalated past cheap
+  identically in both arms) found the prior pick resolved only 13% of what
+  reached standard before escalating further, vs. 73% for the new pick, at
+  3.2x lower cost and the same 100% eventual pass rate. See
+  `undercutsh/internal` `business/openrouter-live-routing-research-
+  2026-09-12.md`, Finding #6.
+- **Numeric consistency pass on the judgment/execution split**
+  (`site/index.html`, `README.md`, `site/index.md`): the "what this
+  optimizes" worked example used an illustrative, rounded "70%" execution-
+  reduction figure sitting a few sections away from the site's real,
+  measured "up to −71%" headline (GSM8K/OpenAI) — two numbers close enough
+  to read as inconsistent without being the same claim. Now the worked
+  example cites and links directly to the measured −71% figure instead of
+  a separate rounded number (blended result: ~36%, not ~35%), and "The
+  proof" section links forward to the scoping section so the two read as
+  one claim, not two.
+
+### Added
+
+- **New "What this optimizes" section** (`site/index.html` §08, plus
+  matching content in `README.md`, `skills/firstpass/SKILL.md`,
+  `site/index.md`, and `site/llms.txt`) making explicit what was previously
+  only an implicit "planning tier vs. execution tier" split: a single
+  request often mixes judgment work (planning, ambiguous tradeoffs) with
+  verifiable execution work, and the rubric's measured savings apply only
+  to the latter. Includes a worked example (a 50/50 judgment/execution
+  token split with a 70% reduction on the execution half blends to ~35%
+  overall, not 70%) and a "stop doing this / do this instead" illustration
+  contrasting one frontier model handling 100% of a build request against
+  tiered dispatch delegating the execution slice down the ladder.
+  Renumbers site sections §08–§15 to §09–§16 accordingly.
+- **Delegation-tree illustration** (`assets/readme/delegation-diagram.svg`,
+  embedded in `README.md` and inlined as SVG in `site/index.html` §08,
+  matching the dark diagram treatment already used in §07): an org-chart
+  contrast of one frontier model handling every unit of a request (7/7 at
+  frontier) against the frontier model keeping only the judgment call and
+  delegating execution through Undercut's dispatch (1/7 at frontier, cheap
+  by default, escalated only on evidence). Replaces the flat task-list card
+  comparison §08 shipped with initially — same point, now illustrated
+  rather than tabulated, and the earlier version's implicit "1 of 9 equal
+  units" framing (which understated judgment's real ~50% token share) is
+  gone in favor of a two-group split that matches the section's own math.
+
+### Fixed
+
+- **HumanEval tasks were told to answer in JavaScript.** `evals/src/benchmarks.js`'s
+  `loadHumanEval()` tagged its (Python) tasks with `category: 'code'` — the
+  same category the harness's own synthetic JS suite
+  (`evals/src/suites/code.js`) uses. `policy.js`'s worker-prompt builder reads
+  that category to append a mandatory "ANSWER FORMAT: raw JavaScript function
+  source" instruction, directly contradicting each HumanEval task's own
+  prompt ("Complete the following Python function..."). Found via an
+  OpenRouter-`/benchmarks`-driven routing experiment where cheaper models'
+  HumanEval failures traced back to this exact contradiction. Fixed by
+  giving HumanEval its own `category: 'humaneval'` and adding the correct
+  Python-format instruction for it (mirroring the existing `mbpp` case) —
+  no change to `code`/`mbpp` behavior. `node --test` (155/155) and
+  `node src/main.js --mock` both clean post-fix.
+
+- **All 41 non-homepage `site/*.html` pages rebranded to the "instrument
+  paper" visual system** shipped on `site/index.html`: Bricolage
+  Grotesque/Fragment Mono replace JetBrains Mono/Inter (headings move to
+  Bricolage, everything measured/labeled stays mono), the old
+  marketing-green/mixed-gray palette is remapped one-for-one onto the
+  current tokens (paper/ink/deep/rule/mute/cheap-teal/frontier-amber), and
+  the nav/footer wordmark gets the same SVG logomark used on the homepage.
+  Copy, links, and layout structure are unchanged — visual tokens only.
+  Applied mechanically via a scripted find/replace over the exact
+  old-token set (colors, font-family strings, the two shared logo-text
+  snippets), verified with a before/after screenshot and the full
+  validator suite. Fixes a spellcheck false-negative gap: `Menlo` is now
+  allowlisted alongside the other design-system font names.
+
+### Added
+
+- **README rebrand** — new logo lockup, badges, and three inline SVG
+  illustrations (`assets/readme/`) matching the site's "instrument paper"
+  visual system: the escalation ladder, a routing-narration terminal
+  example, and a cost-savings chart for the GSM8K/HumanEval results. Plugin
+  `brandColor` updated from the old marketing green (`#2E9E5B`) to the
+  current palette's cheap-tier teal (`#00959C`) to match.
+
 - **`theme-color` meta tag on all 18 `site/*.html` pages** — colors the
   mobile browser chrome/status bar to match the site's dark panel
   background (`#15171c`, the existing dark-section color used
@@ -144,6 +241,17 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ### Fixed
 
+- **Homepage rendered an HTML comment and the hidden CDN-failure panel
+  above the real page** — `site/index.html`'s source comment describing
+  `#dc-fallback` mentioned the page template's tag literally, in angle
+  brackets. `support.js` re-fetches the page source after boot and finds
+  the template by regex (first x-dc opening tag in the raw text, comments
+  not skipped), so it re-rendered the root starting from inside that
+  comment: visitors saw the tail of the comment as body text, then the
+  "script didn't load" fallback panel, then the actual page. Reworded the
+  three comments that spelled the tag out, and added a `validate-dc-drift`
+  CI check (with unit tests) that fails on any x-dc opening tag inside an
+  HTML comment so it can't ship again.
 - **`site/.well-known/ai-catalog.json` two stale/inaccurate claims** —
   a content-accuracy pass (prior audit only checked well-formedness)
   found the `notes` field still said "no ... agentic plugin exists

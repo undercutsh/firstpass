@@ -133,6 +133,38 @@ export function extractFallbackBlock(html) {
 }
 
 // ---------------------------------------------------------------------------
+// 0. No x-dc opening tag inside an HTML comment
+// ---------------------------------------------------------------------------
+
+// support.js (the dc-runtime) re-fetches index.html's raw source after boot
+// and finds the page template with a plain regex — the FIRST x-dc opening
+// tag in the text, comments included — then re-renders the root with
+// whatever follows it. A literal tag inside an HTML comment above the real
+// one therefore turns the tail of that comment, the hidden #dc-fallback div
+// and everything else up to the real tag into rendered page content
+// (getundercut.sh shipped exactly that once). Flag every comment carrying
+// one, wherever it sits, so nobody has to reason about which position is
+// safe.
+export const XDC_OPEN_TAG_RE = /<x-dc(?:\s[^>]*)?>/;
+
+export function checkCommentedXdcTag(html) {
+  const errors = [];
+  const commentRe = /<!--[\s\S]*?-->/g;
+  let m;
+  while ((m = commentRe.exec(html))) {
+    const inner = XDC_OPEN_TAG_RE.exec(m[0]);
+    if (!inner) continue;
+    const line = html.slice(0, m.index + inner.index).split('\n').length;
+    errors.push(
+      `site/index.html line ${line}: an HTML comment contains a literal x-dc opening tag ("${inner[0]}"). ` +
+        'support.js locates the page template by regex over the raw source and does not skip comments, ' +
+        'so this renders the comment text and #dc-fallback above the real page — write "the x-dc element" instead.'
+    );
+  }
+  return errors;
+}
+
+// ---------------------------------------------------------------------------
 // 1. Demo log (ladderRows)
 // ---------------------------------------------------------------------------
 
@@ -334,6 +366,7 @@ export function checkFaqDrift(pairs, faqs) {
 
 export function checkAll({ html, md, pricingMd }) {
   const errors = [];
+  errors.push(...checkCommentedXdcTag(html));
   const dcScript = extractDcScript(html);
   const fallbackBlock = extractFallbackBlock(html);
 

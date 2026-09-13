@@ -17,6 +17,18 @@ generic tier names — **cheap**, **standard**, **frontier**, and an optional
 actual model IDs for your agent (Claude Code, Codex, Cursor, or other) via
 `models.md` in this same directory.
 
+## Scope: this rubric tiers execution, not judgment
+
+A single request usually mixes two kinds of work: deciding what to build and
+which tradeoffs matter (judgment), and then building it against that decision
+(execution). This entire skill — the six-flag rubric, the escalation
+triggers, the residue-only handoff — applies to the **execution** half. It
+has no validated answer for the judgment half; treat planning/strategy calls
+as frontier-tier by default until that's tested (see "Anti-patterns" and the
+site's Honest limits, #05). Don't let "but the whole session touched a
+frontier model at some point" become an excuse to skip tiering the execution
+units that make up most of the token volume.
+
 ## The two routing decisions
 
 1. **Planning tier** — who decomposes the work and makes judgment calls.
@@ -110,6 +122,19 @@ cheap and verification fails and it escalates. Evaluated 2026-08: a dispatcher
 model reproduced only 90% of ground-truth flags (60% on FORMAT-STRICT) yet
 still routed 100% of units to the correct tier under this design. No custom
 flagging model is required — the escalator is the safety net.
+
+## Narrate the routing decision
+
+Before starting non-trivial delegated work, state the tier and the flags
+that produced it in one short line, e.g.:
+
+```
+Routing: standard (cross-cutting, ambiguous)
+```
+
+This is the cheapest, most universal answer to "is this even doing
+anything" — no hooks, no ledger, no opt-in step, works on every client this
+skill supports. State it once per dispatch, not per retry.
 
 ## Worker prompt template (append to every dispatched unit)
 

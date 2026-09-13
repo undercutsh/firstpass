@@ -20,6 +20,7 @@ import {
   normalizeText,
   extractDcScript,
   extractFallbackBlock,
+  checkCommentedXdcTag,
   fallbackDemoLogLines,
   mdDemoLogLines,
   checkDemoLog,
@@ -73,6 +74,32 @@ describe('text helpers', () => {
 
   test('normalizeText collapses whitespace and curly quotes to straight ones', () => {
     assert.equal(normalizeText('  “Hello”\n\n  ‘world’  '), `"Hello" 'world'`);
+  });
+});
+
+describe('checkCommentedXdcTag', () => {
+  test('a literal x-dc opening tag inside an HTML comment is caught, with its line number', () => {
+    const html = 'line1\n<!--\n  the page below (<x-dc>) needs React\n-->\n<x-dc><p>real</p></x-dc>';
+    const errors = checkCommentedXdcTag(html);
+    assert.equal(errors.length, 1);
+    assert.match(errors[0], /line 3:/);
+    assert.match(errors[0], /"<x-dc>"/);
+  });
+
+  test('a tag with attributes inside a comment is caught too', () => {
+    const errors = checkCommentedXdcTag('<!-- see <x-dc data-x="1"> --><x-dc></x-dc>');
+    assert.equal(errors.length, 1);
+    assert.match(errors[0], /<x-dc data-x="1">/);
+  });
+
+  test('a comment after the real tag is still flagged (position is not what makes it safe)', () => {
+    const errors = checkCommentedXdcTag('<x-dc></x-dc>\n<!-- lives inside <x-dc> -->');
+    assert.equal(errors.length, 1);
+  });
+
+  test('prose mentions without angle brackets, and the real tag outside comments, pass', () => {
+    const html = '<!-- the x-dc element, and x-dc script, and the closing </x-dc> -->\n<x-dc><p>real</p></x-dc>';
+    assert.deepEqual(checkCommentedXdcTag(html), []);
   });
 });
 
