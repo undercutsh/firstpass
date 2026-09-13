@@ -136,3 +136,44 @@ export function gradeJsonSubset(answer, answerKey) {
   }
   return { pass: true, reason: 'all keys matched' };
 }
+
+/**
+ * Grade unverifiable/judgment output via an INDEPENDENT judge model — the
+ * "weakest, use last" verification pattern (SKILL.md's own anti-pattern
+ * list: never let the generating model grade itself). `callJudge(prompt)`
+ * is injected (same DI pattern as the runner's `attempt()`) and must
+ * resolve to the judge's raw response text; the judge is expected to
+ * return JSON shaped `{score: 1-5, reason: string}`.
+ *
+ * Guards a failure mode a mechanical grader can't have: a malformed or
+ * truncated judge response (e.g. a token-budget bug cutting off the
+ * judge's own JSON mid-field — see business/openrouter-live-routing-
+ * research-2026-09-12.md, Finding #8) reads as "verification
+ * inconclusive," not "worker failed." A broken unit test either passes,
+ * fails legibly, or throws — it can't silently manufacture a
+ * plausible-looking low score the way a truncated judge call can. So this
+ * retries the JUDGE call (never the worker) up to `maxRetries` times, and
+ * only after the judge itself has had a fair chance to respond does it
+ * report `judgeFailure: true` — distinct from a real graded failure —
+ * so callers don't conflate "the judge broke" with "the worker was wrong."
+ */
+export async function gradeJudge(rubricPrompt, callJudge, { maxRetries = 1, passThreshold = 4 } = {}) {
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    const raw = await callJudge(rubricPrompt);
+    const parsed = extractJson(raw);
+    if (parsed && typeof parsed.score === 'number' && typeof parsed.reason === 'string') {
+      return {
+        pass: parsed.score >= passThreshold,
+        reason: `[judge score ${parsed.score}/5] ${parsed.reason}`,
+        score: parsed.score,
+        judgeRetries: attempt,
+      };
+    }
+  }
+  return {
+    pass: false,
+    reason: `judge produced no valid verdict after ${maxRetries + 1} attempt(s) — judge failure, not a graded worker failure`,
+    score: null,
+    judgeFailure: true,
+  };
+}

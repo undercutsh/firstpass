@@ -6,6 +6,18 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ## [Unreleased]
 
+### Added
+
+- **`gradeJudge()` in `evals/src/tasks.js`** — a hardened, reusable judge-based
+  grader for `unverifiable: true` tasks, joining the existing mechanical
+  graders (`gradeCode`, `gradeExact`, `gradeJsonSubset`). Closes Open
+  Question #1 from the live-routing research (Finding #8): a malformed or
+  truncated judge response now retries the JUDGE call (never the worker),
+  and reports `judgeFailure: true` distinctly from a real graded failure
+  when the judge never produces a valid verdict — so a judge-plumbing bug
+  can't silently masquerade as an escalation-worthy worker failure the way
+  it did in the original pilot. 6 new unit tests.
+
 ### Changed
 
 - **Open-weight standard tier: `deepseek/deepseek-v4-flash` → `z-ai/glm-5.3-flash`**
