@@ -33,6 +33,13 @@ All notable changes to Undercut (firstpass) are documented here. Follows
   in `site/pricing.md`, `site/index.md`, `site/llms.md`, the JSON-LD FAQ, and
   `site/privacy.html` (which now names the Enterprise form).
 
+- **SOC 2 Type II "starting soon" line added to the Enterprise card,
+  comparison grid, FAQ, and `pricing.md`/`index.md`/`llms.md` mirrors.**
+  Distinct from the HIPAA-with-BAA line (deliverable today under
+  contract): SOC 2 is not yet complete and no certification is claimed,
+  but the card now invites prospects who need it on a timeline to raise
+  it when they reach out, rather than staying silent on the topic.
+
 - **Pricing v2 on `site/index.html` (§13–§14)** — an annual/monthly billing
   toggle (annual preselected; Pro $9/mo or $59/yr, Teams $349/mo or
   $2,988/yr), a dedicated **money-back guarantee** section (`#guarantee`:
