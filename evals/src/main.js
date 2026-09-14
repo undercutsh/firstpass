@@ -3,6 +3,8 @@
 //   node src/main.js --smoke                  small: 1 seed, cheap tiers only
 //   node src/main.js --verify-only            check model slugs resolve
 //   node src/main.js --mock                   run with the mock LLM (no key, plumbing check)
+//   node src/main.js --effort high             apply one reasoning-effort level (low|medium|high) to every tier
+//   node src/main.js --effort-by-tier frontier:high,apex:high   apply effort per tier (unlisted tiers use provider default)
 
 import { VENDORS, ARMS, DEFAULT_SEEDS, TIER_ORDER } from './config.js';
 import { hasKey, verifyModels, chat } from './llm.js';
@@ -32,7 +34,7 @@ const SUITES = { code: codeSuite, reasoning: reasoningSuite, mechanical: mechani
 const RESULTS_DIR = path.join(import.meta.dirname, '..', 'results');
 
 function parseArgs(argv) {
-  const a = { smoke: false, verifyOnly: false, mock: false, flagtest: false, seeds: null, vendors: null, arms: null, suites: null, policy: 'latest', compare: null, baseline: null, dispatcher: 'cheap', benchmark: null, selfactivation: false, selfactivationInit: null, selfactivationReport: null, selfactivationN: 10 };
+  const a = { smoke: false, verifyOnly: false, mock: false, flagtest: false, seeds: null, vendors: null, arms: null, suites: null, policy: 'latest', compare: null, baseline: null, dispatcher: 'cheap', benchmark: null, selfactivation: false, selfactivationInit: null, selfactivationReport: null, selfactivationN: 10, effort: null, effortByTier: null };
   for (let i = 0; i < argv.length; i++) {
     switch (argv[i]) {
       case '--smoke': a.smoke = true; break;
@@ -53,6 +55,17 @@ function parseArgs(argv) {
       case '--baseline': a.baseline = argv[++i]; break;
       case '--dispatcher': a.dispatcher = argv[++i]; break;
       case '--benchmark': a.benchmark = argv[++i].split(','); break;
+      // --effort applies one level (low|medium|high) to every tier. --effort-by-tier
+      // takes tier:level pairs (e.g. "frontier:high,apex:high") for the effort-level
+      // test matrix, which per the rubric's cost/quality findings is expected to
+      // matter most at frontier/apex — cheap/standard are usually left at the
+      // provider default (omit --effort for those tiers).
+      case '--effort': a.effort = argv[++i]; break;
+      case '--effort-by-tier':
+        a.effortByTier = Object.fromEntries(
+          argv[++i].split(',').map((pair) => pair.split(':')),
+        );
+        break;
     }
   }
   return a;
@@ -243,7 +256,7 @@ async function main() {
       for (const suite of smokeSuites) {
         const attempt = args.mock
           ? mockAttempter()
-          : makeAttempter({ model: VENDORS[vendor], runMeta: { temperature: 0.2 }, policy });
+          : makeAttempter({ model: VENDORS[vendor], runMeta: { temperature: 0.2, effort: args.effort, effortByTier: args.effortByTier }, policy });
         const apexChat = args.mock
           ? mockApex((id) => {
               const t = suiteMap[suite].find((x) => x.id === id);

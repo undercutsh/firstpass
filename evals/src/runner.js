@@ -25,12 +25,22 @@ function parseWorkerOutput(text) {
   };
 }
 
-/** A single attempt at a given tier. Returns structured result + cost. */
+/**
+ * A single attempt at a given tier. Returns structured result + cost.
+ *
+ * `runMeta.effort` is a single value applied to every tier (back-compat: a
+ * flat A/B on the whole run). `runMeta.effortByTier` (e.g. { frontier:
+ * 'high', apex: 'high' }) overrides it per tier for the effort-level test
+ * matrix — reasoning effort is expected to matter most at frontier/apex,
+ * where the model actually has a reasoning mode worth tuning; cheap/standard
+ * tiers are usually run with effort omitted (provider default) or 'low'.
+ */
 export function makeAttempter({ model, runMeta, policy }) {
   return async (tier, task, payload) => {
     const slug = model.tiers[tier];
     const system = 'You are a worker in a tiered-dispatch pipeline. Follow the output contract exactly.';
-    const res = await chat(slug, system, policy.workerPrompt(task, payload), { temperature: runMeta.temperature });
+    const effort = runMeta.effortByTier?.[tier] ?? runMeta.effort ?? null;
+    const res = await chat(slug, system, policy.workerPrompt(task, payload), { temperature: runMeta.temperature, effort });
     const parsed = parseWorkerOutput(res.content);
     const verdict = await task.grader(parsed.answer);
     return {
