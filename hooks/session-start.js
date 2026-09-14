@@ -13,7 +13,7 @@ const { readAllRows, hasShownFirstActivation, markFirstActivationShown, lastDige
 const { summarize, formatSavingsLine } = require("./lib/savings");
 const { markdownLink } = require("./lib/links");
 
-const RUBRIC_CONTEXT = `Before any multi-agent fan-out, swarm, or Workflow orchestration, or when assigning a model tier to a delegated unit of work: score six flags (Unverifiable, Ambiguous, Blast radius, Cross-cutting, Novel, Format-strict) to pick a base tier (cheap/standard/frontier/apex). Escalate only on an objective trigger (verification failure x2, measured disagreement, explicit uncertainty) -- never de-escalate, max one retry per tier. See skills/firstpass/SKILL.md for the full rubric.`;
+const RUBRIC_CONTEXT = `Default to delegating decomposable execution work via subagents (Task tool) rather than doing it directly in the main thread -- the tiering below only saves anything if delegation happens at all. Before any multi-agent fan-out, swarm, or Workflow orchestration, or when assigning a model tier to a delegated unit of work: score six flags (Unverifiable, Ambiguous, Blast radius, Cross-cutting, Novel, Format-strict) to pick a base tier (cheap/standard/frontier/apex). Escalate only on an objective trigger (verification failure x2, measured disagreement, explicit uncertainty) -- never de-escalate, max one retry per tier. See skills/firstpass/SKILL.md for the full rubric.`;
 
 function startOfDay(d) {
   const x = new Date(d);
