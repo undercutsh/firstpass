@@ -34,6 +34,29 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ### Changed
 
+- **Open-weight cheap tier: `qwen/qwen3-coder-30b-a3b-instruct` → `poolside/laguna-s-2.1`**
+  (`evals/src/config.js`, regenerated into `skills/firstpass/models.md`).
+  A cheap-tier isolation test on 90 real, mechanically-graded tasks (code +
+  mechanical + documentation, 3 seeds) found the prior pick passed only
+  41/90 (46%) at $0.000129/pass, vs. 80/90 (89%) at $0.000073/pass (1.77x
+  cheaper per passing task despite a higher per-run token cost) for the
+  new pick. Margin 43.3pp, N=90, statistically significant at 95%
+  confidence (Newcombe diff-interval; see `evals/src/stats.js`). See
+  `undercutsh/internal` `tools/vetting-ledger.json`.
+- **Open-weight apex tier: `z-ai/glm-5.2` → `z-ai/glm-5.3`**
+  (`evals/src/config.js`, regenerated into `skills/firstpass/models.md`).
+  A maintainer-side audit found the apex tier had zero isolation-test
+  coverage since it was first assigned during the original
+  benchmark-ranking research — the vetting pipeline only ever tested
+  challengers against the incumbent, never independently verified the
+  incumbent itself. A baseline measurement found the prior pick scoring
+  9/21 (43%) on security+reasoning, worse than this vendor's own
+  frontier tier at higher cost. A follow-up isolation test (63 tasks, 3
+  seeds) found the new pick passing 53/63 (84%) vs. the prior pick's
+  19/63 (30%) — margin 54pp, statistically significant at 95%
+  confidence, 2.87x cheaper per passing task. See `undercutsh/internal`
+  `business/daily-sweep-runbook.md`'s "Postmortem: openweights/apex
+  shipped untested" section.
 - **Open-weight frontier tier: `deepseek/deepseek-v4-pro` → `deepseek/deepseek-v4.1-flash`**
   (`evals/src/config.js`, regenerated into `skills/firstpass/models.md`).
   An isolation test on 21 real, mechanically-graded tasks (security +

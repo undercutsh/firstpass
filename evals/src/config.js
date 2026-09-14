@@ -33,7 +33,17 @@ export const VENDORS = {
   openweights: {
     label: 'Open-weight',
     tiers: {
-      cheap: 'qwen/qwen3-coder-30b-a3b-instruct',
+      // Was qwen/qwen3-coder-30b-a3b-instruct. Swapped 2026-09-14 after a
+      // cheap-tier isolation experiment on 90 real, mechanically-graded
+      // tasks (code+mechanical+documentation, 3 seeds) found the incumbent
+      // passed only 41/90 (46%) at $0.000129/pass, while poolside/laguna-
+      // s-2.1 passed 80/90 (89%) at $0.000073/pass (1.77x cheaper per
+      // passing task despite a higher per-run token cost). Margin 43.3pp,
+      // N=90, diff-CI [0.302, 0.544] at 95% confidence — statistically
+      // decisive (Newcombe interval; see evals/src/stats.js). See
+      // undercutsh/internal tools/vetting-ledger.json and
+      // business/daily-sweep-runbook.md.
+      cheap: 'poolside/laguna-s-2.1',
       // Was deepseek/deepseek-v4-flash. Swapped 2026-09 after a standard-tier
       // isolation experiment (cheap tier held constant across both arms,
       // 15/25 tasks escalated past cheap identically in each) found
@@ -57,7 +67,20 @@ export const VENDORS = {
       // undercutsh/internal business/openrouter-live-routing-research-
       // 2026-09-12.md, Open Question #4's follow-up isolation test.
       frontier: 'deepseek/deepseek-v4.1-flash',
-      apex: 'z-ai/glm-5.2',
+      // Was z-ai/glm-5.2. Swapped 2026-09-14 after a maintainer-side audit
+      // found the apex tier had ZERO isolation-test coverage since it was
+      // first assigned during the original benchmark-ranking research --
+      // the pipeline only ever tested CHALLENGERS against the incumbent,
+      // never independently verified the incumbent itself. A baseline
+      // measurement found glm-5.2 scoring 9/21 (43%) on security+reasoning,
+      // worse than this vendor's OWN frontier tier at higher cost. A
+      // follow-up isolation test (63 tasks, 3 seeds) found z-ai/glm-5.3
+      // passing 53/63 (84%) vs. the incumbent's 19/63 (30%) -- margin 54pp,
+      // diff-CI [0.376, 0.661], decisive at 95% confidence, 2.87x cheaper
+      // per passing task. See undercutsh/internal
+      // business/daily-sweep-runbook.md's "Postmortem: openweights/apex
+      // shipped untested" section for the full root-cause writeup.
+      apex: 'z-ai/glm-5.3',
     },
   },
 };
