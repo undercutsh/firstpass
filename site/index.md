@@ -13,6 +13,8 @@ A routing policy your coding agent follows — cheap tier first, escalate only o
 
 Install: `npx skills add undercutsh/firstpass`
 
+How much routing can save you depends on which models your tool lets the skill route between — a Claude Code + Claude-subscription setup reaches Anthropic's tiers only; bring-your-own-key tools reach every vendor. Two questions, then the honest answer for your setup: https://getundercut.sh/setup (full matrix: https://getundercut.sh/compatibility.md).
+
 ## The problem
 
 Claude Code, Codex, Cursor, and Copilot let you set a model once per session. That session then handles trivial, mechanical work at the same tier as genuinely hard reasoning. One Claude Code Max subscriber's self-reported usage data showed 93.8% of their tokens going to the top-tier model, with nothing pulling cheap, mechanical work back down.

@@ -8,6 +8,25 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ### Added
 
+- **`/setup` — a two-question onboarding page (`site/setup.html`) that tells
+  a visitor what Undercut can and can't reach in *their* tool.** Asks which
+  coding agent and whether they pay by subscription or API keys, then shows
+  one of four segment stories from the editor × provider compatibility
+  research (`undercutsh/internal`
+  `business/editor-provider-compatibility-2026-09-14.md`): Claude Code +
+  Claude subscription (Anthropic's ladder only — bounded value, stated
+  plainly, no proxy workaround recommended), Cursor/Windsurf/Copilot
+  (subscription already spans vendors; an optional OpenRouter key unlocks the
+  open-weight tier), OpenCode/Continue/Cline/Aider/Roo Code/Kilo Code
+  (already on API rates since the 2026-01-09 subscription block, so the
+  OpenRouter key is pure upside), and Zed (bundled plan; OpenRouter path
+  unverified, recommendation withheld). All four stories ship as plain HTML —
+  JS only collapses to the match and mirrors the answers into the URL hash.
+  Every OpenRouter recommendation is labeled optional. Companion dense
+  reference: `site/compatibility.md` (served as `text/markdown`), including
+  the three items the research flagged for re-verification (Windsurf field
+  names, Zed's OpenRouter BYOK, Copilot's model roster). Linked from the
+  homepage install section, `index.md`, `llms.txt`, and `README.md`.
 - **Undercut Hooks (`hooks/`), shipped, opt-in** — a local Claude Code hooks
   package that (1) force-injects the condensed rubric every session instead
   of relying on skill-matcher self-activation, and (2) prints a session-end
