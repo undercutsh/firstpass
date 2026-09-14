@@ -8,6 +8,36 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ### Added
 
+- **Pricing v2 on `site/index.html` (§13–§14)** — an annual/monthly billing
+  toggle (annual preselected; Pro $9/mo or $59/yr, Teams $349/mo or
+  $2,988/yr), a dedicated **money-back guarantee** section (`#guarantee`:
+  no questions asked, 30 days on monthly, days 90–120 on annual, with the
+  fairness rationale stated in plain copy), a `#math` block that finally
+  backs the `#math` anchor `pricing.md` had been linking to, and a
+  **Teams onboarding flow** (`#teams-signup`): three-field intake (company
+  email, team-size bucket, multi-select LLM-provider setup) → pick one of the
+  founder's published windows → an honest "founder is backlogged, this is a
+  request he confirms by email" confirmation. Windows come only from the
+  new `site/teams-availability.json`, which ships empty on purpose so the
+  page can never show a slot the founder didn't publish. `/api/lead`
+  gained a strict allowlist for the new intake fields (`intent`, `plan`,
+  `billing`, `teamSize`, `providers`, `slot`) with tests. Numbers and terms
+  per `undercutsh/internal` `business/pricing-v2-decisions-2026-09-14.md`.
+
+### Changed
+
+- **Teams is positioned as live and founder-onboarded, not "coming soon"**,
+  and restructured from "$29/seat/mo" to "$349/mo, includes 12 seats,
+  +$29/mo per additional seat" (a deliberate 12-seat floor). Pro's
+  "illustrative, TBD" hedging is gone in favor of the launch rate card
+  and a "launching soon with account sign-in" status; tier cards now show
+  what Free lacks (muted rows) alongside what it includes, and the
+  feature-by-feature grid is grouped and collapsed behind a disclosure.
+  The Pro card and FAQ now carry the provider-setup honesty note (a Claude
+  subscription alone routes within Anthropic's tiers; an OpenRouter key
+  opens cross-vendor savings). Mirrored in `site/pricing.md`,
+  `site/index.md`, `site/llms.md`, and the JSON-LD offers/FAQ.
+
 - **Undercut Hooks (`hooks/`), shipped, opt-in** — a local Claude Code hooks
   package that (1) force-injects the condensed rubric every session instead
   of relying on skill-matcher self-activation, and (2) prints a session-end

@@ -9,7 +9,7 @@ last-updated: "2026-09-14"
 
 > Markdown twin of https://getundercut.sh/ for agents and crawlers that don't execute JavaScript. The canonical page has the full interactive calculator, benchmark tables, and FAQ accordion; this is the same content in plain prose.
 
-A routing policy your coding agent follows — cheap tier first, escalate only on evidence, never on a vibe. Measured on public benchmarks, not promised. Free for individuals, forever · MIT · Pro plan in development.
+A routing policy your coding agent follows — cheap tier first, escalate only on evidence, never on a vibe. Measured on public benchmarks, not promised. Free for individuals, forever · MIT · Pro from $59/yr.
 
 Install: `npx skills add undercutsh/firstpass`
 
@@ -57,22 +57,23 @@ Even when the rubric flags are scored imperfectly (stock dispatchers: Haiku 90% 
 - Doesn't promise a dollar figure for your workload — real workloads escalate more than benchmarks.
 - Doesn't prove your number until you run it — every figure here is an observation from our tasks and graders, not a guarantee about your codebase.
 
-## Pro (in development)
+## Pro (launching soon)
 
-Real-time/pooled model testing (a central vetting ledger tests new frontier-lab and openweights models to statistical significance and keeps the tier→model map current automatically), effort-level routing (a second, empirically-tested rubric dimension), category-segmented pass-rate and cost-per-pass reporting, and a hosted dashboard. Priced for individuals — freelance, solo, indie — not bundled with Teams.
+Real-time/pooled model testing (a central vetting ledger tests new frontier-lab and openweights models to statistical significance and keeps the tier→model map current automatically), effort-level routing (a second, empirically-tested rubric dimension), category-segmented pass-rate and cost-per-pass reporting, and a hosted dashboard. Priced for individuals — freelance, solo, indie — not bundled with Teams. Value scales with your provider setup: Claude Code on a Claude subscription alone routes within Anthropic's own tiers; an OpenRouter key opens the cross-vendor savings.
 
-## Teams (coming soon)
+## Teams (available now, founder-onboarded)
 
-The identical feature bundle as Pro, per seat, plus a shared team dashboard, org-wide tier policy enforcement, and seat management (SSO/directory sync and an audit log are a stretch goal). Free for individuals stays free — Pro and Teams are a paid layer above it, not a gate in front of it. Teams is coming soon on a waitlist, not a launch-day tier — it ships after Pro.
+The identical feature bundle as Pro, on every seat, plus a shared team dashboard, org-wide tier policy enforcement, and seat management (SSO/directory sync and an audit log are a stretch goal). Free for individuals stays free — Pro and Teams are a paid layer above it, not a gate in front of it. Teams onboarding is a three-field intake, then a request for one of the founder's published onboarding windows; onboarding is handled personally by the founder and is currently backlogged, so a requested window is confirmed or re-proposed by email.
 
 ## Pricing
 
 Machine-readable version: https://getundercut.sh/pricing.md
 
 - **Free** — $0 forever, per individual. Live now.
-- **Pro** — $9/month, per individual, illustrative. In development, not yet live — join the waitlist.
-- **Teams** — $29/seat/month, illustrative. Coming soon, not yet live — join the waitlist.
+- **Pro** — $9/month or $59/year (≈$4.92/month equivalent, 45% off), per individual. Launching soon with account sign-in — reserve by email, nothing charged now.
+- **Teams** — $349/month including 12 seats, or $2,988/year for the same 12 seats (29% off). Additional seats +$29/month each ($290/year on annual). Available now, founder-onboarded.
 - **Enterprise** — contact-only, sales-led. In development.
+- **Money-back guarantee (Pro and Teams), no questions asked** — within 30 days of any monthly charge; on annual plans the window opens at day 90 and runs to day 120, because a year's value can't fairly be judged on day 1.
 
 ## Install and verify
 
