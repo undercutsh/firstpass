@@ -13,7 +13,7 @@ harness and cannot express a routing policy — a July 2026 arXiv position paper
 15–20 points across harnesses. So the only honest test is a **controlled A/B
 that holds the harness fixed and varies only the routing policy**.
 
-Three properties make the results defensible:
+Four properties make the results defensible:
 
 1. **Vendor-constant comparison.** The skill is vendor-agnostic, so each arm is
    compared *within* a vendor: Anthropic-tiered vs Anthropic-frontier,
@@ -26,6 +26,53 @@ Three properties make the results defensible:
 3. **Seeds for stochasticity.** Every arm runs `--seeds N` times with
    temperature > 0 and reports pass rate + cost across runs, so single-run luck
    doesn't drive the conclusion.
+4. **A stated confidence level, not an eyeballed margin.** See "Statistical
+   methodology" below.
+
+## Statistical methodology
+
+Every pass-rate comparison in this project — including the maintainer-side
+tooling that decides whether to swap a tier's model — is backed by
+`src/stats.js`, not by comparing two percentages by eye. Two things it
+provides:
+
+- **`wilsonInterval(successes, total)`** — a confidence interval on a single
+  pass rate. It's the standard replacement for the textbook
+  `p ± z·√(p(1-p)/n)` (Wald) interval, which is a poor approximation exactly
+  where these numbers tend to sit: small n, or a proportion near 0% or 100%.
+  Wilson's interval stays inside `[0, 1]` and doesn't collapse to zero width
+  at the extremes.
+- **`newcombeDiffInterval(successes1, total1, successes2, total2)`** — a
+  confidence interval on the *difference* between two pass rates (Newcombe
+  1998's hybrid-score method), built from two `wilsonInterval` calls. A
+  difference is treated as real only if this interval excludes 0. This is
+  the standard non-parametric alternative to a two-proportion z-test, for the
+  same small-n / extreme-proportion reasons as above.
+
+**Default confidence level: 95%** (`{ confidence: 0.95 }`), the conventional
+default for this kind of comparison; 90% and 99% are also supported. The
+level used for any given result is always recorded alongside it — never left
+implicit.
+
+**Sample size.** A comparison also needs a floor on N before a passing
+significance test is trusted at all (a freak 2-for-2 vs 0-for-2 result can
+clear a significance test by chance at very small N). The maintainer-side
+model-vetting tooling in `undercutsh/internal` — not part of this public
+repo, since it decides what ships in `VENDORS`' tier assignments (see
+`src/config.js`), not how the skill itself routes — requires both N ≥ 15
+*and* a significant `newcombeDiffInterval` before a candidate model can
+replace an incumbent tier pick. Below that bar, a result is recorded as
+directional but `inconclusive`, never acted on.
+
+**Design note (independent vs. paired samples).** An isolation test runs the
+*same* task set through both models being compared — a paired design, for
+which McNemar's test on the discordant pairs would be the more
+statistically powerful choice. `newcombeDiffInterval` treats the two arms as
+independent samples instead, which is the conservative choice: it doesn't
+currently track which specific task each side passed or failed, only
+aggregate counts, so if a result clears significance under the independent
+test it would clear it (or clear it more easily) under the correctly-paired
+one too.
 
 ## Arms
 

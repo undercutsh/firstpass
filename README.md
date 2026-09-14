@@ -153,8 +153,10 @@ the number you get is the honest one — not the headline one.
 ## Honest limitations
 
 - **Sample sizes are modest** (50/20 tasks × 5 seeds). Direction is
-  consistent across 2 benchmarks × 4 model families; confidence intervals are
-  a follow-up.
+  consistent across 2 benchmarks × 4 model families; every headline cell now
+  carries a Wilson-interval confidence bound (`evals/src/stats.js`), but a
+  modest N still means a wide interval — read the bound, not just the point
+  estimate.
 - **Open-weights price ladders invert** — their "standard" tier can be cheaper
   than "cheap", which flips the cost math (quality still equal). See
   [`testing/README.md`](testing/README.md).

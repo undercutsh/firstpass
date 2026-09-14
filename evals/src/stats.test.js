@@ -13,7 +13,7 @@
 
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
-import { wilsonInterval, seedBootstrapCI, summarizeWithCI } from './stats.js';
+import { wilsonInterval, newcombeDiffInterval, seedBootstrapCI, summarizeWithCI } from './stats.js';
 
 // --- wilsonInterval ----------------------------------------------------
 
@@ -80,6 +80,47 @@ describe('wilsonInterval', () => {
 
   test('rejects negative total', () => {
     assert.throws(() => wilsonInterval(0, -5), /invalid successes\/total/);
+  });
+});
+
+// --- newcombeDiffInterval -------------------------------------------------
+
+describe('newcombeDiffInterval', () => {
+  test('a large, decisive gap (26/30 vs 14/30) is significant at 95%', () => {
+    // The 2026-09-14 Poolside-vs-qwen3-coder cheap-tier isolation result.
+    const { point, lower, upper, significant } = newcombeDiffInterval(26, 30, 14, 30);
+    assert.ok(Math.abs(point - 0.4) < 1e-9, `point=${point}`);
+    assert.ok(lower > 0, `lower=${lower} should exclude 0`);
+    assert.ok(upper > lower);
+    assert.equal(significant, true);
+  });
+
+  test('a tied result (19/21 vs 19/21) is not significant — interval straddles 0', () => {
+    const { lower, upper, significant } = newcombeDiffInterval(19, 21, 19, 21);
+    assert.ok(lower < 0 && upper > 0, `expected 0 inside [${lower}, ${upper}]`);
+    assert.equal(significant, false);
+  });
+
+  test('a small, non-decisive gap at low N is not significant even though the point estimate favors one side', () => {
+    // 4/5 vs 3/5: point estimate favors the first arm by 20pp, but N is too
+    // small for that gap to be distinguishable from noise.
+    const { lower, upper, significant } = newcombeDiffInterval(4, 5, 3, 5);
+    assert.ok(lower < 0 && upper > 0);
+    assert.equal(significant, false);
+  });
+
+  test('interval is antisymmetric under swapping the two arms', () => {
+    const a = newcombeDiffInterval(26, 30, 14, 30);
+    const b = newcombeDiffInterval(14, 30, 26, 30);
+    assert.ok(Math.abs(a.point + b.point) < 1e-9);
+    assert.ok(Math.abs(a.lower + b.upper) < 1e-9);
+    assert.ok(Math.abs(a.upper + b.lower) < 1e-9);
+  });
+
+  test('supports alternate confidence levels — a 90% interval is narrower than 95%', () => {
+    const ci95 = newcombeDiffInterval(20, 30, 12, 30, { confidence: 0.95 });
+    const ci90 = newcombeDiffInterval(20, 30, 12, 30, { confidence: 0.9 });
+    assert.ok(ci90.upper - ci90.lower < ci95.upper - ci95.lower);
   });
 });
 
