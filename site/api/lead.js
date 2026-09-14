@@ -30,13 +30,14 @@ const MAX_BODY_BYTES = 10 * 1024; // 10KB — a lead payload has no business bei
 const MAX_STRING_LEN = 500; // hard cap for any string field before per-field caps apply
 
 // Allowlist of fields the site's forms actually send (site/index.html:
-// submitLead() for the Pro reserve form and the calculator's audit form,
+// submitLead() for the Pro trial form and the calculator's audit form,
 // postLead() for the Teams onboarding flow). Anything else in the payload is
 // rejected outright rather than silently dropped, so unexpected/extra fields
 // can't be used to smuggle bulk data through this endpoint.
-//   intent    — which form: pro-reserve | teams-intake | teams-slot-request |
+//   intent    — which form: pro-trial | teams-intake | teams-slot-request |
 //               teams-followup | enterprise-contact (free text here, so a
-//               renamed form can't 400)
+//               renamed form can't 400; "pro-reserve" was the pre-launch
+//               name of pro-trial and may still appear in old submissions)
 //   plan      — pro | teams | enterprise
 //   billing   — monthly | annual (the pricing toggle's state at submit time)
 //   teamSize  — one of the intake's size-bucket ids, e.g. "16-50"

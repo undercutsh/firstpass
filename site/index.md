@@ -85,7 +85,7 @@ The measured up to −71% is on execution work. Half your tokens at that reducti
 - Doesn't promise a dollar figure for your workload — real workloads escalate more than benchmarks.
 - Doesn't prove your number until you run it — every figure here is an observation from our tasks and graders, not a guarantee about your codebase.
 
-## Pro (launching soon)
+## Pro (available now — starts with a trial)
 
 Real-time/pooled model testing (a central vetting ledger tests new frontier-lab and openweights models to statistical significance and keeps the tier→model map current automatically, vs. manual on Free), effort-level routing (a second, empirically-tested rubric dimension), category-segmented pass-rate and cost-per-pass reporting, and a hosted dashboard. Every new frontier-lab or open-weight release is detected the moment it ships and run through the full methodology — a newcomer that beats the roster for a tier or task category is swapped in, one that doesn't is recorded too, so nothing is missed and nothing moves on launch-day hype. Account security is included, not a differentiator: GitHub/social/passkey sign-in, MFA (including SMS), password and session-lifetime policies, and API keys/M2M tokens for CI. Priced for individuals — freelance, solo, indie — not bundled with Teams. Value scales with your provider setup: Claude Code on a Claude subscription alone routes within Anthropic's own tiers; an OpenRouter key opens the cross-vendor savings (see the FAQ).
 
@@ -108,17 +108,17 @@ How Pro applies it: the same policy-file mechanism as Free. The tier→model map
 
 ## Teams (available now, founder-onboarded)
 
-The identical feature bundle as Pro, on every seat, plus a shared team dashboard, org-wide tier policy enforcement, and seat management (SSO/directory sync and an audit log are a stretch goal). Free for individuals stays free — Pro and Teams are a paid layer above it, not a gate in front of it. Teams onboarding is a three-field intake (company email, team size, LLM provider setup), then a request for one of the founder's published onboarding windows; onboarding is handled personally by the founder and is currently backlogged, so a requested window is confirmed or re-proposed by email.
+The identical feature bundle as Pro, on every seat, plus a shared team dashboard, org-wide tier policy enforcement, and seat management (SSO/directory sync and an audit log are Enterprise line items, not part of Teams). Free for individuals stays free — Pro and Teams are a paid layer above it, not a gate in front of it. Teams onboarding is a three-field intake (company email, team size, LLM provider setup), then a request for one of the founder's published onboarding windows; onboarding is handled personally by the founder and is currently backlogged, so a requested window is confirmed or re-proposed by email. No card up front — billing is set up on the onboarding call.
 
 ## Pricing
 
 Machine-readable version: https://getundercut.sh/pricing.md
 
-- **Free** — $0 forever, per individual. Live now.
-- **Pro** — $9/month or $59/year (≈$4.92/month equivalent, 45% off), per individual. Launching soon with account sign-in — reserve by email, nothing charged now.
-- **Teams** — $349/month including 12 seats, or $2,988/year for the same 12 seats (29% off). Additional seats +$29/month each ($290/year on annual). Available now, founder-onboarded.
+- **Pro** — $9/month or $59/year (≈$4.92/month equivalent, 45% off), per individual. Available now; starts with a trial of the full Pro bundle (enter an email, sign-in details follow, nothing charged during the trial).
+- **Teams** — $349/month including 12 seats, or $2,988/year for the same 12 seats (29% off). Additional seats +$29/month each ($290/year on annual). Available now, founder-onboarded; billing set up on the onboarding call.
 - **Enterprise** — contact-only, sales-led. In development, scoped per contract. Everything in Teams plus SAML/OIDC SSO (Okta, Microsoft Entra ID, custom), SCIM directory sync and HRIS integrations, advanced RBAC with department-level workspaces, application/admin access logs with custom retention and SIEM streaming, data controls (retention, redaction/masking, encryption, custom residency), HIPAA compliance available with a signed BAA, SOC 2 Type II starting soon (tell us your timeline when you reach out), 99.99% uptime SLA, premium support SLA with a dedicated Slack channel, onboarding/migration support, security questionnaires, custom invoicing and annual committed-use discounts. Honest note: "available" means deliverable under a contract — SOC 2 Type II is starting soon, not yet complete; no compliance certification is held today.
-- **Money-back guarantee (Pro and Teams), no questions asked** — within 30 days of any monthly charge; on annual plans the window opens at day 90 and runs to day 120, because a year's value can't fairly be judged on day 1.
+- **Free** — $0 forever, per individual. Live now, no account. Presented beneath the paid tiers as the no-upkeep option: the full rubric, nothing held back, but a static tier→model map you update yourself.
+- **Money-back guarantee (Pro and Teams), no questions asked** — within 30 days of any monthly charge; on annual plans the window opens at day 90 and runs to day 120, because a year's value can't fairly be judged on day 1. Separate from Pro's trial, which comes before the first charge.
 
 ## Install and verify
 

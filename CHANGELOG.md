@@ -6,6 +6,48 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ## [Unreleased]
 
+### Changed
+
+- **Pricing section (`site/index.html` §13) restructured: trial-primary,
+  Free demoted, CTAs inline, scannable feature lists, no more "launching
+  soon".** Per the product owner's review of the live section. (1) Pro and
+  Teams now read as live products: Pro's badge is "Available now", its CTA
+  is "Start your Pro trial →" (still an email → `/api/lead` capture, now
+  `intent: pro-trial`; sign-in details follow by email, nothing is charged
+  during the trial — card-on-file vs. later is deliberately not stated,
+  since it is undecided), and every "launching soon" / "reserve" / "opens
+  with account sign-in" / "stretch goal" line for Pro and Teams is gone
+  from the page, the JSON-LD `Offer`s (Pro and Teams `availability` →
+  `InStock`), the FAQ (x-dc + JSON-LD), and the `pricing.md` / `index.md` /
+  `llms.md` mirrors; Teams' SSO/audit-log line now says "Enterprise line
+  items" instead of "stretch goal, not promised" (grid cells `Stretch` →
+  `—`). (2) The primary row is Pro (featured) / Teams / Enterprise in equal
+  columns; **Free moves to a low-key band beneath it** (`#free-plan`) with
+  a ghost "Install the free skill →" button, replacing the full-height ink
+  `price-hero` block that gave it more visual weight than Pro. The section
+  heading is now "Start a Pro trial. From $59 a year." and the hero's
+  secondary CTA points at it. (3) Each card's CTA sits in a `.price-cta`
+  block pinned to the card's own bottom edge — the per-card boxed guarantee
+  strip, the stacked disclaimer paragraphs under each button, and the
+  bottom-of-section rate-card paragraph are removed (the guarantee line
+  already lives on the billing-toggle row; the Enterprise "capabilities,
+  not certifications" footnote moves inside the comparison-grid `<details>`
+  it annotates; the Enterprise card's own honest note is unchanged).
+  (4) Feature lists are grouped mini-sections — an eyebrow sub-head
+  ("Everything in Free, plus" / "See it working" / "Account", etc.,
+  echoing the comparison grid's groups) over two or three short icon-led
+  labels with a muted clarifier — and each card carries one
+  `<details>` "What's behind each line" holding the former long-form
+  bullets, so the shape is scannable at a glance and the detail is one
+  click away, not forced. Lists are real `<ul>`/`<dl>` markup; excluded
+  items keep a distinct minus icon plus muted text (not color alone). The
+  guarantee section's "Not a trial" line becomes "Separate from the trial";
+  the FAQ's "is there a trial?" answer now says yes. A "Trial before first
+  charge" row is added to the comparison grid. `privacy.html` and
+  `about.html` are updated to name the trial form; `site/api/lead.js`'s
+  intent comment documents `pro-trial` (with `pro-reserve` as the legacy
+  value).
+
 ### Added
 
 - **Enterprise card built out on `site/index.html` §13, plus included-security

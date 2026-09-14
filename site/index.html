@@ -64,15 +64,15 @@
       "name": "Pro (monthly)",
       "price": "9",
       "priceCurrency": "USD",
-      "availability": "https://schema.org/PreOrder",
-      "description": "Real-time/pooled model testing, effort-level routing, category-segmented reporting, hosted dashboard. $9/month per individual. Launching soon with account sign-in — reserve by email, nothing charged now. 30-day no-questions-asked money-back guarantee."
+      "availability": "https://schema.org/InStock",
+      "description": "Real-time/pooled model testing, effort-level routing, category-segmented reporting, hosted dashboard. $9/month per individual. Starts with a trial of the full Pro bundle — enter an email, sign-in details follow, nothing is charged during the trial. 30-day no-questions-asked money-back guarantee after that."
     },
     {
       "@type": "Offer",
       "name": "Pro (annual)",
       "price": "59",
       "priceCurrency": "USD",
-      "availability": "https://schema.org/PreOrder",
+      "availability": "https://schema.org/InStock",
       "description": "Same as Pro monthly, billed $59 once a year (about $4.92/month equivalent, 45% off the monthly rate). Money-back guarantee window opens at day 90 and runs to day 120, no questions asked."
     },
     {
@@ -80,15 +80,15 @@
       "name": "Teams (monthly)",
       "price": "349",
       "priceCurrency": "USD",
-      "availability": "https://schema.org/LimitedAvailability",
-      "description": "Everything in Pro on every seat, plus shared team dashboard, org-wide tier policy enforcement, and seat management (SSO/audit log a stretch goal). $349/month includes 12 seats; each additional seat +$29/month. Available now via founder-run onboarding (currently backlogged; requested onboarding windows are confirmed by email). 30-day no-questions-asked money-back guarantee."
+      "availability": "https://schema.org/InStock",
+      "description": "Everything in Pro on every seat, plus shared team dashboard, org-wide tier policy enforcement, and seat management (SSO/audit log are Enterprise line items). $349/month includes 12 seats; each additional seat +$29/month. Available now via founder-run onboarding; billing is set up on the onboarding call. 30-day no-questions-asked money-back guarantee."
     },
     {
       "@type": "Offer",
       "name": "Teams (annual)",
       "price": "2988",
       "priceCurrency": "USD",
-      "availability": "https://schema.org/LimitedAvailability",
+      "availability": "https://schema.org/InStock",
       "description": "Same as Teams monthly, billed $2,988 once a year for the 12 included seats (about $249/month equivalent, 29% off); additional seats $290/year each. Money-back guarantee window opens at day 90 and runs to day 120, no questions asked."
     }
   ],
@@ -195,12 +195,12 @@
     {
       "@type": "Question",
       "name": "What does Teams add on top of Pro?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Teams ships the identical feature bundle as Pro — it’s not a bigger product. What it adds is collaboration and admin surface: a shared team dashboard, org-wide tier policy enforcement, and seat management. It’s $349/month including 12 seats (or $2,988/year), plus $29/month per additional seat — a 12-seat floor on purpose, because a team under about 12 rarely needs org-wide enforcement and Pro per person covers them. SSO/directory sync and an audit log are a stretch goal, not promised." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Teams ships the identical feature bundle as Pro — it’s not a bigger product. What it adds is collaboration and admin surface: a shared team dashboard, org-wide tier policy enforcement, and seat management. It’s $349/month including 12 seats (or $2,988/year), plus $29/month per additional seat — a 12-seat floor on purpose, because a team under about 12 rarely needs org-wide enforcement and Pro per person covers them. SSO/directory sync and an audit log are Enterprise line items, not part of Teams." }
     },
     {
       "@type": "Question",
       "name": "How are Pro and Teams priced, and is there a trial?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Pro is $9/month or $59/year (about $4.92/month, billed once) per individual. Teams is $349/month including 12 seats, or $2,988/year for the same 12; additional seats are $29/month each ($290/year on annual). There’s no free trial — instead there’s a no-questions-asked money-back guarantee: 30 days on monthly plans, days 90–120 on annual. Pro opens with account sign-in; reserve a spot by email and nothing is charged until it’s live. Teams is available now and onboarded personally by the founder." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Pro is $9/month or $59/year (about $4.92/month, billed once) per individual, and starts with a trial of the full Pro bundle: enter your email on the pricing card, sign-in details follow, and nothing is charged during the trial. Teams is $349/month including 12 seats, or $2,988/year for the same 12; additional seats are $29/month each ($290/year on annual) — onboarded personally by the founder, with billing set up on the onboarding call rather than a card up front. After that, both carry a no-questions-asked money-back guarantee: 30 days on monthly plans, days 90–120 on annual." }
     },
     {
       "@type": "Question",
@@ -220,7 +220,7 @@
     {
       "@type": "Question",
       "name": "What does account security look like on Pro and Teams?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Table stakes, included, not a differentiator we’re claiming over anyone: GitHub, social, and passkey/biometric sign-in; multi-factor authentication including SMS; custom password requirements and session-lifetime controls; machine authentication (API keys and M2M tokens) for CI and scripts; and, on Teams, organization roles (admin/member), invitations, and custom permissions. These come from the auth provider the account layer is built on and apply from the day Pro opens. Free needs no account at all — the skill is a file your agent reads." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Table stakes, included, not a differentiator we’re claiming over anyone: GitHub, social, and passkey/biometric sign-in; multi-factor authentication including SMS; custom password requirements and session-lifetime controls; machine authentication (API keys and M2M tokens) for CI and scripts; and, on Teams, organization roles (admin/member), invitations, and custom permissions. These come from the auth provider the account layer is built on and apply from your first sign-in. Free needs no account at all — the skill is a file your agent reads." }
     },
     {
       "@type": "Question",
@@ -554,10 +554,12 @@
   .term .row span:first-child { color: var(--deep-mute); }
   .kv { display: flex; flex-direction: column; gap: 4px; padding: 14px 0 0; border-top: 1px solid var(--ink); }
   .step { display: flex; flex-direction: column; gap: 14px; border-top: 1px solid var(--paper); padding-top: 20px; }
-  .price-hero { display: flex; flex-direction: column; justify-content: space-between; gap: 36px; padding: clamp(24px, 3vw, 40px); background: var(--ink); color: var(--paper); border-radius: 8px; }
-  .price-hero .amt { font-size: clamp(72px, 11vw, 148px); font-weight: 400; line-height: 0.85; }
-  .pricegrid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 3fr) minmax(0, 3fr) minmax(0, 3fr); gap: 20px; align-items: stretch; }
-  @media (max-width: 1040px) { .pricegrid { grid-template-columns: minmax(0, 1fr); } .price-hero .amt { font-size: clamp(64px, 16vw, 96px); } }
+  /* Primary row: Pro / Teams / Enterprise as equal peers (Pro carries the
+     outline + flag). Free is deliberately NOT in this row — it sits in the
+     .price-free band beneath, so the paid trial reads as the default path
+     and Free as the downsell, per the 2026-09-14 pricing review. */
+  .pricegrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
+  @media (max-width: 1040px) { .pricegrid { grid-template-columns: minmax(0, 1fr); } }
   .tick { flex-shrink: 0; }
 
   /* ---- pricing v2: billing toggle, feature rows, teams flow, guarantee -- */
@@ -566,15 +568,50 @@
   .bill-toggle button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
   .bill-toggle .save { font-family: 'Fragment Mono', Menlo, monospace; font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--cheap); }
   .bill-toggle button[aria-pressed="true"] .save { color: #5fd3d8; }
-  .feat { display: flex; align-items: flex-start; gap: 12px; font-size: 15px; line-height: 1.45; }
-  .feat .ic { flex-shrink: 0; margin-top: 3px; }
-  .feat-no { color: var(--mute); }
-  .price-hero .feat-no { color: var(--deep-mute); }
-  .price-card { display: flex; flex-direction: column; justify-content: space-between; gap: 28px; padding: clamp(22px, 2.4vw, 32px); position: relative; }
+  .price-card { display: flex; flex-direction: column; gap: 22px; padding: clamp(22px, 2.4vw, 32px); position: relative; }
   .price-card .amt { font-size: clamp(44px, 5vw, 56px); font-weight: 400; }
   .price-pro { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink); }
   .price-flag { position: absolute; top: -12px; left: 20px; }
+  .price-head { display: flex; flex-direction: column; gap: 10px; }
+  .price-head-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .price-amt-row { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+  .price-body { display: flex; flex-direction: column; gap: 18px; border-top: 1px solid var(--rule); padding-top: 20px; }
+  /* Scannable feature lists: an eyebrow group head over 2–3 short icon-led
+     labels (.fl), optional muted clarifier (.fx), long-form in one
+     <details> per card. Icons are CSS pseudo-elements so each item is one
+     short line of markup; excluded items get a different glyph (minus in a
+     circle) as well as muted text, so the distinction is never color-only. */
+  .feat-head { margin: 0 0 8px; font-family: 'Fragment Mono', Menlo, monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mute); }
+  .fl { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
+  .fl li { position: relative; padding-left: 26px; font-size: 14.5px; line-height: 1.4; color: var(--ink); }
+  .fl li strong { font-weight: 600; }
+  .fl li .fx { color: var(--mute); }
+  .fl li::before { content: ""; position: absolute; left: 0; top: 2px; width: 16px; height: 16px; background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'><path d='M3 8.5 6.5 12 13 4.5' stroke='%2300959c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>") center / 16px 16px no-repeat; }
+  .fl li.no { color: var(--mute); }
+  .fl li.no::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'><circle cx='8' cy='8' r='6' stroke='%236e7278' stroke-width='1.5'/><path d='M5 8h6' stroke='%236e7278' stroke-width='1.5' stroke-linecap='round'/></svg>"); }
+  .fl-inline { grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr)); gap: 8px 20px; }
+  .feat-detail > summary { font-size: 13px; color: var(--mute); padding: 2px 0; }
+  .feat-detail > summary:hover { color: var(--ink); }
+  .feat-detail dl { margin: 12px 0 0; display: grid; gap: 10px; }
+  .feat-detail dt { font-size: 13.5px; font-weight: 600; color: var(--ink); }
+  .feat-detail dd { margin: 2px 0 0; font-size: 13px; line-height: 1.55; color: var(--mute); }
+  /* One CTA block per card, pinned to the card's own bottom edge — the
+     button belongs to its card, not to a shared strip under the grid. */
+  .price-cta { margin-top: auto; display: grid; gap: 10px; padding-top: 20px; border-top: 1px solid var(--rule); }
+  .price-cta input[type="email"] { font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; font-size: 14px; margin: 0; }
+  .price-cta .btn { width: 100%; }
+  .price-cta-done { text-align: center; padding: 13px 18px; border: 1px solid var(--pass); border-radius: 6px; color: var(--pass); font-size: 13.5px; overflow-wrap: anywhere; }
+  .price-cta-error { font-size: 11.5px; color: var(--frontier); margin: 0; }
+  .price-cta-note { font-size: 11.5px; }
+  .seatcalc { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; align-items: center; padding: 12px; border: 1px solid var(--rule); border-radius: 4px; background: var(--paper); }
   .seatcalc input { font-size: 14px; padding: 8px 12px; }
+  /* Free: the secondary row. Same rule + radius as a card, paper (not card)
+     background, ghost button — present and complete, visibly not the pick. */
+  .price-free { margin-top: 20px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.7fr) auto; gap: 24px 32px; align-items: center; padding: clamp(20px, 2.4vw, 28px); border: 1px solid var(--rule); border-radius: 6px; background: var(--paper); }
+  @media (max-width: 1040px) { .price-free { grid-template-columns: minmax(0, 1fr); } }
+  .price-free-lead { display: flex; flex-direction: column; gap: 10px; }
+  .price-free-amt { font-size: clamp(36px, 4vw, 48px); font-weight: 400; }
+  .price-free-cta { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
   .cmp-row { display: grid; grid-template-columns: minmax(220px, 1.4fr) minmax(90px, 0.6fr) minmax(120px, 0.8fr) minmax(150px, 1fr) minmax(110px, 0.7fr); border-bottom: 1px solid var(--rule); }
   .cmp-row > span { padding: 12px 14px; }
   .cmp-row > span:first-child { padding-left: 0; }
@@ -701,7 +738,7 @@
       <p id="hero-sub" class="body" style="font-size: clamp(16.5px, 1.5vw, 20px); max-width: 56ch"><strong style="font-weight: 600">Not your pass rate.</strong> A routing policy your coding agent follows — cheap tier first, escalate only on evidence, never on a vibe. Measured on public benchmarks, not promised.</p>
       <div class="cta" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap">
         <a href="#install" class="btn">Install now</a>
-        <a href="#pricing" class="btn btn-ghost">Running a team? See Teams →</a>
+        <a href="#pricing" class="btn btn-ghost">Start a Pro trial →</a>
       </div>
       <p class="tiny">Free for individuals, forever. No email needed — <code class="mono" style="font-size: 12px">npx skills add undercutsh/firstpass</code></p>
       <div>
@@ -3027,9 +3064,9 @@
 
 <section id="teams" data-screen-label="Teams" class="sec">
   <div class="wrap">
-    <div class="marker"><span class="eyebrow muted">§12</span><span class="line"></span><span class="eyebrow muted">Pro, and teams</span><span class="badge badge-frontier">Pro — launching soon</span><span class="badge badge-pass">Teams — available now</span><span class="badge">Enterprise — contact us</span></div>
+    <div class="marker"><span class="eyebrow muted">§12</span><span class="line"></span><span class="eyebrow muted">Pro, and teams</span><span class="badge badge-pass">Pro — available now</span><span class="badge badge-pass">Teams — available now</span><span class="badge">Enterprise — contact us</span></div>
     <h2 class="h2" style="max-width: 32ch; margin-bottom: 20px">Pro keeps the routing honest. Teams makes it a policy.</h2>
-    <p class="body muted" style="margin-bottom: 44px; max-width: 72ch">The free skill only saves what an individual dev remembers to install and follow. Pro adds the thing a static rubric can't do by itself — keep the tier→model mapping current as new models ship — for any individual, freelance or solo. Teams is the identical bundle on every seat, plus the admin surface an org needs on top: point at it, measure it, rely on it, without adding a network-layer gateway. Teams is onboarded personally by the founder today; Pro opens with account sign-in.</p>
+    <p class="body muted" style="margin-bottom: 44px; max-width: 72ch">The free skill only saves what an individual dev remembers to install and follow. Pro adds the thing a static rubric can't do by itself — keep the tier→model mapping current as new models ship — for any individual, freelance or solo. Teams is the identical bundle on every seat, plus the admin surface an org needs on top: point at it, measure it, rely on it, without adding a network-layer gateway. Both are available now: Pro starts with a trial of the full bundle; Teams is onboarded personally by the founder.</p>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; margin-bottom: 32px">
       <div style="background: var(--card); padding: 24px">
         <h3 class="h4 mono" style="margin-bottom: 10px">Real-time / pooled model testing <span class="tiny">— Pro</span></h3>
@@ -3049,7 +3086,7 @@
       </div>
       <div style="background: var(--card); padding: 24px">
         <h3 class="h4 mono" style="margin-bottom: 10px">Shared dashboard &amp; seats <span class="tiny">— Teams</span></h3>
-        <p class="small">Pro's dashboard rolled up across the whole team, plus seat management. SSO / directory sync is a stretch goal.</p>
+        <p class="small">Pro's dashboard rolled up across the whole team, plus seat management. SSO / directory sync and audit logs are Enterprise line items.</p>
       </div>
       <div style="background: var(--ink); color: var(--paper); padding: 24px; display: flex; flex-direction: column; justify-content: center; gap: 16px">
         <p class="body" style="font-size: 14.5px; color: var(--paper)">Free for individuals stays free. Pro and Teams are the paid layer above it, not a gate in front of it.</p>
@@ -3108,8 +3145,8 @@
 <section id="pricing" data-screen-label="Pricing" class="sec sec-card">
   <div class="wrap">
     <div class="marker"><span class="eyebrow muted">§13</span><span class="line"></span><span class="eyebrow muted">Pricing</span></div>
-    <h2 class="h2" style="max-width: 30ch; margin-bottom: 16px">Free for individuals, forever. Pro from $59 a year.</h2>
-    <p class="body muted" style="margin-bottom: 28px; max-width: 70ch">The skill is free and stays free. What you pay for is the upkeep a static rubric can't do for itself — keeping the tier→model map current as models ship — and, for teams, making the policy hold on every seat. Pro and Teams carry the same routing intelligence; Teams adds the org surface on top, not a bigger product.</p>
+    <h2 class="h2" style="max-width: 30ch; margin-bottom: 16px">Start a Pro trial. From $59 a year.</h2>
+    <p class="body muted" style="margin-bottom: 28px; max-width: 70ch">What you pay for is the upkeep a static rubric can't do for itself — keeping the tier→model map current as models ship — and, for teams, making the policy hold on every seat. Pro and Teams carry the same routing intelligence; Teams adds the org surface on top, not a bigger product. The skill itself is free and stays free, below.</p>
     <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 32px">
       <span id="bill-label" class="eyebrow muted">Billing</span>
       <div class="bill-toggle" role="group" aria-labelledby="bill-label">
@@ -3119,118 +3156,207 @@
       <span class="tiny">Either way: money back, no questions asked — <a href="#guarantee" class="muted" style="text-decoration: underline; text-underline-offset: 3px">terms below</a>.</span>
     </div>
     <div class="pricegrid">
-      <div class="price-hero">
-        <div style="display: flex; flex-direction: column; gap: 16px">
-          <span class="mono tiny dim">FREE · INDIVIDUALS</span>
-          <div style="display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap">
-            <span class="display amt">$0</span>
-            <span class="display" style="font-size: clamp(26px, 3.4vw, 40px); font-weight: 400; color: var(--deep-mute)">forever, per individual</span>
-          </div>
-          <p class="small" style="color: var(--deep-mute); max-width: 44ch">Nothing in the rubric is held back to make Pro look better. What Free leaves on the table is the upkeep.</p>
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 12px; border-top: 1px solid var(--deep-rule); padding-top: 24px">
-          <div class="feat" style="font-size: 15.5px"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>The full 6-flag rubric &amp; escalation ladder (SKILL.md)</span></div>
-          <div class="feat" style="font-size: 15.5px"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Works with 34 verified coding agents — Claude Code, Codex, Cursor, Copilot, OpenCode and more</span></div>
-          <div class="feat" style="font-size: 15.5px"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>MIT licensed — audit it, fork it, keep it forever</span></div>
-          <div class="feat" style="font-size: 15.5px"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Community support via GitHub issues</span></div>
-          <div class="feat feat-no" style="font-size: 15.5px"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"></circle><path d="M5 8 H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg><span>Tier→model map is static — you pull updates from <code class="mono">testing/</code> yourself, and it drifts between pulls</span></div>
-          <div class="feat feat-no" style="font-size: 15.5px"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"></circle><path d="M5 8 H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg><span>No pooled model testing, effort-level routing, or category reporting</span></div>
-          <div class="feat feat-no" style="font-size: 15.5px"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"></circle><path d="M5 8 H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg><span>No hosted dashboard or model-swap history</span></div>
-          <div style="margin-top: 16px"><a href="#install" class="btn btn-invert" style="align-self: flex-start">Install free →</a></div>
-        </div>
-      </div>
       <div class="card price-card price-pro">
         <span class="badge badge-ink price-flag" style="background: var(--card)">Our pick for individuals</span>
-        <div style="display: flex; flex-direction: column; gap: 12px">
-          <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap"><span class="mono tiny">PRO</span><span class="badge badge-frontier">Launching soon</span></div>
-          <div style="display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap"><span class="display amt">{{ proPriceAmt }}</span><span class="small">{{ proPriceUnit }}</span></div>
+        <div class="price-head">
+          <div class="price-head-row"><span class="mono tiny">PRO</span><span class="badge badge-pass">Available now</span></div>
+          <div class="price-amt-row"><span class="display amt">{{ proPriceAmt }}</span><span class="small">{{ proPriceUnit }}</span></div>
           <div class="mono tiny" style="color: var(--ink)">{{ proPriceSub }}</div>
-          <div class="tiny">Individual — freelance, solo, indie. Not bundled with Teams.</div>
+          <p class="tiny">Individual — freelance, solo, indie. Value scales with your provider setup — <a href="#faq" class="muted" style="text-decoration: underline; text-underline-offset: 3px">see the FAQ</a>.</p>
         </div>
-        <div style="display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--rule); padding-top: 20px">
-          <div class="feat"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Everything in Free</span></div>
-          <div class="feat"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span><strong style="font-weight: 600">Real-time pooled model testing</strong> — your tier→model map updates itself as new models clear significance</span></div>
-          <div class="feat"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span><strong style="font-weight: 600">Every new release vetted on arrival</strong> — frontier labs and open-weight alike, no tracking on your side. Beats the roster for a tier or task category? Swapped in. Doesn't? Recorded too, so hype never moves your map</span></div>
-          <div class="feat"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span><strong style="font-weight: 600">Two extra routing dimensions, not just one</strong> — task category and reasoning effort on top of tier, because "think harder" helps in a handful of cases and wastes money or hurts accuracy in most others. Both continuously re-tested, not hand-tuned once. <a href="#routing-dimensions" class="muted" style="text-decoration: underline; text-underline-offset: 3px">See how →</a></span></div>
-          <div class="feat"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span><strong style="font-weight: 600">Category-segmented reporting</strong> — pass rate &amp; cost-per-pass by task type</span></div>
-          <div class="feat"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span><strong style="font-weight: 600">Hosted dashboard</strong> — value curves, cost-per-pass, model-swap history</span></div>
-          <div class="feat"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span><strong style="font-weight: 600">Account security included</strong> — GitHub sign-in, MFA, passkeys / biometric, password and session-lifetime policies, API keys for CI</span></div>
-          <div class="feat"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Email support</span></div>
-          <div class="mono tiny" style="color: var(--ink); padding: 10px 12px; border: 1px solid var(--rule); border-radius: 4px; background: var(--paper)">{{ guaranteeLine }}</div>
-          <p class="tiny" style="font-size: 11.5px">Value scales with your provider setup: Claude Code on a Claude subscription alone routes within Anthropic's own tiers; an OpenRouter key opens the cross-vendor savings. <a href="#faq" class="muted" style="text-decoration: underline; text-underline-offset: 3px">Details in the FAQ →</a></p>
-          <div style="margin-top: 6px">
-            <sc-if value="{{ leadSubmitted }}" hint-placeholder-val="{{ false }}">
-              <div class="mono" style="text-align: center; padding: 13px 18px; border: 1px solid var(--pass); border-radius: 6px; color: var(--pass); font-size: 13.5px">✓ Reserved — {{ leadEmail }}</div>
-            </sc-if>
-            <sc-if value="{{ leadNotSubmitted }}" hint-placeholder-val="{{ true }}">
-              <input id="pricing-lead-email" name="email" type="email" autocomplete="email" required aria-required="true" aria-describedby="pricing-lead-error" aria-invalid="{{ leadInvalid }}" placeholder="you@company.com" aria-label="Email address to reserve Pro at launch" value="{{ leadEmail }}" onChange="{{ setLeadEmail }}" style="font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; font-size: 14px; margin: 0 0 10px" />
-              <button type="button" class="btn" style="width: 100%" onClick="{{ submitLead }}" toolname="reserve_pro" tooldescription="Reserve an Undercut Pro seat for launch by submitting an email address. Pro opens with account sign-in; nothing is charged now.">Reserve Pro — no card needed</button>
-              <sc-if value="{{ leadError }}" hint-placeholder-val="{{ false }}">
-                <p id="pricing-lead-error" role="alert" style="font-size: 11.5px; color: var(--frontier); margin: 8px 0 0">{{ leadError }}</p>
-              </sc-if>
-            </sc-if>
-            <p class="tiny" style="margin-top: 10px; font-size: 11.5px">Pro opens with account sign-in. You'll get one email the day it's live; nothing is charged now. Prefer GitHub? <a href="https://github.com/undercutsh/firstpass/issues" class="muted" style="text-decoration: underline; text-underline-offset: 3px">Open an issue instead →</a></p>
+        <div class="price-body">
+          <div>
+            <p class="feat-head">Everything in Free, plus</p>
+            <ul class="fl">
+              <li><strong>Pooled model testing</strong> <span class="fx">— your map updates itself</span></li>
+              <li><strong>Every release vetted on arrival</strong> <span class="fx">— swap-or-not, recorded</span></li>
+              <li><strong>Category + effort routing</strong> <span class="fx">— two extra dimensions</span></li>
+            </ul>
           </div>
+          <div>
+            <p class="feat-head">See it working</p>
+            <ul class="fl">
+              <li>Category-segmented pass rate &amp; cost-per-pass</li>
+              <li>Hosted dashboard with model-swap history</li>
+            </ul>
+          </div>
+          <div>
+            <p class="feat-head">Account</p>
+            <ul class="fl">
+              <li>Sign-in, MFA, passkeys, API keys for CI</li>
+              <li>Email support</li>
+            </ul>
+          </div>
+          <details class="feat-detail">
+            <summary><span class="aff">What's behind each line</span></summary>
+            <dl>
+              <dt>Pooled model testing</dt>
+              <dd>A central vetting ledger continuously tests new frontier-lab and openweights models to statistical significance and keeps your tier→model map current — instead of you pulling <code class="mono">testing/</code> by hand.</dd>
+              <dt>Every release vetted on arrival</dt>
+              <dd>Frontier labs and open-weight alike, no tracking on your side. Beats the roster for a tier or task category? Swapped in. Doesn't? Recorded too, so hype never moves your map.</dd>
+              <dt>Category + effort routing</dt>
+              <dd>Task category and reasoning effort on top of tier, because "think harder" helps in a handful of cases and wastes money or hurts accuracy in most others. Both continuously re-tested, not hand-tuned once. <a href="#routing-dimensions" class="muted" style="text-decoration: underline; text-underline-offset: 3px">See how →</a></dd>
+              <dt>Category-segmented reporting</dt>
+              <dd>Pass rate and cost-per-pass broken out by code / debug / docs / mechanical / reasoning / refactor / security — not just blended.</dd>
+              <dt>Hosted dashboard</dt>
+              <dd>Value curves, cost-per-pass by category, and the full model-swap history.</dd>
+              <dt>Account security</dt>
+              <dd>GitHub sign-in, MFA, passkeys / biometric, password and session-lifetime policies, API keys for CI. Table stakes, included — not a selling point.</dd>
+            </dl>
+          </details>
+        </div>
+        <div class="price-cta">
+          <sc-if value="{{ leadSubmitted }}" hint-placeholder-val="{{ false }}">
+            <div class="mono price-cta-done">✓ Got it — sign-in details go to {{ leadEmail }}</div>
+          </sc-if>
+          <sc-if value="{{ leadNotSubmitted }}" hint-placeholder-val="{{ true }}">
+            <input id="pricing-lead-email" name="email" type="email" autocomplete="email" required aria-required="true" aria-describedby="pricing-lead-error" aria-invalid="{{ leadInvalid }}" placeholder="you@company.com" aria-label="Email address to start your Pro trial" value="{{ leadEmail }}" onChange="{{ setLeadEmail }}" />
+            <button type="button" class="btn" onClick="{{ submitLead }}" toolname="start_pro_trial" tooldescription="Start an Undercut Pro trial by submitting an email address. Sign-in details follow by email; nothing is charged during the trial.">Start your Pro trial →</button>
+            <sc-if value="{{ leadError }}" hint-placeholder-val="{{ false }}">
+              <p id="pricing-lead-error" role="alert" class="price-cta-error">{{ leadError }}</p>
+            </sc-if>
+          </sc-if>
+          <p class="tiny price-cta-note">{{ proTrialNote }} Prefer GitHub? <a href="https://github.com/undercutsh/firstpass/issues" class="muted" style="text-decoration: underline; text-underline-offset: 3px">Open an issue →</a></p>
         </div>
       </div>
       <div class="card price-card">
-        <div style="display: flex; flex-direction: column; gap: 12px">
-          <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap"><span class="mono tiny">TEAMS</span><span class="badge badge-pass">Available · founder-onboarded</span></div>
-          <div style="display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap"><span class="display amt">{{ teamsPriceAmt }}</span><span class="small">{{ teamsPriceUnit }}</span></div>
+        <div class="price-head">
+          <div class="price-head-row"><span class="mono tiny">TEAMS</span><span class="badge badge-pass">Available now · founder-onboarded</span></div>
+          <div class="price-amt-row"><span class="display amt">{{ teamsPriceAmt }}</span><span class="small">{{ teamsPriceUnit }}</span></div>
           <div class="mono tiny" style="color: var(--ink)">{{ teamsPriceSub }}</div>
-          <div class="tiny">{{ teamsSeatNote }}. Same bundle as Pro, on every seat.</div>
+          <p class="tiny">{{ teamsSeatNote }}. Same bundle as Pro, on every seat.</p>
         </div>
-        <div style="display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--rule); padding-top: 20px">
-          <div class="feat"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Everything in Pro, for every seat</span></div>
-          <div class="feat"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span><strong style="font-weight: 600">Org-wide policy enforcement</strong> — the rubric holds on every seat, not just the devs who opted in</span></div>
-          <div class="feat"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Shared team dashboard</span></div>
-          <div class="feat"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Seat management — admin / member roles, invitations, custom permissions</span></div>
-          <div class="feat feat-no"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"></circle><path d="M5 8 H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg><span>SSO &amp; audit log — stretch goal, not promised</span></div>
-          <div class="feat"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Email support, onboarding run by the founder</span></div>
-          <div class="seatcalc" style="display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; align-items: center; padding: 12px; border: 1px solid var(--rule); border-radius: 4px; background: var(--paper)">
+        <div class="price-body">
+          <div>
+            <p class="feat-head">Everything in Pro, on every seat, plus</p>
+            <ul class="fl">
+              <li><strong>Org-wide policy enforcement</strong> <span class="fx">— holds on every seat</span></li>
+              <li>Shared team dashboard</li>
+              <li>Seat management <span class="fx">— admin / member roles, invitations</span></li>
+            </ul>
+          </div>
+          <div>
+            <p class="feat-head">Getting started</p>
+            <ul class="fl">
+              <li>Onboarding call run by the founder</li>
+              <li>Email support</li>
+              <li class="no">SSO &amp; audit log <span class="fx">— Enterprise line items</span></li>
+            </ul>
+          </div>
+          <div class="seatcalc">
             <label for="teams-seats" class="eyebrow muted" style="grid-column: 1 / -1">Your seats</label>
             <input id="teams-seats" name="seats" type="text" inputmode="numeric" pattern="[0-9]*" value="{{ teamsSeats }}" onChange="{{ setTeamsSeats }}" aria-describedby="teams-seats-total" />
             <span id="teams-seats-total" class="mono" style="font-size: 13px; line-height: 1.4">{{ teamsTotalFmt }} {{ teamsTotalUnit }}<br /><span class="muted">{{ teamsTotalDetail }}</span></span>
           </div>
-          <div class="mono tiny" style="color: var(--ink); padding: 10px 12px; border: 1px solid var(--rule); border-radius: 4px; background: var(--paper)">{{ guaranteeLine }}</div>
-          <div style="margin-top: 6px">
-            <button type="button" class="btn" style="width: 100%" onClick="{{ openTeamsFlow }}" toolname="start_teams_onboarding" tooldescription="Open the Undercut Teams onboarding flow: three intake fields, then pick an onboarding call window. Onboarding is run personally by the founder.">Start Teams onboarding →</button>
-            <p class="tiny" style="margin-top: 10px; font-size: 11.5px">Three fields, then pick a time. No card up front — billing is set up on the onboarding call.</p>
-          </div>
+          <details class="feat-detail">
+            <summary><span class="aff">What's behind each line</span></summary>
+            <dl>
+              <dt>Org-wide policy enforcement</dt>
+              <dd>The rubric and escalation ladder apply to every seat by default — savings stop depending on which devs happened to opt in.</dd>
+              <dt>Shared team dashboard</dt>
+              <dd>Pro's dashboard rolled up across the whole team: pass rate, cost-per-pass by category, swap history.</dd>
+              <dt>Seat management</dt>
+              <dd>Organization roles (admin / member), invitations, custom permissions. 12 seats included; each additional seat is billed on the plan it was added to.</dd>
+              <dt>Founder-run onboarding</dt>
+              <dd>Three intake fields, then pick a 30-minute window. Which tiers your provider setup can actually reach is the first thing covered. Billing is set up on the call — no card up front.</dd>
+              <dt>SSO &amp; audit log</dt>
+              <dd>Not part of Teams. SAML/OIDC SSO, SCIM directory sync, and access logs are Enterprise line items — see the next card.</dd>
+            </dl>
+          </details>
+        </div>
+        <div class="price-cta">
+          <button type="button" class="btn" onClick="{{ openTeamsFlow }}" toolname="start_teams_onboarding" tooldescription="Open the Undercut Teams onboarding flow: three intake fields, then pick an onboarding call window. Onboarding is run personally by the founder.">Start Teams onboarding →</button>
+          <p class="tiny price-cta-note">Three fields, then pick a time. No card up front — billing is set up on the onboarding call.</p>
         </div>
       </div>
       <div class="card price-card">
-        <div style="display: flex; flex-direction: column; gap: 12px">
-          <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap"><span class="mono tiny">ENTERPRISE</span><span class="badge">Scoped by contact</span></div>
-          <span class="display" style="font-size: clamp(30px, 3.4vw, 40px); font-weight: 400">Contact us</span>
-          <div class="tiny">no public pricing, sales-led · annual committed-use discounts, custom invoicing</div>
+        <div class="price-head">
+          <div class="price-head-row"><span class="mono tiny">ENTERPRISE</span><span class="badge">Contact us · no list price</span></div>
+          <div class="price-amt-row"><span class="display" style="font-size: clamp(30px, 3.4vw, 40px); font-weight: 400">Contact us</span></div>
+          <div class="mono tiny" style="color: var(--ink)">scoped per contract · sales-led</div>
+          <p class="tiny">Annual committed-use discounts, custom invoicing.</p>
         </div>
-        <div style="display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--rule); padding-top: 20px">
-          <div class="feat"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Everything in Teams</span></div>
-          <div class="feat"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span><strong style="font-weight: 600">Enterprise SSO</strong> — SAML and OIDC: Okta, Microsoft Entra ID, or your own provider</span></div>
-          <div class="feat"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span><strong style="font-weight: 600">Directory sync (SCIM)</strong> — automated provisioning and deprovisioning; HRIS integrations (BambooHR, Rippling, and similar)</span></div>
-          <div class="feat"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span><strong style="font-weight: 600">Advanced RBAC</strong> — department-level workspaces for separate product groups</span></div>
-          <div class="feat"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span><strong style="font-weight: 600">Access logs</strong> — application and admin events, custom retention, streamed to your SIEM</span></div>
-          <div class="feat"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span><strong style="font-weight: 600">Data controls</strong> — retention policy, redaction / data masking, advanced encryption, custom data residency</span></div>
-          <div class="feat"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>HIPAA compliance available with a signed BAA</span></div>
-          <div class="feat"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span><strong style="font-weight: 600">SOC 2 Type II</strong> — starting soon. Need it on a specific timeline? Tell us when you talk to us and we'll factor it in.</span></div>
-          <div class="feat"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>99.99% uptime SLA · premium support SLA with a dedicated Slack channel</span></div>
-          <div class="feat"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Onboarding &amp; migration support, custom security questionnaires, custom integrations, on-prem / self-hosted option</span></div>
-          <p class="tiny" style="font-size: 11.5px">Honest note: Enterprise is in development and scoped per contract. The sign-in, directory, and logging capabilities above come from the auth provider the product is built on; "available" means we can deliver it under your agreement — not that we hold a compliance certification today. SOC 2 Type II is starting soon, not yet complete — if you need it on a specific timeline, say so when you reach out and we'll factor it into scheduling.</p>
-          <div style="margin-top: 6px">
-            <sc-if value="{{ entSubmitted }}" hint-placeholder-val="{{ false }}">
-              <div class="mono" style="text-align: center; padding: 13px 18px; border: 1px solid var(--pass); border-radius: 6px; color: var(--pass); font-size: 13.5px">✓ Received — {{ entEmail }}</div>
-            </sc-if>
-            <sc-if value="{{ entNotSubmitted }}" hint-placeholder-val="{{ true }}">
-              <input id="pricing-ent-email" name="email" type="email" autocomplete="email" required aria-required="true" aria-describedby="pricing-ent-error" aria-invalid="{{ entInvalid }}" placeholder="you@company.com" aria-label="Work email for an Enterprise conversation" value="{{ entEmail }}" onChange="{{ setEntEmail }}" style="font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; font-size: 14px; margin: 0 0 10px" />
-              <button type="button" class="btn btn-ghost" style="width: 100%" onClick="{{ submitEnt }}" toolname="contact_enterprise" tooldescription="Start an Undercut Enterprise conversation by submitting a work email address. Enterprise is scoped per contract; the founder replies by email.">Contact us</button>
-              <sc-if value="{{ entError }}" hint-placeholder-val="{{ false }}">
-                <p id="pricing-ent-error" role="alert" style="font-size: 11.5px; color: var(--frontier); margin: 8px 0 0">{{ entError }}</p>
-              </sc-if>
-            </sc-if>
-            <p class="tiny" style="margin-top: 10px; font-size: 11.5px">Goes straight to the founder, who replies from his own inbox. Prefer GitHub? <a href="https://github.com/undercutsh/firstpass/issues" class="muted" style="text-decoration: underline; text-underline-offset: 3px">Open an issue instead →</a></p>
+        <div class="price-body">
+          <div>
+            <p class="feat-head">Everything in Teams, plus identity</p>
+            <ul class="fl">
+              <li><strong>SAML / OIDC SSO</strong> <span class="fx">— Okta, Entra ID, custom</span></li>
+              <li>SCIM directory sync <span class="fx">+ HRIS</span></li>
+              <li>Advanced RBAC <span class="fx">— department workspaces</span></li>
+            </ul>
           </div>
+          <div>
+            <p class="feat-head">Controls &amp; assurance</p>
+            <ul class="fl">
+              <li>Access logs <span class="fx">— custom retention, SIEM streaming</span></li>
+              <li>Data controls <span class="fx">— retention, redaction, residency</span></li>
+              <li>HIPAA available with a signed BAA</li>
+              <li>SOC 2 Type II <span class="fx">— starting soon</span></li>
+              <li>99.99% uptime SLA</li>
+            </ul>
+          </div>
+          <div>
+            <p class="feat-head">Support &amp; deployment</p>
+            <ul class="fl">
+              <li>Premium support SLA, dedicated Slack channel</li>
+              <li>Onboarding, migration, security questionnaires</li>
+              <li>On-prem / self-hosted option</li>
+            </ul>
+          </div>
+          <details class="feat-detail">
+            <summary><span class="aff">What's behind each line</span></summary>
+            <dl>
+              <dt>Enterprise SSO</dt>
+              <dd>SAML and OIDC: Okta, Microsoft Entra ID, or your own provider.</dd>
+              <dt>Directory sync (SCIM)</dt>
+              <dd>Automated provisioning and deprovisioning; HRIS integrations (BambooHR, Rippling, and similar).</dd>
+              <dt>Advanced RBAC</dt>
+              <dd>Department-level workspaces for separate product groups.</dd>
+              <dt>Access logs</dt>
+              <dd>Application and admin events, custom retention, streamed to your SIEM.</dd>
+              <dt>Data controls</dt>
+              <dd>Retention policy, redaction / data masking, advanced encryption, custom data residency.</dd>
+              <dt>Compliance &amp; SLAs</dt>
+              <dd>HIPAA compliance available with a signed BAA. SOC 2 Type II — starting soon; need it on a specific timeline? Tell us when you talk to us and we'll factor it in. 99.99% uptime SLA; premium support SLA with a dedicated Slack channel.</dd>
+              <dt>Deployment &amp; services</dt>
+              <dd>Onboarding &amp; migration support, custom security questionnaires, custom integrations, on-prem / self-hosted option.</dd>
+            </dl>
+          </details>
+          <p class="tiny" style="font-size: 11.5px">Honest note: Enterprise is in development and scoped per contract. The sign-in, directory, and logging capabilities above come from the auth provider the product is built on; "available" means we can deliver it under your agreement — not that we hold a compliance certification today. SOC 2 Type II is starting soon, not yet complete — if you need it on a specific timeline, say so when you reach out and we'll factor it into scheduling.</p>
         </div>
+        <div class="price-cta">
+          <sc-if value="{{ entSubmitted }}" hint-placeholder-val="{{ false }}">
+            <div class="mono price-cta-done">✓ Received — {{ entEmail }}</div>
+          </sc-if>
+          <sc-if value="{{ entNotSubmitted }}" hint-placeholder-val="{{ true }}">
+            <input id="pricing-ent-email" name="email" type="email" autocomplete="email" required aria-required="true" aria-describedby="pricing-ent-error" aria-invalid="{{ entInvalid }}" placeholder="you@company.com" aria-label="Work email for an Enterprise conversation" value="{{ entEmail }}" onChange="{{ setEntEmail }}" />
+            <button type="button" class="btn btn-ghost" onClick="{{ submitEnt }}" toolname="contact_enterprise" tooldescription="Start an Undercut Enterprise conversation by submitting a work email address. Enterprise is scoped per contract; the founder replies by email.">Contact us</button>
+            <sc-if value="{{ entError }}" hint-placeholder-val="{{ false }}">
+              <p id="pricing-ent-error" role="alert" class="price-cta-error">{{ entError }}</p>
+            </sc-if>
+          </sc-if>
+          <p class="tiny price-cta-note">Goes straight to the founder, who replies from his own inbox. Prefer GitHub? <a href="https://github.com/undercutsh/firstpass/issues" class="muted" style="text-decoration: underline; text-underline-offset: 3px">Open an issue →</a></p>
+        </div>
+      </div>
+    </div>
+
+    <div id="free-plan" class="price-free">
+      <div class="price-free-lead">
+        <div class="price-head-row" style="justify-content: flex-start"><span class="mono tiny">FREE · INDIVIDUALS</span><span class="badge">Live · no account</span></div>
+        <div class="price-amt-row"><span class="display price-free-amt">$0</span><span class="small">forever, per individual</span></div>
+        <p class="small" style="max-width: 44ch">Not ready for a trial? The skill itself is free and complete — nothing in the rubric is held back. What Free leaves out is the upkeep.</p>
+      </div>
+      <ul class="fl fl-inline">
+        <li>Full 6-flag rubric &amp; escalation ladder</li>
+        <li>34 verified coding agents</li>
+        <li>MIT licensed — audit, fork, keep forever</li>
+        <li>Community support via GitHub issues</li>
+        <li class="no">Static tier→model map — you pull updates from <code class="mono">testing/</code> yourself</li>
+        <li class="no">No pooled testing, extra routing dimensions, or dashboard</li>
+      </ul>
+      <div class="price-free-cta">
+        <a href="#install" class="btn btn-ghost">Install the free skill →</a>
+        <code class="mono tiny">npx skills add undercutsh/firstpass</code>
       </div>
     </div>
 
@@ -3418,8 +3544,8 @@
           </div>
         </div>
       </div>
+      <p class="tiny" style="margin-top: 12px; max-width: 80ch">Enterprise is priced by contact — its SSO, directory, logging, and compliance line items are capabilities we can deliver under a contract, not certifications we hold. Machine-readable version of this table: <a href="/pricing.md" class="muted" style="text-decoration: underline; text-underline-offset: 3px">pricing.md</a>.</p>
     </details>
-    <p class="tiny" style="margin-top: 16px; max-width: 80ch">Prices are the launch rate card: Pro $9/mo or $59/yr; Teams $349/mo or $2,988/yr including 12 seats, additional seats $29/mo ($290/yr on annual). Pro opens with account sign-in; Teams is onboarded personally today. Enterprise is priced by contact and in development — its SSO, directory, logging, and compliance line items are capabilities we can deliver under a contract, not certifications we hold.</p>
   </div>
 </section>
 
@@ -3442,7 +3568,7 @@
       <div style="display: flex; flex-direction: column; justify-content: center; gap: 12px">
         <p class="h4">How to claim it</p>
         <p class="small" style="max-width: 44ch">Reply to any receipt or billing email from us with "refund." That's the whole process. Applies to Pro and Teams, monthly or annual; additional Teams seats follow the plan they were added to.</p>
-        <p class="tiny">Not a trial: nothing is metered against you and there's no card-on-file countdown. The free skill stays installed either way — refunding Pro never takes the rubric away.</p>
+        <p class="tiny">Separate from Pro's trial: the trial comes before your first charge; the guarantee covers the charges after it. Nothing is metered against you during either. The free skill stays installed either way — refunding Pro never takes the rubric away.</p>
       </div>
     </div>
   </div>
@@ -3751,6 +3877,12 @@ class Component extends DCLogic {
     const copyActiveInstall = () => copyText(activeClient.cmd);
 
     const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // Pro "Start your Pro trial": the tier is live; the signup mechanism today
+    // is an email intake to /api/lead (intent pro-trial) — sign-in details are
+    // sent to that address. There is no checkout/billing backend in this repo,
+    // so the copy promises what the intake delivers (a trial that starts by
+    // email, nothing charged during it) and nothing more. Whether a card is
+    // taken up front or later is undecided — don't state either here.
     const submitLead = async () => {
       const email = (this.state.leadEmail || '').trim();
       if (!EMAIL_RE.test(email)) {
@@ -3766,7 +3898,7 @@ class Component extends DCLogic {
           body: JSON.stringify({
             email,
             source: window.location.pathname,
-            intent: 'pro-reserve',
+            intent: 'pro-trial',
             plan: 'pro',
             billing: this.state.billing,
             calcMode: this.state.calcMode,
@@ -3787,7 +3919,7 @@ class Component extends DCLogic {
     };
 
     // Enterprise "Contact us": same /api/lead endpoint and field allowlist as
-    // the Pro reserve form, distinguished by intent — no separate backend.
+    // the Pro trial form, distinguished by intent — no separate backend.
     const submitEnt = async () => {
       const email = (this.state.entEmail || '').trim();
       if (!EMAIL_RE.test(email)) {
@@ -3999,6 +4131,7 @@ class Component extends DCLogic {
         ? '$' + proMonthlyEquiv.toFixed(2) + ' / mo equivalent · billed $' + PRICING.pro.annual + ' once a year'
         : 'billed monthly · $' + PRICING.pro.monthly * 12 + ' a year — annual is $' + PRICING.pro.annual,
       proMonthlyEquivFmt: annual ? '$' + proMonthlyEquiv.toFixed(2) : '$' + PRICING.pro.monthly,
+      proTrialNote: 'Full Pro bundle during the trial; nothing is charged during it. Then ' + (annual ? '$' + PRICING.pro.annual + ' a year.' : '$' + PRICING.pro.monthly + ' a month.'),
       guaranteeLine,
       teamsPriceAmt: fmtUsd(annual ? T.annual : T.monthly),
       teamsPriceUnit: perUnit,
@@ -4170,8 +4303,8 @@ class Component extends DCLogic {
         { isRow: true, feature: 'Multi-factor authentication (incl. SMS)', free: '—', pro: '✓', team: '✓', ent: '✓', freeColor: '#6e7278', proColor: '#13161b', teamColor: '#13161b', entColor: '#13161b' },
         { isRow: true, feature: 'Password & session-lifetime policies', free: '—', pro: '✓', team: '✓', ent: '✓', freeColor: '#6e7278', proColor: '#13161b', teamColor: '#13161b', entColor: '#13161b' },
         { isRow: true, feature: 'Machine auth (API keys, M2M tokens) for CI', free: '—', pro: '✓', team: '✓', ent: '✓', freeColor: '#6e7278', proColor: '#13161b', teamColor: '#13161b', entColor: '#13161b' },
-        { isRow: true, feature: 'Directory sync (SCIM) & HRIS (BambooHR, Rippling…)', free: '—', pro: '—', team: 'Stretch', ent: '✓', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#6e7278', entColor: '#13161b' },
-        { isRow: true, feature: 'Access logs (app + admin), custom retention, SIEM streaming', free: '—', pro: '—', team: 'Stretch', ent: '✓', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#6e7278', entColor: '#13161b' },
+        { isRow: true, feature: 'Directory sync (SCIM) & HRIS (BambooHR, Rippling…)', free: '—', pro: '—', team: '—', ent: '✓', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#6e7278', entColor: '#13161b' },
+        { isRow: true, feature: 'Access logs (app + admin), custom retention, SIEM streaming', free: '—', pro: '—', team: '—', ent: '✓', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#6e7278', entColor: '#13161b' },
         { isGroup: true, feature: 'Enterprise', free: '', pro: '', team: '', ent: '' },
         { isRow: true, feature: 'HIPAA compliance (with signed BAA)', free: '—', pro: '—', team: '—', ent: 'Available', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#6e7278', entColor: '#13161b' },
         { isRow: true, feature: 'SOC 2 Type II', free: '—', pro: '—', team: '—', ent: 'Starting soon', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#6e7278', entColor: '#13161b' },
@@ -4182,6 +4315,7 @@ class Component extends DCLogic {
         { isRow: true, feature: 'Onboarding & migration support, security questionnaires, custom integrations', free: '—', pro: '—', team: '—', ent: '✓', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#6e7278', entColor: '#13161b' },
         { isGroup: true, feature: 'Billing & support', free: '', pro: '', team: '', ent: '' },
         { isRow: true, feature: 'Price', free: '$0', pro: '$9/mo or $59/yr', team: '$349/mo or $2,988/yr', ent: 'Contract · annual committed-use discounts, custom invoicing', freeColor: '#13161b', proColor: '#13161b', teamColor: '#13161b', entColor: '#6e7278' },
+        { isRow: true, feature: 'How you start', free: 'Install, no account', pro: 'Trial, nothing charged during it', team: 'Founder onboarding, billing set up on the call', ent: 'Contract', freeColor: '#6e7278', proColor: '#13161b', teamColor: '#13161b', entColor: '#6e7278' },
         { isRow: true, feature: 'Money-back guarantee, no questions asked', free: '—', pro: '30 days monthly · days 90–120 annual', team: '30 days monthly · days 90–120 annual', ent: 'Per contract', freeColor: '#6e7278', proColor: '#13161b', teamColor: '#13161b', entColor: '#6e7278' },
         { isRow: true, feature: 'Support', free: 'Community', pro: 'Email', team: 'Email', ent: 'Dedicated', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#6e7278', entColor: '#6e7278' },
         { isRow: true, feature: 'Support SLA & dedicated Slack channel', free: '—', pro: '—', team: '—', ent: '✓', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#6e7278', entColor: '#13161b' }
@@ -4211,12 +4345,12 @@ class Component extends DCLogic {
         { q: 'What does uninstalling look like?', a: 'Remove the skill and you\u2019re back to status quo. It\u2019s a policy your agent follows, not infrastructure — zero lock-in, nothing to migrate off.' },
         { q: 'Is the free plan actually free forever?', a: 'Yes. The MIT skill is the product’s credibility, not a lead magnet for it — it stays free and full-featured for individual use indefinitely. Pro and Teams are optional paid layers on top, not a bait-and-switch on what’s free today.' },
         { q: 'What does Pro add that the free skill doesn’t?', a: 'Real-time/pooled model testing (a central vetting ledger tests new frontier-lab and openweights models to statistical significance and keeps your tier→model map current automatically), effort-level routing as a second rubric dimension, category-segmented pass-rate and cost-per-pass reporting, and a hosted dashboard. It’s built for individuals — freelance, solo, indie — not gated behind a Teams plan.' },
-        { q: 'What does Teams add on top of Pro?', a: 'Teams ships the identical feature bundle as Pro — it’s not a bigger product. What it adds is collaboration and admin surface: a shared team dashboard, org-wide tier policy enforcement, and seat management. It’s $349/month including 12 seats (or $2,988/year), plus $29/month per additional seat — a 12-seat floor on purpose, because a team under about 12 rarely needs org-wide enforcement and Pro per person covers them. SSO/directory sync and an audit log are a stretch goal, not promised.' },
-        { q: 'How are Pro and Teams priced, and is there a trial?', a: 'Pro is $9/month or $59/year (about $4.92/month, billed once) per individual. Teams is $349/month including 12 seats, or $2,988/year for the same 12; additional seats are $29/month each ($290/year on annual). There’s no free trial — instead there’s a no-questions-asked money-back guarantee: 30 days on monthly plans, days 90–120 on annual. Pro opens with account sign-in; reserve a spot by email and nothing is charged until it’s live. Teams is available now and onboarded personally by the founder.' },
+        { q: 'What does Teams add on top of Pro?', a: 'Teams ships the identical feature bundle as Pro — it’s not a bigger product. What it adds is collaboration and admin surface: a shared team dashboard, org-wide tier policy enforcement, and seat management. It’s $349/month including 12 seats (or $2,988/year), plus $29/month per additional seat — a 12-seat floor on purpose, because a team under about 12 rarely needs org-wide enforcement and Pro per person covers them. SSO/directory sync and an audit log are Enterprise line items, not part of Teams.' },
+        { q: 'How are Pro and Teams priced, and is there a trial?', a: 'Pro is $9/month or $59/year (about $4.92/month, billed once) per individual, and starts with a trial of the full Pro bundle: enter your email on the pricing card, sign-in details follow, and nothing is charged during the trial. Teams is $349/month including 12 seats, or $2,988/year for the same 12; additional seats are $29/month each ($290/year on annual) — onboarded personally by the founder, with billing set up on the onboarding call rather than a card up front. After that, both carry a no-questions-asked money-back guarantee: 30 days on monthly plans, days 90–120 on annual.' },
         { q: 'Why does the annual guarantee start at day 90 instead of day 1?', a: 'Because an annual plan is a bigger up-front ask, and nothing could have paid for itself by day 1 — a refund window there would be a guarantee on a plan you hadn’t used yet. Three months in, the tier map has had time to move and the dashboard has had time to show whether it earned its keep, so the window opens at day 90 and stays open for 30 days. Monthly plans get the conventional 30 days from any charge. Either way it’s no questions asked: reply to a receipt email with “refund” and that’s the process.' },
         { q: 'Does Pro help if I only use Claude Code with a Claude subscription?', a: 'Yes, with a lower ceiling — and we’d rather say so than oversell it. Claude Code on a Claude subscription with no other keys routes only within Anthropic’s own tier ladder: the rubric still stops over-escalation there, and Pro’s pooled testing and effort-level tuning apply to those tiers. The biggest savings come from reaching openweights tiers that cost pennies per task, which needs a provider key (OpenRouter is the common one) — and in Claude Code that key replaces subscription auth for the session, so it’s a real trade-off, not a free add-on. Cursor, Windsurf, and Copilot can add an OpenRouter key alongside their subscription; OpenCode, Cline, Continue, Aider, and Roo Code are already on API billing, so adding one there is pure upside.' },
         { q: 'What’s the difference between Teams and Enterprise?', a: 'Teams is self-serve for most orgs. Enterprise adds the org-plumbing layer: SAML/OIDC SSO (Okta, Microsoft Entra ID, custom providers), SCIM directory sync and HRIS integrations, advanced RBAC with department-level workspaces, application and admin access logs with custom retention and SIEM streaming, data controls (retention policy, redaction/masking, advanced encryption, custom residency), HIPAA compliance available under a signed BAA, SOC 2 Type II starting soon (tell us your timeline when you reach out), a 99.99% uptime SLA, a premium support SLA with a dedicated Slack channel, onboarding/migration help, security questionnaires, custom invoicing and annual committed-use discounts, plus an on-prem/self-hosted option and custom integrations. Priced by contact, not listed, because those deployments vary too much for a flat rate. Honest note: Enterprise is in development; "available" means deliverable under your contract, not a certification we hold today.' },
-        { q: 'What does account security look like on Pro and Teams?', a: 'Table stakes, included, not a differentiator we’re claiming over anyone: GitHub, social, and passkey/biometric sign-in; multi-factor authentication including SMS; custom password requirements and session-lifetime controls; machine authentication (API keys and M2M tokens) for CI and scripts; and, on Teams, organization roles (admin/member), invitations, and custom permissions. These come from the auth provider the account layer is built on and apply from the day Pro opens. Free needs no account at all — the skill is a file your agent reads.' },
+        { q: 'What does account security look like on Pro and Teams?', a: 'Table stakes, included, not a differentiator we’re claiming over anyone: GitHub, social, and passkey/biometric sign-in; multi-factor authentication including SMS; custom password requirements and session-lifetime controls; machine authentication (API keys and M2M tokens) for CI and scripts; and, on Teams, organization roles (admin/member), invitations, and custom permissions. These come from the auth provider the account layer is built on and apply from your first sign-in. Free needs no account at all — the skill is a file your agent reads.' },
         { q: 'Does the paid plan turn this into a network-layer proxy?', a: 'No. Pro and Teams enforce the policy through configuration and the escalation ledger, not by sitting between your agent and its model calls. It still composes with whatever gateway you already run — see the Teams section above.' },
         { q: 'Does this work if I already have a routing or gateway tool?', a: 'Yes. This skill is policy the orchestrating agent follows at dispatch time — it is not a proxy and does not enforce anything at the network layer. It composes with gateways: route first, compress second.' },
         { q: 'What happens if the cheap-tier model gets it wrong?', a: 'It escalates automatically. Verification failing twice at the current tier escalates exactly one tier up, two disagreeing low-tier runs on ambiguous work escalate, and a worker can self-tag an item uncertain to force escalation — only the failed or flagged residue moves up, never the whole batch, and a run never de-escalates mid-task.' },
