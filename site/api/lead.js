@@ -29,14 +29,30 @@ const MAX_EMAIL_LEN = 254;
 const MAX_BODY_BYTES = 10 * 1024; // 10KB — a lead payload has no business being bigger
 const MAX_STRING_LEN = 500; // hard cap for any string field before per-field caps apply
 
-// Allowlist of fields submitLead() actually sends (site/index.html). Anything
-// else in the payload is rejected outright rather than silently dropped, so
-// unexpected/extra fields can't be used to smuggle bulk data through this
-// endpoint.
+// Allowlist of fields the site's forms actually send (site/index.html:
+// submitLead() for the Pro trial form and the calculator's audit form,
+// postLead() for the Teams onboarding flow). Anything else in the payload is
+// rejected outright rather than silently dropped, so unexpected/extra fields
+// can't be used to smuggle bulk data through this endpoint.
+//   intent    — which form: pro-trial | teams-intake | teams-slot-request |
+//               teams-followup | enterprise-contact (free text here, so a
+//               renamed form can't 400; "pro-reserve" was the pre-launch
+//               name of pro-trial and may still appear in old submissions)
+//   plan      — pro | teams | enterprise
+//   billing   — monthly | annual (the pricing toggle's state at submit time)
+//   teamSize  — one of the intake's size-bucket ids, e.g. "16-50"
+//   providers — comma-joined provider ids from the intake multi-select
+//   slot      — ISO-8601 instant of the onboarding window requested
 const STRING_FIELDS = {
   source: 64,
   calcMode: 32,
-  calcVendor: 32
+  calcVendor: 32,
+  intent: 32,
+  plan: 16,
+  billing: 16,
+  teamSize: 16,
+  providers: 200,
+  slot: 40
 };
 const NUMBER_FIELDS = ['calcSeats', 'calcSpend'];
 const ALLOWED_FIELDS = new Set(['email', ...Object.keys(STRING_FIELDS), ...NUMBER_FIELDS]);

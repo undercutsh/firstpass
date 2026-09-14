@@ -129,6 +129,84 @@ test('forwards to webhook and returns 200 on the mocked success path', async (t)
   assert.equal(capturedBody.source, '/waitlist');
 });
 
+test('forwards the Teams onboarding intake fields (intent/plan/billing/teamSize/providers/slot) verbatim', async (t) => {
+  const prevUrl = process.env.LEAD_WEBHOOK_URL;
+  process.env.LEAD_WEBHOOK_URL = 'https://example.com/webhook';
+  const prevFetch = globalThis.fetch;
+  let capturedBody = null;
+  globalThis.fetch = async (url, opts) => {
+    capturedBody = JSON.parse(opts.body);
+    return { ok: true, status: 200 };
+  };
+  t.after(() => {
+    globalThis.fetch = prevFetch;
+    if (prevUrl !== undefined) process.env.LEAD_WEBHOOK_URL = prevUrl;
+    else delete process.env.LEAD_WEBHOOK_URL;
+  });
+
+  const req = mockReq({
+    body: {
+      email: 'lead@company.example',
+      source: '/',
+      intent: 'teams-slot-request',
+      plan: 'teams',
+      billing: 'annual',
+      teamSize: '16-50',
+      providers: 'anthropic,openrouter',
+      slot: '2026-10-01T17:00:00.000Z'
+    }
+  });
+  const res = mockRes();
+  await handler(req, res);
+
+  assert.equal(res.statusCode, 200);
+  assert.equal(capturedBody.intent, 'teams-slot-request');
+  assert.equal(capturedBody.plan, 'teams');
+  assert.equal(capturedBody.billing, 'annual');
+  assert.equal(capturedBody.teamSize, '16-50');
+  assert.equal(capturedBody.providers, 'anthropic,openrouter');
+  assert.equal(capturedBody.slot, '2026-10-01T17:00:00.000Z');
+});
+
+test('accepts the Enterprise "Contact us" payload (intent enterprise-contact, plan enterprise) within the existing allowlist', async (t) => {
+  const prevUrl = process.env.LEAD_WEBHOOK_URL;
+  process.env.LEAD_WEBHOOK_URL = 'https://example.com/webhook';
+  const prevFetch = globalThis.fetch;
+  let capturedBody = null;
+  globalThis.fetch = async (url, opts) => {
+    capturedBody = JSON.parse(opts.body);
+    return { ok: true, status: 200 };
+  };
+  t.after(() => {
+    globalThis.fetch = prevFetch;
+    if (prevUrl !== undefined) process.env.LEAD_WEBHOOK_URL = prevUrl;
+    else delete process.env.LEAD_WEBHOOK_URL;
+  });
+
+  const req = mockReq({
+    body: { email: 'cto@company.example', source: '/', intent: 'enterprise-contact', plan: 'enterprise', billing: 'annual' }
+  });
+  const res = mockRes();
+  await handler(req, res);
+
+  assert.equal(res.statusCode, 200);
+  assert.equal(capturedBody.intent, 'enterprise-contact');
+  assert.equal(capturedBody.plan, 'enterprise');
+  assert.equal(capturedBody.billing, 'annual');
+});
+
+test('rejects an oversized providers string and a non-string slot with 400', async () => {
+  let res = mockRes();
+  await handler(mockReq({ body: { email: 'a@example.com', providers: 'x'.repeat(201) } }), res);
+  assert.equal(res.statusCode, 400);
+  assert.match(res.body.error, /providers/);
+
+  res = mockRes();
+  await handler(mockReq({ body: { email: 'a@example.com', slot: 1759338000000 } }), res);
+  assert.equal(res.statusCode, 400);
+  assert.match(res.body.error, /slot/);
+});
+
 test('returns 502 with a generic message when the webhook rejects, without leaking upstream detail', async (t) => {
   const prevUrl = process.env.LEAD_WEBHOOK_URL;
   process.env.LEAD_WEBHOOK_URL = 'https://example.com/webhook';

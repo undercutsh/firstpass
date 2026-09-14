@@ -1,0 +1,8 @@
+{
+  "_readme": "Founder-published Teams onboarding windows, read by the Teams onboarding flow on getundercut.sh/#pricing (site/index.html, tfDays). Every window here is a real block of time the founder is holding for onboarding calls; the page shows nothing that isn't in this file, and it ships EMPTY on purpose — an empty list renders the honest 'no open windows, request a follow-up' state, never a fabricated slot. To publish availability: add {start, end} ISO-8601 UTC ranges under `windows` (each is cut into `slotMinutes` slots client-side), list any slot instants already requested/confirmed under `taken` so they stop being offered, and commit. Slots earlier than `leadTimeHours` from now or later than `horizonDays` from now are hidden automatically, so stale windows fail closed. Timezone display is the visitor's own; store everything here in UTC (trailing Z).",
+  "slotMinutes": 30,
+  "leadTimeHours": 24,
+  "horizonDays": 14,
+  "windows": [],
+  "taken": []
+}

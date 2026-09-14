@@ -6,7 +6,136 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ## [Unreleased]
 
+### Changed
+
+- **Pricing section (`site/index.html` §13) restructured: trial-primary,
+  Free demoted, CTAs inline, scannable feature lists, no more "launching
+  soon".** Per the product owner's review of the live section. (1) Pro and
+  Teams now read as live products: Pro's badge is "Available now", its CTA
+  is "Start your Pro trial →" (still an email → `/api/lead` capture, now
+  `intent: pro-trial`; sign-in details follow by email, nothing is charged
+  during the trial — card-on-file vs. later is deliberately not stated,
+  since it is undecided), and every "launching soon" / "reserve" / "opens
+  with account sign-in" / "stretch goal" line for Pro and Teams is gone
+  from the page, the JSON-LD `Offer`s (Pro and Teams `availability` →
+  `InStock`), the FAQ (x-dc + JSON-LD), and the `pricing.md` / `index.md` /
+  `llms.md` mirrors; Teams' SSO/audit-log line now says "Enterprise line
+  items" instead of "stretch goal, not promised" (grid cells `Stretch` →
+  `—`). (2) The primary row is Pro (featured) / Teams / Enterprise in equal
+  columns; **Free moves to a low-key band beneath it** (`#free-plan`) with
+  a ghost "Install the free skill →" button, replacing the full-height ink
+  `price-hero` block that gave it more visual weight than Pro. The section
+  heading is now "Start a Pro trial. From $59 a year." and the hero's
+  secondary CTA points at it. (3) Each card's CTA sits in a `.price-cta`
+  block pinned to the card's own bottom edge — the per-card boxed guarantee
+  strip, the stacked disclaimer paragraphs under each button, and the
+  bottom-of-section rate-card paragraph are removed (the guarantee line
+  already lives on the billing-toggle row; the Enterprise "capabilities,
+  not certifications" footnote moves inside the comparison-grid `<details>`
+  it annotates; the Enterprise card's own honest note is unchanged).
+  (4) Feature lists are grouped mini-sections — an eyebrow sub-head
+  ("Everything in Free, plus" / "See it working" / "Account", etc.,
+  echoing the comparison grid's groups) over two or three short icon-led
+  labels with a muted clarifier — and each card carries one
+  `<details>` "What's behind each line" holding the former long-form
+  bullets, so the shape is scannable at a glance and the detail is one
+  click away, not forced. Lists are real `<ul>`/`<dl>` markup; excluded
+  items keep a distinct minus icon plus muted text (not color alone). The
+  guarantee section's "Not a trial" line becomes "Separate from the trial";
+  the FAQ's "is there a trial?" answer now says yes. A "Trial before first
+  charge" row is added to the comparison grid. `privacy.html` and
+  `about.html` are updated to name the trial form; `site/api/lead.js`'s
+  intent comment documents `pro-trial` (with `pro-reserve` as the legacy
+  value).
+
 ### Added
+
+- **Enterprise card built out on `site/index.html` §13, plus included-security
+  and always-current-roster copy for Pro/Teams.** The Enterprise card now
+  lists the org-plumbing line items (SAML/OIDC SSO — Okta, Microsoft Entra ID,
+  custom; SCIM directory sync and HRIS integrations; advanced RBAC with
+  department-level workspaces; application/admin access logs with custom
+  retention and SIEM streaming; data controls — retention, redaction/masking,
+  encryption, custom residency; HIPAA compliance *available* with a signed BAA;
+  99.99% uptime SLA; premium support SLA with a dedicated Slack channel;
+  onboarding/migration support; security questionnaires; custom invoicing and
+  annual committed-use discounts) with a "Contact us" email form posting
+  `intent: enterprise-contact` / `plan: enterprise` to the existing `/api/lead`
+  allowlist — no price, no checkout, no new backend. Every compliance item is
+  phrased as available/deliverable-per-contract; the card, grid footnote,
+  FAQ, and `pricing.md` all state plainly that no certification is held. The
+  Pro card, §12, the comparison grid, and a new FAQ entry gain two low-key
+  lines: account security included at Pro/Teams (GitHub/social/passkey
+  sign-in, MFA incl. SMS, password and session-lifetime policies, API keys /
+  M2M tokens for CI, org roles on Teams — listed as table stakes, not a
+  differentiator), and "every new release vetted on arrival" (frontier-lab
+  and open-weight releases detected the moment they ship, swapped in only if
+  they beat the roster for a tier or task category, the miss recorded too).
+  The comparison grid gained an "Account & sign-in security" group. Mirrored
+  in `site/pricing.md`, `site/index.md`, `site/llms.md`, the JSON-LD FAQ, and
+  `site/privacy.html` (which now names the Enterprise form).
+
+- **SOC 2 Type II "starting soon" line added to the Enterprise card,
+  comparison grid, FAQ, and `pricing.md`/`index.md`/`llms.md` mirrors.**
+  Distinct from the HIPAA-with-BAA line (deliverable today under
+  contract): SOC 2 is not yet complete and no certification is claimed,
+  but the card now invites prospects who need it on a timeline to raise
+  it when they reach out, rather than staying silent on the topic.
+
+- **"Two extra routing dimensions" illustration on `site/index.html` §12
+  (`#routing-dimensions`), Pro-only, plus a matching Pro-card bullet.** A
+  self-contained card below the §12 feature grid explains what Pro's
+  vetting pipeline tests beyond tier — task category (on one vendor's
+  ladder the cheapest tier won 6 of 7 categories on cost per completed
+  task, but failed 70% of security tasks where the mid tier was cheaper
+  per completed task) and reasoning effort (across a 210-run sweep,
+  raising effort was a statistically confirmed win in exactly one cell —
+  an open-weight model on documentation, +70 points — and a confirmed
+  loss in three others, a wash everywhere else) — with a captioned
+  `<table>` comparing Free (tier only) vs. Pro (tier + category + effort)
+  on documentation, security, and reasoning. Written as
+  testing-pipeline-derived routing recommendations delivered through the
+  same policy-file mechanism as Free, not as live per-call routing:
+  `evals/src/policy.js` reads `task.category` only for answer-format
+  prompt notes and never reads effort, so no per-call category/effort
+  routing is claimed. Carries a plain sample-size note (about ten tasks per
+  cell, single seed; only the four effort deltas cleared a 95% confidence
+  test) and a "Pro only" badge. The Pro card's "Effort-level routing"
+  bullet became "Two extra routing dimensions, not just one" linking to
+  the card. Mirrored in `site/pricing.md` (new "Routing dimensions"
+  section), `site/index.md`, and `site/llms.md`. Numbers per
+  `undercutsh/internal` `business/full-category-effort-matrix-2026-09-14.md`
+  and `business/optimized-matrix-and-significance-2026-09-14.md`.
+
+- **Pricing v2 on `site/index.html` (§13–§14)** — an annual/monthly billing
+  toggle (annual preselected; Pro $9/mo or $59/yr, Teams $349/mo or
+  $2,988/yr), a dedicated **money-back guarantee** section (`#guarantee`:
+  no questions asked, 30 days on monthly, days 90–120 on annual, with the
+  fairness rationale stated in plain copy), a `#math` block that finally
+  backs the `#math` anchor `pricing.md` had been linking to, and a
+  **Teams onboarding flow** (`#teams-signup`): three-field intake (company
+  email, team-size bucket, multi-select LLM-provider setup) → pick one of the
+  founder's published windows → an honest "founder is backlogged, this is a
+  request he confirms by email" confirmation. Windows come only from the
+  new `site/teams-availability.json`, which ships empty on purpose so the
+  page can never show a slot the founder didn't publish. `/api/lead`
+  gained a strict allowlist for the new intake fields (`intent`, `plan`,
+  `billing`, `teamSize`, `providers`, `slot`) with tests. Numbers and terms
+  per `undercutsh/internal` `business/pricing-v2-decisions-2026-09-14.md`.
+
+### Changed
+
+- **Teams is positioned as live and founder-onboarded, not "coming soon"**,
+  and restructured from "$29/seat/mo" to "$349/mo, includes 12 seats,
+  +$29/mo per additional seat" (a deliberate 12-seat floor). Pro's
+  "illustrative, TBD" hedging is gone in favor of the launch rate card
+  and a "launching soon with account sign-in" status; tier cards now show
+  what Free lacks (muted rows) alongside what it includes, and the
+  feature-by-feature grid is grouped and collapsed behind a disclosure.
+  The Pro card and FAQ now carry the provider-setup honesty note (a Claude
+  subscription alone routes within Anthropic's tiers; an OpenRouter key
+  opens cross-vendor savings). Mirrored in `site/pricing.md`,
+  `site/index.md`, `site/llms.md`, and the JSON-LD offers/FAQ.
 
 - **Undercut Hooks (`hooks/`), shipped, opt-in** — a local Claude Code hooks
   package that (1) force-injects the condensed rubric every session instead

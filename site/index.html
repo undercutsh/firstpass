@@ -61,19 +61,35 @@
     },
     {
       "@type": "Offer",
-      "name": "Pro",
+      "name": "Pro (monthly)",
       "price": "9",
       "priceCurrency": "USD",
-      "availability": "https://schema.org/PreOrder",
-      "description": "Real-time/pooled model testing, effort-level routing, category-segmented reporting, hosted dashboard. $9/month, illustrative. In development — not yet live; join the waitlist."
+      "availability": "https://schema.org/InStock",
+      "description": "Real-time/pooled model testing, effort-level routing, category-segmented reporting, hosted dashboard. $9/month per individual. Starts with a trial of the full Pro bundle — enter an email, sign-in details follow, nothing is charged during the trial. 30-day no-questions-asked money-back guarantee after that."
     },
     {
       "@type": "Offer",
-      "name": "Teams",
-      "price": "29",
+      "name": "Pro (annual)",
+      "price": "59",
       "priceCurrency": "USD",
-      "availability": "https://schema.org/PreOrder",
-      "description": "Everything in Pro, per seat, plus shared team dashboard, org-wide tier policy enforcement, and seat management (SSO/audit log a stretch goal). $29/seat/month, illustrative. Coming soon — not yet live; join the waitlist."
+      "availability": "https://schema.org/InStock",
+      "description": "Same as Pro monthly, billed $59 once a year (about $4.92/month equivalent, 45% off the monthly rate). Money-back guarantee window opens at day 90 and runs to day 120, no questions asked."
+    },
+    {
+      "@type": "Offer",
+      "name": "Teams (monthly)",
+      "price": "349",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock",
+      "description": "Everything in Pro on every seat, plus shared team dashboard, org-wide tier policy enforcement, and seat management (SSO/audit log are Enterprise line items). $349/month includes 12 seats; each additional seat +$29/month. Available now via founder-run onboarding; billing is set up on the onboarding call. 30-day no-questions-asked money-back guarantee."
+    },
+    {
+      "@type": "Offer",
+      "name": "Teams (annual)",
+      "price": "2988",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock",
+      "description": "Same as Teams monthly, billed $2,988 once a year for the 12 included seats (about $249/month equivalent, 29% off); additional seats $290/year each. Money-back guarantee window opens at day 90 and runs to day 120, no questions asked."
     }
   ],
   "author": {
@@ -179,17 +195,32 @@
     {
       "@type": "Question",
       "name": "What does Teams add on top of Pro?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Teams ships the identical feature bundle as Pro — it's not a bigger product. What it adds is collaboration and admin surface: a shared team dashboard, org-wide tier policy enforcement, and seat management, priced per seat. SSO/directory sync and an audit log are a stretch goal." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Teams ships the identical feature bundle as Pro — it’s not a bigger product. What it adds is collaboration and admin surface: a shared team dashboard, org-wide tier policy enforcement, and seat management. It’s $349/month including 12 seats (or $2,988/year), plus $29/month per additional seat — a 12-seat floor on purpose, because a team under about 12 rarely needs org-wide enforcement and Pro per person covers them. SSO/directory sync and an audit log are Enterprise line items, not part of Teams." }
     },
     {
       "@type": "Question",
       "name": "How are Pro and Teams priced, and is there a trial?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Pro is $9/month per individual, illustrative and still TBD. Teams is $29/seat/month, also illustrative. Both are in development — Pro and Teams are not yet live, and Teams specifically is coming soon on a waitlist, not a launch-day tier: it ships after Pro, once the multi-seat and org-admin layer is ready. Join early access on the pricing section above to get notified." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Pro is $9/month or $59/year (about $4.92/month, billed once) per individual, and starts with a trial of the full Pro bundle: enter your email on the pricing card, sign-in details follow, and nothing is charged during the trial. Teams is $349/month including 12 seats, or $2,988/year for the same 12; additional seats are $29/month each ($290/year on annual) — onboarded personally by the founder, with billing set up on the onboarding call rather than a card up front. After that, both carry a no-questions-asked money-back guarantee: 30 days on monthly plans, days 90–120 on annual." }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does the annual guarantee start at day 90 instead of day 1?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Because an annual plan is a bigger up-front ask, and nothing could have paid for itself by day 1 — a refund window there would be a guarantee on a plan you hadn’t used yet. Three months in, the tier map has had time to move and the dashboard has had time to show whether it earned its keep, so the window opens at day 90 and stays open for 30 days. Monthly plans get the conventional 30 days from any charge. Either way it’s no questions asked: reply to a receipt email with “refund” and that’s the process." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Pro help if I only use Claude Code with a Claude subscription?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes, with a lower ceiling — and we’d rather say so than oversell it. Claude Code on a Claude subscription with no other keys routes only within Anthropic’s own tier ladder: the rubric still stops over-escalation there, and Pro’s pooled testing and effort-level tuning apply to those tiers. The biggest savings come from reaching openweights tiers that cost pennies per task, which needs a provider key (OpenRouter is the common one) — and in Claude Code that key replaces subscription auth for the session, so it’s a real trade-off, not a free add-on. Cursor, Windsurf, and Copilot can add an OpenRouter key alongside their subscription; OpenCode, Cline, Continue, Aider, and Roo Code are already on API billing, so adding one there is pure upside." }
     },
     {
       "@type": "Question",
       "name": "What’s the difference between Teams and Enterprise?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Teams is self-serve for most orgs. Enterprise adds an on-prem/self-hosted option, a SOC 2 compliance path and data residency, dedicated support, and custom integrations — priced by contact, not listed, because those deployments vary too much for a flat rate." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Teams is self-serve for most orgs. Enterprise adds the org-plumbing layer: SAML/OIDC SSO (Okta, Microsoft Entra ID, custom providers), SCIM directory sync and HRIS integrations, advanced RBAC with department-level workspaces, application and admin access logs with custom retention and SIEM streaming, data controls (retention policy, redaction/masking, advanced encryption, custom residency), HIPAA compliance available under a signed BAA, SOC 2 Type II starting soon (tell us your timeline when you reach out), a 99.99% uptime SLA, a premium support SLA with a dedicated Slack channel, onboarding/migration help, security questionnaires, custom invoicing and annual committed-use discounts, plus an on-prem/self-hosted option and custom integrations. Priced by contact, not listed, because those deployments vary too much for a flat rate. Honest note: Enterprise is in development; \"available\" means deliverable under your contract, not a certification we hold today." }
+    },
+    {
+      "@type": "Question",
+      "name": "What does account security look like on Pro and Teams?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Table stakes, included, not a differentiator we’re claiming over anyone: GitHub, social, and passkey/biometric sign-in; multi-factor authentication including SMS; custom password requirements and session-lifetime controls; machine authentication (API keys and M2M tokens) for CI and scripts; and, on Teams, organization roles (admin/member), invitations, and custom permissions. These come from the auth provider the account layer is built on and apply from your first sign-in. Free needs no account at all — the skill is a file your agent reads." }
     },
     {
       "@type": "Question",
@@ -523,11 +554,86 @@
   .term .row span:first-child { color: var(--deep-mute); }
   .kv { display: flex; flex-direction: column; gap: 4px; padding: 14px 0 0; border-top: 1px solid var(--ink); }
   .step { display: flex; flex-direction: column; gap: 14px; border-top: 1px solid var(--paper); padding-top: 20px; }
-  .price-hero { display: flex; flex-direction: column; justify-content: space-between; gap: 36px; padding: clamp(24px, 3vw, 40px); background: var(--ink); color: var(--paper); border-radius: 8px; }
-  .price-hero .amt { font-size: clamp(72px, 11vw, 148px); font-weight: 400; line-height: 0.85; }
-  .pricegrid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 3fr) minmax(0, 3fr) minmax(0, 3fr); gap: 20px; align-items: stretch; }
-  @media (max-width: 1040px) { .pricegrid { grid-template-columns: minmax(0, 1fr); } .price-hero .amt { font-size: clamp(64px, 16vw, 96px); } }
+  /* Primary row: Pro / Teams / Enterprise as equal peers (Pro carries the
+     outline + flag). Free is deliberately NOT in this row — it sits in the
+     .price-free band beneath, so the paid trial reads as the default path
+     and Free as the downsell, per the 2026-09-14 pricing review. */
+  .pricegrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
+  @media (max-width: 1040px) { .pricegrid { grid-template-columns: minmax(0, 1fr); } }
   .tick { flex-shrink: 0; }
+
+  /* ---- pricing v2: billing toggle, feature rows, teams flow, guarantee -- */
+  .bill-toggle { display: inline-flex; align-items: center; gap: 4px; padding: 4px; border: 1px solid var(--ink); border-radius: 8px; background: #fff; }
+  .bill-toggle button { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 16px; border-radius: 5px; border: none; background: transparent; color: var(--ink); font-family: inherit; font-size: 14px; font-weight: 500; cursor: pointer; transition: background-color 180ms ease-out, color 180ms ease-out; }
+  .bill-toggle button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  .bill-toggle .save { font-family: 'Fragment Mono', Menlo, monospace; font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--cheap); }
+  .bill-toggle button[aria-pressed="true"] .save { color: #5fd3d8; }
+  .price-card { display: flex; flex-direction: column; gap: 22px; padding: clamp(22px, 2.4vw, 32px); position: relative; }
+  .price-card .amt { font-size: clamp(44px, 5vw, 56px); font-weight: 400; }
+  .price-pro { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink); }
+  .price-flag { position: absolute; top: -12px; left: 20px; }
+  .price-head { display: flex; flex-direction: column; gap: 10px; }
+  .price-head-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .price-amt-row { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+  .price-body { display: flex; flex-direction: column; gap: 18px; border-top: 1px solid var(--rule); padding-top: 20px; }
+  /* Scannable feature lists: an eyebrow group head over 2–3 short icon-led
+     labels (.fl), optional muted clarifier (.fx), long-form in one
+     <details> per card. Icons are CSS pseudo-elements so each item is one
+     short line of markup; excluded items get a different glyph (minus in a
+     circle) as well as muted text, so the distinction is never color-only. */
+  .feat-head { margin: 0 0 8px; font-family: 'Fragment Mono', Menlo, monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mute); }
+  .fl { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
+  .fl li { position: relative; padding-left: 26px; font-size: 14.5px; line-height: 1.4; color: var(--ink); }
+  .fl li strong { font-weight: 600; }
+  .fl li .fx { color: var(--mute); }
+  .fl li::before { content: ""; position: absolute; left: 0; top: 2px; width: 16px; height: 16px; background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'><path d='M3 8.5 6.5 12 13 4.5' stroke='%2300959c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>") center / 16px 16px no-repeat; }
+  .fl li.no { color: var(--mute); }
+  .fl li.no::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'><circle cx='8' cy='8' r='6' stroke='%236e7278' stroke-width='1.5'/><path d='M5 8h6' stroke='%236e7278' stroke-width='1.5' stroke-linecap='round'/></svg>"); }
+  .fl-inline { grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr)); gap: 8px 20px; }
+  .feat-detail > summary { font-size: 13px; color: var(--mute); padding: 2px 0; }
+  .feat-detail > summary:hover { color: var(--ink); }
+  .feat-detail dl { margin: 12px 0 0; display: grid; gap: 10px; }
+  .feat-detail dt { font-size: 13.5px; font-weight: 600; color: var(--ink); }
+  .feat-detail dd { margin: 2px 0 0; font-size: 13px; line-height: 1.55; color: var(--mute); }
+  /* One CTA block per card, pinned to the card's own bottom edge — the
+     button belongs to its card, not to a shared strip under the grid. */
+  .price-cta { margin-top: auto; display: grid; gap: 10px; padding-top: 20px; border-top: 1px solid var(--rule); }
+  .price-cta input[type="email"] { font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; font-size: 14px; margin: 0; }
+  .price-cta .btn { width: 100%; }
+  .price-cta-done { text-align: center; padding: 13px 18px; border: 1px solid var(--pass); border-radius: 6px; color: var(--pass); font-size: 13.5px; overflow-wrap: anywhere; }
+  .price-cta-error { font-size: 11.5px; color: var(--frontier); margin: 0; }
+  .price-cta-note { font-size: 11.5px; }
+  .seatcalc { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; align-items: center; padding: 12px; border: 1px solid var(--rule); border-radius: 4px; background: var(--paper); }
+  .seatcalc input { font-size: 14px; padding: 8px 12px; }
+  /* Free: the secondary row. Same rule + radius as a card, paper (not card)
+     background, ghost button — present and complete, visibly not the pick. */
+  .price-free { margin-top: 20px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.7fr) auto; gap: 24px 32px; align-items: center; padding: clamp(20px, 2.4vw, 28px); border: 1px solid var(--rule); border-radius: 6px; background: var(--paper); }
+  @media (max-width: 1040px) { .price-free { grid-template-columns: minmax(0, 1fr); } }
+  .price-free-lead { display: flex; flex-direction: column; gap: 10px; }
+  .price-free-amt { font-size: clamp(36px, 4vw, 48px); font-weight: 400; }
+  .price-free-cta { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+  .cmp-row { display: grid; grid-template-columns: minmax(220px, 1.4fr) minmax(90px, 0.6fr) minmax(120px, 0.8fr) minmax(150px, 1fr) minmax(110px, 0.7fr); border-bottom: 1px solid var(--rule); }
+  .cmp-row > span { padding: 12px 14px; }
+  .cmp-row > span:first-child { padding-left: 0; }
+  .cmp-row .cmp-pro { background: rgba(0,149,156,0.07); }
+  .cmp-group { border-bottom: none; }
+  .tflow { border: 1px solid var(--ink); border-radius: 6px; background: #fff; margin-top: 24px; overflow: hidden; }
+  .tflow-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 14px 24px; border-bottom: 1px solid var(--rule); background: var(--card); }
+  .tflow-steps { display: flex; gap: 12px; flex-wrap: wrap; font-family: 'Fragment Mono', Menlo, monospace; font-size: 12px; color: var(--mute); }
+  .tflow-steps .on { color: var(--ink); font-weight: 700; }
+  .tflow-body { padding: clamp(22px, 2.4vw, 32px); display: grid; gap: 26px; }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip { height: 34px; padding: 0 14px; border-radius: 6px; border: 1px solid var(--rule); background: var(--card); color: var(--ink); font-family: 'Fragment Mono', Menlo, monospace; font-size: 13px; cursor: pointer; transition: background-color 180ms ease-out, color 180ms ease-out, border-color 180ms ease-out; }
+  .chip:hover { border-color: var(--ink); }
+  .chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+  .slot { height: 44px; border: 1px solid var(--rule); border-radius: 6px; background: #fff; font-family: 'Fragment Mono', Menlo, monospace; font-size: 13.5px; color: var(--ink); cursor: pointer; transition: border-color 180ms ease-out, background-color 180ms ease-out; }
+  .slot:hover { border-color: var(--ink); }
+  .slot[aria-pressed="true"] { border-color: var(--cheap); background: rgba(0,149,156,0.08); box-shadow: inset 0 0 0 1px var(--cheap); }
+  .slot-day { font-family: 'Fragment Mono', Menlo, monospace; font-size: 12px; color: var(--mute); margin: 0 0 8px; }
+  .btn[disabled] { opacity: 0.55; cursor: not-allowed; }
+  .guar { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
+  .guar > div { background: var(--card); padding: clamp(22px, 2.4vw, 32px); }
 
   /* ---- diagram motion ------------------------------------------------
      Additive only. Every figure below is already complete and legible as a
@@ -627,12 +733,12 @@
 <header id="top" data-screen-label="Hero" class="sec" style="border-bottom: none; padding-top: clamp(36px, 4.5vw, 64px)">
   <div class="wrap hero">
     <div style="display: flex; flex-direction: column; gap: clamp(18px, 2.2vw, 30px)">
-      <span class="mono pill" style="align-self: flex-start; height: auto; padding: 5px 10px; line-height: 1.4">Free for individuals, forever · MIT · Pro plan in development</span>
+      <span class="mono pill" style="align-self: flex-start; height: auto; padding: 5px 10px; line-height: 1.4">Free for individuals, forever · MIT · Pro from $59/yr</span>
       <h1 id="hero-heading" class="display">Cut your AI coding bill up to 71%.</h1>
       <p id="hero-sub" class="body" style="font-size: clamp(16.5px, 1.5vw, 20px); max-width: 56ch"><strong style="font-weight: 600">Not your pass rate.</strong> A routing policy your coding agent follows — cheap tier first, escalate only on evidence, never on a vibe. Measured on public benchmarks, not promised.</p>
       <div class="cta" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap">
-        <a href="#install" class="btn">Install now</a>
-        <a href="#pricing" class="btn btn-ghost">Running a team? Join the beta</a>
+        <a href="#pricing" class="btn">Start a Pro trial →</a>
+        <a href="#install" class="btn btn-ghost">Install now</a>
       </div>
       <p class="tiny">Free for individuals, forever. No email needed — <code class="mono" style="font-size: 12px">npx skills add undercutsh/firstpass</code></p>
       <div>
@@ -2958,13 +3064,13 @@
 
 <section id="teams" data-screen-label="Teams" class="sec">
   <div class="wrap">
-    <div class="marker"><span class="eyebrow muted">§12</span><span class="line"></span><span class="eyebrow muted">Pro, and teams — coming soon</span><span class="badge badge-frontier">Pro — in development</span><span class="badge badge-frontier">Teams — coming soon</span><span class="badge">Enterprise — contact us</span></div>
+    <div class="marker"><span class="eyebrow muted">§12</span><span class="line"></span><span class="eyebrow muted">Pro, and teams</span><span class="badge badge-pass">Pro — available now</span><span class="badge badge-pass">Teams — available now</span><span class="badge">Enterprise — contact us</span></div>
     <h2 class="h2" style="max-width: 32ch; margin-bottom: 20px">Pro keeps the routing honest. Teams makes it a policy.</h2>
-    <p class="body muted" style="margin-bottom: 44px; max-width: 72ch">The free skill only saves what an individual dev remembers to install and follow. Pro adds the thing a static rubric can't do by itself — keep the tier→model mapping current as new models ship — for any individual, freelance or solo. Teams is the identical bundle, per seat, plus the admin surface an org needs on top: point at it, measure it, rely on it, without adding a network-layer gateway.</p>
+    <p class="body muted" style="margin-bottom: 44px; max-width: 72ch">The free skill only saves what an individual dev remembers to install and follow. Pro adds the thing a static rubric can't do by itself — keep the tier→model mapping current as new models ship — for any individual, freelance or solo. Teams is the identical bundle on every seat, plus the admin surface an org needs on top: point at it, measure it, rely on it, without adding a network-layer gateway. Both are available now: Pro starts with a trial of the full bundle; Teams is onboarded personally by the founder.</p>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; margin-bottom: 32px">
       <div style="background: var(--card); padding: 24px">
         <h3 class="h4 mono" style="margin-bottom: 10px">Real-time / pooled model testing <span class="tiny">— Pro</span></h3>
-        <p class="small">On Free, keeping the tier→model mapping current means pulling <code class="mono">testing/</code> yourself. Pro's central vetting ledger tests new frontier-lab and openweights models to statistical significance continuously and updates your map automatically.</p>
+        <p class="small">On Free, keeping the tier→model mapping current means pulling <code class="mono">testing/</code> yourself. Pro's central vetting ledger catches every new frontier-lab and openweights release the moment it ships, runs the full methodology to statistical significance, and swaps the roster only when a newcomer actually beats the incumbent for a tier or task category — a "didn't beat it" result is recorded too, so your map moves on evidence, never on launch-day hype.</p>
       </div>
       <div style="background: var(--card); padding: 24px">
         <h3 class="h4 mono" style="margin-bottom: 10px">Effort-level routing <span class="tiny">— Pro</span></h3>
@@ -2980,12 +3086,57 @@
       </div>
       <div style="background: var(--card); padding: 24px">
         <h3 class="h4 mono" style="margin-bottom: 10px">Shared dashboard &amp; seats <span class="tiny">— Teams</span></h3>
-        <p class="small">Pro's dashboard rolled up across the whole team, plus seat management. SSO / directory sync is a stretch goal.</p>
+        <p class="small">Pro's dashboard rolled up across the whole team, plus seat management. SSO / directory sync and audit logs are Enterprise line items.</p>
       </div>
       <div style="background: var(--ink); color: var(--paper); padding: 24px; display: flex; flex-direction: column; justify-content: center; gap: 16px">
         <p class="body" style="font-size: 14.5px; color: var(--paper)">Free for individuals stays free. Pro and Teams are the paid layer above it, not a gate in front of it.</p>
         <a href="#pricing" class="mono" style="font-size: 13px; color: var(--cheap)">See Pro &amp; Teams pricing →</a>
       </div>
+    </div>
+    <div id="routing-dimensions" class="card" style="margin-bottom: 32px">
+      <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 12px">
+        <h3 class="h4 mono" style="margin: 0">Two extra routing dimensions, not just one</h3>
+        <span class="badge badge-frontier">Pro only</span>
+      </div>
+      <p class="small" style="max-width: 76ch; margin-bottom: 20px">Most routers stop at "which tier." Free does that much — pick the cheapest model that can pass verification for this unit. Pro's vetting pipeline tests two dimensions further, and the routing map it keeps current is built from what those tests show — re-tested as models ship, not hand-tuned once and left alone.</p>
+      <div class="g2" style="align-items: start; margin-bottom: 20px">
+        <div style="min-width: 0">
+          <p class="eyebrow muted" style="margin: 0 0 8px">Dimension 2 — task category</p>
+          <p class="small" style="max-width: 46ch">The right tier isn't one-size-fits-all across a codebase. On one vendor's ladder, the cheapest tier won 6 of 7 task categories outright on cost per completed task — except <strong style="font-weight: 600">security</strong>, where it failed 70% of the time and the mid tier was both more reliable <em>and</em> cheaper per completed task. A category-blind router either overpays everywhere to stay safe on security, or gets burned on security to stay cheap everywhere else.</p>
+        </div>
+        <div style="min-width: 0">
+          <p class="eyebrow muted" style="margin: 0 0 8px">Dimension 3 — reasoning effort</p>
+          <p class="small" style="max-width: 46ch">Every major model now exposes a "how hard should I think" dial. Across 210 test runs — every vendor, every tier, every task category, two effort settings — raising effort produced a statistically confirmed win in exactly one cell (an open-weight model on documentation, +70 percentage points) and a confirmed loss in three others. Everywhere else it just cost more for no measurable difference.</p>
+        </div>
+      </div>
+      <div class="scroll-x">
+        <table class="tbl" style="min-width: 760px">
+          <caption class="tiny" style="text-align: left; caption-side: top; padding: 0 0 10px">Free vs. Pro on three of the seven task categories — the ones where the extra dimensions change the answer most. Pro only.</caption>
+          <thead><tr><th scope="col">Task category</th><th scope="col">Free — tier only</th><th scope="col">Pro — tier + category + effort</th><th scope="col">What the testing showed</th></tr></thead>
+          <tbody>
+          <tr>
+            <th scope="row" style="font-weight: 400; color: var(--ink); vertical-align: top">Documentation</th>
+            <td class="muted" style="vertical-align: top">Cheapest tier, provider-default effort</td>
+            <td style="vertical-align: top; color: var(--ink)">Cheapest tier, with the effort setting chosen per category <em>and</em> per model</td>
+            <td style="vertical-align: top; font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; font-size: 13.5px; line-height: 1.5">Same category, opposite effect: one open-weight model went from 30% to 100% when effort was raised; one frontier-lab cheapest tier went from 100% to 60%. Both statistically confirmed — a category-and-model fact, not a global rule.</td>
+          </tr>
+          <tr>
+            <th scope="row" style="font-weight: 400; color: var(--ink); vertical-align: top">Security</th>
+            <td class="muted" style="vertical-align: top">Cheapest tier, provider-default effort — moves up only after two failed checks</td>
+            <td style="vertical-align: top; color: var(--ink)">Starts one tier up for this category</td>
+            <td style="vertical-align: top; font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; font-size: 13.5px; line-height: 1.5">Two vendors' cheapest tiers failed 70–90% of security tasks, at either effort setting. Paying for the mid tier up front was cheaper per completed task than failing first and escalating.</td>
+          </tr>
+          <tr>
+            <th scope="row" style="font-weight: 400; color: var(--ink); vertical-align: top">Reasoning</th>
+            <td class="muted" style="vertical-align: top">Cheapest tier, provider-default effort</td>
+            <td style="vertical-align: top; color: var(--ink)">Cheapest tier by default, with the mid tier's reliability edge reported for this category so the trade is explicit</td>
+            <td style="vertical-align: top; font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; font-size: 13.5px; line-height: 1.5">The cheapest tier still won on cost per completed task, but by its narrowest margin — the one category where paying for the mid tier's reliability is a real judgment call, and a data-driven one instead of a guess.</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tiny" style="margin-top: 14px; max-width: 80ch"><strong>How Pro applies it:</strong> the same policy-file mechanism as Free. The tier→model map Pro keeps current carries a per-category recommendation, effort setting included, derived from these tests; Free's map has one entry per tier and no category or effort dimension. Nothing decides per call on the network path — still not a proxy.</p>
+      <p class="tiny" style="margin-top: 8px; max-width: 80ch"><strong>Sample sizes, plainly:</strong> roughly ten tasks per category per cell, single seed. The effort figures quoted (one win, three losses) are the cells that cleared a 95% confidence test; the category figures (6 of 7, 70–90%) are gaps large enough to trust as a shape, not precise to the point. Larger re-runs are in progress before any of it becomes a shipped default.</p>
     </div>
     <p class="tiny" style="max-width: 74ch">Still not a proxy. Pro and Teams enforce the policy through configuration and the escalation ledger above — not by sitting on the network path between your agent and its model calls. Teams composes with whatever gateway you already run.</p>
   </div>
@@ -2994,142 +3145,438 @@
 <section id="pricing" data-screen-label="Pricing" class="sec sec-card">
   <div class="wrap">
     <div class="marker"><span class="eyebrow muted">§13</span><span class="line"></span><span class="eyebrow muted">Pricing</span></div>
-    <h2 class="h2" style="max-width: 34ch; margin-bottom: 16px">Free for individuals, forever. Pro, Teams, and Enterprise are coming soon.</h2>
-    <p class="body muted" style="margin-bottom: 44px; max-width: 70ch">Nothing below is live yet — the skill is; Pro, Teams, and Enterprise are what we're building toward, priced honestly ahead of shipping instead of dropped on you before it's real. Pro and Teams ship the same feature bundle — Teams is Pro plus seats and org controls, not a different product, and it's coming after Pro, not on day one.</p>
+    <h2 class="h2" style="max-width: 30ch; margin-bottom: 16px">Start a Pro trial. From $59 a year.</h2>
+    <p class="body muted" style="margin-bottom: 28px; max-width: 70ch">What you pay for is the upkeep a static rubric can't do for itself — keeping the tier→model map current as models ship — and, for teams, making the policy hold on every seat. Pro and Teams carry the same routing intelligence; Teams adds the org surface on top, not a bigger product. The skill itself is free and stays free, below.</p>
+    <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 32px">
+      <span id="bill-label" class="eyebrow muted">Billing</span>
+      <div class="bill-toggle" role="group" aria-labelledby="bill-label">
+        <button type="button" onClick="{{ setBillMonthly }}" aria-pressed="{{ billMonthly }}">Monthly</button>
+        <button type="button" onClick="{{ setBillAnnual }}" aria-pressed="{{ billAnnual }}">Annual <span class="save">save up to 45%</span></button>
+      </div>
+      <span class="tiny">Either way: money back, no questions asked — <a href="#guarantee" class="muted" style="text-decoration: underline; text-underline-offset: 3px">terms below</a>.</span>
+    </div>
     <div class="pricegrid">
-      <div class="price-hero">
-        <div style="display: flex; flex-direction: column; gap: 16px">
-          <span class="mono tiny dim">FREE · INDIVIDUALS</span>
-          <div style="display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap">
-            <span class="display amt">$0</span>
-            <span class="display" style="font-size: clamp(26px, 3.4vw, 40px); font-weight: 400; color: var(--deep-mute)">forever, per individual</span>
-          </div>
+      <div class="card price-card price-pro">
+        <span class="badge badge-ink price-flag" style="background: var(--card)">Our pick for individuals</span>
+        <div class="price-head">
+          <div class="price-head-row"><span class="mono tiny">PRO</span><span class="badge badge-pass">Available now</span></div>
+          <div class="price-amt-row"><span class="display amt">{{ proPriceAmt }}</span><span class="small">{{ proPriceUnit }}</span></div>
+          <div class="mono tiny" style="color: var(--ink)">{{ proPriceSub }}</div>
+          <p class="tiny">Individual — freelance, solo, indie. Value scales with your provider setup — <a href="#faq" class="muted" style="text-decoration: underline; text-underline-offset: 3px">see the FAQ</a>.</p>
         </div>
-        <div style="display: flex; flex-direction: column; gap: 12px; border-top: 1px solid var(--deep-rule); padding-top: 24px">
-          <div style="display: flex; align-items: flex-start; gap: 12px; font-size: 15.5px; line-height: 1.45"><svg class="tick" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>The full 6-flag rubric &amp; escalation ladder (SKILL.md)</span></div>
-          <div style="display: flex; align-items: flex-start; gap: 12px; font-size: 15.5px; line-height: 1.45"><svg class="tick" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Works with Claude Code, Codex, Cursor, Copilot, OpenCode</span></div>
-          <div style="display: flex; align-items: flex-start; gap: 12px; font-size: 15.5px; line-height: 1.45"><svg class="tick" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>MIT licensed — audit it, fork it, keep it forever</span></div>
-          <div style="display: flex; align-items: flex-start; gap: 12px; font-size: 15.5px; line-height: 1.45"><svg class="tick" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Community support via GitHub issues</span></div>
-          <div style="display: flex; align-items: flex-start; gap: 12px; font-size: 15.5px; line-height: 1.45"><svg class="tick" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="#00959c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Tier→model mapping: manual — you pull updates from <code class="mono">testing/</code> yourself</span></div>
-          <div style="margin-top: 16px"><a href="#install" class="btn btn-invert" style="align-self: flex-start">Try it on your setup →</a></div>
+        <div class="price-body">
+          <div>
+            <p class="feat-head">Everything in Free, plus</p>
+            <ul class="fl">
+              <li><strong>Pooled model testing</strong> <span class="fx">— your map updates itself</span></li>
+              <li><strong>Every release vetted on arrival</strong> <span class="fx">— swap-or-not, recorded</span></li>
+              <li><strong>Category + effort routing</strong> <span class="fx">— two extra dimensions</span></li>
+            </ul>
+          </div>
+          <div>
+            <p class="feat-head">See it working</p>
+            <ul class="fl">
+              <li>Category-segmented pass rate &amp; cost-per-pass</li>
+              <li>Hosted dashboard with model-swap history</li>
+            </ul>
+          </div>
+          <div>
+            <p class="feat-head">Account</p>
+            <ul class="fl">
+              <li>Sign-in, MFA, passkeys, API keys for CI</li>
+              <li>Email support</li>
+            </ul>
+          </div>
+          <details class="feat-detail">
+            <summary><span class="aff">What's behind each line</span></summary>
+            <dl>
+              <dt>Pooled model testing</dt>
+              <dd>A central vetting ledger continuously tests new frontier-lab and openweights models to statistical significance and keeps your tier→model map current — instead of you pulling <code class="mono">testing/</code> by hand.</dd>
+              <dt>Every release vetted on arrival</dt>
+              <dd>Frontier labs and open-weight alike, no tracking on your side. Beats the roster for a tier or task category? Swapped in. Doesn't? Recorded too, so hype never moves your map.</dd>
+              <dt>Category + effort routing</dt>
+              <dd>Task category and reasoning effort on top of tier, because "think harder" helps in a handful of cases and wastes money or hurts accuracy in most others. Both continuously re-tested, not hand-tuned once. <a href="#routing-dimensions" class="muted" style="text-decoration: underline; text-underline-offset: 3px">See how →</a></dd>
+              <dt>Category-segmented reporting</dt>
+              <dd>Pass rate and cost-per-pass broken out by code / debug / docs / mechanical / reasoning / refactor / security — not just blended.</dd>
+              <dt>Hosted dashboard</dt>
+              <dd>Value curves, cost-per-pass by category, and the full model-swap history.</dd>
+              <dt>Account security</dt>
+              <dd>GitHub sign-in, MFA, passkeys / biometric, password and session-lifetime policies, API keys for CI. Table stakes, included — not a selling point.</dd>
+            </dl>
+          </details>
+        </div>
+        <div class="price-cta">
+          <sc-if value="{{ leadSubmitted }}" hint-placeholder-val="{{ false }}">
+            <div class="mono price-cta-done">✓ Got it — sign-in details go to {{ leadEmail }}</div>
+          </sc-if>
+          <sc-if value="{{ leadNotSubmitted }}" hint-placeholder-val="{{ true }}">
+            <input id="pricing-lead-email" name="email" type="email" autocomplete="email" required aria-required="true" aria-describedby="pricing-lead-error" aria-invalid="{{ leadInvalid }}" placeholder="you@company.com" aria-label="Email address to start your Pro trial" value="{{ leadEmail }}" onChange="{{ setLeadEmail }}" />
+            <button type="button" class="btn" onClick="{{ submitLead }}" toolname="start_pro_trial" tooldescription="Start an Undercut Pro trial by submitting an email address. Sign-in details follow by email; nothing is charged during the trial.">Start your Pro trial →</button>
+            <sc-if value="{{ leadError }}" hint-placeholder-val="{{ false }}">
+              <p id="pricing-lead-error" role="alert" class="price-cta-error">{{ leadError }}</p>
+            </sc-if>
+          </sc-if>
+          <p class="tiny price-cta-note">{{ proTrialNote }} Prefer GitHub? <a href="https://github.com/undercutsh/firstpass/issues" class="muted" style="text-decoration: underline; text-underline-offset: 3px">Open an issue →</a></p>
         </div>
       </div>
-      <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; gap: 28px; padding: clamp(22px, 2.4vw, 32px)">
-        <div style="display: flex; flex-direction: column; gap: 12px">
-          <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap"><span class="mono tiny">PRO</span><span class="badge badge-frontier">In development</span></div>
-          <div style="display: flex; align-items: baseline; gap: 8px"><span class="display" style="font-size: clamp(44px, 5vw, 56px); font-weight: 400">$9</span><span class="small">/ mo — illustrative, TBD</span></div>
-          <div class="tiny">Individual — freelance, solo, indie. Not bundled with Teams.</div>
+      <div class="card price-card">
+        <div class="price-head">
+          <div class="price-head-row"><span class="mono tiny">TEAMS</span><span class="badge badge-pass">Available now · founder-onboarded</span></div>
+          <div class="price-amt-row"><span class="display amt">{{ teamsPriceAmt }}</span><span class="small">{{ teamsPriceUnit }}</span></div>
+          <div class="mono tiny" style="color: var(--ink)">{{ teamsPriceSub }}</div>
+          <p class="tiny">{{ teamsSeatNote }}. Same bundle as Pro, on every seat.</p>
         </div>
-        <div style="display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--rule); padding-top: 20px">
-          <div style="font-size: 15px; line-height: 1.45">Everything in Free</div>
-          <div style="font-size: 15px; line-height: 1.45">Real-time / pooled model testing — tier→model map updates automatically</div>
-          <div style="font-size: 15px; line-height: 1.45">Effort-level routing — empirically-tested second rubric dimension</div>
-          <div style="font-size: 15px; line-height: 1.45">Category-segmented reporting — pass rate &amp; cost-per-pass by task type</div>
-          <div style="font-size: 15px; line-height: 1.45">Hosted dashboard — value curves, cost-per-pass, model-swap history</div>
-          <div style="margin-top: 12px">
-            <sc-if value="{{ leadSubmitted }}" hint-placeholder-val="{{ false }}">
-              <div class="mono" style="text-align: center; padding: 13px 18px; border: 1px solid var(--pass); border-radius: 6px; color: var(--pass); font-size: 13.5px">✓ On the list — {{ leadEmail }}</div>
-            </sc-if>
-            <sc-if value="{{ leadNotSubmitted }}" hint-placeholder-val="{{ true }}">
-              <input id="pricing-lead-email" name="email" type="email" autocomplete="email" required aria-required="true" aria-describedby="pricing-lead-error" aria-invalid="{{ leadInvalid }}" placeholder="you@company.com" aria-label="Email address for Pro early-access waitlist" value="{{ leadEmail }}" onChange="{{ setLeadEmail }}" style="font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; font-size: 14px; margin: 0 0 10px" />
-              <button type="button" class="btn" style="width: 100%" onClick="{{ submitLead }}" toolname="join_pro_waitlist" tooldescription="Join the Undercut Pro early-access waitlist by submitting an email address. Pro is not yet live.">Get early access</button>
-              <sc-if value="{{ leadError }}" hint-placeholder-val="{{ false }}">
-                <p id="pricing-lead-error" role="alert" style="font-size: 11.5px; color: var(--frontier); margin: 8px 0 0">{{ leadError }}</p>
-              </sc-if>
-            </sc-if>
-            <p class="tiny" style="margin-top: 10px; font-size: 11.5px">Pro isn't live yet — this puts you on the list for launch. Prefer GitHub? <a href="https://github.com/undercutsh/firstpass/issues" class="muted" style="text-decoration: underline; text-underline-offset: 3px">Open an issue instead →</a></p>
+        <div class="price-body">
+          <div>
+            <p class="feat-head">Everything in Pro, on every seat, plus</p>
+            <ul class="fl">
+              <li><strong>Org-wide policy enforcement</strong> <span class="fx">— holds on every seat</span></li>
+              <li>Shared team dashboard</li>
+              <li>Seat management <span class="fx">— admin / member roles, invitations</span></li>
+            </ul>
           </div>
+          <div>
+            <p class="feat-head">Getting started</p>
+            <ul class="fl">
+              <li>Onboarding call run by the founder</li>
+              <li>Email support</li>
+              <li class="no">SSO &amp; audit log <span class="fx">— Enterprise line items</span></li>
+            </ul>
+          </div>
+          <div class="seatcalc">
+            <label for="teams-seats" class="eyebrow muted" style="grid-column: 1 / -1">Your seats</label>
+            <input id="teams-seats" name="seats" type="text" inputmode="numeric" pattern="[0-9]*" value="{{ teamsSeats }}" onChange="{{ setTeamsSeats }}" aria-describedby="teams-seats-total" />
+            <span id="teams-seats-total" class="mono" style="font-size: 13px; line-height: 1.4">{{ teamsTotalFmt }} {{ teamsTotalUnit }}<br /><span class="muted">{{ teamsTotalDetail }}</span></span>
+          </div>
+          <details class="feat-detail">
+            <summary><span class="aff">What's behind each line</span></summary>
+            <dl>
+              <dt>Org-wide policy enforcement</dt>
+              <dd>The rubric and escalation ladder apply to every seat by default — savings stop depending on which devs happened to opt in.</dd>
+              <dt>Shared team dashboard</dt>
+              <dd>Pro's dashboard rolled up across the whole team: pass rate, cost-per-pass by category, swap history.</dd>
+              <dt>Seat management</dt>
+              <dd>Organization roles (admin / member), invitations, custom permissions. 12 seats included; each additional seat is billed on the plan it was added to.</dd>
+              <dt>Founder-run onboarding</dt>
+              <dd>Three intake fields, then pick a 30-minute window. Which tiers your provider setup can actually reach is the first thing covered. Billing is set up on the call — no card up front.</dd>
+              <dt>SSO &amp; audit log</dt>
+              <dd>Not part of Teams. SAML/OIDC SSO, SCIM directory sync, and access logs are Enterprise line items — see the next card.</dd>
+            </dl>
+          </details>
+        </div>
+        <div class="price-cta">
+          <button type="button" class="btn" onClick="{{ openTeamsFlow }}" toolname="start_teams_onboarding" tooldescription="Open the Undercut Teams onboarding flow: three intake fields, then pick an onboarding call window. Onboarding is run personally by the founder.">Start Teams onboarding →</button>
+          <p class="tiny price-cta-note">Three fields, then pick a time. No card up front — billing is set up on the onboarding call.</p>
         </div>
       </div>
-      <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; gap: 28px; padding: clamp(22px, 2.4vw, 32px)">
-        <div style="display: flex; flex-direction: column; gap: 12px">
-          <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap"><span class="mono tiny">TEAMS</span><span class="badge badge-frontier">Coming soon</span></div>
-          <div style="display: flex; align-items: baseline; gap: 8px"><span class="display" style="font-size: clamp(44px, 5vw, 56px); font-weight: 400">$29</span><span class="small">/ seat / mo — illustrative, TBD</span></div>
-          <div class="tiny">Same bundle as Pro, per seat. Billed monthly.</div>
+      <div class="card price-card">
+        <div class="price-head">
+          <div class="price-head-row"><span class="mono tiny">ENTERPRISE</span><span class="badge">Contact us · no list price</span></div>
+          <div class="price-amt-row"><span class="display" style="font-size: clamp(30px, 3.4vw, 40px); font-weight: 400">Contact us</span></div>
+          <div class="mono tiny" style="color: var(--ink)">scoped per contract · sales-led</div>
+          <p class="tiny">Annual committed-use discounts, custom invoicing.</p>
         </div>
-        <div style="display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--rule); padding-top: 20px">
-          <div style="font-size: 15px; line-height: 1.45">Everything in Pro, for every seat</div>
-          <div style="font-size: 15px; line-height: 1.45">Shared dashboard across the team</div>
-          <div style="font-size: 15px; line-height: 1.45">Org-wide tier policy enforcement</div>
-          <div style="font-size: 15px; line-height: 1.45">Seat management</div>
-          <div style="font-size: 15px; line-height: 1.45">SSO &amp; audit log — stretch goal</div>
-          <div style="margin-top: 12px">
-            <sc-if value="{{ leadSubmitted }}" hint-placeholder-val="{{ false }}">
-              <div class="mono" style="text-align: center; padding: 13px 18px; border: 1px solid var(--pass); border-radius: 6px; color: var(--pass); font-size: 13.5px">✓ On the list — {{ leadEmail }}</div>
-            </sc-if>
-            <sc-if value="{{ leadNotSubmitted }}" hint-placeholder-val="{{ true }}">
-              <input id="pricing-lead-email-teams" name="email" type="email" autocomplete="email" required aria-required="true" aria-describedby="pricing-lead-error-teams" aria-invalid="{{ leadInvalid }}" placeholder="you@company.com" aria-label="Email address for Team early-access waitlist" value="{{ leadEmail }}" onChange="{{ setLeadEmail }}" style="font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; font-size: 14px; margin: 0 0 10px" />
-              <button type="button" class="btn" style="width: 100%" onClick="{{ submitLead }}" toolname="join_teams_waitlist" tooldescription="Join the Undercut Teams early-access waitlist by submitting an email address. Teams is not yet live.">Get early access</button>
-              <sc-if value="{{ leadError }}" hint-placeholder-val="{{ false }}">
-                <p id="pricing-lead-error-teams" role="alert" style="font-size: 11.5px; color: var(--frontier); margin: 8px 0 0">{{ leadError }}</p>
-              </sc-if>
-            </sc-if>
-            <p class="tiny" style="margin-top: 10px; font-size: 11.5px">Teams is coming soon, not yet live — this puts you on the waitlist. It ships after Pro, once the multi-seat and org-admin layer is ready. Prefer GitHub? <a href="https://github.com/undercutsh/firstpass/issues" class="muted" style="text-decoration: underline; text-underline-offset: 3px">Open an issue instead →</a></p>
+        <div class="price-body">
+          <div>
+            <p class="feat-head">Everything in Teams, plus identity</p>
+            <ul class="fl">
+              <li><strong>SAML / OIDC SSO</strong> <span class="fx">— Okta, Entra ID, custom</span></li>
+              <li>SCIM directory sync <span class="fx">+ HRIS</span></li>
+              <li>Advanced RBAC <span class="fx">— department workspaces</span></li>
+            </ul>
           </div>
+          <div>
+            <p class="feat-head">Controls &amp; assurance</p>
+            <ul class="fl">
+              <li>Access logs <span class="fx">— custom retention, SIEM streaming</span></li>
+              <li>Data controls <span class="fx">— retention, redaction, residency</span></li>
+              <li>HIPAA available with a signed BAA</li>
+              <li>SOC 2 Type II <span class="fx">— starting soon</span></li>
+              <li>99.99% uptime SLA</li>
+            </ul>
+          </div>
+          <div>
+            <p class="feat-head">Support &amp; deployment</p>
+            <ul class="fl">
+              <li>Premium support SLA, dedicated Slack channel</li>
+              <li>Onboarding, migration, security questionnaires</li>
+              <li>On-prem / self-hosted option</li>
+            </ul>
+          </div>
+          <details class="feat-detail">
+            <summary><span class="aff">What's behind each line</span></summary>
+            <dl>
+              <dt>Enterprise SSO</dt>
+              <dd>SAML and OIDC: Okta, Microsoft Entra ID, or your own provider.</dd>
+              <dt>Directory sync (SCIM)</dt>
+              <dd>Automated provisioning and deprovisioning; HRIS integrations (BambooHR, Rippling, and similar).</dd>
+              <dt>Advanced RBAC</dt>
+              <dd>Department-level workspaces for separate product groups.</dd>
+              <dt>Access logs</dt>
+              <dd>Application and admin events, custom retention, streamed to your SIEM.</dd>
+              <dt>Data controls</dt>
+              <dd>Retention policy, redaction / data masking, advanced encryption, custom data residency.</dd>
+              <dt>Compliance &amp; SLAs</dt>
+              <dd>HIPAA compliance available with a signed BAA. SOC 2 Type II — starting soon; need it on a specific timeline? Tell us when you talk to us and we'll factor it in. 99.99% uptime SLA; premium support SLA with a dedicated Slack channel.</dd>
+              <dt>Deployment &amp; services</dt>
+              <dd>Onboarding &amp; migration support, custom security questionnaires, custom integrations, on-prem / self-hosted option.</dd>
+            </dl>
+          </details>
+          <p class="tiny" style="font-size: 11.5px">Honest note: Enterprise is in development and scoped per contract. The sign-in, directory, and logging capabilities above come from the auth provider the product is built on; "available" means we can deliver it under your agreement — not that we hold a compliance certification today. SOC 2 Type II is starting soon, not yet complete — if you need it on a specific timeline, say so when you reach out and we'll factor it into scheduling.</p>
         </div>
-      </div>
-      <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; gap: 28px; padding: clamp(22px, 2.4vw, 32px)">
-        <div style="display: flex; flex-direction: column; gap: 12px">
-          <span class="mono tiny">ENTERPRISE</span>
-          <span class="display" style="font-size: clamp(30px, 3.4vw, 40px); font-weight: 400">Contact us</span>
-          <div class="tiny">no public pricing, sales-led</div>
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--rule); padding-top: 20px">
-          <div style="font-size: 15px; line-height: 1.45">Everything in Teams</div>
-          <div style="font-size: 15px; line-height: 1.45">On-prem / self-hosted deployment option</div>
-          <div style="font-size: 15px; line-height: 1.45">Compliance path: SOC 2, data residency</div>
-          <div style="font-size: 15px; line-height: 1.45">Dedicated support &amp; onboarding</div>
-          <div style="font-size: 15px; line-height: 1.45">Custom integrations</div>
-          <div style="margin-top: 12px"><a href="https://github.com/undercutsh/firstpass/issues" class="btn btn-ghost" style="width: 100%">Contact sales</a></div>
+        <div class="price-cta">
+          <sc-if value="{{ entSubmitted }}" hint-placeholder-val="{{ false }}">
+            <div class="mono price-cta-done">✓ Received — {{ entEmail }}</div>
+          </sc-if>
+          <sc-if value="{{ entNotSubmitted }}" hint-placeholder-val="{{ true }}">
+            <input id="pricing-ent-email" name="email" type="email" autocomplete="email" required aria-required="true" aria-describedby="pricing-ent-error" aria-invalid="{{ entInvalid }}" placeholder="you@company.com" aria-label="Work email for an Enterprise conversation" value="{{ entEmail }}" onChange="{{ setEntEmail }}" />
+            <button type="button" class="btn btn-ghost" onClick="{{ submitEnt }}" toolname="contact_enterprise" tooldescription="Start an Undercut Enterprise conversation by submitting a work email address. Enterprise is scoped per contract; the founder replies by email.">Contact us</button>
+            <sc-if value="{{ entError }}" hint-placeholder-val="{{ false }}">
+              <p id="pricing-ent-error" role="alert" class="price-cta-error">{{ entError }}</p>
+            </sc-if>
+          </sc-if>
+          <p class="tiny price-cta-note">Goes straight to the founder, who replies from his own inbox. Prefer GitHub? <a href="https://github.com/undercutsh/firstpass/issues" class="muted" style="text-decoration: underline; text-underline-offset: 3px">Open an issue →</a></p>
         </div>
       </div>
     </div>
-    <h3 class="h3" style="margin: 56px 0 24px">Compare in detail</h3>
-    <div class="scroll-x" style="margin: 0 0 8px">
-      <!--
-        Real <table>/<tbody>/<tr> markup was replaced with an ARIA-rowed CSS
-        Grid on purpose: an <sc-for> loop element can't legally sit directly
-        inside <tbody> per the HTML5 table-parsing spec (only <tr> and
-        script-supporting elements are allowed there) — browsers silently
-        foster-parent it out of the table before any JS runs, which strips
-        the row/cell content out of the loop entirely and breaks both the
-        repetition and the `row` scope (confirmed via strict HTML5 parse:
-        the <sc-for> ends up with zero children and a <div> parent instead
-        of <tbody>). Every other sc-for on this page wraps a <div>/<button>/
-        <details>, which have no such restriction — this was the only one
-        inside a table. role="table"/"rowgroup"/"row"/"columnheader"/"cell"
-        keeps it accessible to assistive tech without real table elements.
-      -->
-      <div role="table" style="font-size: 14px; min-width: 760px; width: 100%">
-        <div role="rowgroup">
-          <div role="row" style="display: grid; grid-template-columns: minmax(220px, 1fr) 90px 90px 90px 110px; border-bottom: 1px solid var(--ink)">
-            <span role="columnheader" class="eyebrow muted" style="text-align: left; padding: 12px 14px 12px 0">Feature</span>
-            <span role="columnheader" class="mono" style="text-align: center; padding: 12px 14px; font-size: 13px">Free</span>
-            <span role="columnheader" class="mono" style="text-align: center; padding: 12px 14px; font-size: 13px">Pro</span>
-            <span role="columnheader" class="mono" style="text-align: center; padding: 12px 14px; font-size: 13px">Teams</span>
-            <span role="columnheader" class="mono" style="text-align: center; padding: 12px 14px; font-size: 13px">Enterprise</span>
-          </div>
+
+    <div id="free-plan" class="price-free">
+      <div class="price-free-lead">
+        <div class="price-head-row" style="justify-content: flex-start"><span class="mono tiny">FREE · INDIVIDUALS</span><span class="badge">Live · no account</span></div>
+        <div class="price-amt-row"><span class="display price-free-amt">$0</span><span class="small">forever, per individual</span></div>
+        <p class="small" style="max-width: 44ch">Not ready for a trial? The skill itself is free and complete — nothing in the rubric is held back. What Free leaves out is the upkeep.</p>
+      </div>
+      <ul class="fl fl-inline">
+        <li>Full 6-flag rubric &amp; escalation ladder</li>
+        <li>34 verified coding agents</li>
+        <li>MIT licensed — audit, fork, keep forever</li>
+        <li>Community support via GitHub issues</li>
+        <li class="no">Static tier→model map — you pull updates from <code class="mono">testing/</code> yourself</li>
+        <li class="no">No pooled testing, extra routing dimensions, or dashboard</li>
+      </ul>
+      <div class="price-free-cta">
+        <a href="#install" class="btn btn-ghost">Install the free skill →</a>
+        <code class="mono tiny">npx skills add undercutsh/firstpass</code>
+      </div>
+    </div>
+
+    <!--
+      Teams onboarding flow. Three steps, one primary action each:
+        1. intake — company email, team size, provider setup (all sent to
+           /api/lead as intent "teams-intake" the moment the visitor submits,
+           so the founder gets the triage signal even if they stop here);
+        2. pick a window — real, founder-published windows read from
+           /teams-availability.json (see that file's _readme; ships EMPTY on
+           purpose, so nothing on this page ever shows a slot the founder
+           didn't put there). The visitor's pick is sent as intent
+           "teams-slot-request" — a request, not a confirmed booking;
+        3. confirmation — states plainly that onboarding is run personally by
+           the founder, that he is backlogged, and that the window is a request
+           he confirms or re-proposes by email. That message is true today
+           (there is no live Teams infrastructure) and must be removed the day
+           it stops being true — see AGENTS.md's "no unearned trust signals."
+    -->
+    <sc-if value="{{ tfOpen }}" hint-placeholder-val="{{ false }}">
+      <div id="teams-signup" class="tflow" role="region" aria-label="Teams onboarding">
+        <div class="tflow-head">
+          <span class="mono" style="font-size: 13px">Teams onboarding</span>
+          <div class="tflow-steps" aria-hidden="true"><span class="{{ tfStep1Class }}">1 · Your setup</span><span>→</span><span class="{{ tfStep2Class }}">2 · Pick a window</span><span>→</span><span class="{{ tfStep3Class }}">3 · Done</span></div>
+          <button type="button" class="btn btn-ghost btn-sm" onClick="{{ closeTeamsFlow }}" aria-label="Close Teams onboarding">Close</button>
         </div>
-        <div role="rowgroup">
-          <sc-for list="{{ pricingGrid }}" as="row" hint-placeholder-count="16">
-            <div role="row" style="display: grid; grid-template-columns: minmax(220px, 1fr) 90px 90px 90px 110px; border-bottom: 1px solid var(--rule)">
-              <span role="cell" style="padding: 12px 14px 12px 0; color: var(--ink)">{{ row.feature }}</span>
-              <span role="cell" class="mono" style="text-align: center; padding: 12px 14px; color: {{ row.freeColor }}">{{ row.free }}</span>
-              <span role="cell" class="mono" style="text-align: center; padding: 12px 14px; color: {{ row.proColor }}">{{ row.pro }}</span>
-              <span role="cell" class="mono" style="text-align: center; padding: 12px 14px; color: {{ row.teamColor }}">{{ row.team }}</span>
-              <span role="cell" class="mono" style="text-align: center; padding: 12px 14px; color: {{ row.entColor }}">{{ row.ent }}</span>
+        <sc-if value="{{ tfIsStep1 }}" hint-placeholder-val="{{ true }}">
+          <div class="tflow-body">
+            <div>
+              <label for="tf-email" class="eyebrow muted" style="display: block; margin: 0 0 10px">Company email</label>
+              <input id="tf-email" name="email" type="email" autocomplete="email" required aria-required="true" aria-invalid="{{ tfEmailInvalid }}" placeholder="you@company.com" value="{{ tfEmail }}" onChange="{{ setTfEmail }}" style="max-width: 420px; font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; font-size: 15px" />
             </div>
-          </sc-for>
+            <div>
+              <span id="tf-size-label" class="eyebrow muted" style="display: block; margin: 0 0 10px">How many people build with coding agents?</span>
+              <div class="chips" role="group" aria-labelledby="tf-size-label">
+                <sc-for list="{{ tfSizeButtons }}" as="s" hint-placeholder-count="6">
+                  <button type="button" class="chip" onClick="{{ s.onClick }}" aria-pressed="{{ s.active }}">{{ s.label }}</button>
+                </sc-for>
+              </div>
+              <sc-if value="{{ tfSmallTeam }}" hint-placeholder-val="{{ false }}">
+                <p class="tiny" style="margin-top: 10px; max-width: 64ch">Honest note: Teams includes 12 seats. Under 12 people, Pro per person is usually the better deal — org-wide enforcement is what Teams is for. Carry on if you want the org controls; we'll talk it through either way.</p>
+              </sc-if>
+            </div>
+            <div>
+              <span id="tf-prov-label" class="eyebrow muted" style="display: block; margin: 0 0 10px">Primary LLM provider setup — pick everything that applies</span>
+              <div class="chips" role="group" aria-labelledby="tf-prov-label">
+                <sc-for list="{{ tfProviderButtons }}" as="p" hint-placeholder-count="10">
+                  <button type="button" class="chip" onClick="{{ p.onClick }}" aria-pressed="{{ p.active }}">{{ p.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap">
+              <button type="button" class="btn" onClick="{{ submitTfIntake }}" disabled="{{ tfBusy }}" toolname="submit_teams_intake" tooldescription="Submit the Teams intake form (company email, team size, provider setup) and move to picking an onboarding window.">See onboarding windows →</button>
+              <sc-if value="{{ tfError }}" hint-placeholder-val="{{ false }}">
+                <p role="alert" style="font-size: 12.5px; color: var(--frontier); margin: 0">{{ tfError }}</p>
+              </sc-if>
+            </div>
+            <p class="tiny" style="max-width: 70ch">This goes to the founder directly (see the <a href="/privacy" class="muted" style="text-decoration: underline; text-underline-offset: 3px">privacy page</a> for exactly where). It's used to prepare your onboarding — which tiers your setup can actually reach is the first thing we'll cover.</p>
+          </div>
+        </sc-if>
+        <sc-if value="{{ tfIsStep2 }}" hint-placeholder-val="{{ false }}">
+          <div class="tflow-body">
+            <div>
+              <p class="h4" style="margin: 0 0 6px">Pick an onboarding window</p>
+              <p class="small">30 minutes with the founder. Times shown in your timezone ({{ tfTimezone }}). Only windows he has actually published appear here — if it looks sparse, that's the real calendar.</p>
+            </div>
+            <sc-if value="{{ tfSlotsLoading }}" hint-placeholder-val="{{ true }}">
+              <p class="mono tiny">Loading published windows…</p>
+            </sc-if>
+            <sc-if value="{{ tfSlotsError }}" hint-placeholder-val="{{ false }}">
+              <p role="alert" class="tiny" style="color: var(--frontier)">Couldn't load the published windows right now. You can still request a follow-up below.</p>
+            </sc-if>
+            <sc-if value="{{ tfHasSlots }}" hint-placeholder-val="{{ false }}">
+              <div style="display: grid; gap: 20px">
+                <sc-for list="{{ tfDays }}" as="d" hint-placeholder-count="3">
+                  <div>
+                    <p class="slot-day">{{ d.label }}</p>
+                    <div class="slots">
+                      <sc-for list="{{ d.slots }}" as="sl" hint-placeholder-count="4">
+                        <button type="button" class="slot" onClick="{{ sl.onClick }}" aria-pressed="{{ sl.active }}">{{ sl.label }}</button>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap">
+                <button type="button" class="btn" onClick="{{ submitTfSlot }}" disabled="{{ tfSlotSubmitDisabled }}" toolname="request_teams_slot" tooldescription="Request the selected Teams onboarding window. This is a request the founder confirms by email, not an instant booking.">Request this time →</button>
+                <span class="tiny">{{ tfSlotHint }}</span>
+              </div>
+            </sc-if>
+            <sc-if value="{{ tfNoSlots }}" hint-placeholder-val="{{ false }}">
+              <div class="card" style="background: var(--paper)">
+                <p class="h4" style="margin: 0 0 8px">No open windows published right now</p>
+                <p class="small" style="max-width: 64ch">Teams onboarding is run personally by the founder, and the calendar is currently backlogged. Rather than show you a slot that doesn't exist, request a follow-up: he'll email you with the next real opening, in the order requests came in.</p>
+              </div>
+              <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap">
+                <button type="button" class="btn" onClick="{{ submitTfFollowup }}" disabled="{{ tfBusy }}" toolname="request_teams_followup" tooldescription="Request a personal follow-up from the founder for Teams onboarding when no onboarding windows are published.">Request a follow-up →</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{ tfError }}" hint-placeholder-val="{{ false }}">
+              <p role="alert" style="font-size: 12.5px; color: var(--frontier); margin: 0">{{ tfError }}</p>
+            </sc-if>
+          </div>
+        </sc-if>
+        <sc-if value="{{ tfIsStep3 }}" hint-placeholder-val="{{ false }}">
+          <div class="tflow-body">
+            <div class="mono" style="display: inline-flex; align-items: center; gap: 10px; padding: 12px 16px; border: 1px solid var(--pass); border-radius: 6px; color: var(--pass); font-size: 13.5px; width: fit-content">✓ {{ tfDoneHeadline }}</div>
+            <div style="max-width: 68ch; display: grid; gap: 12px">
+              <p class="body" style="font-size: 16px">{{ tfDoneBody }}</p>
+              <p class="body muted" style="font-size: 15px">An honest note on timing: Teams onboarding is handled personally by the founder, and he's currently backlogged. He works through requests in the order they arrive and replies from his own inbox — so the email you get will be from a person, not a sequence. If you'd rather not wait, the free skill needs no account and installs in one line.</p>
+            </div>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap">
+              <a href="#install" class="btn btn-ghost">Install the free skill meanwhile</a>
+              <button type="button" class="btn btn-ghost" onClick="{{ closeTeamsFlow }}">Close</button>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <div id="math" style="margin-top: 40px; padding: clamp(20px, 2.4vw, 28px); border: 1px solid var(--rule); border-radius: 6px; background: var(--paper); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 20px 32px; align-items: center">
+      <div>
+        <p class="eyebrow muted" style="margin: 0 0 8px">Why Pro pays for itself</p>
+        <p class="small" style="max-width: 52ch">Keeping a tier→model map current yourself means isolation-testing every new frontier-lab and openweights release against the incumbent, to statistical significance, forever. Illustrative, rounded, and built from the same methodology the vetting ledger runs:</p>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-family: 'Fragment Mono', Menlo, monospace; font-size: 13px">
+        <span class="pill" style="height: auto; padding: 8px 12px; color: var(--ink)">DIY compute <strong style="margin-left: 6px">≈ $0.54 / mo</strong></span>
+        <span class="muted">+</span>
+        <span class="pill" style="height: auto; padding: 8px 12px; color: var(--ink)">latency loss <strong style="margin-left: 6px">$15–$45 / mo</strong></span>
+        <span class="muted">=</span>
+        <span class="pill" style="height: auto; padding: 8px 12px; border-color: var(--cheap); color: var(--cheap)">≈ $15.50–$45.50 / mo DIY</span>
+        <span class="muted">vs.</span>
+        <span class="pill" style="height: auto; padding: 8px 12px; border-color: var(--ink); background: var(--ink); color: var(--paper)">Pro {{ proMonthlyEquivFmt }} / mo</span>
+      </div>
+      <p class="tiny" style="grid-column: 1 / -1; max-width: 90ch">Compute: ~5 candidate models per 30 days, N=20 tasks per arm, 2 arms, at the high end of measured per-task cost. Latency loss: an illustrative range for the savings missed between a better model shipping and a DIY user noticing — not a measured figure, and it excludes your own time entirely. Machine-readable version: <a href="/pricing.md" class="muted" style="text-decoration: underline; text-underline-offset: 3px">pricing.md</a>.</p>
+    </div>
+
+    <details style="margin-top: 40px">
+      <summary style="display: flex; align-items: center; gap: 12px; padding: 16px 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--rule)"><span class="h3 aff">Compare all four plans, feature by feature</span></summary>
+      <div class="scroll-x" style="margin: 0 0 8px">
+        <!--
+          Real <table>/<tbody>/<tr> markup was replaced with an ARIA-rowed CSS
+          Grid on purpose: an <sc-for> loop element can't legally sit directly
+          inside <tbody> per the HTML5 table-parsing spec (only <tr> and
+          script-supporting elements are allowed there) — browsers silently
+          foster-parent it out of the table before any JS runs, which strips
+          the row/cell content out of the loop entirely and breaks both the
+          repetition and the `row` scope (confirmed via strict HTML5 parse:
+          the <sc-for> ends up with zero children and a <div> parent instead
+          of <tbody>). Every other sc-for on this page wraps a <div>/<button>/
+          <details>, which have no such restriction — this was the only one
+          inside a table. role="table"/"rowgroup"/"row"/"columnheader"/"cell"
+          keeps it accessible to assistive tech without real table elements.
+          Group-header rows (isGroup) carry a feature string too, because
+          scripts/validate-dc-drift.js normalizes every row's `feature` while
+          hunting for the Support row.
+        -->
+        <div role="table" style="font-size: 13.5px; min-width: 820px; width: 100%">
+          <div role="rowgroup">
+            <div role="row" class="cmp-row" style="border-bottom: 1px solid var(--ink)">
+              <span role="columnheader" class="eyebrow muted" style="text-align: left">Feature</span>
+              <span role="columnheader" class="mono" style="text-align: center; font-size: 13px">Free</span>
+              <span role="columnheader" class="mono cmp-pro" style="text-align: center; font-size: 13px; font-weight: 700">Pro</span>
+              <span role="columnheader" class="mono" style="text-align: center; font-size: 13px">Teams</span>
+              <span role="columnheader" class="mono" style="text-align: center; font-size: 13px">Enterprise</span>
+            </div>
+          </div>
+          <div role="rowgroup">
+            <sc-for list="{{ pricingGrid }}" as="row" hint-placeholder-count="35">
+              <sc-if value="{{ row.isGroup }}">
+                <div role="row" class="cmp-row cmp-group">
+                  <span role="cell" class="eyebrow muted" style="grid-column: 1 / -1; padding-top: 18px">{{ row.feature }}</span>
+                </div>
+              </sc-if>
+              <sc-if value="{{ row.isRow }}">
+                <div role="row" class="cmp-row">
+                  <span role="cell" style="color: var(--ink)">{{ row.feature }}</span>
+                  <span role="cell" class="mono" style="text-align: center; color: {{ row.freeColor }}">{{ row.free }}</span>
+                  <span role="cell" class="mono cmp-pro" style="text-align: center; color: {{ row.proColor }}">{{ row.pro }}</span>
+                  <span role="cell" class="mono" style="text-align: center; color: {{ row.teamColor }}">{{ row.team }}</span>
+                  <span role="cell" class="mono" style="text-align: center; color: {{ row.entColor }}">{{ row.ent }}</span>
+                </div>
+              </sc-if>
+            </sc-for>
+          </div>
         </div>
       </div>
+      <p class="tiny" style="margin-top: 12px; max-width: 80ch">Enterprise is priced by contact — its SSO, directory, logging, and compliance line items are capabilities we can deliver under a contract, not certifications we hold. Machine-readable version of this table: <a href="/pricing.md" class="muted" style="text-decoration: underline; text-underline-offset: 3px">pricing.md</a>.</p>
+    </details>
+  </div>
+</section>
+
+<section id="guarantee" data-screen-label="Guarantee" class="sec">
+  <div class="wrap">
+    <div class="marker"><span class="eyebrow muted">§14</span><span class="line"></span><span class="eyebrow muted">Money-back guarantee</span><span class="badge badge-pass">Pro &amp; Teams</span></div>
+    <h2 class="h2" style="max-width: 28ch; margin-bottom: 16px">Money back. No questions asked.</h2>
+    <p class="body muted" style="margin-bottom: 36px; max-width: 70ch">No "prove it didn't pay for itself" audit, no retention call, no form with a reason field. Ask within the window and the charge comes back. The window depends only on how you pay — because a fair guarantee has to open once the plan could plausibly have shown its value.</p>
+    <div class="guar">
+      <div>
+        <p class="eyebrow muted" style="margin: 0 0 12px">Monthly plans</p>
+        <p class="display" style="font-size: clamp(34px, 4vw, 48px); font-weight: 400; margin: 0 0 12px">30 days</p>
+        <p class="small" style="max-width: 44ch">From any monthly charge. A month is long enough to see whether the map stayed current and the dashboard earned its keep; if it didn't, say so and you're refunded.</p>
+      </div>
+      <div>
+        <p class="eyebrow muted" style="margin: 0 0 12px">Annual plans</p>
+        <p class="display" style="font-size: clamp(34px, 4vw, 48px); font-weight: 400; margin: 0 0 12px">Days 90–120</p>
+        <p class="small" style="max-width: 46ch">The window opens at day 90 and stays open for 30 days — not on day 1. An annual plan is a bigger up-front ask, and nothing could have paid for itself by day 1; three months in, you've had real time to judge it. That's the fair place to put the exit, and it's a real one.</p>
+      </div>
+      <div style="display: flex; flex-direction: column; justify-content: center; gap: 12px">
+        <p class="h4">How to claim it</p>
+        <p class="small" style="max-width: 44ch">Reply to any receipt or billing email from us with "refund." That's the whole process. Applies to Pro and Teams, monthly or annual; additional Teams seats follow the plan they were added to.</p>
+        <p class="tiny">Separate from Pro's trial: the trial comes before your first charge; the guarantee covers the charges after it. Nothing is metered against you during either. The free skill stays installed either way — refunding Pro never takes the rubric away.</p>
+      </div>
     </div>
-    <p class="tiny" style="margin-top: 16px">Pricing and feature scope for Pro/Teams/Enterprise are the current build target, not a signed rate card. They'll firm up at launch. Teams is coming soon, after Pro — not a launch-day tier.</p>
   </div>
 </section>
 
 <section id="install" data-screen-label="Install" class="sec sec-deep">
   <div class="wrap">
-    <div class="marker"><span class="eyebrow dim">§14</span><span class="line"></span><span class="eyebrow dim">Try it</span></div>
+    <div class="marker"><span class="eyebrow dim">§15</span><span class="line"></span><span class="eyebrow dim">Try it</span></div>
     <h2 class="h2" style="max-width: 32ch; margin-bottom: 48px; color: var(--paper)">Free. MIT. Nothing installs, nothing proxies your traffic.</h2>
     <div class="g3" style="align-items: start">
       <div class="step">
@@ -3176,7 +3623,7 @@
 
 <section data-screen-label="Prior art" class="sec">
   <div class="wrap-n">
-    <div class="marker"><span class="eyebrow muted">§15</span><span class="line"></span><span class="eyebrow muted">Prior art</span></div>
+    <div class="marker"><span class="eyebrow muted">§16</span><span class="line"></span><span class="eyebrow muted">Prior art</span></div>
     <h2 class="h2" style="margin-bottom: 24px">Others have tried cheaper-model routing. Here's what's different.</h2>
     <p class="body muted" style="margin-bottom: 32px">peragwin's <a href="https://gist.github.com/peragwin" style="color: var(--ink); text-decoration: underline; text-underline-offset: 3px">subagent-model-routing gist</a> and <a href="https://github.com/soumabali/token-router" style="color: var(--ink); text-decoration: underline; text-underline-offset: 3px">soumabali/token-router</a> both explored assigning cheaper models to subagent work. Undercut adds the objective escalation loop on top: measured disagreement instead of self-reported confidence, hysteresis so a run can't thrash between tiers, residue-only escalation with a structured handoff, a calibration feedback loop, and — the part that's actually rare in this category — published, reproducible A/B results. Anyone can re-verify any cell in the tables above.</p>
     <h3 class="h3" style="margin-bottom: 10px">Not competing with your gateway.</h3>
@@ -3184,9 +3631,9 @@
   </div>
 </section>
 
-<section data-screen-label="FAQ" class="sec">
+<section id="faq" data-screen-label="FAQ" class="sec">
   <div class="wrap-n">
-    <div class="marker"><span class="eyebrow muted">§16</span><span class="line"></span><span class="eyebrow muted">FAQ</span></div>
+    <div class="marker"><span class="eyebrow muted">§17</span><span class="line"></span><span class="eyebrow muted">FAQ</span></div>
     <h2 class="h2" style="margin-bottom: 28px">Frequently asked</h2>
     <sc-for list="{{ faqs }}" as="faq" hint-placeholder-count="5">
       <details style="border-top: 1px solid var(--rule)">
@@ -3304,6 +3751,63 @@ const PLAN_TIERS = {
 // Per-client install commands. Keep in sync by hand with AGENTS.md's
 // "Client install matrix" — that file has the full reasoning/citations
 // per client, this is just the command each picker button runs.
+// Launch rate card. Numbers come from undercutsh/internal
+// business/pricing-v2-decisions-2026-09-14.md — don't "tidy" them: $59 (not
+// $57.60) and $2,988 are deliberate round-looking figures, and the two
+// annual discounts are deliberately unequal (45% Pro, 29% Teams base, ~17%
+// on additional Teams seats). Change the doc first, then this.
+const PRICING = {
+  pro: { monthly: 9, annual: 59 },
+  teams: { monthly: 349, annual: 2988, seatsIncluded: 12, extraSeatMonthly: 29, extraSeatAnnual: 290 }
+};
+
+// Teams intake options. Buckets exist so the founder can tell a 15-person
+// team from a 300-person one at a glance; provider options are a multi-select
+// (someone standardized on one vendor picks one and moves on).
+const TEAM_SIZES = [
+  { id: '1-5', label: '1–5' },
+  { id: '6-15', label: '6–15' },
+  { id: '16-50', label: '16–50' },
+  { id: '51-200', label: '51–200' },
+  { id: '201-1000', label: '201–1,000' },
+  { id: '1000+', label: '1,000+' }
+];
+const PROVIDERS = [
+  { id: 'anthropic', label: 'Anthropic (Claude) only' },
+  { id: 'openai', label: 'OpenAI (ChatGPT / GPT) only' },
+  { id: 'google', label: 'Google (Gemini) only' },
+  { id: 'mixed', label: 'Mixed / multiple frontier labs' },
+  { id: 'openrouter', label: 'Openweights via OpenRouter (DeepSeek, GLM, Qwen…)' },
+  { id: 'bedrock', label: 'AWS Bedrock' },
+  { id: 'azure', label: 'Azure OpenAI' },
+  { id: 'vertex', label: 'Google Vertex AI' },
+  { id: 'selfhosted', label: 'Self-hosted / local models' },
+  { id: 'unsure', label: 'Not sure / haven’t standardized' }
+];
+
+// Cuts the founder-published windows in /teams-availability.json into
+// bookable slot instants (ms since epoch). Fails closed on every axis: a
+// malformed window is skipped, anything inside the lead time or past the
+// horizon is hidden, and anything listed as taken is removed — so a stale
+// file shows fewer slots, never invented ones.
+function buildSlots(cfg, now = Date.now()) {
+  const len = Math.max(15, Number(cfg.slotMinutes) || 30) * 60e3;
+  const lead = now + (Number(cfg.leadTimeHours) || 24) * 3600e3;
+  const horizon = now + (Number(cfg.horizonDays) || 14) * 86400e3;
+  const taken = new Set((Array.isArray(cfg.taken) ? cfg.taken : []).map((s) => Date.parse(s)));
+  const out = new Set();
+  for (const w of Array.isArray(cfg.windows) ? cfg.windows : []) {
+    const end = Date.parse(w && w.end);
+    let t = Date.parse(w && w.start);
+    if (!Number.isFinite(t) || !Number.isFinite(end)) continue;
+    for (; t + len <= end; t += len) {
+      if (t < lead || t > horizon || taken.has(t)) continue;
+      out.add(t);
+    }
+  }
+  return [...out].sort((a, b) => a - b);
+}
+
 const INSTALL_CLIENTS = [
   { id: 'claude-code', label: 'Claude Code', cmd: '/plugin marketplace add undercutsh/firstpass', note: 'Then /plugin install firstpass@firstpass — fewest keystrokes, this repo is its own marketplace. Or npx skills add undercutsh/firstpass, or copy skills/firstpass/ to .claude/skills/firstpass/ by hand.' },
   { id: 'codex', label: 'Codex CLI', cmd: 'npx skills add undercutsh/firstpass -a codex', note: 'Reads .agents/skills/ (repo-scoped) or $HOME/.agents/skills/. Manual copy: mkdir -p .agents/skills && cp -r firstpass/skills/firstpass ./.agents/skills/firstpass' },
@@ -3329,7 +3833,24 @@ class Component extends DCLogic {
     leadEmail: '',
     leadSubmitted: false,
     leadSubmitting: false,
-    leadError: ''
+    leadError: '',
+    entEmail: '',
+    entSubmitted: false,
+    entSubmitting: false,
+    entError: '',
+    billing: 'annual',
+    teamsSeats: 12,
+    tfOpen: false,
+    tfStep: 1,
+    tfEmail: '',
+    tfSize: '',
+    tfProviders: [],
+    tfError: '',
+    tfBusy: false,
+    tfSlots: null,
+    tfSlotsError: false,
+    tfSlot: null,
+    tfDone: null
   };
   copyTimer = null;
   renderVals() {
@@ -3356,6 +3877,12 @@ class Component extends DCLogic {
     const copyActiveInstall = () => copyText(activeClient.cmd);
 
     const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // Pro "Start your Pro trial": the tier is live; the signup mechanism today
+    // is an email intake to /api/lead (intent pro-trial) — sign-in details are
+    // sent to that address. There is no checkout/billing backend in this repo,
+    // so the copy promises what the intake delivers (a trial that starts by
+    // email, nothing charged during it) and nothing more. Whether a card is
+    // taken up front or later is undecided — don't state either here.
     const submitLead = async () => {
       const email = (this.state.leadEmail || '').trim();
       if (!EMAIL_RE.test(email)) {
@@ -3371,6 +3898,9 @@ class Component extends DCLogic {
           body: JSON.stringify({
             email,
             source: window.location.pathname,
+            intent: 'pro-trial',
+            plan: 'pro',
+            billing: this.state.billing,
             calcMode: this.state.calcMode,
             calcVendor: this.state.calcVendor,
             calcSeats: this.state.calcSeats,
@@ -3387,6 +3917,137 @@ class Component extends DCLogic {
         });
       }
     };
+
+    // Enterprise "Contact us": same /api/lead endpoint and field allowlist as
+    // the Pro trial form, distinguished by intent — no separate backend.
+    const submitEnt = async () => {
+      const email = (this.state.entEmail || '').trim();
+      if (!EMAIL_RE.test(email)) {
+        this.setState({ entError: 'That doesn’t look like a valid email.' });
+        return;
+      }
+      if (this.state.entSubmitting) return;
+      this.setState({ entSubmitting: true, entError: '' });
+      try {
+        const res = await fetch('/api/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email,
+            source: window.location.pathname,
+            intent: 'enterprise-contact',
+            plan: 'enterprise',
+            billing: this.state.billing
+          })
+        });
+        if (!res.ok) throw new Error('lead capture request failed');
+        this.setState({ entSubmitted: true, entSubmitting: false, entError: '' });
+      } catch (err) {
+        console.error('[enterprise-contact] submit failed:', err);
+        this.setState({
+          entSubmitting: false,
+          entError: 'Couldn’t submit that right now — please try again in a moment, or open a GitHub issue.'
+        });
+      }
+    };
+
+    // ---- pricing v2: billing toggle, seat math, guarantee line ----------
+    const annual = this.state.billing === 'annual';
+    const fmtUsd = (n) => '$' + Math.round(n).toLocaleString('en-US');
+    const T = PRICING.teams;
+    const rawSeats = this.state.teamsSeats;
+    const seatCount = Math.max(T.seatsIncluded, rawSeats || T.seatsIncluded);
+    const extraSeats = seatCount - T.seatsIncluded;
+    const teamsTotal = annual ? T.annual + extraSeats * T.extraSeatAnnual : T.monthly + extraSeats * T.extraSeatMonthly;
+    const extraRate = annual ? T.extraSeatAnnual : T.extraSeatMonthly;
+    const perUnit = annual ? '/ yr' : '/ mo';
+    const proMonthlyEquiv = annual ? PRICING.pro.annual / 12 : PRICING.pro.monthly;
+    const guaranteeLine = annual
+      ? 'Money back, no questions asked — window opens day 90, closes day 120'
+      : 'Money back, no questions asked — 30 days from any charge';
+
+    // ---- Teams onboarding flow ------------------------------------------
+    const tf = this.state;
+    const postLead = async (extra) => {
+      const res = await fetch('/api/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: tf.tfEmail.trim(),
+          source: window.location.pathname,
+          plan: 'teams',
+          billing: tf.billing,
+          teamSize: tf.tfSize,
+          providers: tf.tfProviders.join(','),
+          ...extra
+        })
+      });
+      if (!res.ok) throw new Error('lead capture request failed (' + res.status + ')');
+    };
+    const tfFail = (err) => {
+      console.error('[teams-flow] submit failed:', err);
+      this.setState({ tfBusy: false, tfError: 'Couldn’t submit that right now — please try again in a moment, or open a GitHub issue.' });
+    };
+    const loadSlots = () => {
+      if (this.state.tfSlots !== null) return;
+      fetch('/teams-availability.json', { cache: 'no-store' })
+        .then((r) => { if (!r.ok) throw new Error('availability ' + r.status); return r.json(); })
+        .then((cfg) => this.setState({ tfSlots: buildSlots(cfg), tfSlotsError: false }))
+        .catch((err) => { console.error('[teams-flow] availability load failed:', err); this.setState({ tfSlots: [], tfSlotsError: true }); });
+    };
+    const openTeamsFlow = () => {
+      this.setState({ tfOpen: true, tfStep: 1, tfError: '' });
+      loadSlots();
+      setTimeout(() => {
+        const el = document.getElementById('teams-signup');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const input = document.getElementById('tf-email');
+        if (input) input.focus({ preventScroll: true });
+      }, 60);
+    };
+    const closeTeamsFlow = () => this.setState({ tfOpen: false, tfError: '' });
+    const submitTfIntake = async () => {
+      if (tf.tfBusy) return;
+      const email = tf.tfEmail.trim();
+      if (!EMAIL_RE.test(email)) return this.setState({ tfError: 'That doesn’t look like a valid email.' });
+      if (!tf.tfSize) return this.setState({ tfError: 'Pick a team size — it’s how the founder triages.' });
+      if (tf.tfProviders.length === 0) return this.setState({ tfError: 'Pick at least one provider setup (“Not sure” is fine).' });
+      this.setState({ tfBusy: true, tfError: '' });
+      try {
+        await postLead({ intent: 'teams-intake' });
+        this.setState({ tfBusy: false, tfStep: 2 });
+        loadSlots();
+      } catch (err) { tfFail(err); }
+    };
+    const tz = (() => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'your local time'; } catch (e) { return 'your local time'; } })();
+    const dayFmt = new Intl.DateTimeFormat('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+    const timeFmt = new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit' });
+    const slotLabel = (t) => dayFmt.format(t) + ', ' + timeFmt.format(t);
+    const submitTfSlot = async () => {
+      if (tf.tfBusy || !tf.tfSlot) return;
+      this.setState({ tfBusy: true, tfError: '' });
+      try {
+        await postLead({ intent: 'teams-slot-request', slot: new Date(tf.tfSlot).toISOString() });
+        this.setState({ tfBusy: false, tfStep: 3, tfDone: 'slot' });
+      } catch (err) { tfFail(err); }
+    };
+    const submitTfFollowup = async () => {
+      if (tf.tfBusy) return;
+      this.setState({ tfBusy: true, tfError: '' });
+      try {
+        await postLead({ intent: 'teams-followup' });
+        this.setState({ tfBusy: false, tfStep: 3, tfDone: 'followup' });
+      } catch (err) { tfFail(err); }
+    };
+    const slots = tf.tfSlots || [];
+    const tfDays = [];
+    for (const t of slots) {
+      const label = dayFmt.format(t);
+      let day = tfDays[tfDays.length - 1];
+      if (!day || day.label !== label) { day = { label, slots: [] }; tfDays.push(day); }
+      day.slots.push({ label: timeFmt.format(t), active: tf.tfSlot === t, onClick: () => this.setState({ tfSlot: t, tfError: '' }) });
+    }
+    const smallTeam = tf.tfSize === '1-5' || tf.tfSize === '6-15';
 
     const { calcMode, calcVendor, calcSeats, calcSpend } = this.state;
     const isTeam = calcMode === 'team';
@@ -3451,6 +4112,89 @@ class Component extends DCLogic {
       leadInvalid: this.state.leadError ? 'true' : 'false',
       setLeadEmail: (e) => this.setState({ leadEmail: e.target.value, leadError: '' }),
       submitLead,
+
+      entEmail: this.state.entEmail,
+      entSubmitted: this.state.entSubmitted,
+      entNotSubmitted: !this.state.entSubmitted,
+      entError: this.state.entError,
+      entInvalid: this.state.entError ? 'true' : 'false',
+      setEntEmail: (e) => this.setState({ entEmail: e.target.value, entError: '' }),
+      submitEnt,
+
+      billAnnual: annual,
+      billMonthly: !annual,
+      setBillAnnual: () => this.setState({ billing: 'annual' }),
+      setBillMonthly: () => this.setState({ billing: 'monthly' }),
+      proPriceAmt: fmtUsd(annual ? PRICING.pro.annual : PRICING.pro.monthly),
+      proPriceUnit: perUnit + ' — per individual',
+      proPriceSub: annual
+        ? '$' + proMonthlyEquiv.toFixed(2) + ' / mo equivalent · billed $' + PRICING.pro.annual + ' once a year'
+        : 'billed monthly · $' + PRICING.pro.monthly * 12 + ' a year — annual is $' + PRICING.pro.annual,
+      proMonthlyEquivFmt: annual ? '$' + proMonthlyEquiv.toFixed(2) : '$' + PRICING.pro.monthly,
+      proTrialNote: 'Full Pro bundle during the trial; nothing is charged during it. Then ' + (annual ? '$' + PRICING.pro.annual + ' a year.' : '$' + PRICING.pro.monthly + ' a month.'),
+      guaranteeLine,
+      teamsPriceAmt: fmtUsd(annual ? T.annual : T.monthly),
+      teamsPriceUnit: perUnit,
+      teamsPriceSub: annual
+        ? 'includes ' + T.seatsIncluded + ' seats · ≈ $' + Math.round(T.annual / 12) + ' / mo equivalent, billed once a year'
+        : 'includes ' + T.seatsIncluded + ' seats · billed monthly',
+      teamsSeatNote: '+' + fmtUsd(extraRate) + ' ' + perUnit + ' per additional seat',
+      teamsSeats: rawSeats,
+      setTeamsSeats: (e) => this.setState({ teamsSeats: Math.max(0, parseInt(e.target.value, 10) || 0) }),
+      teamsTotalFmt: fmtUsd(teamsTotal),
+      teamsTotalUnit: perUnit,
+      teamsTotalDetail: rawSeats < T.seatsIncluded
+        ? T.seatsIncluded + ' seats is the minimum — all included in the base plan'
+        : extraSeats > 0
+          ? seatCount + ' seats: ' + T.seatsIncluded + ' included + ' + extraSeats + ' × ' + fmtUsd(extraRate)
+          : seatCount + ' seats — all included in the base plan',
+
+      openTeamsFlow,
+      closeTeamsFlow,
+      tfOpen: tf.tfOpen,
+      tfIsStep1: tf.tfStep === 1,
+      tfIsStep2: tf.tfStep === 2,
+      tfIsStep3: tf.tfStep === 3,
+      tfStep1Class: tf.tfStep === 1 ? 'on' : '',
+      tfStep2Class: tf.tfStep === 2 ? 'on' : '',
+      tfStep3Class: tf.tfStep === 3 ? 'on' : '',
+      tfEmail: tf.tfEmail,
+      setTfEmail: (e) => this.setState({ tfEmail: e.target.value, tfError: '' }),
+      tfEmailInvalid: tf.tfError && /email/i.test(tf.tfError) ? 'true' : 'false',
+      tfSizeButtons: TEAM_SIZES.map((s) => ({
+        label: s.label,
+        active: tf.tfSize === s.id,
+        onClick: () => this.setState({ tfSize: s.id, tfError: '' })
+      })),
+      tfSmallTeam: smallTeam,
+      tfProviderButtons: PROVIDERS.map((p) => {
+        const active = tf.tfProviders.includes(p.id);
+        return {
+          label: p.label,
+          active,
+          onClick: () => this.setState({
+            tfProviders: active ? tf.tfProviders.filter((id) => id !== p.id) : [...tf.tfProviders, p.id],
+            tfError: ''
+          })
+        };
+      }),
+      submitTfIntake,
+      tfBusy: tf.tfBusy,
+      tfError: tf.tfError,
+      tfTimezone: tz,
+      tfSlotsLoading: tf.tfSlots === null,
+      tfSlotsError: tf.tfSlotsError,
+      tfHasSlots: tf.tfSlots !== null && slots.length > 0,
+      tfNoSlots: tf.tfSlots !== null && slots.length === 0,
+      tfDays,
+      submitTfSlot,
+      tfSlotSubmitDisabled: tf.tfBusy || !tf.tfSlot,
+      tfSlotHint: tf.tfSlot ? slotLabel(tf.tfSlot) + ' (' + tz + ') — a request the founder confirms by email, not an instant booking.' : 'Pick a window above. It’s a request the founder confirms by email, not an instant booking.',
+      submitTfFollowup,
+      tfDoneHeadline: tf.tfDone === 'slot' ? 'Window requested' : 'Follow-up requested',
+      tfDoneBody: tf.tfDone === 'slot'
+        ? 'We have your request for ' + (tf.tfSlot ? slotLabel(tf.tfSlot) + ' (' + tz + ')' : 'that window') + '. Confirmation — or a proposed alternative — goes to ' + tf.tfEmail.trim() + '.'
+        : 'We have your setup details. The next real opening on the founder’s calendar goes to ' + tf.tfEmail.trim() + '.',
 
       calcIsTeam: isTeam,
       calcModeIndividualBg: individualBtn.bg,
@@ -3533,23 +4277,48 @@ class Component extends DCLogic {
       calcNextTierLabel: nextTier ? nextTier.label : '',
       calcNextTierPriceFmt: nextTier ? fmtPrice(nextTier.price * seats) : '',
 
+      // Group-header rows (isGroup) carry a `feature` string too:
+      // scripts/validate-dc-drift.js normalizes every row's feature while
+      // looking for the Support row, and the Support row's values are the
+      // exact enum it diffs against pricing.md — keep those three words.
       pricingGrid: [
-        { feature: '6-flag rubric & escalation ladder (SKILL.md)', free: '✓', pro: '✓', team: '✓', ent: '✓', freeColor: '#13161b', proColor: '#13161b', teamColor: '#13161b', entColor: '#13161b' },
-        { feature: 'Claude Code, Codex, Cursor, Copilot, OpenCode', free: '✓', pro: '✓', team: '✓', ent: '✓', freeColor: '#13161b', proColor: '#13161b', teamColor: '#13161b', entColor: '#13161b' },
-        { feature: 'MIT licensed source', free: '✓', pro: '✓', team: '✓', ent: '✓', freeColor: '#13161b', proColor: '#13161b', teamColor: '#13161b', entColor: '#13161b' },
-        { feature: 'Tier→model mapping updates', free: 'Manual', pro: 'Automatic', team: 'Automatic', ent: 'Automatic', freeColor: '#6e7278', proColor: '#13161b', teamColor: '#13161b', entColor: '#13161b' },
-        { feature: 'Real-time / pooled model testing', free: '—', pro: '✓', team: '✓', ent: '✓', freeColor: '#6e7278', proColor: '#13161b', teamColor: '#13161b', entColor: '#13161b' },
-        { feature: 'Effort-level routing (2nd rubric dimension)', free: '—', pro: '✓', team: '✓', ent: '✓', freeColor: '#6e7278', proColor: '#13161b', teamColor: '#13161b', entColor: '#13161b' },
-        { feature: 'Category-segmented pass rate & cost-per-pass', free: '—', pro: '✓', team: '✓', ent: '✓', freeColor: '#6e7278', proColor: '#13161b', teamColor: '#13161b', entColor: '#13161b' },
-        { feature: 'Hosted dashboard (value curves, swap history)', free: '—', pro: '✓', team: '✓', ent: '✓', freeColor: '#6e7278', proColor: '#13161b', teamColor: '#13161b', entColor: '#13161b' },
-        { feature: 'Seats', free: '1', pro: '1', team: 'Unlimited, per seat', ent: 'Unlimited, per seat', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#13161b', entColor: '#13161b' },
-        { feature: 'Shared team dashboard', free: '—', pro: '—', team: '✓', ent: '✓', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#13161b', entColor: '#13161b' },
-        { feature: 'Org-wide routing policy enforcement', free: '—', pro: '—', team: '✓', ent: '✓', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#13161b', entColor: '#13161b' },
-        { feature: 'SSO / directory sync', free: '—', pro: '—', team: 'Stretch', ent: '✓', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#6e7278', entColor: '#13161b' },
-        { feature: 'On-prem / self-hosted deployment', free: '—', pro: '—', team: '—', ent: '✓', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#6e7278', entColor: '#13161b' },
-        { feature: 'SOC 2 path & data residency', free: '—', pro: '—', team: '—', ent: '✓', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#6e7278', entColor: '#13161b' },
-        { feature: 'Custom integrations', free: '—', pro: '—', team: '—', ent: '✓', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#6e7278', entColor: '#13161b' },
-        { feature: 'Support', free: 'Community', pro: 'Email', team: 'Email', ent: 'Dedicated', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#6e7278', entColor: '#6e7278' }
+        { isGroup: true, feature: 'The routing policy — the free skill', free: '', pro: '', team: '', ent: '' },
+        { isRow: true, feature: '6-flag rubric & escalation ladder (SKILL.md)', free: '✓', pro: '✓', team: '✓', ent: '✓', freeColor: '#13161b', proColor: '#13161b', teamColor: '#13161b', entColor: '#13161b' },
+        { isRow: true, feature: '34 verified coding agents (Claude Code, Codex, Cursor, Copilot, OpenCode…)', free: '✓', pro: '✓', team: '✓', ent: '✓', freeColor: '#13161b', proColor: '#13161b', teamColor: '#13161b', entColor: '#13161b' },
+        { isRow: true, feature: 'MIT licensed source', free: '✓', pro: '✓', team: '✓', ent: '✓', freeColor: '#13161b', proColor: '#13161b', teamColor: '#13161b', entColor: '#13161b' },
+        { isRow: true, feature: 'Tier→model mapping updates', free: 'Manual', pro: 'Automatic', team: 'Automatic', ent: 'Automatic', freeColor: '#6e7278', proColor: '#13161b', teamColor: '#13161b', entColor: '#13161b' },
+        { isGroup: true, feature: 'Keeping it current — what you pay for', free: '', pro: '', team: '', ent: '' },
+        { isRow: true, feature: 'Real-time / pooled model testing', free: '—', pro: '✓', team: '✓', ent: '✓', freeColor: '#6e7278', proColor: '#13161b', teamColor: '#13161b', entColor: '#13161b' },
+        { isRow: true, feature: 'Effort-level routing (2nd rubric dimension)', free: '—', pro: '✓', team: '✓', ent: '✓', freeColor: '#6e7278', proColor: '#13161b', teamColor: '#13161b', entColor: '#13161b' },
+        { isRow: true, feature: 'Category-segmented pass rate & cost-per-pass', free: '—', pro: '✓', team: '✓', ent: '✓', freeColor: '#6e7278', proColor: '#13161b', teamColor: '#13161b', entColor: '#13161b' },
+        { isRow: true, feature: 'Hosted dashboard (value curves, swap history)', free: '—', pro: '✓', team: '✓', ent: '✓', freeColor: '#6e7278', proColor: '#13161b', teamColor: '#13161b', entColor: '#13161b' },
+        { isRow: true, feature: 'New releases detected & vetted on arrival, swap-or-not recorded', free: 'Manual', pro: '✓', team: '✓', ent: '✓', freeColor: '#6e7278', proColor: '#13161b', teamColor: '#13161b', entColor: '#13161b' },
+        { isGroup: true, feature: 'Team controls', free: '', pro: '', team: '', ent: '' },
+        { isRow: true, feature: 'Seats', free: '1', pro: '1', team: '12 included, +$29/mo each', ent: 'Custom', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#13161b', entColor: '#13161b' },
+        { isRow: true, feature: 'Shared team dashboard', free: '—', pro: '—', team: '✓', ent: '✓', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#13161b', entColor: '#13161b' },
+        { isRow: true, feature: 'Org-wide routing policy enforcement', free: '—', pro: '—', team: '✓', ent: '✓', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#13161b', entColor: '#13161b' },
+        { isRow: true, feature: 'Roles & permissions (admin / member, invitations)', free: '—', pro: '—', team: '✓', ent: 'Advanced RBAC, department workspaces', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#13161b', entColor: '#13161b' },
+        { isGroup: true, feature: 'Account & sign-in security', free: '', pro: '', team: '', ent: '' },
+        { isRow: true, feature: 'Sign-in', free: 'No account needed', pro: 'GitHub, social, passkeys / biometric', team: 'GitHub, social, passkeys / biometric', ent: '+ SAML / OIDC SSO (Okta, Entra ID, custom)', freeColor: '#6e7278', proColor: '#13161b', teamColor: '#13161b', entColor: '#13161b' },
+        { isRow: true, feature: 'Multi-factor authentication (incl. SMS)', free: '—', pro: '✓', team: '✓', ent: '✓', freeColor: '#6e7278', proColor: '#13161b', teamColor: '#13161b', entColor: '#13161b' },
+        { isRow: true, feature: 'Password & session-lifetime policies', free: '—', pro: '✓', team: '✓', ent: '✓', freeColor: '#6e7278', proColor: '#13161b', teamColor: '#13161b', entColor: '#13161b' },
+        { isRow: true, feature: 'Machine auth (API keys, M2M tokens) for CI', free: '—', pro: '✓', team: '✓', ent: '✓', freeColor: '#6e7278', proColor: '#13161b', teamColor: '#13161b', entColor: '#13161b' },
+        { isRow: true, feature: 'Directory sync (SCIM) & HRIS (BambooHR, Rippling…)', free: '—', pro: '—', team: '—', ent: '✓', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#6e7278', entColor: '#13161b' },
+        { isRow: true, feature: 'Access logs (app + admin), custom retention, SIEM streaming', free: '—', pro: '—', team: '—', ent: '✓', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#6e7278', entColor: '#13161b' },
+        { isGroup: true, feature: 'Enterprise', free: '', pro: '', team: '', ent: '' },
+        { isRow: true, feature: 'HIPAA compliance (with signed BAA)', free: '—', pro: '—', team: '—', ent: 'Available', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#6e7278', entColor: '#13161b' },
+        { isRow: true, feature: 'SOC 2 Type II', free: '—', pro: '—', team: '—', ent: 'Starting soon', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#6e7278', entColor: '#13161b' },
+        { isRow: true, feature: 'Retention policy, redaction / masking, advanced encryption', free: '—', pro: '—', team: '—', ent: '✓', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#6e7278', entColor: '#13161b' },
+        { isRow: true, feature: 'Custom data residency', free: '—', pro: '—', team: '—', ent: '✓', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#6e7278', entColor: '#13161b' },
+        { isRow: true, feature: 'On-prem / self-hosted deployment', free: '—', pro: '—', team: '—', ent: '✓', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#6e7278', entColor: '#13161b' },
+        { isRow: true, feature: 'Uptime SLA', free: '—', pro: '—', team: '—', ent: '99.99%', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#6e7278', entColor: '#13161b' },
+        { isRow: true, feature: 'Onboarding & migration support, security questionnaires, custom integrations', free: '—', pro: '—', team: '—', ent: '✓', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#6e7278', entColor: '#13161b' },
+        { isGroup: true, feature: 'Billing & support', free: '', pro: '', team: '', ent: '' },
+        { isRow: true, feature: 'Price', free: '$0', pro: '$9/mo or $59/yr', team: '$349/mo or $2,988/yr', ent: 'Contract · annual committed-use discounts, custom invoicing', freeColor: '#13161b', proColor: '#13161b', teamColor: '#13161b', entColor: '#6e7278' },
+        { isRow: true, feature: 'How you start', free: 'Install, no account', pro: 'Trial, nothing charged during it', team: 'Founder onboarding, billing set up on the call', ent: 'Contract', freeColor: '#6e7278', proColor: '#13161b', teamColor: '#13161b', entColor: '#6e7278' },
+        { isRow: true, feature: 'Money-back guarantee, no questions asked', free: '—', pro: '30 days monthly · days 90–120 annual', team: '30 days monthly · days 90–120 annual', ent: 'Per contract', freeColor: '#6e7278', proColor: '#13161b', teamColor: '#13161b', entColor: '#6e7278' },
+        { isRow: true, feature: 'Support', free: 'Community', pro: 'Email', team: 'Email', ent: 'Dedicated', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#6e7278', entColor: '#6e7278' },
+        { isRow: true, feature: 'Support SLA & dedicated Slack channel', free: '—', pro: '—', team: '—', ent: '✓', freeColor: '#6e7278', proColor: '#6e7278', teamColor: '#6e7278', entColor: '#13161b' }
       ],
 
       ladderRows: [
@@ -3576,9 +4345,12 @@ class Component extends DCLogic {
         { q: 'What does uninstalling look like?', a: 'Remove the skill and you\u2019re back to status quo. It\u2019s a policy your agent follows, not infrastructure — zero lock-in, nothing to migrate off.' },
         { q: 'Is the free plan actually free forever?', a: 'Yes. The MIT skill is the product’s credibility, not a lead magnet for it — it stays free and full-featured for individual use indefinitely. Pro and Teams are optional paid layers on top, not a bait-and-switch on what’s free today.' },
         { q: 'What does Pro add that the free skill doesn’t?', a: 'Real-time/pooled model testing (a central vetting ledger tests new frontier-lab and openweights models to statistical significance and keeps your tier→model map current automatically), effort-level routing as a second rubric dimension, category-segmented pass-rate and cost-per-pass reporting, and a hosted dashboard. It’s built for individuals — freelance, solo, indie — not gated behind a Teams plan.' },
-        { q: 'What does Teams add on top of Pro?', a: 'Teams ships the identical feature bundle as Pro — it’s not a bigger product. What it adds is collaboration and admin surface: a shared team dashboard, org-wide tier policy enforcement, and seat management, priced per seat. SSO/directory sync and an audit log are a stretch goal.' },
-        { q: 'How are Pro and Teams priced, and is there a trial?', a: 'Pro is $9/month per individual, illustrative and still TBD. Teams is $29/seat/month, also illustrative. Both are in development — Pro and Teams are not yet live, and Teams specifically is coming soon on a waitlist, not a launch-day tier: it ships after Pro, once the multi-seat and org-admin layer is ready. Join early access on the pricing section above to get notified.' },
-        { q: 'What’s the difference between Teams and Enterprise?', a: 'Teams is self-serve for most orgs. Enterprise adds an on-prem/self-hosted option, a SOC 2 compliance path and data residency, dedicated support, and custom integrations — priced by contact, not listed, because those deployments vary too much for a flat rate.' },
+        { q: 'What does Teams add on top of Pro?', a: 'Teams ships the identical feature bundle as Pro — it’s not a bigger product. What it adds is collaboration and admin surface: a shared team dashboard, org-wide tier policy enforcement, and seat management. It’s $349/month including 12 seats (or $2,988/year), plus $29/month per additional seat — a 12-seat floor on purpose, because a team under about 12 rarely needs org-wide enforcement and Pro per person covers them. SSO/directory sync and an audit log are Enterprise line items, not part of Teams.' },
+        { q: 'How are Pro and Teams priced, and is there a trial?', a: 'Pro is $9/month or $59/year (about $4.92/month, billed once) per individual, and starts with a trial of the full Pro bundle: enter your email on the pricing card, sign-in details follow, and nothing is charged during the trial. Teams is $349/month including 12 seats, or $2,988/year for the same 12; additional seats are $29/month each ($290/year on annual) — onboarded personally by the founder, with billing set up on the onboarding call rather than a card up front. After that, both carry a no-questions-asked money-back guarantee: 30 days on monthly plans, days 90–120 on annual.' },
+        { q: 'Why does the annual guarantee start at day 90 instead of day 1?', a: 'Because an annual plan is a bigger up-front ask, and nothing could have paid for itself by day 1 — a refund window there would be a guarantee on a plan you hadn’t used yet. Three months in, the tier map has had time to move and the dashboard has had time to show whether it earned its keep, so the window opens at day 90 and stays open for 30 days. Monthly plans get the conventional 30 days from any charge. Either way it’s no questions asked: reply to a receipt email with “refund” and that’s the process.' },
+        { q: 'Does Pro help if I only use Claude Code with a Claude subscription?', a: 'Yes, with a lower ceiling — and we’d rather say so than oversell it. Claude Code on a Claude subscription with no other keys routes only within Anthropic’s own tier ladder: the rubric still stops over-escalation there, and Pro’s pooled testing and effort-level tuning apply to those tiers. The biggest savings come from reaching openweights tiers that cost pennies per task, which needs a provider key (OpenRouter is the common one) — and in Claude Code that key replaces subscription auth for the session, so it’s a real trade-off, not a free add-on. Cursor, Windsurf, and Copilot can add an OpenRouter key alongside their subscription; OpenCode, Cline, Continue, Aider, and Roo Code are already on API billing, so adding one there is pure upside.' },
+        { q: 'What’s the difference between Teams and Enterprise?', a: 'Teams is self-serve for most orgs. Enterprise adds the org-plumbing layer: SAML/OIDC SSO (Okta, Microsoft Entra ID, custom providers), SCIM directory sync and HRIS integrations, advanced RBAC with department-level workspaces, application and admin access logs with custom retention and SIEM streaming, data controls (retention policy, redaction/masking, advanced encryption, custom residency), HIPAA compliance available under a signed BAA, SOC 2 Type II starting soon (tell us your timeline when you reach out), a 99.99% uptime SLA, a premium support SLA with a dedicated Slack channel, onboarding/migration help, security questionnaires, custom invoicing and annual committed-use discounts, plus an on-prem/self-hosted option and custom integrations. Priced by contact, not listed, because those deployments vary too much for a flat rate. Honest note: Enterprise is in development; "available" means deliverable under your contract, not a certification we hold today.' },
+        { q: 'What does account security look like on Pro and Teams?', a: 'Table stakes, included, not a differentiator we’re claiming over anyone: GitHub, social, and passkey/biometric sign-in; multi-factor authentication including SMS; custom password requirements and session-lifetime controls; machine authentication (API keys and M2M tokens) for CI and scripts; and, on Teams, organization roles (admin/member), invitations, and custom permissions. These come from the auth provider the account layer is built on and apply from your first sign-in. Free needs no account at all — the skill is a file your agent reads.' },
         { q: 'Does the paid plan turn this into a network-layer proxy?', a: 'No. Pro and Teams enforce the policy through configuration and the escalation ledger, not by sitting between your agent and its model calls. It still composes with whatever gateway you already run — see the Teams section above.' },
         { q: 'Does this work if I already have a routing or gateway tool?', a: 'Yes. This skill is policy the orchestrating agent follows at dispatch time — it is not a proxy and does not enforce anything at the network layer. It composes with gateways: route first, compress second.' },
         { q: 'What happens if the cheap-tier model gets it wrong?', a: 'It escalates automatically. Verification failing twice at the current tier escalates exactly one tier up, two disagreeing low-tier runs on ambiguous work escalate, and a worker can self-tag an item uncertain to force escalation — only the failed or flagged residue moves up, never the whole batch, and a run never de-escalates mid-task.' },
