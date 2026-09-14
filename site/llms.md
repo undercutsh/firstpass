@@ -70,8 +70,8 @@ The identical feature bundle as Pro, per seat, plus a shared team dashboard, org
 Machine-readable version: https://getundercut.sh/pricing.md
 
 - **Free** — $0 forever, per individual. Live now.
-- **Pro** — $14/month, per individual, illustrative. In development, not yet live — join the waitlist.
-- **Teams** — $14/seat/month, illustrative. Coming soon, not yet live — join the waitlist.
+- **Pro** — $9/month, per individual, illustrative. In development, not yet live — join the waitlist.
+- **Teams** — $29/seat/month, illustrative. Coming soon, not yet live — join the waitlist.
 - **Enterprise** — contact-only, sales-led. In development.
 
 ## Install and verify
