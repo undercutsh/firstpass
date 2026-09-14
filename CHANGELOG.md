@@ -8,6 +8,14 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ### Added
 
+- **`newcombeDiffInterval()` in `evals/src/stats.js`** — a confidence interval
+  on the difference between two pass rates (Newcombe 1998's hybrid-score
+  method, built on the existing `wilsonInterval`). This is the significance
+  test the maintainer-side model-vetting ledger (`undercutsh/internal`) now
+  requires before treating a tier-swap candidate's result as decisive,
+  replacing an earlier hand-tuned N/margin heuristic. See "Statistical
+  methodology" in `evals/README.md`.
+
 - **Undercut Hooks (`hooks/`), shipped, opt-in** — a local Claude Code hooks
   package that (1) force-injects the condensed rubric every session instead
   of relying on skill-matcher self-activation, and (2) prints a session-end
