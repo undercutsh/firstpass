@@ -40,6 +40,31 @@ All notable changes to Undercut (firstpass) are documented here. Follows
   but the card now invites prospects who need it on a timeline to raise
   it when they reach out, rather than staying silent on the topic.
 
+- **"Two extra routing dimensions" illustration on `site/index.html` §12
+  (`#routing-dimensions`), Pro-only, plus a matching Pro-card bullet.** A
+  self-contained card below the §12 feature grid explains what Pro's
+  vetting pipeline tests beyond tier — task category (on one vendor's
+  ladder the cheapest tier won 6 of 7 categories on cost per completed
+  task, but failed 70% of security tasks where the mid tier was cheaper
+  per completed task) and reasoning effort (across a 210-run sweep,
+  raising effort was a statistically confirmed win in exactly one cell —
+  an open-weight model on documentation, +70 points — and a confirmed
+  loss in three others, a wash everywhere else) — with a captioned
+  `<table>` comparing Free (tier only) vs. Pro (tier + category + effort)
+  on documentation, security, and reasoning. Written as
+  testing-pipeline-derived routing recommendations delivered through the
+  same policy-file mechanism as Free, not as live per-call routing:
+  `evals/src/policy.js` reads `task.category` only for answer-format
+  prompt notes and never reads effort, so no per-call category/effort
+  routing is claimed. Carries a plain sample-size note (about ten tasks per
+  cell, single seed; only the four effort deltas cleared a 95% confidence
+  test) and a "Pro only" badge. The Pro card's "Effort-level routing"
+  bullet became "Two extra routing dimensions, not just one" linking to
+  the card. Mirrored in `site/pricing.md` (new "Routing dimensions"
+  section), `site/index.md`, and `site/llms.md`. Numbers per
+  `undercutsh/internal` `business/full-category-effort-matrix-2026-09-14.md`
+  and `business/optimized-matrix-and-significance-2026-09-14.md`.
+
 - **Pricing v2 on `site/index.html` (§13–§14)** — an annual/monthly billing
   toggle (annual preselected; Pro $9/mo or $59/yr, Teams $349/mo or
   $2,988/yr), a dedicated **money-back guarantee** section (`#guarantee`:
