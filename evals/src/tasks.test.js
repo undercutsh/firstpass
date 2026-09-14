@@ -87,6 +87,24 @@ describe('gradeJsonSubset', () => {
     assert.equal(result.pass, true);
   });
 
+  test('fails gracefully (does not throw) when the parsed answer is a bare number', () => {
+    // Regression: a model answering `7` instead of `{"line": 7}` used to crash
+    // the whole run with "Cannot use 'in' operator to search for 'line' in 7"
+    // -- a bare non-object JSON value is valid JSON but not gradeable as key
+    // subset, so this must fail cleanly, not throw.
+    assert.doesNotThrow(() => gradeJsonSubset(7, { line: 7 }));
+    const result = gradeJsonSubset(7, { line: 7 });
+    assert.equal(result.pass, false);
+    assert.equal(result.reason, 'non-object JSON output');
+  });
+
+  test('fails gracefully on a bare-number JSON string too', () => {
+    assert.doesNotThrow(() => gradeJsonSubset('7', { line: 7 }));
+    const result = gradeJsonSubset('7', { line: 7 });
+    assert.equal(result.pass, false);
+    assert.equal(result.reason, 'non-object JSON output');
+  });
+
   test('array-valued key: identical order passes', () => {
     const result = gradeJsonSubset({ keys: ['a', 'b', 'c'] }, { keys: ['a', 'b', 'c'] });
     assert.equal(result.pass, true);
