@@ -35,8 +35,9 @@ const MAX_STRING_LEN = 500; // hard cap for any string field before per-field ca
 // rejected outright rather than silently dropped, so unexpected/extra fields
 // can't be used to smuggle bulk data through this endpoint.
 //   intent    — which form: pro-reserve | teams-intake | teams-slot-request |
-//               teams-followup (free text here, so a renamed form can't 400)
-//   plan      — pro | teams
+//               teams-followup | enterprise-contact (free text here, so a
+//               renamed form can't 400)
+//   plan      — pro | teams | enterprise
 //   billing   — monthly | annual (the pricing toggle's state at submit time)
 //   teamSize  — one of the intake's size-bucket ids, e.g. "16-50"
 //   providers — comma-joined provider ids from the intake multi-select

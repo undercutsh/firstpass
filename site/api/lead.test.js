@@ -168,6 +168,33 @@ test('forwards the Teams onboarding intake fields (intent/plan/billing/teamSize/
   assert.equal(capturedBody.slot, '2026-10-01T17:00:00.000Z');
 });
 
+test('accepts the Enterprise "Contact us" payload (intent enterprise-contact, plan enterprise) within the existing allowlist', async (t) => {
+  const prevUrl = process.env.LEAD_WEBHOOK_URL;
+  process.env.LEAD_WEBHOOK_URL = 'https://example.com/webhook';
+  const prevFetch = globalThis.fetch;
+  let capturedBody = null;
+  globalThis.fetch = async (url, opts) => {
+    capturedBody = JSON.parse(opts.body);
+    return { ok: true, status: 200 };
+  };
+  t.after(() => {
+    globalThis.fetch = prevFetch;
+    if (prevUrl !== undefined) process.env.LEAD_WEBHOOK_URL = prevUrl;
+    else delete process.env.LEAD_WEBHOOK_URL;
+  });
+
+  const req = mockReq({
+    body: { email: 'cto@company.example', source: '/', intent: 'enterprise-contact', plan: 'enterprise', billing: 'annual' }
+  });
+  const res = mockRes();
+  await handler(req, res);
+
+  assert.equal(res.statusCode, 200);
+  assert.equal(capturedBody.intent, 'enterprise-contact');
+  assert.equal(capturedBody.plan, 'enterprise');
+  assert.equal(capturedBody.billing, 'annual');
+});
+
 test('rejects an oversized providers string and a non-string slot with 400', async () => {
   let res = mockRes();
   await handler(mockReq({ body: { email: 'a@example.com', providers: 'x'.repeat(201) } }), res);

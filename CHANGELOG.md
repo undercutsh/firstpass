@@ -8,6 +8,31 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ### Added
 
+- **Enterprise card built out on `site/index.html` §13, plus included-security
+  and always-current-roster copy for Pro/Teams.** The Enterprise card now
+  lists the org-plumbing line items (SAML/OIDC SSO — Okta, Microsoft Entra ID,
+  custom; SCIM directory sync and HRIS integrations; advanced RBAC with
+  department-level workspaces; application/admin access logs with custom
+  retention and SIEM streaming; data controls — retention, redaction/masking,
+  encryption, custom residency; HIPAA compliance *available* with a signed BAA;
+  99.99% uptime SLA; premium support SLA with a dedicated Slack channel;
+  onboarding/migration support; security questionnaires; custom invoicing and
+  annual committed-use discounts) with a "Contact us" email form posting
+  `intent: enterprise-contact` / `plan: enterprise` to the existing `/api/lead`
+  allowlist — no price, no checkout, no new backend. Every compliance item is
+  phrased as available/deliverable-per-contract; the card, grid footnote,
+  FAQ, and `pricing.md` all state plainly that no certification is held. The
+  Pro card, §12, the comparison grid, and a new FAQ entry gain two low-key
+  lines: account security included at Pro/Teams (GitHub/social/passkey
+  sign-in, MFA incl. SMS, password and session-lifetime policies, API keys /
+  M2M tokens for CI, org roles on Teams — listed as table stakes, not a
+  differentiator), and "every new release vetted on arrival" (frontier-lab
+  and open-weight releases detected the moment they ship, swapped in only if
+  they beat the roster for a tier or task category, the miss recorded too).
+  The comparison grid gained an "Account & sign-in security" group. Mirrored
+  in `site/pricing.md`, `site/index.md`, `site/llms.md`, the JSON-LD FAQ, and
+  `site/privacy.html` (which now names the Enterprise form).
+
 - **Pricing v2 on `site/index.html` (§13–§14)** — an annual/monthly billing
   toggle (annual preselected; Pro $9/mo or $59/yr, Teams $349/mo or
   $2,988/yr), a dedicated **money-back guarantee** section (`#guarantee`:

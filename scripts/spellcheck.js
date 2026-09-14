@@ -148,6 +148,9 @@ const ALLOWLIST = [
   'OpenHands', "OpenHands'", 'OpenDevin', 'microagent', 'microagents', 'LiteLLM',
   'Augment', "Augment's", 'Auggie', "Auggie's", 'augmentcode', 'auggie',
   'onboarded',
+  // Enterprise / identity-and-access vocabulary on the pricing page
+  'SAML', 'OIDC', 'SCIM', 'Okta', 'Entra', 'HRIS', 'BambooHR', 'Rippling', 'SIEM',
+  'HIPAA', 'BAA', 'RBAC', 'SLA', 'MFA', 'M2M', 'passkeys', 'passkey', 'deprovisioning', 'biometric',
   // Files / identifiers used verbatim in copy
   'SKILL.md', 'AGENTS.md', 'CLAUDE.md', 'CHANGELOG.md', 'WARP.md',
   // People / orgs in credits, socials, contributors
