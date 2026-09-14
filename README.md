@@ -200,6 +200,14 @@ OpenHands, Kilo Code, Augment Code, Goose, and Replit Agent) —
 exact commands, a verify-your-install prompt, and troubleshooting — are in
 [`AGENTS.md` → Client install matrix](AGENTS.md#client-install-matrix).
 
+**How much can routing actually reach in your tool?** It depends on which
+models the tool lets the skill route between — Claude Code with a Claude
+subscription reaches Anthropic's tiers only; bring-your-own-key tools reach
+every vendor and tier. [getundercut.sh/setup](https://getundercut.sh/setup)
+asks two questions and gives the honest answer for your setup; the full
+tool-by-tool matrix is at
+[getundercut.sh/compatibility.md](https://getundercut.sh/compatibility.md).
+
 **For AI coding agents working in this repo:** see [`AGENTS.md`](AGENTS.md)
 for build/test commands and repo conventions.
 

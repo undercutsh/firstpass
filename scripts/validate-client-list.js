@@ -50,6 +50,7 @@ const NON_COMPANION_PAGES = new Set([
   'privacy.html',
   'terms.html',
   'status.html',
+  'setup.html', // two-question editor/provider onboarding flow — not a per-agent page
 ]);
 
 export function readCompanionSlugsFromDisk(siteDir) {

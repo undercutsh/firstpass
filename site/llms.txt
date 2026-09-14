@@ -10,6 +10,7 @@ Measured (public benchmarks, official test cases, deterministic graders): up to 
 - [Markdown twin of the landing page](https://getundercut.sh/index.md)
 - [Source repo](https://github.com/undercutsh/firstpass)
 - [About](https://getundercut.sh/about)
+- [What Undercut unlocks for your setup (editor + subscription-vs-API-keys → one of four honest answers)](https://getundercut.sh/setup)
 - [Build status (live CI history)](https://getundercut.sh/status)
 - [Changelog (RSS)](https://getundercut.sh/changelog.xml)
 
@@ -35,6 +36,7 @@ Most real requests mix both kinds of work in one session — a planning/judgment
 - [Developers (no public API/MCP server yet — what exists today)](https://getundercut.sh/developers)
 - [Agent instructions for this codebase (AGENTS.md)](https://raw.githubusercontent.com/undercutsh/firstpass/main/AGENTS.md)
 - [Pricing (machine-readable)](https://getundercut.sh/pricing.md)
+- [Editor × LLM-provider compatibility matrix (machine-readable; what Undercut can route between per tool, and what still needs re-verification)](https://getundercut.sh/compatibility.md)
 
 ## Install
 - `npx skills add undercutsh/firstpass`

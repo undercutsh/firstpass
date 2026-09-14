@@ -133,7 +133,7 @@ const ALLOWLIST = [
   'Vercel', 'vercel-labs', 'GitHub', 'githubusercontent', 'GitLab', 'npm', 'npx', 'Node',
   'JSON', 'YAML', 'yml', 'toml', 'mdc', 'Markdown', 'CI', 'API', 'CLI', "CLI's", 'URL', 'URLs',
   'HTML', 'CSS', 'JS', 'SDK', 'SKU', 'SSO', 'MIT', 'DOM', 'SVG', 'PR', 'PRs', 'SEO', 'FAQ',
-  'FAQs', 'MCP', 'LLM', 'LLMs', 'README', 'https', 'src', 'cp', 'mkdir', 'auth', 'config',
+  'FAQs', 'MCP', 'LLM', 'LLMs', 'README', 'https', 'src', 'cp', 'mkdir', 'auth', 'OAuth', 'config',
   'onclick', 'frontmatter', "frontmatter's", 'crawler', 'endpoint', 'endpoints', 'webhook',
   'monospace', 'org', 'repo', "repo's", 'repos', 'workspace', 'worktree', 'subagent',
   'subagent-model-routing', 'codebase', 'eval', 'evals', 'Eval', 'eval-harness', 'xhigh',

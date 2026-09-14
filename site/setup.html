@@ -1,0 +1,678 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#13161b">
+<title>What Undercut unlocks for your setup — Undercut</title>
+<meta name="description" content="Two questions — which coding agent you use, and whether you're on a subscription or API keys — then the honest answer for that setup: what Undercut routes, what it can't reach, and whether an optional OpenRouter key is worth adding.">
+<link rel="canonical" href="https://getundercut.sh/setup">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+<link rel="icon" sizes="48x48" href="/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="Undercut changelog" href="https://getundercut.sh/changelog.xml">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#13161b">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Undercut">
+<meta property="og:title" content="What Undercut unlocks for your setup">
+<meta property="og:description" content="Which agent, subscription or API keys — then the honest answer for that setup. Not the generic pitch.">
+<meta property="og:url" content="https://getundercut.sh/setup">
+<meta property="og:image" content="https://getundercut.sh/og-image.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://getundercut.sh/og-image.png">
+<meta name="twitter:title" content="What Undercut unlocks for your setup">
+<meta name="twitter:description" content="Which agent, subscription or API keys — then the honest answer for that setup. Not the generic pitch.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://getundercut.sh/setup#webpage",
+  "url": "https://getundercut.sh/setup",
+  "name": "What Undercut unlocks for your setup",
+  "description": "Two questions — which coding agent you use, and whether you're on a subscription or API keys — then the honest answer for that setup: what Undercut routes, what it can't reach, and whether an optional OpenRouter key is worth adding.",
+  "isPartOf": { "@type": "WebSite", "url": "https://getundercut.sh/", "name": "Undercut" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Undercut", "item": "https://getundercut.sh/" },
+    { "@type": "ListItem", "position": 2, "name": "Your setup", "item": "https://getundercut.sh/setup" }
+  ]
+}
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  :root {
+    --ink: #13161b; --paper: #f2f0ec; --card: #fbfaf8; --cheap: #00959c;
+    --frontier: #c26e12; --pass: #319751; --mute: #6e7278; --rule: #d4d0cb;
+    --deep: #1c2027; --deep-ink: #13161b; --deep-rule: #2f343c; --deep-mute: #9a9ea4;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  a:hover { color: var(--cheap); }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 32px; }
+  @media (max-width: 560px) { .wrap { padding: 0 20px; } }
+  .mono { font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 12px; color: var(--mute); text-transform: uppercase; letter-spacing: .08em; }
+  code { background: var(--rule); padding: 1px 5px; border-radius: 3px; font-size: .92em; font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  button:focus-visible, a:focus-visible, summary:focus-visible, [tabindex="-1"]:focus-visible { outline: 2px solid var(--cheap); outline-offset: 2px; }
+  h1, h2, h3 { font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; letter-spacing: -0.02em; text-wrap: balance; }
+  h2 { font-weight: 700; font-size: clamp(24px, 3vw, 30px); line-height: 1.2; margin: 0 0 16px; }
+  h3 { font-size: 14px; font-weight: 700; margin: 0 0 10px; }
+  p { margin: 0 0 16px; }
+  .lede { font-size: 15.5px; line-height: 1.65; color: var(--mute); max-width: 70ch; }
+
+  /* ---- the two-question picker --------------------------------------- */
+  .picker { background: var(--card); border: 1px solid var(--rule); border-radius: 8px; padding: clamp(20px, 3vw, 32px); }
+  .q { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 16px; padding: 18px 0; border-top: 1px solid var(--rule); }
+  .q:first-child { border-top: none; padding-top: 0; }
+  .q .n { font-family: 'Fragment Mono', Menlo, monospace; font-size: 12px; color: var(--cheap); font-weight: 700; padding-top: 6px; }
+  .q .label { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; margin: 0 0 12px; display: block; }
+  .q .hint { font-size: 13.5px; color: var(--mute); margin: 8px 0 0; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { font-family: inherit; font-size: 14px; font-weight: 500; min-height: 36px; padding: 6px 14px; border-radius: 6px; cursor: pointer; background: transparent; color: var(--ink); border: 1px solid var(--rule); transition: background-color 150ms ease-out, color 150ms ease-out, border-color 150ms ease-out; }
+  .chip:hover { border-color: var(--ink); }
+  .chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .chip-group { display: inline-flex; align-items: center; gap: 6px; }
+  .chip-sep { width: 100%; height: 0; }
+  .q[hidden] { display: none; }
+  .status { margin-top: 18px; font-size: 14px; color: var(--mute); }
+  @media (max-width: 560px) { .q { grid-template-columns: minmax(0, 1fr); gap: 6px; } }
+
+  /* ---- segment stories ------------------------------------------------ */
+  .stories-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin: 0 0 8px; }
+  .story { border-top: 1px solid var(--ink); padding: 40px 0 56px; }
+  .story:last-of-type { border-bottom: 1px solid var(--rule); }
+  .story-eyebrow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 0 0 14px; }
+  .seg { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 4px; font-family: 'Fragment Mono', Menlo, monospace; font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; border: 1px solid var(--rule); color: var(--mute); }
+  .seg-a { border-color: var(--mute); color: var(--mute); }
+  .seg-b { border-color: var(--ink); color: var(--ink); }
+  .seg-c { border-color: var(--cheap); color: var(--cheap); }
+  .seg-d { border-color: var(--frontier); color: var(--frontier); }
+  .story h2 { font-size: clamp(26px, 3.4vw, 36px); max-width: 26ch; }
+  .verdict { font-size: 16.5px; line-height: 1.6; color: var(--mute); max-width: 66ch; margin: 0 0 28px; }
+  .variant { border-left: 2px solid var(--cheap); background: rgba(0,149,156,0.07); padding: 14px 18px; margin: 0 0 28px; font-size: 15px; line-height: 1.6; }
+  .variant[hidden] { display: none; }
+  .variant strong { font-family: 'Fragment Mono', Menlo, monospace; font-size: 12.5px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--cheap); display: block; margin: 0 0 4px; }
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 28px 32px; margin: 0 0 28px; }
+  .cols h3 { font-family: 'Fragment Mono', Menlo, monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mute); font-weight: 400; border-bottom: 1px solid var(--rule); padding-bottom: 8px; margin-bottom: 12px; }
+  .cols ul { margin: 0; padding-left: 18px; font-size: 15px; line-height: 1.6; }
+  .cols li { margin: 0 0 8px; }
+  .rec { border: 1px solid var(--ink); border-radius: 6px; background: var(--card); padding: 22px 24px; margin: 0 0 24px; }
+  .rec-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 0 0 10px; }
+  .rec-head h3 { margin: 0; font-size: 17px; }
+  .optional { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 4px; font-family: 'Fragment Mono', Menlo, monospace; font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; border: 1px solid var(--cheap); color: var(--cheap); white-space: nowrap; }
+  .rec p { font-size: 15px; line-height: 1.6; }
+  .rec p:last-child { margin-bottom: 0; }
+  .cta { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 14px; font-weight: 700; min-height: 36px; padding: 0 18px; border-radius: 10px; box-sizing: border-box; text-decoration: none; cursor: pointer; border: 1px solid var(--ink); background: var(--ink); color: var(--paper); transition: background-color .15s ease, color .15s ease, border-color .15s ease; }
+  .btn:hover { background: #000; color: var(--paper); }
+  .btn-outline { background: transparent; color: var(--ink); border-color: var(--rule); }
+  .btn-outline:hover { background: transparent; color: var(--ink); border-color: var(--ink); }
+  .btn-outline .cmd { font-weight: 400; color: var(--mute); }
+
+  /* ---- reach grid: which tiers this setup can route to ---------------- */
+  .reach { border-collapse: collapse; width: 100%; font-family: 'Fragment Mono', Menlo, monospace; font-size: 12px; margin: 0 0 10px; }
+  .reach th { text-align: left; font-weight: 400; color: var(--mute); padding: 8px 10px; border-bottom: 1px solid var(--ink); white-space: nowrap; }
+  .reach td { padding: 7px 10px; border-bottom: 1px solid var(--rule); }
+  .reach td:first-child { color: var(--mute); white-space: nowrap; }
+  .reach tr:last-child td { border-bottom: none; }
+  .cell { display: inline-flex; align-items: center; justify-content: center; min-width: 88px; height: 24px; padding: 0 8px; border-radius: 4px; border: 1px solid var(--rule); color: var(--mute); white-space: nowrap; }
+  .cell-on { border-color: var(--cheap); background: rgba(0,149,156,0.10); color: var(--cheap); font-weight: 700; }
+  .cell-key { border-style: dashed; border-color: var(--cheap); color: var(--cheap); }
+  .cell-off { color: var(--mute); background: transparent; }
+  .cell-unk { border-style: dashed; border-color: var(--frontier); color: var(--frontier); }
+  .legend { display: flex; gap: 14px 22px; flex-wrap: wrap; font-family: 'Fragment Mono', Menlo, monospace; font-size: 11.5px; color: var(--mute); margin: 0 0 28px; }
+  .legend span { display: inline-flex; align-items: center; gap: 8px; }
+  .legend i { display: inline-block; width: 14px; height: 14px; border-radius: 3px; border: 1px solid var(--rule); }
+  .legend i.on { border-color: var(--cheap); background: rgba(0,149,156,0.10); }
+  .legend i.key { border-style: dashed; border-color: var(--cheap); }
+  .legend i.unk { border-style: dashed; border-color: var(--frontier); }
+  .scroll-x { overflow-x: auto; }
+  .reach-note { font-size: 13px; color: var(--mute); margin: 0 0 24px; max-width: 70ch; }
+
+  /* ---- JS-on behaviour: stories collapse to the matched one ----------- */
+  .js .story[data-match="no"] { display: none; }
+  .js .stories-all .story[data-match="no"] { display: block; }
+  .js .browse-all[hidden] { display: none; }
+  .js .story:focus { outline: none; }
+</style>
+</head>
+<body>
+
+<nav style="position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 14px 32px; background: rgba(242,240,236,0.94); backdrop-filter: blur(8px); border-bottom: 1px solid #d4d0cb; flex-wrap: wrap;">
+  <a href="/" style="display: flex; align-items: center; gap: 8px; text-decoration: none"><svg width="20" height="20" viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect x="2" y="4" width="22" height="6" rx="1" fill="#13161b"></rect><rect x="2" y="16" width="12" height="6" rx="1" fill="#00959c"></rect><path d="M16 22 L24 12" stroke="#13161b" stroke-width="2" stroke-linecap="round"></path></svg><span style="font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; font-weight: 500; font-size: 17px; letter-spacing: -0.02em">undercut</span></a>
+  <div style="display: flex; align-items: center; gap: 24px; font-size: 14px; flex-wrap: wrap;">
+    <a href="/#calculator" style="text-decoration: none; color: #6e7278">Free audit</a>
+    <a href="/#benchmarks" style="text-decoration: none; color: #6e7278">Benchmarks</a>
+    <a href="https://github.com/undercutsh/firstpass" style="text-decoration: none; color: #6e7278; font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 13px">GitHub &#8599;</a>
+  </div>
+</nav>
+
+<header style="background: #13161b; color: #f2f0ec; padding: 72px 32px 64px">
+  <div class="wrap">
+    <p class="mono" style="margin: 0 0 16px">Your setup</p>
+    <h1 style="font-weight: 800; font-size: clamp(32px, 4.4vw, 56px); line-height: 1.05; letter-spacing: -0.03em; margin: 0 0 20px">What Undercut actually unlocks depends on your editor and your keys. Two questions, then the honest answer.</h1>
+    <p style="font-size: 17px; line-height: 1.55; color: #9a9ea4; margin: 0; max-width: 62ch">The routing skill is the same file everywhere — free, MIT, no account. How much it can save you is not the same everywhere: it depends on which models your tool lets it route between. Some setups reach every tier. One reaches a single vendor's ladder. We'd rather tell you which is which before you install than have you find out after.</p>
+  </div>
+</header>
+
+<main>
+<!-- Picker -->
+<section style="padding: 48px 32px 40px; border-bottom: 1px solid #d4d0cb" aria-labelledby="picker-heading">
+  <div class="wrap" style="padding: 0">
+    <h2 id="picker-heading" class="sr-only">Pick your setup</h2>
+    <div class="picker">
+      <div class="q" id="q-tool">
+        <span class="n" aria-hidden="true">Q1</span>
+        <div>
+          <span class="label" id="q-tool-label">Which coding agent do you use?</span>
+          <div class="chips" role="group" aria-labelledby="q-tool-label" id="tool-chips">
+            <button type="button" class="chip" data-tool="claude-code" aria-pressed="false">Claude Code</button>
+            <button type="button" class="chip" data-tool="cursor" aria-pressed="false">Cursor</button>
+            <button type="button" class="chip" data-tool="windsurf" aria-pressed="false">Windsurf</button>
+            <button type="button" class="chip" data-tool="copilot" aria-pressed="false">GitHub Copilot</button>
+            <button type="button" class="chip" data-tool="opencode" aria-pressed="false">OpenCode</button>
+            <button type="button" class="chip" data-tool="continue" aria-pressed="false">Continue</button>
+            <button type="button" class="chip" data-tool="cline" aria-pressed="false">Cline</button>
+            <button type="button" class="chip" data-tool="aider" aria-pressed="false">Aider</button>
+            <button type="button" class="chip" data-tool="roo-code" aria-pressed="false">Roo Code</button>
+            <button type="button" class="chip" data-tool="kilo-code" aria-pressed="false">Kilo Code</button>
+            <button type="button" class="chip" data-tool="zed" aria-pressed="false">Zed</button>
+            <button type="button" class="chip" data-tool="other" aria-pressed="false">Something else</button>
+          </div>
+          <p class="hint">The skill installs in 34 clients. These are the ones where the answer to the next question changes what you get — <a href="/#install">full client list</a>.</p>
+        </div>
+      </div>
+      <div class="q" id="q-access">
+        <span class="n" aria-hidden="true">Q2</span>
+        <div>
+          <span class="label" id="q-access-label">How do you pay for model access in that tool?</span>
+          <div class="chips" role="group" aria-labelledby="q-access-label" id="access-chips">
+            <button type="button" class="chip" data-access="subscription" aria-pressed="false">A subscription</button>
+            <button type="button" class="chip" data-access="keys" aria-pressed="false">My own API keys</button>
+            <button type="button" class="chip" data-access="both" aria-pressed="false">Both</button>
+          </div>
+          <p class="hint" id="access-hint">Subscription means a flat plan — Claude Pro/Max, Cursor, Copilot, Zed Pro, and the like. API keys means per-token billing from a vendor directly, or through OpenRouter.</p>
+        </div>
+      </div>
+      <p class="status" id="picker-status" aria-live="polite">Answer both and the matching setup appears below. Without JavaScript, all four setups are shown in full.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Stories -->
+<section style="padding: 40px 32px 72px" aria-labelledby="stories-heading">
+  <div class="wrap" style="padding: 0">
+    <div class="stories-head">
+      <h2 id="stories-heading" style="margin: 0; font-size: 20px">The four setups</h2>
+      <button type="button" class="browse-all btn btn-outline" id="browse-all" hidden aria-pressed="false" style="min-height: 32px; font-size: 12.5px; padding: 0 14px">Show all four</button>
+    </div>
+    <p class="lede" style="margin-bottom: 8px">Every one of these is the same free skill. What differs is how many model tiers your tool lets it route between — and whether there's a cheap, low-friction way to reach more.</p>
+
+    <!-- ===== A ===== -->
+    <article class="story" id="setup-a" data-segment="a" tabindex="-1" aria-labelledby="setup-a-heading">
+      <div class="story-eyebrow"><span class="seg seg-a">Setup A</span><span class="mono">Claude Code + a Claude subscription</span></div>
+      <h2 id="setup-a-heading">Real savings, inside one vendor's ladder. Not the biggest ones.</h2>
+      <p class="verdict">This is the setup with the lowest ceiling, and we'd rather say so here than let you infer it after installing. Claude Code talks to Anthropic's models. With a Claude Pro or Max subscription, Undercut routes each unit of work up and down Anthropic's own tier ladder — Haiku, Sonnet, Opus, Fable — and nothing else.</p>
+      <div class="variant" data-variant="claude-code/keys" hidden><strong>You said: Anthropic API key</strong>You're paying per token instead of a flat plan, but the reach is the same: Claude Code still only talks to Anthropic's ladder, so the routing win is the same bounded one described here.</div>
+      <div class="variant" data-variant="claude-code/both" hidden><strong>You said: subscription and API keys</strong>Claude Code can't combine them. Setting an API key or a proxy overrides subscription auth for the whole session — it's one or the other per session, and either way the reach below is the same.</div>
+
+      <div class="scroll-x">
+      <table class="reach">
+        <caption class="sr-only">Which tiers Undercut can route to in this setup, by vendor</caption>
+        <thead><tr><th scope="col">Tier</th><th scope="col">Anthropic</th><th scope="col">OpenAI</th><th scope="col">Google</th><th scope="col">Open-weight</th></tr></thead>
+        <tbody>
+          <tr><td>cheap</td><td><span class="cell cell-on">in reach</span></td><td><span class="cell cell-off">—</span></td><td><span class="cell cell-off">—</span></td><td><span class="cell cell-off">—</span></td></tr>
+          <tr><td>standard</td><td><span class="cell cell-on">in reach</span></td><td><span class="cell cell-off">—</span></td><td><span class="cell cell-off">—</span></td><td><span class="cell cell-off">—</span></td></tr>
+          <tr><td>frontier</td><td><span class="cell cell-on">in reach</span></td><td><span class="cell cell-off">—</span></td><td><span class="cell cell-off">—</span></td><td><span class="cell cell-off">—</span></td></tr>
+          <tr><td>apex</td><td><span class="cell cell-on">in reach</span></td><td><span class="cell cell-off">—</span></td><td><span class="cell cell-off">—</span></td><td><span class="cell cell-off">—</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="legend"><span><i class="on"></i>in reach today</span><span><i></i>not reachable in this tool</span></div>
+
+      <div class="cols">
+        <div>
+          <h3>What Undercut does for you</h3>
+          <ul>
+            <li>Stops mechanical work from running at Opus-or-above by default. The six-flag rubric still catches over-escalation inside Anthropic's ladder — that's a real, measured effect, not a rounding error.</li>
+            <li>Measured on Anthropic's ladder alone: <strong>−61% cost on HumanEval</strong> at the same pass rate, <strong>−4% on GSM8K</strong> — the smallest of the four vendor families we benchmarked (<a href="/#benchmarks">the data</a>).</li>
+            <li>When Pro ships, its pooled model testing and effort-level tuning apply to Anthropic's tiers specifically — the same bounded scope, kept current for you.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>What it can't reach here</h3>
+          <ul>
+            <li>The biggest dollar swings. Open-weight tiers cost pennies per task where Anthropic's tiers cost dollars; Claude Code with subscription auth can't route to them at all.</li>
+            <li>Any other vendor. Claude Code's subscription auth and an API key or proxy are mutually exclusive per session — you can't add a second vendor alongside the plan.</li>
+            <li>There is an unofficial proxy workaround (<code>ANTHROPIC_BASE_URL</code>). We don't recommend it: it's a gray area under Anthropic's terms, fragile, and could stop working without notice.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="rec">
+        <div class="rec-head"><h3>The honest recommendation</h3></div>
+        <p>Install the free skill. It's a bounded win, but it is a win, and it costs nothing — no key, no account, nothing on the network path.</p>
+        <p>If cross-vendor savings matter more to you than subscription pricing for Claude, the honest path isn't a workaround — it's a tool that accepts your own keys (Setup C below). The tradeoff is real and worth stating plainly: you'd give up flat-rate subscription pricing for Claude in exchange for full routing flexibility across every vendor and tier. For some workloads that trade pays; for others it doesn't. We can't tell you which from here, and we won't pretend to.</p>
+      </div>
+      <div class="cta">
+        <a class="btn" href="/claude-code">Install for Claude Code</a>
+        <button type="button" class="btn btn-outline" data-copy="npx skills add undercutsh/firstpass" onclick="undercutCopy(this)" aria-label="Copy command: npx skills add undercutsh/firstpass">Copy <span class="cmd">npx skills add undercutsh/firstpass</span></button>
+      </div>
+    </article>
+
+    <!-- ===== B ===== -->
+    <article class="story" id="setup-b" data-segment="b" tabindex="-1" aria-labelledby="setup-b-heading">
+      <div class="story-eyebrow"><span class="seg seg-b">Setup B</span><span class="mono">Cursor · Windsurf · GitHub Copilot</span></div>
+      <h2 id="setup-b-heading">Your subscription already spans vendors. Undercut adds the discipline — and, with one optional key, a tier you don't have.</h2>
+      <p class="verdict">These tools ship multi-vendor access as part of the plan — frontier-lab models from more than one vendor, switchable in the model picker. That part isn't Undercut's value, and we won't claim it. What Undercut adds is evidence-based escalation on top of whatever's available: cheap tier first, up only on a failed check, a measured disagreement, or an explicit uncertainty flag. And there's one tier no native subscription includes.</p>
+      <div class="variant" data-variant="cursor/subscription" hidden><strong>You said: Cursor, subscription</strong>Cursor has official bring-your-own-key support alongside the plan, on a separate track: subscription-included models stay on your quota, BYOK calls bypass it. That's the door the optional key below walks through.</div>
+      <div class="variant" data-variant="windsurf/subscription" hidden><strong>You said: Windsurf, subscription</strong>Windsurf's BYOK support was extended to individual plans in 2025, on the same two-track pattern as Cursor. One caveat from our research: we couldn't fully render Windsurf's live settings page, so we haven't re-verified the exact field labels — look for the BYOK or API-keys section and treat any specific field name you see elsewhere as needing a check.</div>
+      <div class="variant" data-variant="copilot/subscription" hidden><strong>You said: Copilot, subscription</strong>Copilot's official BYOK was expanded in January 2026. BYOK usage is billed separately and doesn't touch your Copilot quota. Copilot's included model roster changes often, so we don't list it here — the tier logic doesn't depend on which specific models are in it this month.</div>
+      <div class="variant" data-variant="cursor/keys windsurf/keys copilot/keys" hidden><strong>You said: your own API keys</strong>Then you're already on the BYOK track. If one of those keys is OpenRouter, the open-weight tier is already in reach — install the skill and you're done. If they're single-vendor keys, the optional OpenRouter key below is what adds the open-weight column.</div>
+      <div class="variant" data-variant="cursor/both windsurf/both copilot/both" hidden><strong>You said: subscription and your own keys</strong>That's the two-track setup these tools are built for: subscription-included models on quota, BYOK calls billed separately. If your BYOK key is OpenRouter, the open-weight tier is already reachable; if not, that's the one optional addition below.</div>
+
+      <div class="scroll-x">
+      <table class="reach">
+        <caption class="sr-only">Which tiers Undercut can route to in this setup, by vendor</caption>
+        <thead><tr><th scope="col">Tier</th><th scope="col">Anthropic</th><th scope="col">OpenAI</th><th scope="col">Google</th><th scope="col">Open-weight</th></tr></thead>
+        <tbody>
+          <tr><td>cheap</td><td><span class="cell cell-on">in reach</span></td><td><span class="cell cell-on">in reach</span></td><td><span class="cell cell-on">in reach</span></td><td><span class="cell cell-key">with key</span></td></tr>
+          <tr><td>standard</td><td><span class="cell cell-on">in reach</span></td><td><span class="cell cell-on">in reach</span></td><td><span class="cell cell-on">in reach</span></td><td><span class="cell cell-key">with key</span></td></tr>
+          <tr><td>frontier</td><td><span class="cell cell-on">in reach</span></td><td><span class="cell cell-on">in reach</span></td><td><span class="cell cell-on">in reach</span></td><td><span class="cell cell-key">with key</span></td></tr>
+          <tr><td>apex</td><td><span class="cell cell-on">in reach</span></td><td><span class="cell cell-on">in reach</span></td><td><span class="cell cell-on">in reach</span></td><td><span class="cell cell-key">with key</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="legend"><span><i class="on"></i>in your subscription</span><span><i class="key"></i>with an optional OpenRouter key</span></div>
+      <p class="reach-note">The three frontier-lab columns are what these subscriptions include collectively. The exact roster differs by tool and changes often — check your model picker for this month's list. The tier logic doesn't depend on it.</p>
+
+      <div class="cols">
+        <div>
+          <h3>What Undercut does for you</h3>
+          <ul>
+            <li>Routes each unit of work to the cheapest tier that can pass verification across every model your picker already offers — instead of one model for the whole session.</li>
+            <li>Escalates on evidence only. A wrong flag costs one extra cheap attempt, never a wrong answer or a big bill.</li>
+            <li>With the optional key: reaches open-weight tiers (DeepSeek, GLM, and peers) that no native subscription includes. That's where the largest cost gap sits — pennies per task versus dollars.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>What it doesn't change</h3>
+          <ul>
+            <li>What your subscription includes. The multi-vendor frontier-lab access was yours before Undercut and stays exactly as it was.</li>
+            <li>Your quota math. BYOK calls run on a separate, separately-billed track in all three tools; the skill doesn't move subscription-included calls off it.</li>
+            <li>Nothing here is a proxy. It's a policy file the agent reads; remove it and you're back to status quo.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="rec">
+        <div class="rec-head"><h3>Add an OpenRouter key — to unlock a tier your subscription doesn't have</h3><span class="optional">Optional</span></div>
+        <p>This is not a general "add a key" instruction, and the free skill works without it. It's specifically the one low-friction move that puts the open-weight cheap tier in reach: one API key, pasted into your tool's BYOK settings, no OAuth. Open <a href="https://openrouter.ai/">openrouter.ai</a>, create a key, then find the bring-your-own-key section in your tool's settings (Cursor and Copilot document theirs; for Windsurf, see the caveat above) and paste it in. The skill picks up the new tier through <code>models.md</code>'s open-weight column.</p>
+        <p>One caveat we publish everywhere: open-weight price ladders can invert — a vendor's "standard" tier is sometimes cheaper than its "cheap" one. Check the provider's price list rather than assuming cheap is cheapest.</p>
+      </div>
+      <div class="cta">
+        <a class="btn" href="/cursor" data-cta-for="cursor">Install for Cursor</a>
+        <a class="btn" href="/windsurf" data-cta-for="windsurf">Install for Windsurf</a>
+        <a class="btn" href="/copilot" data-cta-for="copilot">Install for Copilot</a>
+        <button type="button" class="btn btn-outline" data-copy="npx skills add undercutsh/firstpass" onclick="undercutCopy(this)" aria-label="Copy command: npx skills add undercutsh/firstpass">Copy <span class="cmd">npx skills add undercutsh/firstpass</span></button>
+      </div>
+    </article>
+
+    <!-- ===== C ===== -->
+    <article class="story" id="setup-c" data-segment="c" tabindex="-1" aria-labelledby="setup-c-heading">
+      <div class="story-eyebrow"><span class="seg seg-c">Setup C</span><span class="mono">OpenCode · Continue · Cline · Aider · Roo Code · Kilo Code</span></div>
+      <h2 id="setup-c-heading">You're already paying API rates. Adding an OpenRouter key has no downside — only savings.</h2>
+      <p class="verdict">This is the cleanest case of the four, and it rests on one fact worth knowing even if you skip Undercut: as of 2026-01-09 (formalized in Anthropic's consumer terms on 2026-02-19), Claude Pro and Max subscription tokens are blocked in third-party tools. If Claude traffic runs through any tool in this group today, it's on per-token API billing — whether or not you've ever touched a routing skill. So there's no subscription pricing to give up here. There wasn't one being used.</p>
+      <div class="variant" data-variant="opencode/subscription continue/subscription cline/subscription aider/subscription roo-code/subscription kilo-code/subscription opencode/both continue/both cline/both aider/both roo-code/both kilo-code/both" hidden><strong>You said: a subscription</strong>If the subscription you mean is Claude Pro or Max: it can't be used in this tool since the 2026-01-09 change, so any Claude calls you're making here are already billed as API usage — or the tool is on another vendor's key. Either way the recommendation below has nothing to cost you.</div>
+      <div class="variant" data-variant="opencode/keys continue/keys cline/keys aider/keys roo-code/keys kilo-code/keys" hidden><strong>You said: your own API keys</strong>Then you're the case this page was written for. If one of those keys is already OpenRouter, every column below is in reach today — install the skill and you're done. If they're single-vendor keys, one more field gets you the open-weight column.</div>
+
+      <div class="scroll-x">
+      <table class="reach">
+        <caption class="sr-only">Which tiers Undercut can route to in this setup, by vendor</caption>
+        <thead><tr><th scope="col">Tier</th><th scope="col">Anthropic</th><th scope="col">OpenAI</th><th scope="col">Google</th><th scope="col">Open-weight</th></tr></thead>
+        <tbody>
+          <tr><td>cheap</td><td><span class="cell cell-key">with key</span></td><td><span class="cell cell-key">with key</span></td><td><span class="cell cell-key">with key</span></td><td><span class="cell cell-key">with key</span></td></tr>
+          <tr><td>standard</td><td><span class="cell cell-key">with key</span></td><td><span class="cell cell-key">with key</span></td><td><span class="cell cell-key">with key</span></td><td><span class="cell cell-key">with key</span></td></tr>
+          <tr><td>frontier</td><td><span class="cell cell-key">with key</span></td><td><span class="cell cell-key">with key</span></td><td><span class="cell cell-key">with key</span></td><td><span class="cell cell-key">with key</span></td></tr>
+          <tr><td>apex</td><td><span class="cell cell-key">with key</span></td><td><span class="cell cell-key">with key</span></td><td><span class="cell cell-key">with key</span></td><td><span class="cell cell-key">with key</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="legend"><span><i class="key"></i>in reach with a key for that vendor — one OpenRouter key covers all four columns</span></div>
+      <p class="reach-note">These tools are genuinely bring-your-own-model; none is hard-locked to a vendor. Whatever keys you've configured are the columns Undercut can route between.</p>
+
+      <div class="cols">
+        <div>
+          <h3>What Undercut does for you</h3>
+          <ul>
+            <li>Routes every unit of work to the cheapest tier that can pass verification, across every vendor you've configured — the full ladder, not one vendor's slice of it.</li>
+            <li>With an OpenRouter key, the cheap tier is an open-weight model that costs pennies per task. Around 90% of units land on the cheap tier under the shipped policy, so that's where most of the bill goes.</li>
+            <li>Escalates on evidence only; residue-only handoff means one hard file never drags the rest of the batch up a tier.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>What it doesn't change</h3>
+          <ul>
+            <li>Your billing model. You're on per-token rates before and after; the skill can't bring subscription pricing into a tool where Anthropic blocks it.</li>
+            <li>Which vendors you trust. Adding OpenRouter doesn't remove your existing keys; it adds columns to the ladder.</li>
+            <li>Open-weight price ladders can invert — standard sometimes cheaper than cheap. Check the provider's price list.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="rec">
+        <div class="rec-head"><h3>Add an OpenRouter key — pure upside, zero tradeoff</h3><span class="optional">Optional</span></div>
+        <p>The skill works without it. But in this group there's nothing on the other side of the scale: no subscription to lose, no quota to protect. One API key reaches every vendor and every tier, including the open-weight cheap tier where the biggest savings live. Across this whole group the mechanism is the same — a single field in the tool's settings UI, paste the key, no OAuth, backed by a local JSON config. Then install the skill; its <code>models.md</code> already carries OpenRouter slugs for every tier.</p>
+        <p>Already on an OpenRouter key? Skip straight to install. There's nothing else to add.</p>
+      </div>
+      <div class="cta">
+        <a class="btn" href="/opencode" data-cta-for="opencode">Install for OpenCode</a>
+        <a class="btn" href="/continue" data-cta-for="continue">Install for Continue</a>
+        <a class="btn" href="/cline" data-cta-for="cline">Install for Cline</a>
+        <a class="btn" href="/aider" data-cta-for="aider">Install for Aider</a>
+        <a class="btn" href="/roo-code" data-cta-for="roo-code">Install for Roo Code</a>
+        <a class="btn" href="/kilo-code" data-cta-for="kilo-code">Install for Kilo Code</a>
+        <button type="button" class="btn btn-outline" data-copy="npx skills add undercutsh/firstpass" onclick="undercutCopy(this)" aria-label="Copy command: npx skills add undercutsh/firstpass">Copy <span class="cmd">npx skills add undercutsh/firstpass</span></button>
+      </div>
+    </article>
+
+    <!-- ===== D ===== -->
+    <article class="story" id="setup-d" data-segment="d" tabindex="-1" aria-labelledby="setup-d-heading">
+      <div class="story-eyebrow"><span class="seg seg-d">Setup D</span><span class="mono">Zed</span></div>
+      <h2 id="setup-d-heading">Zed runs its own bundled subscription. We haven't finished the research to promise you more than the skill.</h2>
+      <p class="verdict">Zed's agent is multi-model, but model access comes through Zed's own "Zed Pro" plan rather than a personal Claude subscription — you can't bring a Claude Pro or Max plan into Zed at all, independent of the 2026 change that affected the tools in Setup C. Whether Zed's own bring-your-own-key path reaches OpenRouter specifically is the one thing our research pass didn't confirm, so this page doesn't make the OpenRouter recommendation for Zed yet.</p>
+      <div class="variant" data-variant="zed/subscription zed/keys zed/both" hidden><strong>You said: Zed</strong>Whichever way you pay, the honest answer is the same until we've verified the key path: install the skill, and treat anything you read elsewhere about Zed and OpenRouter as unconfirmed by us.</div>
+
+      <div class="scroll-x">
+      <table class="reach">
+        <caption class="sr-only">Which tiers Undercut can route to in this setup, by vendor</caption>
+        <thead><tr><th scope="col">Tier</th><th scope="col">Models Zed exposes</th><th scope="col">Open-weight via OpenRouter</th></tr></thead>
+        <tbody>
+          <tr><td>cheap</td><td><span class="cell cell-on">in reach</span></td><td><span class="cell cell-unk">unverified</span></td></tr>
+          <tr><td>standard</td><td><span class="cell cell-on">in reach</span></td><td><span class="cell cell-unk">unverified</span></td></tr>
+          <tr><td>frontier</td><td><span class="cell cell-on">in reach</span></td><td><span class="cell cell-unk">unverified</span></td></tr>
+          <tr><td>apex</td><td><span class="cell cell-on">in reach</span></td><td><span class="cell cell-unk">unverified</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="legend"><span><i class="on"></i>in reach today</span><span><i class="unk"></i>not verified by us — flagged for follow-up</span></div>
+
+      <div class="cols">
+        <div>
+          <h3>What Undercut does for you</h3>
+          <ul>
+            <li>Routes within whatever model lineup Zed exposes to its agent — cheap tier first, escalate on evidence. The rubric doesn't care which vendor is behind a tier, only whether the unit passed verification.</li>
+            <li>Installs the same way as everywhere else: a <code>SKILL.md</code> under <code>.agents/skills/</code>, nothing on the network path.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>What we can't tell you yet</h3>
+          <ul>
+            <li>Whether an OpenRouter key can be added to Zed to reach open-weight tiers. Flagged as a follow-up before we write Zed-specific copy — if you know the answer from Zed's current settings, <a href="https://github.com/undercutsh/firstpass/issues">open an issue</a> and we'll verify and update this page.</li>
+            <li>What the savings ceiling is for Zed Pro users. Without the key path confirmed, we won't put a number on it.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="rec">
+        <div class="rec-head"><h3>The honest recommendation</h3></div>
+        <p>Install the free skill; it costs nothing and routes within what Zed already offers. Don't act on an OpenRouter recommendation from us for Zed until this page says we've confirmed the path — the <a href="https://github.com/undercutsh/firstpass/blob/main/CHANGELOG.md">changelog</a> will say when that happens.</p>
+      </div>
+      <div class="cta">
+        <a class="btn" href="/zed">Install for Zed</a>
+        <button type="button" class="btn btn-outline" data-copy="npx skills add undercutsh/firstpass" onclick="undercutCopy(this)" aria-label="Copy command: npx skills add undercutsh/firstpass">Copy <span class="cmd">npx skills add undercutsh/firstpass</span></button>
+      </div>
+    </article>
+
+    <!-- ===== Other ===== -->
+    <article class="story" id="setup-other" data-segment="other" tabindex="-1" aria-labelledby="setup-other-heading">
+      <div class="story-eyebrow"><span class="seg">Everything else</span><span class="mono">The other 23 supported clients</span></div>
+      <h2 id="setup-other-heading">The skill installs the same way. What it can reach depends on one thing: does your tool take your own API key?</h2>
+      <p class="verdict">We've only researched the provider story in depth for the eleven tools above. For the rest, the routing skill works exactly as documented on each tool's companion page, and the honest general rule is this: if the tool lets you configure your own model provider or API key, you're closer to Setup C — an OpenRouter key puts every tier in reach. If it bundles model access behind its own plan with no key field, you're closer to Setup A or D — Undercut routes within whatever that plan exposes, and we'd rather you know the ceiling than assume there isn't one.</p>
+      <div class="variant" data-variant="other/subscription other/keys other/both" hidden><strong>You said: something else</strong>Find your tool in the list below for the confirmed install path, then check its settings for a provider or API-key field to see which of the four setups you're closest to.</div>
+      <div class="rec">
+        <div class="rec-head"><h3>Where to look</h3></div>
+        <p>Every supported client has its own page with the confirmed discovery path, honest limits, and citations: <a href="/codex">Codex CLI</a> · <a href="/gemini-cli">Gemini CLI</a> · <a href="/junie">JetBrains Junie</a> · <a href="/amp">Amp</a> · <a href="/devin">Devin</a> · <a href="/warp">Warp</a> · <a href="/cody">Cody</a> · <a href="/kiro">Kiro</a> · <a href="/void">Void</a> · <a href="/trae">Trae</a> · <a href="/bolt">Bolt</a> · <a href="/factory">Factory</a> · <a href="/lovable">Lovable</a> · <a href="/qoder">Qoder</a> · <a href="/tabnine">Tabnine</a> · <a href="/jules">Jules</a> · <a href="/jetbrains-ai">JetBrains AI Assistant</a> · <a href="/amazon-q">Amazon Q Developer</a> · <a href="/firebase-studio">Firebase Studio</a> · <a href="/openhands">OpenHands</a> · <a href="/augment-code">Augment Code</a> · <a href="/goose">Goose</a> · <a href="/replit">Replit Agent</a>.</p>
+        <p>The full tool-by-tool matrix — vendor lock, subscription combinability, key mechanism, and what still needs re-verification — is in the <a href="/compatibility.md">compatibility reference</a>.</p>
+      </div>
+      <div class="cta">
+        <button type="button" class="btn btn-outline" data-copy="npx skills add undercutsh/firstpass" onclick="undercutCopy(this)" aria-label="Copy command: npx skills add undercutsh/firstpass">Copy <span class="cmd">npx skills add undercutsh/firstpass</span></button>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- Why we bother -->
+<section style="padding: 64px 32px; border-top: 1px solid #d4d0cb; background: #fbfaf8">
+  <div class="wrap">
+    <p class="mono" style="margin: 0 0 14px">Why this page exists</p>
+    <h2>A routing skill that oversells itself to the people it can't help isn't worth trusting on the people it can.</h2>
+    <p class="lede">The benchmark numbers on the landing page are real and reproducible. They're also measured within a vendor, and the biggest ones come from vendors and tiers that not every tool can route to. Rather than average that into one headline, this page tells you which case you're in. Sources, dates, and what still needs re-verifying (Windsurf's exact settings labels, Zed's OpenRouter path, Copilot's current model roster) are in the <a href="/compatibility.md">compatibility reference</a>, updated 2026-09-14.</p>
+  </div>
+</section>
+</main>
+
+<!-- Footer — byte-identical reuse from index.html -->
+<footer style="padding: 64px 32px 48px">
+  <div style="max-width: 1160px; margin: 0 auto">
+    <div style="display: flex; justify-content: space-between; gap: 48px; flex-wrap: wrap; margin: 0 0 48px">
+      <div>
+        <div style="display: flex; align-items: center; gap: 8px; margin: 0 0 10px"><svg width="20" height="20" viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect x="2" y="4" width="22" height="6" rx="1" fill="#13161b"></rect><rect x="2" y="16" width="12" height="6" rx="1" fill="#00959c"></rect><path d="M16 22 L24 12" stroke="#13161b" stroke-width="2" stroke-linecap="round"></path></svg><span style="font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; font-weight: 500; font-size: 17px; letter-spacing: -0.02em">undercut</span></div>
+        <p style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 12.5px; color: #6e7278; margin: 0">MIT License &middot; <a href="https://github.com/undercutsh/firstpass" style="color: #6e7278">github.com/undercutsh/firstpass</a></p>
+        <p style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 12.5px; color: #6e7278; margin: 6px 0 0">Built by <a rel="me author" href="https://iamjustinwinter.com/" style="color: #6e7278">Justin Winter</a></p>
+      </div>
+      <div style="display: flex; gap: 72px; flex-wrap: wrap; font-size: 14px">
+        <div style="display: grid; gap: 10px; align-content: start">
+          <span style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #6e7278">Product</span>
+          <a href="/#how" style="text-decoration: none; color: #6e7278">How it works</a>
+          <a href="/#calculator" style="text-decoration: none; color: #6e7278">Free audit</a>
+          <a href="/#teams" style="text-decoration: none; color: #6e7278">Teams</a>
+          <a href="/#pricing" style="text-decoration: none; color: #6e7278">Pricing</a>
+          <a href="/#install" style="text-decoration: none; color: #6e7278">Install</a>
+        </div>
+        <div style="display: grid; gap: 10px; align-content: start">
+          <span style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #6e7278">Proof</span>
+          <a href="/#benchmarks" style="text-decoration: none; color: #6e7278">Benchmarks</a>
+          <a href="https://github.com/undercutsh/firstpass/tree/main/testing/results" style="text-decoration: none; color: #6e7278">Raw results</a>
+          <a href="https://github.com/undercutsh/firstpass/blob/main/testing/README.md" style="text-decoration: none; color: #6e7278">Methodology</a>
+        </div>
+        <div style="display: grid; gap: 10px; align-content: start">
+          <span style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #6e7278">Repo</span>
+          <a href="https://github.com/undercutsh/firstpass" style="text-decoration: none; color: #6e7278">GitHub</a>
+          <a href="https://github.com/undercutsh/firstpass/releases" style="text-decoration: none; color: #6e7278">Changelog</a>
+          <a href="https://github.com/undercutsh/firstpass/issues" style="text-decoration: none; color: #6e7278">Issues</a>
+        </div>
+      </div>
+    </div>
+    <div style="border-top: 1px solid #d4d0cb; padding-top: 24px; display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-size: 12.5px; color: #6e7278">
+      <span style="display: flex; gap: 18px; flex-wrap: wrap; align-items: baseline">
+        <span style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace" id="uc-copyright-year">&copy; 2026 Undercut &middot; MIT</span>
+        <span style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace">Works with: Claude Code &middot; Codex &middot; Cursor &middot; Copilot &middot; OpenCode</span>
+      </span>
+      <span style="display: flex; gap: 18px; flex-wrap: wrap">
+        <a href="/privacy/" style="color: #6e7278; text-decoration: none">Privacy</a>
+        <a href="/terms/" style="color: #6e7278; text-decoration: none">Terms</a>
+        <a href="/accessibility" style="color: #6e7278; text-decoration: none">Accessibility</a>
+        <a href="/status" style="color: #6e7278; text-decoration: none">Status</a>
+        <a href="https://github.com/undercutsh/firstpass/blob/main/testing/README.md" style="color: #6e7278; text-decoration: none">Benchmark data</a>
+        <a href="https://github.com/undercutsh/firstpass/blob/main/CHANGELOG.md" style="color: #6e7278; text-decoration: none">Changelog</a>
+      </span>
+    </div>
+    <div style="margin-top: 10px; padding-top: 14px; border-top: 1px solid #d4d0cb; display: flex; gap: 18px; flex-wrap: wrap; font-size: 11px; color: #6e7278">
+      <span style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace">agent &amp; crawler files:</span>
+      <a href="/llms.txt" style="color: #6e7278; text-decoration: none">llms.txt</a>
+      <a href="/humans.txt" style="color: #6e7278; text-decoration: none">humans.txt</a>
+      <a href="/robots.txt" style="color: #6e7278; text-decoration: none">robots.txt</a>
+      <a href="/changelog.xml" style="color: #6e7278; text-decoration: none">changelog.xml</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function undercutCopy(btn) {
+    var text = btn.getAttribute('data-copy');
+    var cmd = btn.querySelector('.cmd');
+    var original = cmd ? cmd.textContent : btn.textContent;
+    function done() {
+      if (cmd) { cmd.textContent = 'Copied ✓'; } else { btn.textContent = 'Copied ✓'; }
+      setTimeout(function () { if (cmd) { cmd.textContent = original; } else { btn.textContent = original; } }, 1800);
+    }
+    if (navigator.clipboard) { navigator.clipboard.writeText(text).then(done, done); }
+    else { done(); }
+  }
+  (function () {
+    var y = document.getElementById('uc-copyright-year');
+    if (y) y.textContent = '© ' + new Date().getFullYear() + ' Undercut · MIT';
+  })();
+</script>
+
+<!--
+  The two-question picker. Everything it reveals is already in the DOM as
+  plain HTML (all four setup stories, every per-answer variant note), so a
+  crawler or a no-JS visitor sees the full page. JS only (1) collapses the
+  stories to the one that matches the answers, (2) un-hides the variant
+  note for the exact (tool, access) pair, (3) trims the install buttons to
+  the chosen tool, and (4) mirrors the answers into the URL hash so the
+  result is shareable. Segment mapping is the one from the compatibility
+  research (see /compatibility.md) — keep the two in sync.
+-->
+<script>
+(function () {
+  var SEGMENT = {
+    'claude-code': 'a',
+    'cursor': 'b', 'windsurf': 'b', 'copilot': 'b',
+    'opencode': 'c', 'continue': 'c', 'cline': 'c', 'aider': 'c', 'roo-code': 'c', 'kilo-code': 'c',
+    'zed': 'd',
+    'other': 'other'
+  };
+  var TOOL_LABEL = {
+    'claude-code': 'Claude Code', 'cursor': 'Cursor', 'windsurf': 'Windsurf', 'copilot': 'GitHub Copilot',
+    'opencode': 'OpenCode', 'continue': 'Continue', 'cline': 'Cline', 'aider': 'Aider', 'roo-code': 'Roo Code',
+    'kilo-code': 'Kilo Code', 'zed': 'Zed', 'other': 'your tool'
+  };
+  var ACCESS_LABEL = { subscription: 'a subscription', keys: 'your own API keys', both: 'a subscription plus your own keys' };
+  var ACCESS_HINT = {
+    'claude-code': 'For Claude Code: subscription means Claude Pro or Max; API keys means an Anthropic API key. They can’t be combined in one session — pick whichever you actually run.',
+    'zed': 'For Zed: subscription means Zed Pro, its own bundled plan. A personal Claude subscription can’t be used in Zed either way.'
+  };
+  var DEFAULT_HINT = document.getElementById('access-hint').textContent;
+
+  var root = document.documentElement;
+  var toolChips = document.querySelectorAll('#tool-chips .chip');
+  var accessChips = document.querySelectorAll('#access-chips .chip');
+  var qAccess = document.getElementById('q-access');
+  var hint = document.getElementById('access-hint');
+  var status = document.getElementById('picker-status');
+  var stories = document.querySelectorAll('.story');
+  var variants = document.querySelectorAll('.variant');
+  var browseAll = document.getElementById('browse-all');
+  var storiesWrap = browseAll.parentNode.parentNode;
+  var state = { tool: null, access: null };
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  root.className += ' js';
+  qAccess.hidden = true;
+  status.textContent = 'Pick your agent to start.';
+
+  function press(chips, attr, value) {
+    for (var i = 0; i < chips.length; i++) {
+      chips[i].setAttribute('aria-pressed', chips[i].getAttribute(attr) === value ? 'true' : 'false');
+    }
+  }
+
+  function render(focusResult) {
+    press(toolChips, 'data-tool', state.tool);
+    press(accessChips, 'data-access', state.access);
+    qAccess.hidden = !state.tool;
+    hint.textContent = (state.tool && ACCESS_HINT[state.tool]) || DEFAULT_HINT;
+
+    var seg = state.tool && state.access ? SEGMENT[state.tool] : null;
+    var key = seg ? state.tool + '/' + state.access : null;
+
+    for (var i = 0; i < stories.length; i++) {
+      var s = stories[i];
+      // No answers yet: show everything. Both answered: collapse to the match.
+      s.setAttribute('data-match', seg ? (s.getAttribute('data-segment') === seg ? 'yes' : 'no') : 'yes');
+      var ctas = s.querySelectorAll('[data-cta-for]');
+      for (var j = 0; j < ctas.length; j++) {
+        ctas[j].hidden = !!(seg && ctas[j].getAttribute('data-cta-for') !== state.tool);
+      }
+    }
+    for (var k = 0; k < variants.length; k++) {
+      var keys = variants[k].getAttribute('data-variant').split(' ');
+      variants[k].hidden = !(key && keys.indexOf(key) !== -1);
+    }
+
+    browseAll.hidden = !seg;
+    storiesWrap.classList.remove('stories-all');
+    browseAll.setAttribute('aria-pressed', 'false');
+    browseAll.textContent = 'Show all four';
+
+    if (seg) {
+      var label = TOOL_LABEL[state.tool] + ' with ' + ACCESS_LABEL[state.access];
+      status.textContent = 'Showing the setup for ' + label + '. Change either answer to switch.';
+      var target = document.getElementById('setup-' + seg);
+      if (focusResult && target) {
+        target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+        target.focus({ preventScroll: true });
+      }
+      var hash = '#' + state.tool + '/' + state.access;
+      if (window.location.hash !== hash && history.replaceState) history.replaceState(null, '', hash);
+    } else if (state.tool) {
+      status.textContent = 'One more: how do you pay for model access in ' + TOOL_LABEL[state.tool] + '?';
+      if (history.replaceState && window.location.hash) history.replaceState(null, '', window.location.pathname);
+    } else {
+      status.textContent = 'Pick your agent to start.';
+    }
+  }
+
+  function bind(chips, attr, field) {
+    for (var i = 0; i < chips.length; i++) {
+      chips[i].addEventListener('click', function (e) {
+        var v = e.currentTarget.getAttribute(attr);
+        state[field] = state[field] === v ? null : v;
+        if (field === 'tool' && !state.tool) state.access = null;
+        render(true);
+      });
+    }
+  }
+  bind(toolChips, 'data-tool', 'tool');
+  bind(accessChips, 'data-access', 'access');
+
+  browseAll.addEventListener('click', function () {
+    var open = !storiesWrap.classList.contains('stories-all');
+    storiesWrap.classList.toggle('stories-all', open);
+    browseAll.setAttribute('aria-pressed', open ? 'true' : 'false');
+    browseAll.textContent = open ? 'Show only mine' : 'Show all four';
+  });
+
+  // Shareable: /setup#cursor/subscription pre-answers both questions.
+  var m = /^#([a-z-]+)\/(subscription|keys|both)$/.exec(window.location.hash || '');
+  if (m && SEGMENT[m[1]]) {
+    state.tool = m[1];
+    state.access = m[2];
+    render(false);
+  } else {
+    render(false);
+  }
+})();
+</script>
+
+</body>
+</html>
