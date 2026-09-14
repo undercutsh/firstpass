@@ -18,8 +18,19 @@ async function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
 }
 
-async function rawCall(model, messages, { temperature = 0.2, maxTokens = 2048 }) {
+// Valid OpenRouter reasoning-effort levels. OpenRouter normalizes this one
+// param (`reasoning: { effort }`) across vendors' native reasoning controls
+// (Anthropic thinking budget, OpenAI reasoning_effort, Gemini thinking
+// level) — see https://openrouter.ai/docs/use-cases/reasoning-tokens.
+// Models with no reasoning mode silently ignore the field, so it's safe to
+// pass on every call rather than needing a per-model capability check.
+const EFFORT_LEVELS = new Set(['low', 'medium', 'high']);
+
+async function rawCall(model, messages, { temperature = 0.2, maxTokens = 2048, effort = null }) {
   if (!API_KEY) throw new LLMError('OPENROUTER_API_KEY is not set');
+  if (effort !== null && !EFFORT_LEVELS.has(effort)) {
+    throw new LLMError(`invalid effort "${effort}" — must be one of ${[...EFFORT_LEVELS].join(', ')}`);
+  }
   let lastErr;
   for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
     try {
@@ -32,6 +43,7 @@ async function rawCall(model, messages, { temperature = 0.2, maxTokens = 2048 })
         // provider supports response_format. On 400 we retry without it and
         // rely on the prompt contract + our own JSON extraction.
         response_format: { type: 'json_object' },
+        ...(effort ? { reasoning: { effort } } : {}),
       };
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
