@@ -2,7 +2,7 @@
 
 Tier names are generic; this file resolves them to actual model IDs. Updated
 when a model beats the incumbent on the reference benchmarks (see README
-roadmap). Last updated: 2026-09-13 — slugs verified against OpenRouter's
+roadmap). Last updated: 2026-09-14 — slugs verified against OpenRouter's
 model catalog at eval time.
 
 <!-- BEGIN AUTO-GENERATED: tier-model table (source: evals/src/config.js) -->
@@ -10,7 +10,7 @@ model catalog at eval time.
 |---|---|---|---|---|
 | cheap | `anthropic/claude-haiku-4.5` | `openai/gpt-5-nano` | `google/gemini-3.5-flash-lite` | `qwen/qwen3-coder-30b-a3b-instruct` |
 | standard | `anthropic/claude-sonnet-5` | `openai/gpt-5.6-terra` | `google/gemini-3.5-flash` | `z-ai/glm-5.3-flash` |
-| frontier | `anthropic/claude-opus-5` | `openai/gpt-5.6-sol` | `google/gemini-3.1-pro-preview` | `deepseek/deepseek-v4-pro` |
+| frontier | `anthropic/claude-opus-5` | `openai/gpt-5.6-sol` | `google/gemini-3.1-pro-preview` | `deepseek/deepseek-v4.1-flash` |
 | apex | `anthropic/claude-fable-5` | `openai/gpt-5.6-sol-pro` | `google/gemini-3.1-pro-preview` | `z-ai/glm-5.2` |
 <!-- END AUTO-GENERATED -->
 
@@ -38,6 +38,12 @@ tie-break model.
   same 100% eventual pass rate). Not a benchmark re-run of the whole suite —
   a targeted swap validated by holding the cheap tier constant and measuring
   resolution-rate-at-standard directly.
+- **Open-weight frontier tier (2026-09-14):** `deepseek/deepseek-v4.1-flash`,
+  swapped in from `deepseek/deepseek-v4-pro` after an isolation test on 21
+  real, mechanically-graded tasks (security + reasoning) found the prior
+  pick passed only 13/21 (62%) at $0.0203/task, vs. 20/21 (95%) at
+  $0.0040/task for the new pick — the prior frontier pick scored worse than
+  this vendor's own standard-tier pick on both capability and value.
 - **Open-weight caveat:** some open-weight providers price their tiers
   non-monotonically (standard can be cheaper than cheap). Check your provider
   price list before assuming cheap is cheapest — see the benchmark caveats.
