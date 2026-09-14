@@ -140,7 +140,7 @@ const ALLOWLIST = [
   'yml', 'Sitemap', 'Edgee', 'Observability', 'dev', 'devs', 'onboarding', 're-runnable',
   'signup', 'agentic', 'git', 'prem', 'div', 'divs', 'img', 'quo', 'ent', 'serverless',
   'uptime', 'service-uptime', 'txt', 'labelledby', 'describedby', 'programmatic', 'init',
-  'conf', 'printf', 'verifiability', 'greppable',
+  'conf', 'printf', 'verifiability', 'greppable', 'indie',
   // Design-system vocabulary (typefaces named in the page's own font stacks)
   'Bricolage', 'Grotesque', 'Fragment', 'Fragment Mono', 'Menlo',
   'lexicographical', 'regex', 'async', 'cloud-VM', 'Jules', 'idx', 'airules', 'Firebase',
