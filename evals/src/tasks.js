@@ -128,6 +128,7 @@ export function gradeExact(answer, answerKey) {
 export function gradeJsonSubset(answer, answerKey) {
   let parsed = typeof answer === 'string' ? extractJson(answer) : answer;
   if (!parsed) return { pass: false, reason: 'non-JSON output' };
+  if (typeof parsed !== 'object') return { pass: false, reason: 'non-object JSON output' };
   for (const [k, v] of Object.entries(answerKey)) {
     if (!(k in parsed)) return { pass: false, reason: `missing key "${k}"` };
     if (!deepEqual(parsed[k], v)) {
