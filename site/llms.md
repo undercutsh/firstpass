@@ -2,14 +2,14 @@
 title: "Undercut — llms.md"
 description: "A routing policy your coding agent follows — cheap tier first, escalate only on evidence. Measured up to −95% cost on public benchmarks at equal-or-better pass rate."
 canonical: "https://getundercut.sh/"
-last-updated: "2026-08-20"
+last-updated: "2026-09-14"
 ---
 
 # Undercut — cut your AI coding bill up to 71%. Not your pass rate.
 
 > Markdown twin of https://getundercut.sh/ for agents and crawlers that don't execute JavaScript. The canonical page has the full interactive calculator, benchmark tables, and FAQ accordion; this is the same content in plain prose.
 
-A routing policy your coding agent follows — cheap tier first, escalate only on evidence, never on a vibe. Measured on public benchmarks, not promised. Free for individuals, forever · MIT · Team plan in development.
+A routing policy your coding agent follows — cheap tier first, escalate only on evidence, never on a vibe. Measured on public benchmarks, not promised. Free for individuals, forever · MIT · Pro plan in development.
 
 Install: `npx skills add undercutsh/firstpass`
 
@@ -57,16 +57,21 @@ Even when the rubric flags are scored imperfectly (stock dispatchers: Haiku 90% 
 - Doesn't promise a dollar figure for your workload — real workloads escalate more than benchmarks.
 - Doesn't prove your number until you run it — every figure here is an observation from our tasks and graders, not a guarantee about your codebase.
 
-## For teams (in development)
+## Pro (in development)
 
-Org-wide routing policy enforcement, per-account savings metering, a verifiable escalation ledger, an always-updated tier→model map, and SSO/directory sync. Free for individuals stays free — Teams is a paid layer above it, not a gate in front of it.
+Real-time/pooled model testing (a central vetting ledger tests new frontier-lab and openweights models to statistical significance and keeps the tier→model map current automatically), effort-level routing (a second, empirically-tested rubric dimension), category-segmented pass-rate and cost-per-pass reporting, and a hosted dashboard. Priced for individuals — freelance, solo, indie — not bundled with Teams.
+
+## Teams (coming soon)
+
+The identical feature bundle as Pro, per seat, plus a shared team dashboard, org-wide tier policy enforcement, and seat management (SSO/directory sync and an audit log are a stretch goal). Free for individuals stays free — Pro and Teams are a paid layer above it, not a gate in front of it. Teams is coming soon on a waitlist, not a launch-day tier — it ships after Pro.
 
 ## Pricing
 
 Machine-readable version: https://getundercut.sh/pricing.md
 
 - **Free** — $0 forever, per individual. Live now.
-- **Teams** — $29/user/month, 14-day trial. In development, not yet live — join the waitlist.
+- **Pro** — $14/month, per individual, illustrative. In development, not yet live — join the waitlist.
+- **Teams** — $14/seat/month, illustrative. Coming soon, not yet live — join the waitlist.
 - **Enterprise** — contact-only, sales-led. In development.
 
 ## Install and verify
