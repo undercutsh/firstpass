@@ -34,6 +34,18 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ### Changed
 
+- **Open-weight frontier tier: `deepseek/deepseek-v4-pro` → `deepseek/deepseek-v4.1-flash`**
+  (`evals/src/config.js`, regenerated into `skills/firstpass/models.md`).
+  An isolation test on 21 real, mechanically-graded tasks (security +
+  reasoning suites — the categories that actually reach frontier under the
+  real ladder) found the prior pick passed only 13/21 (62%) at
+  $0.0203/task, vs. 20/21 (95%) at $0.0040/task (5x cheaper) for the new
+  pick on the identical task set. The prior frontier pick scored worse on
+  both correctness and cost-efficiency than this vendor's own
+  standard-tier pick — the tier meant to hold *more* capability was
+  holding less. See `undercutsh/internal`
+  `business/openrouter-live-routing-research-2026-09-12.md`, Open
+  Question #4's follow-up isolation test.
 - **Open-weight standard tier: `deepseek/deepseek-v4-flash` → `z-ai/glm-5.3-flash`**
   (`evals/src/config.js`, regenerated into `skills/firstpass/models.md`).
   Integrates the live-routing research's strongest result: a standard-tier

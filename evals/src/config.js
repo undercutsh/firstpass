@@ -44,7 +44,19 @@ export const VENDORS = {
       // undercutsh/internal business/openrouter-live-routing-research-
       // 2026-09-12.md, Finding #6.
       standard: 'z-ai/glm-5.3-flash',
-      frontier: 'deepseek/deepseek-v4-pro',
+      // Was deepseek/deepseek-v4-pro. Swapped 2026-09-14 after a frontier-tier
+      // isolation experiment on 21 real, mechanically-graded tasks (security +
+      // reasoning suites — the categories that actually reach frontier under
+      // the real ladder) found deepseek-v4-pro passed only 13/21 (62%) at
+      // $0.0203/task total, while deepseek-v4.1-flash passed 20/21 (95%) at
+      // $0.0040/task (5x cheaper) on the identical task set. A second
+      // candidate, z-ai/glm-5.3, also beat the incumbent (17/21, $0.0145) but
+      // v4.1-flash won outright on both cost and pass rate. The incumbent
+      // frontier pick was mis-tiered: it scored worse than this vendor's own
+      // standard-tier pick on both intelligence_index and value. See
+      // undercutsh/internal business/openrouter-live-routing-research-
+      // 2026-09-12.md, Open Question #4's follow-up isolation test.
+      frontier: 'deepseek/deepseek-v4.1-flash',
       apex: 'z-ai/glm-5.2',
     },
   },
