@@ -90,22 +90,39 @@ export function gradeCode(solution, testCases) {
   if (typeof solution !== 'string' || solution.trim().length === 0) {
     return { pass: false, reason: 'no code returned' };
   }
-  const source = `(function(){\n${solution}\nreturn typeof main === 'function' ? main : (typeof run === 'function' ? run : null);})()`;
-  let fn;
+  const sandbox = { Math, JSON, Array, Object, String, Number, Boolean, Date, RegExp, parseInt, parseFloat, isNaN, isFinite, __args: undefined };
+  vm.createContext(sandbox);
+
+  // Probe only for a callable entry point — do not invoke it here.
+  const probeSource = `(function(){\n${solution}\nreturn typeof main === 'function' ? 'main' : (typeof run === 'function' ? 'run' : null);})()`;
+  let entryName;
   try {
-    const sandbox = { Math, JSON, Array, Object, String, Number, Boolean, Date, RegExp, parseInt, parseFloat, isNaN, isFinite };
-    vm.createContext(sandbox);
-    fn = vm.runInContext(source, sandbox, { timeout: 3000 });
+    entryName = vm.runInContext(probeSource, sandbox, { timeout: 3000 });
   } catch (e) {
     return { pass: false, reason: `parse error: ${e.message}` };
   }
-  if (typeof fn !== 'function') return { pass: false, reason: 'no callable main/run exported' };
+  if (!entryName) return { pass: false, reason: 'no callable main/run exported' };
+
   let passed = 0;
   for (const tc of testCases) {
+    // Redeclare + invoke the solution as ONE script per case (args passed via
+    // the sandbox, not string-interpolated) so the vm `timeout` genuinely
+    // bounds the call. `timeout` on vm.runInContext only bounds that one
+    // synchronous script run — calling a function object extracted from a
+    // PRIOR runInContext call (as this used to do) executes completely
+    // outside any timeout, so a submitted solution with an infinite loop
+    // (e.g. `function main(){ while(true){} }`) would hang the grader, and
+    // the whole eval run, forever instead of failing gracefully. See
+    // tasks.test.js's "hangs on an infinite loop" regression case.
+    sandbox.__args = tc.input;
+    const callSource = `(function(){\n${solution}\nreturn ${entryName}(...__args);})()`;
     let got;
     try {
-      got = fn(...tc.input);
+      got = vm.runInContext(callSource, sandbox, { timeout: 3000 });
     } catch (e) {
+      if (/Script execution timed out/.test(e.message)) {
+        return { pass: false, reason: `timed out on ${JSON.stringify(tc.input)} (possible infinite loop / unbounded recursion)` };
+      }
       return { pass: false, reason: `threw on ${JSON.stringify(tc.input)}: ${e.message}` };
     }
     if (tc.expected instanceof RegExp) {
