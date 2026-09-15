@@ -262,6 +262,45 @@ describe('gradeCode', () => {
     const result = gradeCode('function main() { return [3, 1, 2]; }', [{ input: [], expected: [1, 2, 3] }]);
     assert.equal(result.pass, false);
   });
+
+  // FIXED BUG: the vm `timeout` option passed to vm.runInContext only bounds
+  // THAT synchronous script run. The old implementation used runInContext
+  // once to extract the `main`/`run` function object, then invoked it
+  // directly (`fn(...tc.input)`) from plain JS — a call that happens
+  // completely outside any vm timeout. A worker-submitted solution with an
+  // infinite loop (or unbounded recursion) would hang gradeCode, and with it
+  // the whole eval run, forever instead of grading as a failure. This is a
+  // real edge case a grader must handle: nothing in the worker contract
+  // stops a model from emitting `while(true){}`, and mechanical graders are
+  // exactly the layer supposed to fail closed instead of joining the loop.
+  test('a solution with an infinite loop times out as a failure instead of hanging forever', () => {
+    const start = Date.now();
+    const result = gradeCode('function main(x) { while (true) { x = x + 1; } }', [{ input: [1], expected: 1 }]);
+    const elapsedMs = Date.now() - start;
+    assert.equal(result.pass, false);
+    assert.match(result.reason, /timed out/);
+    // Must resolve near the per-call vm timeout (3000ms), not hang.
+    assert.ok(elapsedMs < 10000, `expected gradeCode to time out quickly, took ${elapsedMs}ms`);
+  });
+
+  test('a solution with unbounded recursion times out as a failure instead of hanging or crashing', () => {
+    const result = gradeCode('function main(x) { return main(x + 1); }', [{ input: [1], expected: 1 }]);
+    assert.equal(result.pass, false);
+    // Either the vm timeout or a stack-overflow-as-thrown-error is an
+    // acceptable graceful failure — what matters is it never resolves as a
+    // pass and never propagates an uncaught exception out of gradeCode.
+    assert.match(result.reason, /timed out|threw on/);
+  });
+
+  test('each test case still gets the correct args after a timing/invocation change (regression against arg mix-up)', () => {
+    const result = gradeCode('function main(a, b) { return a + b; }', [
+      { input: [1, 2], expected: 3 },
+      { input: [10, 20], expected: 30 },
+      { input: [-5, 5], expected: 0 },
+    ]);
+    assert.equal(result.pass, true);
+    assert.equal(result.reason, '3/3 cases passed');
+  });
 });
 
 // --- gradeExact() ---------------------------------------------------------
