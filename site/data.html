@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#13161b">
+<title>What we can see — Undercut</title>
+<meta name="description" content="Pro's policy sync is an authenticated licence check, not telemetry about your work. What it reveals, what it never sees, retention, and how it differs from a proxy.">
+<link rel="canonical" href="https://getundercut.sh/data">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+<link rel="icon" sizes="48x48" href="/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#13161b">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Undercut">
+<meta property="og:title" content="What we can see — Undercut">
+<meta property="og:description" content="Pro's policy sync is an authenticated licence check, not telemetry about your work. What it reveals, what it never sees, retention, and how it differs from a proxy.">
+<meta property="og:url" content="https://getundercut.sh/data">
+<meta property="og:image" content="https://getundercut.sh/og-image.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://getundercut.sh/og-image.png">
+<meta name="twitter:title" content="What we can see — Undercut">
+<meta name="twitter:description" content="Pro's policy sync is an authenticated licence check, not telemetry about your work. What it reveals, what it never sees, retention, and how it differs from a proxy.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="alternate" type="application/rss+xml" title="Undercut changelog" href="https://getundercut.sh/changelog.xml">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Fragment+Mono:ital@0;1&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet"></noscript>
+<style>
+  body{margin:0;background:#f2f0ec;color:#13161b;font-family:'Bricolage Grotesque','Helvetica Neue',Arial,sans-serif;line-height:1.65}
+  .wrap{max-width:720px;margin:0 auto;padding:64px 24px 80px}
+  h1,h2{font-family:'Fragment Mono','SF Mono',Menlo,Consolas,monospace}
+  h1{font-size:28px}h2{font-size:18px;margin-top:36px}
+  a{color:#13161b;text-underline-offset:3px}
+  .mono{font-family:'Fragment Mono','SF Mono',Menlo,Consolas,monospace;font-size:12px;color:#6e7278;text-transform:uppercase;letter-spacing:.08em}
+  code{background:#d4d0cb;padding:1px 5px;border-radius:3px;font-size:.92em}
+  .callout{border:1px solid #d4d0cb;border-radius:6px;padding:16px 18px;margin:20px 0}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid #d4d0cb;vertical-align:top}
+  th{font-family:'Fragment Mono','SF Mono',Menlo,Consolas,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#6e7278}
+  .yes{color:#c23c2e}
+  .no{color:#00959c}
+  @media (max-width:520px){table,thead,tbody,th,td,tr{display:block}th{display:none}td{border-bottom:none;padding:2px 0}tr{border-bottom:1px solid #d4d0cb;padding:10px 0}td::before{content:attr(data-label);display:block;font-family:'Fragment Mono','SF Mono',Menlo,Consolas,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#6e7278;margin-bottom:2px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="mono">What we can see — Undercut</p>
+  <h1>A licence check, not telemetry.</h1>
+  <p><a href="/privacy">Privacy</a> already says the free skill sets no cookies, runs no analytics, and doesn't phone home — that's still true, and it's the whole story for Free. Pro adds exactly one network thing: your machine periodically fetches a signed policy file so its tier→model map stays current. That fetch is an entitlement check — proving your account is still paying — not a report on what you're working on. This page is the honest, specific account of what that check reveals, what it never sees, and how long we keep it.</p>
+
+  <h2>What an authenticated policy fetch reveals</h2>
+  <p>When a paired Pro machine syncs, our servers see exactly four things, because they're what any authenticated HTTP request necessarily carries:</p>
+  <ul>
+    <li><strong>Account ID</strong> — which subscription is asking.</li>
+    <li><strong>IP address</strong> — where the request came from, the way any server sees any request's source.</li>
+    <li><strong>Timestamp</strong> — when the request happened.</li>
+    <li><strong>Current policy version</strong> — which revision of the policy file your machine already has, so we know whether to send a diff or say "no changes."</li>
+  </ul>
+  <p>That's the complete list. Nothing else is in the request, and nothing else is logged from it — see the allowlist note below.</p>
+
+  <h2>Why this is categorically different from telemetry</h2>
+  <p>"Telemetry" in the sense our other pages rule out means data about <em>your work</em>: prompts, code, file paths, repo names, what task you ran, how it went. A policy fetch carries none of that — it's the same shape of signal any paid product's server needs to answer "is this account still entitled to what it's asking for," the way a license server, an app store receipt check, or a subscription paywall works. It's unavoidable for any authenticated request to any server, and it's a genuinely different thing from watching what you build. We think a skeptical reader is right to notice the gap between "nothing leaves your machine" (true of Free) and "an authenticated fetch happens" (true of Pro) — so this page draws that line explicitly instead of leaving it for someone else to find.</p>
+
+  <h2>What a fetch never contains</h2>
+  <p>The policy endpoint's request logging runs off an explicit allowlist, the same pattern <code>/api/lead</code> already uses for form submissions — only named fields are ever written, nothing is captured by default. Specifically never logged or transmitted: prompts, code, file contents, file paths, working directory, repo name, session content, the <code>User-Agent</code> string, or which coding agent you're running. A sync is never correlated to a coding session, and the server has no way to tell "you ran a task" from "your clock rolled past the refresh interval" — those look identical from our side, which is the point.</p>
+
+  <h2>Retention</h2>
+  <p>Raw access logs (account ID, IP, timestamp, policy version) are kept <strong>30 days</strong>, then deleted. After that window, only aggregate, non-per-account counters survive — total sync volume, for capacity planning — never a per-user timeline you could reconstruct someone's activity from. We don't keep a standing log of when any one account has synced beyond that 30-day window.</p>
+
+  <h2>What a proxy does vs. what Undercut does</h2>
+  <p>"Proxy" gets used loosely for anything that touches model routing, so here's the specific comparison. A proxy sits in your request path and brokers every call live; Undercut's mechanism is a periodic pull of a signed config file that your local agent reads and applies itself.</p>
+  <table>
+    <thead><tr><th>Question</th><th>A live routing proxy</th><th>What Undercut does</th></tr></thead>
+    <tbody>
+      <tr><td data-label="Question">Sees each prompt/response?</td><td data-label="Proxy" class="yes">Yes — it's in the request path</td><td data-label="Undercut" class="no">No — dispatch decisions happen locally, in the agent, from the policy file already on disk</td></tr>
+      <tr><td data-label="Question">Brokers your live model traffic?</td><td data-label="Proxy" class="yes">Yes — every call passes through it</td><td data-label="Undercut" class="no">No — your agent talks to your model provider directly; Undercut never sits between you and it</td></tr>
+      <tr><td data-label="Question">What actually crosses the network to us?</td><td data-label="Proxy" class="yes">Every request and response body</td><td data-label="Undercut" class="no">Only a periodic pull of a small signed policy file (account ID, IP, timestamp, version — see above)</td></tr>
+      <tr><td data-label="Question">If it goes down mid-session?</td><td data-label="Proxy" class="yes">Every in-flight call breaks — it's a single point of failure</td><td data-label="Undercut" class="no">Nothing breaks. The agent keeps using the last cached policy file; nothing was ever waiting on a live answer</td></tr>
+      <tr><td data-label="Question">If the vendor disappeared entirely?</td><td data-label="Proxy" class="yes">Routing stops working — there's no traffic path without it</td><td data-label="Undercut" class="no">The last cached <code>policy.json</code> keeps working indefinitely; failing that, it falls back to the free static <code>models.md</code> map. Dispatch never depends on us being reachable</td></tr>
+    </tbody>
+  </table>
+  <p>Same point pricing already makes about the mechanism itself: nothing decides per call on the network path — still not a proxy.</p>
+
+  <h2>Sync cadence is local, client-initiated, and optional</h2>
+  <p>The default is a daily check, but "daily default" describes a client-side timer, not a service watching you. There is no resident daemon on our end or yours — your machine's own process wakes up, checks whether the cached policy is past its TTL, and if so makes one outbound request; if you never run the client, nothing calls out at all. Nothing about that mechanism requires the daily default:</p>
+  <ul>
+    <li><strong>Slow it down.</strong> Set a longer TTL and sync weekly, monthly, or on whatever cadence you want.</li>
+    <li><strong>Disable it.</strong> Turn sync off entirely; the last cached policy keeps being used until you turn it back on.</li>
+    <li><strong>Run fully offline, indefinitely.</strong> Download the signed policy bundle once and drop it in place by hand — the same signature verification applies, there's just no periodic fetch at all.</li>
+  </ul>
+
+  <h2>Contact</h2>
+  <p>Questions about this or any other data-handling detail: <a href="https://iamjustinwinter.com">Justin Winter</a>. See also <a href="/privacy">Privacy</a> for everything the free, no-account tier handles (nothing, beyond public GitHub API calls your browser makes directly and lead-capture forms you fill in yourself).</p>
+  <p style="margin-top:40px;font-size:13px;color:#6e7278">Updated 2026-09-15. <a href="/">Back to Undercut</a> · <a href="/privacy">Privacy</a> · <a href="/accessibility">Accessibility</a></p>
+</div>
+</body>
+</html>

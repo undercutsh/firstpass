@@ -51,6 +51,7 @@ const NON_COMPANION_PAGES = new Set([
   'terms.html',
   'status.html',
   'setup.html',
+  'data.html',
 ]);
 
 export function readCompanionSlugsFromDisk(siteDir) {

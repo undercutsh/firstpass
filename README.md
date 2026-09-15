@@ -212,7 +212,9 @@ that guarantees the rubric is in context every session and prints a
 session-end receipt with real token/cost data (never a guess). No network
 calls, no telemetry, nothing leaves your machine. Skip it entirely and the
 core skill works exactly as described above — see [`hooks/README.md`](hooks/README.md)
-for install steps.
+for install steps. (Pro's policy sync is the one network exception to
+"nothing leaves your machine" — an authenticated licence check, not
+telemetry about your work: see [getundercut.sh/data](https://getundercut.sh/data).)
 
 ## What this is and isn't
 

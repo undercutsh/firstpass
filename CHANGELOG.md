@@ -50,6 +50,22 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ### Added
 
+- **`/data` — "What we can see" public page (PRD §5.1.5f).** New
+  `site/data.html` + `site/data.md` (registered as a real markdown twin in
+  `middleware.ts`, same pattern as `/` and `/setup`) states plainly what
+  Pro's periodic policy-file sync reveals — account ID, IP, timestamp,
+  current policy version, nothing else — and draws the line between that
+  (an entitlement check) and telemetry about your work. Includes a "what a
+  proxy does vs. what Undercut does" comparison table, the 30-day
+  raw-log / aggregate-only retention posture, and states that the default
+  daily sync is a local, client-initiated check with no resident daemon —
+  slow it, disable it, or run fully offline indefinitely, since nothing
+  about the mechanism requires the daily default. Cross-linked from every
+  existing "no telemetry" / "phone home" claim (`privacy.html`,
+  `developers.html`, `index.md`, `pricing.md`, `README.md`,
+  `hooks/README.md`) so the distinction is drawn from the existing claim,
+  not asserted on a new page nobody finds.
+
 - **`/setup` — public segment router (PRD §5.1.3).** New `site/segments.json`
   (public, MIT) is the single source of truth for: the editor question
   (reusing `site/clients.json`'s 34-client list, with a `segment` of `A`/
