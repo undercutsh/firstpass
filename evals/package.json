@@ -1,15 +1,47 @@
 {
-  "name": "tiered-dispatch-evals",
-  "version": "0.1.0",
+  "name": "@undercut/evals",
+  "version": "1.0.0",
   "type": "module",
-  "private": true,
-  "description": "A/B eval harness for the tiered-dispatch skill: all-frontier vs all-standard vs tiered routing, per vendor, on deterministically-graded task suites.",
+  "description": "A/B eval harness for the tiered-dispatch skill (all-frontier vs all-standard vs tiered routing, per vendor, on deterministically-graded task suites), publishing its confidence-interval / significance-testing module (wilsonInterval, newcombeDiffInterval, seedBootstrapCI, summarizeWithCI) as this package's public API. See README.md's \"Public API\" and \"Consumed by the private backend\" sections.",
+  "keywords": [
+    "evals",
+    "eval-harness",
+    "confidence-interval",
+    "wilson-interval",
+    "significance-testing",
+    "statistics"
+  ],
+  "license": "MIT",
+  "author": "Justin Winter",
+  "homepage": "https://github.com/undercutsh/firstpass/tree/main/evals#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/undercutsh/firstpass.git",
+    "directory": "evals"
+  },
+  "bugs": {
+    "url": "https://github.com/undercutsh/firstpass/issues"
+  },
   "engines": {
     "node": ">=22"
   },
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.js",
+    "./stats": "./src/stats.js",
+    "./package.json": "./package.json"
+  },
+  "main": "./src/index.js",
+  "files": [
+    "src/index.js",
+    "src/stats.js",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "evals": "node src/main.js",
     "smoke": "node src/main.js --seeds 1 --suites code,reasoning,mechanical",
-    "verify-models": "node src/main.js --verify-only"
+    "verify-models": "node src/main.js --verify-only",
+    "test": "node --test 'src/**/*.test.js'"
   }
 }

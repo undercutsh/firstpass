@@ -1,20 +1,34 @@
-// Confidence-interval tooling for the eval harness.
+// Confidence-interval / significance-testing tooling for the eval harness.
 // See business/build-backlog-2026-08-20-round3.md §2 for the design spec
-// this implements. Two statistics:
+// this implements. This module is this package's public API (see this
+// package's package.json `exports` and README) — it's also consumed
+// outside this harness by undercut-app's vetting pipeline (currently a
+// TypeScript port copied in at `src/vetting/stats.ts`, pending publication
+// of this package as `@undercut/evals`; see that file's header).
 //
-//   - wilsonInterval    — proportion CI (pass rate). Well-behaved near 0/100%,
-//                         unlike the normal (Wald) approximation many cells
-//                         sit near.
-//   - seedBootstrapCI   — CI for continuous/ratio metrics (cost, $/pass) via
-//                         percentile bootstrap, resampling whole SEEDS (not
-//                         individual units). runner.js's apex-batching path
-//                         splits one batched call's cost across all residual
-//                         units in a seed, so units within a seed aren't
-//                         independent draws — unit-level resampling would
-//                         understate variance.
+// Four exports:
 //
-// summarizeWithCI() composes both over a flat unit list. Not yet wired into
-// main.js/runner.js — see the PR description for why.
+//   - wilsonInterval        — proportion CI (pass rate). Well-behaved near
+//                             0/100%, unlike the normal (Wald) approximation
+//                             many cells sit near.
+//   - newcombeDiffInterval  — CI for the DIFFERENCE between two proportions
+//                             (e.g. a candidate arm's pass rate vs. an
+//                             incumbent's), built from two wilsonInterval
+//                             calls (Newcombe 1998, "Method 10"). Excludes 0
+//                             iff the difference is significant at the
+//                             stated confidence level.
+//   - seedBootstrapCI       — CI for continuous/ratio metrics (cost, $/pass)
+//                             via percentile bootstrap, resampling whole
+//                             SEEDS (not individual units). runner.js's
+//                             apex-batching path splits one batched call's
+//                             cost across all residual units in a seed, so
+//                             units within a seed aren't independent draws —
+//                             unit-level resampling would understate
+//                             variance.
+//   - summarizeWithCI       — composes wilsonInterval + seedBootstrapCI over
+//                             a flat unit list. Not yet wired into
+//                             main.js/runner.js — see the PR description for
+//                             why.
 
 // Standard normal critical values for common two-sided confidence levels.
 const Z_SCORES = {
@@ -64,6 +78,34 @@ export function wilsonInterval(successes, total, { confidence = 0.95 } = {}) {
     n: total,
     confidence,
   };
+}
+
+/**
+ * Newcombe's hybrid-score confidence interval for the DIFFERENCE between two
+ * independent binomial proportions (Newcombe 1998, "Method 10"), built
+ * directly from two wilsonInterval() calls. This is the standard
+ * non-parametric replacement for a two-proportion z-test / Wald CI on
+ * p1 - p2, and like wilsonInterval it stays well-behaved for small n and
+ * proportions near 0/100% where the textbook z-test's normal approximation
+ * breaks down.
+ *
+ * @param {number} successes1
+ * @param {number} total1
+ * @param {number} successes2
+ * @param {number} total2
+ * @param {object} [opts]
+ * @param {number} [opts.confidence=0.95]
+ * @returns {{point: number, lower: number, upper: number, confidence: number, significant: boolean}}
+ *   `significant` is true iff the interval excludes 0 — i.e. the difference
+ *   is statistically significant at `confidence`.
+ */
+export function newcombeDiffInterval(successes1, total1, successes2, total2, { confidence = 0.95 } = {}) {
+  const p1 = wilsonInterval(successes1, total1, { confidence });
+  const p2 = wilsonInterval(successes2, total2, { confidence });
+  const point = p1.point - p2.point;
+  const lower = point - Math.sqrt((p1.point - p1.lower) ** 2 + (p2.upper - p2.point) ** 2);
+  const upper = point + Math.sqrt((p1.upper - p1.point) ** 2 + (p2.point - p2.lower) ** 2);
+  return { point, lower, upper, confidence, significant: lower > 0 || upper < 0 };
 }
 
 // Deterministic PRNG (mulberry32) so re-runs with the same `seed` reproduce
