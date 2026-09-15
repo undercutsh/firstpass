@@ -13,7 +13,7 @@
 
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
-import { wilsonInterval, seedBootstrapCI, summarizeWithCI } from './stats.js';
+import { wilsonInterval, newcombeDiffInterval, seedBootstrapCI, summarizeWithCI } from './stats.js';
 
 // --- wilsonInterval ----------------------------------------------------
 
@@ -80,6 +80,59 @@ describe('wilsonInterval', () => {
 
   test('rejects negative total', () => {
     assert.throws(() => wilsonInterval(0, -5), /invalid successes\/total/);
+  });
+});
+
+// --- newcombeDiffInterval ------------------------------------------------
+//
+// Consumed downstream by undercut-app's vetting significance gate (tier-swap
+// decisions on a candidate model vs. an incumbent) — these cases mirror the
+// fixtures that module's own port of this function is tested against, so a
+// regression here is caught before it ever reaches that copy.
+
+describe('newcombeDiffInterval', () => {
+  test('identical arms produce a point estimate of 0 and are not significant', () => {
+    const result = newcombeDiffInterval(10, 20, 10, 20);
+    assert.equal(result.point, 0);
+    assert.equal(result.significant, false);
+    assert.ok(result.lower <= 0 && result.upper >= 0);
+  });
+
+  test('a large, well-separated margin at decent N is significant', () => {
+    // 11/15 vs 2/15 — a decisive win by both margin and CI.
+    const result = newcombeDiffInterval(11, 15, 2, 15);
+    assert.ok(result.lower > 0, `expected lower bound > 0, got ${result.lower}`);
+    assert.equal(result.significant, true);
+    assert.ok(result.point > 0);
+  });
+
+  test('a small margin at small N is NOT significant (the noisy case)', () => {
+    // 17/21 (81%) vs 13/21 (62%) — a 19pp margin that looks decisive by
+    // margin alone but does not clear significance at this N.
+    const result = newcombeDiffInterval(17, 21, 13, 21);
+    assert.equal(result.significant, false);
+    assert.ok(result.lower <= 0 && result.upper >= 0);
+  });
+
+  test('is antisymmetric — swapping arms negates point/bounds and preserves significance', () => {
+    const forward = newcombeDiffInterval(11, 15, 2, 15);
+    const backward = newcombeDiffInterval(2, 15, 11, 15);
+    assert.equal(forward.significant, backward.significant);
+    assert.ok(Math.abs(forward.point - -backward.point) < 1e-12);
+    assert.ok(Math.abs(forward.lower - -backward.upper) < 1e-12);
+    assert.ok(Math.abs(forward.upper - -backward.lower) < 1e-12);
+  });
+
+  test('0/0 vs 0/0 degenerates cleanly (no throw, not significant)', () => {
+    const result = newcombeDiffInterval(0, 0, 0, 0);
+    assert.equal(result.point, 0);
+    assert.equal(result.significant, false);
+  });
+
+  test('supports alternate confidence levels', () => {
+    const ci95 = newcombeDiffInterval(11, 15, 2, 15, { confidence: 0.95 });
+    const ci80 = newcombeDiffInterval(11, 15, 2, 15, { confidence: 0.8 });
+    assert.ok(ci80.upper - ci80.lower < ci95.upper - ci95.lower);
   });
 });
 

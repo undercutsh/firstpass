@@ -1,8 +1,86 @@
-# tiered-dispatch evals
+# tiered-dispatch evals (`@undercut/evals`)
 
 Controlled A/B harness for the tiered-dispatch skill: does routing work to the
 cheapest tier that can pass verification cost less than "one model for
 everything", **without** sacrificing pass rate?
+
+## Public API
+
+The harness itself (`src/main.js`, `src/runner.js`, `src/suites/`, …) is an
+internal CLI tool, run here and in CI — it isn't part of this package's public
+API. The one thing meant to be consumed by other packages is `src/stats.js`,
+the confidence-interval / significance-testing module the harness uses to
+decide whether an A/B result is real rather than noise:
+
+- **`wilsonInterval(successes, total, { confidence })`** — Wilson score
+  confidence interval for a binomial proportion (pass rate). Stays inside
+  `[0, 1]` and doesn't collapse to zero width at `p = 0` or `p = 1`, unlike
+  the naive Wald interval.
+- **`newcombeDiffInterval(successes1, total1, successes2, total2, { confidence })`**
+  — confidence interval for the *difference* between two proportions (a
+  candidate arm's pass rate vs. an incumbent's), via Newcombe's hybrid-score
+  method (built from two `wilsonInterval` calls). `.significant` is `true`
+  iff the interval excludes 0.
+- **`seedBootstrapCI(seedGroups, statisticFn, { iterations, confidence, seed })`**
+  — percentile bootstrap CI for continuous/ratio metrics (cost, $/pass),
+  resampling whole seed-clusters rather than individual units so clustered
+  variance isn't understated.
+- **`summarizeWithCI(units, { seedKey, confidence, iterations, bootstrapSeed })`**
+  — composes the two proportion/ratio statistics above over a flat unit list.
+
+`package.json`'s `exports` field is the enforced boundary: only `.` (the
+package root, re-exporting all of the above from `src/index.js`) and
+`./stats` resolve. Everything else under `src/` (the CLI, suites, task
+fixtures, OpenRouter client, …) is an implementation detail of the harness
+and isn't importable from outside this package.
+
+```js
+import { wilsonInterval, newcombeDiffInterval } from '@undercut/evals';
+// or, equivalently:
+import { wilsonInterval, newcombeDiffInterval } from '@undercut/evals/stats';
+```
+
+## Consumed by the private backend
+
+`undercut-app` (the private Pro/Teams backend)'s vetting pipeline uses this
+exact `wilsonInterval`/`newcombeDiffInterval` pair for its tier-swap
+significance gate — deciding whether a candidate model's pass-rate edge over
+an incumbent is real before a tier swap is allowed. That's the reason this
+statistics module is structured as this package's public surface rather than
+staying purely internal to the eval harness.
+
+**Today**, this package has not been published to a registry (no publish
+workflow exists yet, and this repo carries no npm credentials), so
+`undercut-app`'s `src/vetting/stats.ts` and `src/policy` carry a verbatim
+TypeScript port of this file instead, each flagged with a
+`TODO: replace with a published @undercut/evals package once available`
+comment pointing back here.
+
+**Once published**, the intended consumption pattern is a normal pinned
+`npm install` from `undercut-app`'s (private) `package.json`:
+
+```json
+{
+  "dependencies": {
+    "@undercut/evals": "1.0.0"
+  }
+}
+```
+
+Pinned to an exact version (no `^`/`~` range) — this module backs a
+significance *gate*, so a silent minor/patch bump changing its math
+shouldn't be able to change gating behavior without a deliberate version
+bump and re-test on the consuming side. `undercut-app` would then delete its
+local TS port and its `TODO` comments, and import directly:
+
+```ts
+import { wilsonInterval, newcombeDiffInterval } from '@undercut/evals';
+```
+
+This package versions independently of `undercut-app`'s own release cadence;
+a breaking change to `wilsonInterval`/`newcombeDiffInterval`'s signature or
+return shape is a major version bump here, same as any other public npm
+package.
 
 ## Why this methodology is reputable
 
