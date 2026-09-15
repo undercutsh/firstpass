@@ -17,7 +17,8 @@
   ],
   "scripts": {
     "start": "node bin/undercut.js",
-    "lint": "node --check bin/undercut.js && for f in src/**/*.js; do node --check \"$f\"; done"
+    "lint": "node --check bin/undercut.js && for f in src/**/*.js; do node --check \"$f\"; done",
+    "test": "node --test 'src/**/*.test.js'"
   },
   "dependencies": {
     "commander": "^12.1.0"
