@@ -62,7 +62,10 @@ prompts, code, file contents, file paths, working directory, repo name, session 
 | If it goes down mid-session? | Every in-flight call breaks — single point of failure | Nothing breaks — the agent keeps using the last cached policy file |
 | If the vendor disappeared entirely? | Routing stops — no traffic path without it | The last cached `policy.json` keeps working indefinitely; failing that, the free static `models.md` map. Dispatch never depends on us being reachable |
 
-Nothing decides per call on the network path — still not a proxy.
+Nothing decides per call on the network path — still not a proxy. For the
+full schema of that signed policy file, how the ed25519 signature is
+verified, and what happens on a failed or expired check, see
+https://getundercut.sh/policy-file.md.
 
 ## Sync cadence is local, client-initiated, and optional
 
