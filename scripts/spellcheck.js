@@ -147,7 +147,7 @@ const ALLOWLIST = [
   'Antigravity', 'jsonc', 'kilocode',
   'OpenHands', "OpenHands'", 'OpenDevin', 'microagent', 'microagents', 'LiteLLM',
   'Augment', "Augment's", 'Auggie', "Auggie's", 'augmentcode', 'auggie',
-  'onboarded',
+  'onboarded', 'onboard',
   // Enterprise / identity-and-access vocabulary on the pricing page
   'SAML', 'OIDC', 'SCIM', 'Okta', 'Entra', 'HRIS', 'BambooHR', 'Rippling', 'SIEM',
   'HIPAA', 'BAA', 'RBAC', 'SLA', 'MFA', 'M2M', 'passkeys', 'passkey', 'deprovisioning', 'biometric',
