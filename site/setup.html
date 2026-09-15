@@ -70,6 +70,13 @@
   .segment-card .field-label { font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: #6e7278; margin: 16px 0 4px; }
   .caveat { border-left: 2px solid #6e7278; padding: 10px 16px; margin-top: 14px; font-size: 13.5px; color: #6e7278; }
   .caveat.warn { border-left-color: #c26e12; color: #a35a0e; }
+  .connect-cta { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; padding: 11px 18px; border-radius: 8px; background: #d4d0cb; color: #6e7278; font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 13px; font-weight: 700; text-decoration: none; cursor: not-allowed; }
+  .connect-help { font-size: 12.5px; color: #6e7278; margin: 8px 0 0; }
+  .ref-table-wrap { overflow-x: auto; margin: 0 0 28px; border: 1px solid #d4d0cb; border-radius: 10px; }
+  table.ref-table { width: 100%; border-collapse: collapse; font-size: 13.5px; background: #fff; }
+  table.ref-table th, table.ref-table td { text-align: left; padding: 10px 14px; border-bottom: 1px solid #d4d0cb; vertical-align: top; }
+  table.ref-table th { font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: #6e7278; background: #f2f0ec; white-space: nowrap; }
+  table.ref-table tr:last-child td { border-bottom: none; }
   [hidden] { display: none !important; }
 </style>
 </head>
@@ -121,6 +128,15 @@
       <span class="badge badge-neutral">The fact that reshapes the whole story</span>
       <p style="margin-top: 14px" id="uc-key-fact">Loading…</p>
     </div>
+
+    <p class="mono" style="margin: 0 0 14px">All 4 segments, at a glance</p>
+    <div class="ref-table-wrap">
+      <table class="ref-table" id="uc-ref-table">
+        <thead><tr><th>Segment</th><th>Tools</th><th>How you pay today</th><th>What Undercut adds</th><th>OpenRouter pitch</th></tr></thead>
+        <tbody id="uc-ref-table-body"><tr><td colspan="5">Loading…</td></tr></tbody>
+      </table>
+    </div>
+
     <div id="uc-segment-list">Loading segment data…</div>
     <div class="segment-card" id="uc-unresearched-card"></div>
   </div>
@@ -282,6 +298,18 @@
     return undefined; // no answers yet
   }
 
+  function connectCtaHtml(seg) {
+    var c = seg.connect_openrouter;
+    if (!c || !c.cta_label) return '';
+    // enabled stays false until Phase 3's OAuth PKCE connect flow ships a real route
+    // (internal build-backlog-2026-09-15-ecosystem-ladder.md Phase 3) -- placeholder,
+    // non-clickable, disclosed as such rather than linking to a guessed path.
+    return (
+      '<span class="connect-cta" role="button" aria-disabled="true" title="Coming soon — ships with the OpenRouter connect flow">' + esc(c.cta_label) + ' — coming soon</span>' +
+      (c.helper_text ? '<p class="connect-help">' + esc(c.helper_text) + '</p>' : '')
+    );
+  }
+
   function segmentCardHtml(seg, opts) {
     opts = opts || {};
     var flagBadge = seg.flag ? '<span class="badge badge-warn">' + esc(seg.flag.replace(/_/g, ' ')) + '</span>' : '<span class="badge">verified</span>';
@@ -293,8 +321,26 @@
         '<div class="field-label">OpenRouter framing</div>' +
         '<p style="margin-bottom:0">' + esc(seg.openrouter_framing) + '</p>' +
         '<div class="caveat' + (seg.flag ? ' warn' : '') + '">' + esc(seg.honesty_caveat) + '</div>' +
+        connectCtaHtml(seg) +
       '</div>'
     );
+  }
+
+  function renderReferenceTable(data) {
+    var body = document.getElementById('uc-ref-table-body');
+    var t = data.reference_table;
+    if (!t || !body) return;
+    body.innerHTML = t.rows.map(function (row) {
+      return (
+        '<tr>' +
+          '<td><strong>' + esc(row.segment) + '</strong></td>' +
+          '<td>' + esc(row.tools) + '</td>' +
+          '<td>' + esc(row.how_you_pay_today) + '</td>' +
+          '<td>' + esc(row.what_undercut_adds) + '</td>' +
+          '<td>' + esc(row.openrouter_pitch) + '</td>' +
+        '</tr>'
+      );
+    }).join('');
   }
 
   function renderAllSegments(data) {
@@ -378,10 +424,13 @@
       state.data = data;
       renderOptions(data);
       renderAllSegments(data);
+      renderReferenceTable(data);
     })
     .catch(function () {
       document.getElementById('uc-segment-list').innerHTML =
         '<p style="color:#6e7278">Couldn\'t load segment data client-side. See the prose version: <a href="/setup.md">/setup.md</a>, or the raw source: <a href="https://github.com/undercutsh/firstpass/blob/main/site/segments.json">segments.json</a>.</p>';
+      var refBody = document.getElementById('uc-ref-table-body');
+      if (refBody) refBody.innerHTML = '<tr><td colspan="5">Couldn\'t load — see <a href="/setup.md">/setup.md</a> for the table.</td></tr>';
     });
 })();
 </script>

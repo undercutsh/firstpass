@@ -2,7 +2,7 @@
 title: "Undercut — which segment are you?"
 description: "Undercut's value depends on your editor and how you pay for models today. Four honest segments, from Claude Code's bounded-but-real value to the zero-downside pitch for open/BYO-model tools already on API billing. Zed is explicitly flagged unverified for OpenRouter."
 canonical: "https://getundercut.sh/setup.md"
-last-updated: "2026-09-14"
+last-updated: "2026-09-15"
 ---
 
 # Undercut — which segment are you?
@@ -41,22 +41,44 @@ OpenRouter compatibility is unverified, not tool-dependent). Otherwise, if you a
 that's the generalizable half of the key fact above. Otherwise your tool's own segment applies.
 Full rule table: `resolution_matrix` in segments.json.
 
+## All 4 segments, at a glance
+
+Plain reference table — the full per-segment story is below; this is the quick-scan version for
+docs, per `reference_table` in segments.json.
+
+| Segment | Tools | How you pay today | What Undercut adds | OpenRouter pitch |
+|---|---|---|---|---|
+| A | Claude Code | Claude Pro/Max subscription only | Escalation rubric + effort-level tuning within Anthropic's own tier ladder | Additive second lane, same tool/subscription — reaches tiers your subscription can't |
+| B | Cursor, Windsurf, GitHub Copilot | Tool's native multi-vendor subscription | Escalation logic on top, plus the openweights tier the subscription doesn't include | Unlocks a tier you don't have |
+| C | OpenCode, Continue.dev, Cline, Aider, Roo Code, Kilo Code | Per-token API billing (no subscription in the mix) | Full category-aware routing across whatever vendors you add | Zero-downside, pure upside — the strongest pitch of any segment |
+| D | Zed | Bundled Zed Pro subscription | Routing within Zed's own available models | Unverified for this editor — no claim made either way |
+
 ## Segment A — Claude Code + Claude subscription, no other keys
 
-Undercut routes only within Anthropic's own tier ladder (haiku → sonnet → opus → fable). That's
-real, non-trivial value: the escalation rubric still catches over-escalation within that ladder,
-and Pro's real-time pooled testing and effort-level tuning still apply to Anthropic's tiers
-specifically. It does not reach the biggest dollar swings — openweights tiers cost pennies
-compared to dollars for Anthropic's tiers, per our own cost data.
+Undercut routes within Anthropic's own tier ladder (haiku → sonnet → opus → fable) on your
+existing subscription — that's real, non-trivial value on its own: the escalation rubric still
+catches over-escalation within that ladder, and Pro's real-time pooled testing and effort-level
+tuning still apply to Anthropic's tiers specifically. Your subscription alone doesn't reach the
+biggest dollar swings — openweights tiers run 5-10x cheaper again than Anthropic's own cheapest
+tier on the task categories where they hold up, per our own cost data.
 
-- **OpenRouter framing:** requires a tool switch — a real tradeoff. If cross-vendor savings matter
-  to you, the honest recommendation is switching to an open/BYO-model tool (see Segment C), with
-  the tradeoff stated plainly: you'd give up Claude-specific subscription pricing for full routing
-  flexibility. We do not recommend the unofficial `ANTHROPIC_BASE_URL` proxy workaround to reach
-  OpenRouter from inside Claude Code itself — it's ToS-gray, fragile, and could break without
-  notice.
-- **Honesty caveat:** this is the lower-value-ceiling segment of the four, stated plainly rather
-  than oversold — overstating value here is the specific trust problem this page exists to avoid.
+- **OpenRouter framing:** additive, not a replacement. You don't have to leave Claude Code or your
+  Claude subscription — the unlock is connecting OpenRouter as a second, API-billed lane alongside
+  it, the same pattern Undercut already uses for its own internal subagent routing. Your
+  subscription keeps handling whatever it already handles well; OpenRouter access is what lets the
+  same routing logic also reach the tiers your subscription can't. Connect OpenRouter (one click,
+  your own account, your own billing) and nothing about your subscription changes — it's additive,
+  never a replacement, and never implied to be inferior. We still do not recommend the unofficial
+  `ANTHROPIC_BASE_URL` proxy workaround to reach other vendors from inside Claude Code itself — it's
+  ToS-gray, fragile, and could break without notice; the OpenRouter connect flow (below) is the
+  supported path.
+- **Honesty caveat:** this is the lower-value-ceiling segment of the four on your subscription
+  alone, stated plainly rather than oversold. We also never compare this to Undercut's own
+  subscription pricing or unit economics — that's Anthropic's pricing to explain, not ours to
+  characterize.
+- **Connect OpenRouter:** adds a second lane on top of your Claude subscription; nothing about the
+  subscription lane changes, and declining keeps you on your current setup permanently, not a nag
+  state. See "Connecting OpenRouter" below for the current status of this button.
 
 ## Segment B — Cursor / Windsurf / Copilot
 
@@ -116,6 +138,16 @@ plainly.
   we don't yet know how it interacts with OpenRouter or other provider keys.
 - **Honesty caveat:** we'd rather say "not yet researched" than assign a segment we can't back up.
 
+## Connecting OpenRouter
+
+The interactive page shows a "Connect OpenRouter" button on Segments A, B, and C (not D — see
+Segment D above). As of this writing it is a disabled placeholder, not a live control: the OAuth
+PKCE connect flow that mints an OpenRouter key scoped to *your* account and billing is being built
+concurrently (`build-backlog-2026-09-15-ecosystem-ladder.md` Phase 3) and hasn't shipped its
+initiate-redirect route yet. We show the button so the shape of the flow is honest and visible
+now, and disclose plainly that it doesn't do anything yet rather than linking to a guessed or
+undocumented path. It will go live once Phase 3 merges.
+
 ## Open questions (re-verify before relying on this for a specific claim)
 
 - Windsurf's exact BYOK settings-field names weren't fully confirmed (the live settings page
@@ -127,7 +159,9 @@ plainly.
 ## Notes
 
 - Every segment's copy above is reproduced from `site/segments.json`, which is itself derived
-  verbatim from the internal compatibility research doc dated 2026-09-14. If this page and
+  verbatim from the internal compatibility research doc dated 2026-09-14 (Segment A's OpenRouter
+  framing was updated 2026-09-15 per the reframed pitch in
+  `openrouter-provisioning-and-segment-a-pitch-2026-09-14.md` Part 2). If this page and
   segments.json ever disagree, segments.json is the source of truth — file an issue.
 - This page has no account, no email, and makes no network call other than fetching this same
   static content — same posture as the rest of the free tier.
