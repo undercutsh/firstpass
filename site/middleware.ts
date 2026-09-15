@@ -20,6 +20,7 @@
 // changes.)
 const MARKDOWN_ALTERNATES: Record<string, string> = {
   "/": "/index.md",
+  "/setup": "/setup.md",
 };
 
 // Keep in sync with the "Allow: /" bot list in site/robots.txt. These are
@@ -58,7 +59,7 @@ function isMarkdownBot(userAgent: string): boolean {
 export const config = {
   // Only intercept paths we actually have a markdown alternate for. Keep
   // this list in sync with MARKDOWN_ALTERNATES's keys.
-  matcher: ["/"],
+  matcher: ["/", "/setup"],
 };
 
 export default async function middleware(request: Request) {

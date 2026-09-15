@@ -35,6 +35,7 @@ Most real requests mix both kinds of work in one session — a planning/judgment
 - [Developers (no public API/MCP server yet — what exists today)](https://getundercut.sh/developers)
 - [Agent instructions for this codebase (AGENTS.md)](https://raw.githubusercontent.com/undercutsh/firstpass/main/AGENTS.md)
 - [Pricing (machine-readable)](https://getundercut.sh/pricing.md)
+- [Which segment are you? (machine-readable — editor + provider-setup segment router)](https://getundercut.sh/setup.md)
 
 ## Install
 - `npx skills add undercutsh/firstpass`

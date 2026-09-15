@@ -1,0 +1,154 @@
+{
+  "//": "Single source of truth for the /setup segment router (site/setup.html + site/setup.md), per pro-teams-backend-prd-2026-09-14.md §5.1.3. Segment copy blocks below are derived verbatim/near-verbatim from internal/business/editor-provider-compatibility-2026-09-14.md and must not be reworded here without updating that research doc and setup.md together. Reuses site/clients.json's 34-client list for the editor question -- see 'clients' below. This file is consumed by both the public setup.html/setup.md pair and (per the PRD) the authenticated app onboarding wizard, so it is the only place segment copy is allowed to live.",
+  "research_doc": "internal/business/editor-provider-compatibility-2026-09-14.md",
+  "last_verified": "2026-09-14",
+  "key_fact": "As of 2026-01-09 (formalized in Anthropic's Consumer ToS on 2026-02-19), Claude Pro/Max subscription auth tokens are blocked in third-party tools. Practically: anyone routing Claude traffic through a non-Claude-Code tool today is already paying per-token API rates for whichever vendor, not subscription rates -- regardless of whether they've configured Undercut or added an OpenRouter key.",
+
+  "editor_question": {
+    "id": "editor",
+    "prompt": "Which tool do you use to write code with an AI agent?"
+  },
+
+  "provider_question": {
+    "id": "provider_setup",
+    "prompt": "How do you pay for model access today, on that tool?",
+    "answers": [
+      {
+        "id": "subscription_only",
+        "label": "Just the subscription bundled with (or required for) this tool -- no other provider key added"
+      },
+      {
+        "id": "subscription_plus_key",
+        "label": "That subscription, plus I've already added my own provider key (OpenRouter or similar)"
+      },
+      {
+        "id": "api_billing_only",
+        "label": "No subscription in the mix -- I'm already paying per-token API rates"
+      }
+    ]
+  },
+
+  "//clients": "Reuses site/clients.json's 34 slugs. 'segment' is null for any client this research pass didn't cover -- shown the honest 'not yet researched' fallback rather than a guessed segment.",
+  "clients": [
+    { "slug": "claude-code", "label": "Claude Code", "segment": "A" },
+    { "slug": "codex", "label": "Codex CLI", "segment": null },
+    { "slug": "cursor", "label": "Cursor", "segment": "B" },
+    { "slug": "copilot", "label": "GitHub Copilot", "segment": "B" },
+    { "slug": "opencode", "label": "OpenCode", "segment": "C" },
+    { "slug": "gemini-cli", "label": "Gemini CLI", "segment": null },
+    { "slug": "windsurf", "label": "Windsurf (Cascade)", "segment": "B" },
+    { "slug": "junie", "label": "JetBrains Junie", "segment": null },
+    { "slug": "amp", "label": "Amp", "segment": null },
+    { "slug": "devin", "label": "Devin (CLI/Desktop)", "segment": null },
+    { "slug": "cline", "label": "Cline", "segment": "C" },
+    { "slug": "zed", "label": "Zed", "segment": "D" },
+    { "slug": "warp", "label": "Warp", "segment": null },
+    { "slug": "cody", "label": "Cody", "segment": null },
+    { "slug": "continue", "label": "Continue", "segment": "C" },
+    { "slug": "roo-code", "label": "Roo Code", "segment": "C" },
+    { "slug": "kiro", "label": "Kiro", "segment": null },
+    { "slug": "void", "label": "Void", "segment": null },
+    { "slug": "trae", "label": "Trae", "segment": null },
+    { "slug": "bolt", "label": "Bolt", "segment": null },
+    { "slug": "factory", "label": "Factory", "segment": null },
+    { "slug": "lovable", "label": "Lovable", "segment": null },
+    { "slug": "qoder", "label": "Qoder", "segment": null },
+    { "slug": "tabnine", "label": "Tabnine", "segment": null },
+    { "slug": "jules", "label": "Jules", "segment": null },
+    { "slug": "jetbrains-ai", "label": "JetBrains AI Assistant", "segment": null },
+    { "slug": "amazon-q", "label": "Amazon Q Developer", "segment": null },
+    { "slug": "firebase-studio", "label": "Firebase Studio", "segment": null },
+    { "slug": "aider", "label": "Aider", "segment": "C" },
+    { "slug": "openhands", "label": "OpenHands", "segment": null },
+    { "slug": "kilo-code", "label": "Kilo Code", "segment": "C" },
+    { "slug": "augment-code", "label": "Augment Code", "segment": null },
+    { "slug": "goose", "label": "Goose", "segment": null },
+    { "slug": "replit", "label": "Replit Agent", "segment": null }
+  ],
+
+  "resolution_matrix": {
+    "description": "How the editor answer and the provider-setup answer combine to pick a segment. Rules apply in order; the first match wins.",
+    "rules": [
+      {
+        "if_client_segment": "D",
+        "result_segment": "D",
+        "note": "Zed's OpenRouter compatibility is unverified regardless of the provider-setup answer, so Zed always resolves to Segment D."
+      },
+      {
+        "if_provider_answer": "api_billing_only",
+        "result_segment": "C",
+        "note": "Per the key fact above, anyone already on per-token API billing with no subscription in the mix gets Segment C's 'pure upside' story for that traffic, regardless of which tool they picked."
+      },
+      {
+        "if_client_segment": "A",
+        "result_segment": "A"
+      },
+      {
+        "if_client_segment": "B",
+        "result_segment": "B"
+      },
+      {
+        "if_client_segment": "C",
+        "result_segment": "C"
+      },
+      {
+        "if_client_segment": null,
+        "result_segment": null,
+        "note": "Tool not yet covered by this research pass -- show the 'not yet researched' fallback rather than guessing a segment."
+      }
+    ]
+  },
+
+  "segments": {
+    "A": {
+      "id": "A",
+      "name": "Claude Code + Claude subscription, no other keys",
+      "headline": "Claude Code on a Claude subscription, no other keys configured -- real value, but bounded.",
+      "body": "Undercut routes only within Anthropic's own tier ladder (haiku → sonnet → opus → fable). That's real, non-trivial value: the escalation rubric still catches over-escalation within that ladder, and Pro's real-time pooled testing and effort-level tuning still apply to Anthropic's tiers specifically. It does not reach the biggest dollar swings -- openweights tiers cost pennies compared to dollars for Anthropic's tiers, per our own cost data.",
+      "openrouter_framing": "Requires a tool switch -- a real tradeoff. If cross-vendor savings matter to you, the honest recommendation is switching to an open/BYO-model tool (see the Segment C story), with the tradeoff stated plainly: you'd be giving up Claude-specific subscription pricing in exchange for full routing flexibility. We do not recommend the unofficial ANTHROPIC_BASE_URL proxy workaround as a way to reach OpenRouter from inside Claude Code itself -- it's ToS-gray, fragile, and could break without notice.",
+      "honesty_caveat": "This is the lower-value-ceiling segment of the four, and we're saying so plainly rather than overselling it -- overstating value here is the specific trust problem this page exists to avoid.",
+      "flag": null
+    },
+    "B": {
+      "id": "B",
+      "name": "Cursor / Windsurf / Copilot",
+      "headline": "Cursor, Windsurf, or GitHub Copilot -- reach the tier your subscription doesn't include.",
+      "body": "Your native subscription already includes multi-vendor frontier-lab access (Claude, GPT, Gemini) -- that part isn't Undercut's value-add. What Undercut adds: evidence-based escalation logic on top of whatever's already available, plus reaching openweights tiers (DeepSeek, GLM, and similar) that native subscriptions don't include at all.",
+      "openrouter_framing": "Unlocks a tier you don't have. Add an OpenRouter key in your tool's own BYOK settings specifically to reach the cheap openweights tier -- this is presented as unlocking access your subscription doesn't include, not as a generic 'add a key' instruction.",
+      "honesty_caveat": "The multi-vendor frontier-lab access you already have is not something Undercut is adding -- we're only claiming the part that's genuinely new: the openweights tier and the routing logic on top of it.",
+      "flag": null
+    },
+    "C": {
+      "id": "C",
+      "name": "OpenCode / Continue.dev / Cline / Aider / Roo Code / Kilo Code",
+      "headline": "OpenCode, Continue.dev, Cline, Aider, Roo Code, or Kilo Code -- already on API billing, so this is pure upside.",
+      "body": "As of 2026-01-09 (formalized in Anthropic's Consumer ToS on 2026-02-19), Claude Pro/Max subscription auth tokens are blocked in third-party tools. Practically, anyone routing model traffic through one of these tools today is already paying per-token API rates for whichever vendor -- there's no subscription being used here to give up. Adding an OpenRouter key to reach openweights tiers is pure upside, zero tradeoff.",
+      "openrouter_framing": "Zero-downside, pure upside. This is the strongest, cleanest pitch of any segment: already on your tool paying API rates? Add an OpenRouter key and there's no downside -- only savings.",
+      "honesty_caveat": "This segment's story only holds because there was never a subscription being used here to trade away -- it's not a special Undercut trick, it's a fact about how these tools already bill.",
+      "flag": null
+    },
+    "D": {
+      "id": "D",
+      "name": "Zed",
+      "headline": "Zed -- bundled Zed Pro subscription; OpenRouter compatibility unverified for your editor.",
+      "body": "Zed bundles its own Zed Pro subscription and cannot use a personal Claude subscription at all, regardless of Undercut.",
+      "openrouter_framing": "Unverified for your editor. Whether Zed's own BYOK settings can reach OpenRouter specifically was not confirmed in our research pass -- we're flagging that openly rather than asserting it works. Check Zed's own provider settings directly before assuming this path is available to you.",
+      "honesty_caveat": "We'd rather tell you we don't know than guess. This is the one segment where we're explicitly withholding a specific recommendation until it's verified.",
+      "flag": "unverified_for_your_editor"
+    }
+  },
+
+  "unresearched": {
+    "headline": "We haven't specifically researched your tool's provider setup yet.",
+    "body": "Our compatibility research (last updated 2026-09-14) covered Claude Code, Cursor, Windsurf, GitHub Copilot, the open/BYO-model group (OpenCode, Continue.dev, Cline, Aider, Roo Code, Kilo Code), and Zed. It didn't cover every tool Undercut's free skill works with. Rather than guess which segment your setup falls into, we're telling you plainly that we don't know yet.",
+    "openrouter_framing": "No claim either way, with one exception that generalizes: if your tool bills you per-token with no subscription in the mix, the Segment C story (adding an OpenRouter key is pure upside) most likely applies to you too. If you're on a subscription for this tool, we don't yet know how it interacts with OpenRouter or other provider keys.",
+    "honesty_caveat": "We'd rather say 'not yet researched' than assign you a segment we can't back up.",
+    "flag": "not_yet_researched"
+  },
+
+  "open_questions": [
+    "Windsurf's exact BYOK settings-field names weren't fully confirmed (the live settings page couldn't be fully rendered during research).",
+    "Whether Zed's own BYOK reaches OpenRouter specifically is unconfirmed -- see Segment D.",
+    "GitHub Copilot's current BYOK model roster changes often and should be re-checked before any Copilot-specific model list is published."
+  ]
+}
