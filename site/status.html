@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#13161b">
-<title>Build status — Undercut</title>
-<meta name="description" content="Live pass/fail history of Undercut's automated eval suite (GitHub Actions), pulled from the GitHub API. Not a service-uptime claim.">
+<title>Status — Undercut</title>
+<meta name="description" content="Build: live CI pass/fail history from GitHub Actions. Routing intelligence and Service: pending until Pro's backend ships. No uptime percentage, and why.">
 <link rel="canonical" href="https://getundercut.sh/status">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -17,8 +17,8 @@
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#13161b">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Undercut">
-<meta property="og:title" content="Build status — Undercut">
-<meta property="og:description" content="Live pass/fail history of Undercut's automated eval test suite, pulled from the GitHub Actions API.">
+<meta property="og:title" content="Status — Undercut">
+<meta property="og:description" content="Build: live CI pass/fail history from GitHub Actions. Routing intelligence and Service: pending until Pro's backend ships. No uptime percentage, and why.">
 <meta property="og:url" content="https://getundercut.sh/status">
 <meta property="og:image" content="https://getundercut.sh/og-image.png">
 <meta property="og:image:type" content="image/png">
@@ -26,8 +26,8 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://getundercut.sh/og-image.png">
-<meta name="twitter:title" content="Build status — Undercut">
-<meta name="twitter:description" content="Live pass/fail history of Undercut's automated eval test suite, pulled from the GitHub Actions API.">
+<meta name="twitter:title" content="Status — Undercut">
+<meta name="twitter:description" content="Build: live CI pass/fail history from GitHub Actions. Routing intelligence and Service: pending until Pro's backend ships. No uptime percentage, and why.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
@@ -45,6 +45,8 @@
   .btn-primary { background: #13161b; color: #f2f0ec; border: none; }
   .btn-outline { background: transparent; color: #13161b; border: 1px solid #d4d0cb; }
   .card { border: 1px solid #d4d0cb; border-radius: 10px; padding: 20px 22px; background: #fbfaf8; }
+  .card + .card { margin-top: 20px; }
+  .card-label { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 16px; flex-wrap: wrap; }
   .dots { display: flex; gap: 6px; flex-wrap: wrap; }
   .dot { width: 14px; height: 14px; border-radius: 50%; background: #d4d0cb; }
   .dot-pass { background: #00959c; }
@@ -52,6 +54,11 @@
   .dot-other { background: #c26e12; }
   #status-current { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
   #status-fallback { display: none; }
+  .metric-row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 11px 0; border-bottom: 1px solid #d4d0cb; flex-wrap: wrap; }
+  .metric-row:last-of-type { border-bottom: none; padding-bottom: 2px; }
+  .metric-name { font-size: 14.5px; }
+  .metric-name span { display: block; font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 11.5px; color: #6e7278; margin-top: 2px; text-transform: none; letter-spacing: 0; }
+  .closing-card { border: 1px dashed #d4d0cb; border-radius: 10px; padding: 20px 22px; }
 </style>
 </head>
 <body>
@@ -66,13 +73,14 @@
 </nav>
 
 <header class="wrap" style="padding: 56px 24px 0">
-  <p class="mono" style="margin: 0 0 14px">Build status</p>
-  <h1 style="font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; font-weight: 800; font-size: clamp(28px, 4vw, 42px); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 16px; text-wrap: balance">CI status, not a service-uptime claim.</h1>
-  <p style="font-size: 15.5px; color: #6e7278; margin: 0 0 40px; max-width: 66ch">This page shows the real pass/fail history of the <code>evals</code> GitHub Actions workflow &mdash; the automated test suite that runs on every push and pull request &mdash; pulled live from GitHub's public API. Undercut is a static site plus one serverless function: there's no server fleet, no SLA, and nothing that would make an &ldquo;uptime %&rdquo; figure honest. What we can show, and do, is whether the tests that gate every change are currently passing.</p>
+  <p class="mono" style="margin: 0 0 14px">Status</p>
+  <h1 style="font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; font-weight: 800; font-size: clamp(28px, 4vw, 42px); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 16px; text-wrap: balance">Three things we can honestly report on, and one we won't.</h1>
+  <p style="font-size: 15.5px; color: #6e7278; margin: 0 0 40px; max-width: 66ch">Undercut is a static site plus one serverless function today: there's no server fleet, no SLA, and nothing that would make an &ldquo;uptime %&rdquo; figure honest. Below is <strong>Build</strong> &mdash; the real pass/fail history of our CI, live from GitHub &mdash; plus two sections, <strong>Routing intelligence</strong> and <strong>Service</strong>, that will report live data once Pro's routing backend ships. They're shown now, clearly marked pending, so this page's shape doesn't change out from under anyone later.</p>
 </header>
 
 <main class="wrap" style="padding: 0 24px 80px">
   <div class="card">
+    <p class="card-label"><span class="mono" style="margin: 0">Build</span><span class="mono" style="margin: 0; color: #6e7278">Live &middot; GitHub Actions</span></p>
     <div id="status-loading" class="mono">Checking latest run&hellip;</div>
 
     <div id="status-current" style="display: none">
@@ -97,6 +105,37 @@
   </div>
 
   <p style="margin-top: 24px; font-size: 13px; color: #6e7278">Each dot is one run of <code>.github/workflows/evals.yml</code> (unit tests for the routing policy, plus a mocked eval-harness smoke run). Green = passed, red = failed, amber = another result (cancelled, in progress, etc). Data comes from <code>api.github.com/repos/undercutsh/firstpass/actions/workflows/evals.yml/runs</code> at page load &mdash; it is not cached or edited by hand.</p>
+
+  <div class="card">
+    <p class="card-label"><span class="mono" style="margin: 0">Routing intelligence</span><span class="badge badge-neutral">Coming with Pro</span></p>
+    <div class="metric-row">
+      <span class="metric-name">Policy artifact version<span>The <code>policy_version</code> currently being served on the <code>pro</code> and <code>teams:*</code> channels.</span></span>
+      <span class="mono" style="color: #6e7278">Pending backend</span>
+    </div>
+    <div class="metric-row">
+      <span class="metric-name">Signature validity<span>Whether the live artifact's ed25519 signature verifies clean against the published key.</span></span>
+      <span class="mono" style="color: #6e7278">Pending backend</span>
+    </div>
+    <div class="metric-row">
+      <span class="metric-name">Roster coverage<span>Share of a Teams org's connected roster the latest artifact was compiled for.</span></span>
+      <span class="mono" style="color: #6e7278">Pending backend</span>
+    </div>
+    <p style="margin: 16px 0 0; font-size: 13.5px; color: #6e7278">There is no Pro routing backend live yet, so there is nothing here to check &mdash; these three rows are placeholders, not a stand-in for real numbers. Once Pro ships, this section will read live: see <a href="/policy-file.md">the policy file</a> for what a verified artifact and its signature actually mean.</p>
+  </div>
+
+  <div class="card">
+    <p class="card-label"><span class="mono" style="margin: 0">Service</span><span class="badge badge-neutral">Coming with Pro</span></p>
+    <div class="metric-row">
+      <span class="metric-name">Basic reachability<span>Whether the policy-fetch endpoint Pro/Teams clients check for a fresh artifact is answering requests.</span></span>
+      <span class="mono" style="color: #6e7278">Pending backend</span>
+    </div>
+    <p style="margin: 16px 0 0; font-size: 13.5px; color: #6e7278">Same caveat as above: there's no endpoint running today to be reachable or not. This will become a real, live reachability check once one exists.</p>
+  </div>
+
+  <div class="closing-card">
+    <p class="mono" style="margin: 0 0 12px; color: #6e7278">What we don't publish, and why</p>
+    <p style="margin: 0; font-size: 14.5px; color: #6e7278">No uptime percentage appears anywhere on this page, and won't once Pro ships either. An honest uptime number requires a request path the number is actually measuring &mdash; and by design, Undercut mostly isn't in that path. A client that can't reach us falls back to its last verified cached policy, and if it has none, to the free static <code>models.md</code> tier&rarr;model map shipped in the skill itself, offline, no network required (see &ldquo;What happens on a failed or expired verification&rdquo; in <a href="/policy-file.md">the policy file</a>). Since routing keeps working &mdash; just on slightly staler information &mdash; a percentage here would describe our servers, not whether coding agents kept dispatching correctly. We'd rather show three honest pending rows than one dishonest healthy one.</p>
+  </div>
 </main>
 
 <!-- Footer — byte-identical reuse from index.html -->
