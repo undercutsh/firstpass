@@ -50,6 +50,29 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ### Added
 
+- **`/setup` — public segment router (PRD §5.1.3).** New `site/segments.json`
+  (public, MIT) is the single source of truth for: the editor question
+  (reusing `site/clients.json`'s 34-client list, with a `segment` of `A`/
+  `B`/`C`/`D`/`null`), the three provider-setup answers, the resolution
+  matrix that combines both into a segment, and the four segment copy
+  blocks (headline, body, OpenRouter framing, honesty caveat) — derived
+  verbatim from the internal editor-provider-compatibility research.
+  Segment D (Zed) carries an explicit `unverified_for_your_editor` flag
+  instead of asserting OpenRouter connectivity, and any client the
+  research pass didn't cover resolves to an honest "not yet researched"
+  fallback rather than a guessed segment. `site/setup.html` (interactive,
+  progressively enhanced — fetches `segments.json` client-side, but every
+  segment's full copy is always present in the DOM so the page stays
+  crawlable and complete without JS) and `site/setup.md` (the machine-
+  readable twin) both render from that same file, so the two copies can't
+  drift out of sync silently. Wired into `middleware.ts` (markdown content
+  negotiation for `/setup`), `vercel.json` (`setup.md` content-type
+  header), `sitemap.xml`, `llms.txt`/`llms.md`, and linked from
+  `pricing.md`'s and `index.html`'s "value depends on your provider setup"
+  copy, which previously had nowhere to send a reader for their own
+  segment. `scripts/validate-client-list.js` now excludes `setup.html`
+  from the companion-page check, same as `about.html`/`developers.html`.
+
 - **Enterprise card built out on `site/index.html` §13, plus included-security
   and always-current-roster copy for Pro/Teams.** The Enterprise card now
   lists the org-plumbing line items (SAML/OIDC SSO — Okta, Microsoft Entra ID,

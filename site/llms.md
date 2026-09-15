@@ -92,6 +92,10 @@ Machine-readable version: https://getundercut.sh/pricing.md
 - **Free** — $0 forever, per individual. Live now, no account. Presented beneath the paid tiers as the no-upkeep option: the full rubric, nothing held back, but a static tier→model map you update yourself.
 - **Money-back guarantee (Pro and Teams), no questions asked** — within 30 days of any monthly charge; on annual plans the window opens at day 90 and runs to day 120, because a year's value can't fairly be judged on day 1. Separate from Pro's trial, which comes before the first charge.
 
+## Which segment are you?
+
+Undercut's value depends on your editor and how you pay for models today. Machine-readable version: https://getundercut.sh/setup.md — Claude Code on a Claude subscription with no other keys gets real but bounded value; Cursor/Windsurf/Copilot can unlock an openweights tier their subscription doesn't include; OpenCode/Continue.dev/Cline/Aider/Roo Code/Kilo Code users are already on API billing, so adding an OpenRouter key is pure upside; Zed's OpenRouter compatibility is explicitly unverified, not asserted.
+
 ## Install and verify
 
 ```
@@ -108,3 +112,4 @@ Or copy `skills/firstpass/` straight into your agent's skills directory. To vali
 - Agent-facing index: https://getundercut.sh/llms.txt
 - About: https://getundercut.sh/about
 - Pricing (markdown): https://getundercut.sh/pricing.md
+- Which segment are you? (markdown): https://getundercut.sh/setup.md

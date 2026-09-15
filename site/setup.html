@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#13161b">
+<title>Which segment are you? — Undercut setup</title>
+<meta name="description" content="Undercut's value depends on your editor and how you pay for models today. Pick your tool and your provider setup to see the honest story for your segment — including where the value is real but bounded.">
+<link rel="canonical" href="https://getundercut.sh/setup">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+<link rel="icon" sizes="48x48" href="/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="Undercut changelog" href="https://getundercut.sh/changelog.xml">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#13161b">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Undercut">
+<meta property="og:title" content="Which segment are you? — Undercut setup">
+<meta property="og:description" content="Undercut's value depends on your editor and how you pay for models today. Pick your tool and your provider setup to see the honest story for your segment.">
+<meta property="og:url" content="https://getundercut.sh/setup">
+<meta property="og:image" content="https://getundercut.sh/og-image.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://getundercut.sh/og-image.png">
+<meta name="twitter:title" content="Which segment are you? — Undercut setup">
+<meta name="twitter:description" content="Undercut's value depends on your editor and how you pay for models today. Pick your tool and your provider setup to see the honest story for your segment.">
+<link rel="author" href="https://iamjustinwinter.com/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Fragment+Mono:ital@0;1&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet"></noscript>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Undercut", "item": "https://getundercut.sh/" },
+    { "@type": "ListItem", "position": 2, "name": "Setup", "item": "https://getundercut.sh/setup" }
+  ]
+}
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #f2f0ec; color: #13161b; font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; line-height: 1.65; }
+  a { color: #13161b; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  a:hover { color: #00959c; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 32px; }
+  .mono { font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 12px; color: #6e7278; text-transform: uppercase; letter-spacing: .08em; }
+  code { background: #d4d0cb; padding: 1px 5px; border-radius: 3px; font-size: .92em; font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; }
+  .badge { display: inline-flex; align-items: center; justify-content: center; height: 20px; padding: 0 8px; border-radius: 6px; font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; background: rgba(0,149,156,0.08); color: #00959c; }
+  .badge-warn { background: rgba(194,110,18,0.12); color: #a35a0e; }
+  .badge-neutral { background: rgba(110,114,120,0.16); color: #6e7278; }
+  fieldset { border: 1px solid #d4d0cb; border-radius: 10px; padding: 20px 22px 22px; margin: 0 0 28px; }
+  legend { font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 13px; font-weight: 700; padding: 0 8px; }
+  .opt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; margin-top: 8px; }
+  .opt { display: block; }
+  .opt input { position: absolute; opacity: 0; }
+  .opt span { display: block; border: 1px solid #d4d0cb; border-radius: 8px; padding: 9px 12px; font-size: 13.5px; cursor: pointer; transition: border-color .15s ease, background-color .15s ease; }
+  .opt input:checked + span { border-color: #00959c; background: rgba(0,149,156,0.08); font-weight: 700; }
+  .opt input:focus-visible + span { outline: 2px solid #00959c; outline-offset: 2px; }
+  .provider-opt span { padding: 12px 16px; }
+  .segment-card { border: 1px solid #d4d0cb; border-radius: 12px; padding: 26px 28px; margin: 0 0 22px; background: #fbfaf8; }
+  .segment-card h2 { font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; font-size: 21px; margin: 8px 0 14px; letter-spacing: -0.01em; }
+  .segment-card p { font-size: 15px; line-height: 1.65; color: #3a3e44; margin: 0 0 12px; }
+  .segment-card .field-label { font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: #6e7278; margin: 16px 0 4px; }
+  .caveat { border-left: 2px solid #6e7278; padding: 10px 16px; margin-top: 14px; font-size: 13.5px; color: #6e7278; }
+  .caveat.warn { border-left-color: #c26e12; color: #a35a0e; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+
+<nav style="position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 14px 32px; background: rgba(242,240,236,0.94); backdrop-filter: blur(8px); border-bottom: 1px solid #d4d0cb; flex-wrap: wrap;">
+  <a href="/" style="display: flex; align-items: center; gap: 8px; text-decoration: none"><svg width="20" height="20" viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect x="2" y="4" width="22" height="6" rx="1" fill="#13161b"></rect><rect x="2" y="16" width="12" height="6" rx="1" fill="#00959c"></rect><path d="M16 22 L24 12" stroke="#13161b" stroke-width="2" stroke-linecap="round"></path></svg><span style="font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; font-weight: 500; font-size: 17px; letter-spacing: -0.02em">undercut</span></a>
+  <div style="display: flex; align-items: center; gap: 24px; font-size: 14px; flex-wrap: wrap;">
+    <a href="/#pricing" style="text-decoration: none; color: #6e7278">Pricing</a>
+    <a href="/#benchmarks" style="text-decoration: none; color: #6e7278">Benchmarks</a>
+    <a href="https://github.com/undercutsh/firstpass" style="text-decoration: none; color: #6e7278; font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 13px">GitHub &#8599;</a>
+  </div>
+</nav>
+
+<header style="background: #13161b; color: #f2f0ec; padding: 72px 32px 56px">
+  <div class="wrap">
+    <p class="mono" style="margin: 0 0 16px">Undercut setup</p>
+    <h1 style="font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; font-weight: 800; font-size: clamp(30px, 4vw, 46px); line-height: 1.1; letter-spacing: -0.03em; margin: 0 0 18px; text-wrap: balance">Undercut's value depends on your setup. Here's yours.</h1>
+    <p style="font-size: 16.5px; line-height: 1.6; color: #9a9ea4; margin: 0; max-width: 66ch">Which coding agent you use and how you pay for models today change what Undercut actually adds — sometimes it's bounded, sometimes it's pure upside. Pick both below to see your honest story, not a generic pitch. Everything on this page is generated from <a href="/segments.json" style="color: #f2f0ec">segments.json</a>, the same file the product itself reads, so there's one place this can drift from.</p>
+  </div>
+</header>
+
+<section style="padding: 48px 32px 8px">
+  <div class="wrap">
+    <form id="uc-setup-form">
+      <fieldset>
+        <legend>1. Which tool do you use?</legend>
+        <div class="opt-grid" id="uc-editor-options" role="radiogroup" aria-label="Which tool do you use?"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>2. How do you pay for model access today?</legend>
+        <div class="opt-grid" id="uc-provider-options" role="radiogroup" aria-label="How do you pay for model access today?" style="grid-template-columns: 1fr"></div>
+      </fieldset>
+    </form>
+
+    <div id="uc-result" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- Crawlable fallback: every segment's full copy, always in the DOM. JS above narrows this
+     to the one matching your two answers; without JS (or before you answer), all four plus the
+     unresearched-fallback and the key fact are visible so this page stays a complete, indexable
+     reference on its own. -->
+<section id="uc-all-segments" style="padding: 8px 32px 24px">
+  <div class="wrap">
+    <p class="mono" style="margin: 40px 0 18px">Every segment, in full</p>
+    <div class="segment-card" style="background: #fff; border-color: #6e7278">
+      <span class="badge badge-neutral">The fact that reshapes the whole story</span>
+      <p style="margin-top: 14px" id="uc-key-fact">Loading…</p>
+    </div>
+    <div id="uc-segment-list">Loading segment data…</div>
+    <div class="segment-card" id="uc-unresearched-card"></div>
+  </div>
+</section>
+
+<section style="padding: 24px 32px 88px; border-top: 1px solid #d4d0cb">
+  <div class="wrap">
+    <p class="mono" style="margin: 0 0 14px">Open questions</p>
+    <p style="font-size: 14.5px; line-height: 1.6; color: #6e7278; margin: 0 0 10px">This research pass left a few things unconfirmed — listed here rather than papered over:</p>
+    <ul id="uc-open-questions" style="font-size: 14.5px; line-height: 1.7; color: #6e7278; margin: 0 0 24px; padding-left: 20px"></ul>
+    <p style="font-size: 13px; color: #6e7278; margin: 0">Source: the full compatibility research and every segment's copy trace to <a href="https://github.com/undercutsh/firstpass/blob/main/site/segments.json" style="color: #6e7278">segments.json</a> in the repo. Full feature comparison and prices: <a href="/#pricing" style="color: #6e7278">pricing</a>. Machine-readable pricing: <a href="/pricing.md" style="color: #6e7278">pricing.md</a>.</p>
+  </div>
+</section>
+
+<footer style="padding: 64px 32px 48px">
+  <div style="max-width: 1160px; margin: 0 auto">
+    <div style="display: flex; justify-content: space-between; gap: 48px; flex-wrap: wrap; margin: 0 0 48px">
+      <div>
+        <div style="display: flex; align-items: center; gap: 8px; margin: 0 0 10px"><svg width="20" height="20" viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect x="2" y="4" width="22" height="6" rx="1" fill="#13161b"></rect><rect x="2" y="16" width="12" height="6" rx="1" fill="#00959c"></rect><path d="M16 22 L24 12" stroke="#13161b" stroke-width="2" stroke-linecap="round"></path></svg><span style="font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; font-weight: 500; font-size: 17px; letter-spacing: -0.02em">undercut</span></div>
+        <p style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 12.5px; color: #6e7278; margin: 0">MIT License &middot; <a href="https://github.com/undercutsh/firstpass" style="color: #6e7278">github.com/undercutsh/firstpass</a></p>
+        <p style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 12.5px; color: #6e7278; margin: 6px 0 0">Built by <a rel="me author" href="https://iamjustinwinter.com/" style="color: #6e7278">Justin Winter</a></p>
+        <a id="uc-github-stars" href="https://github.com/undercutsh/firstpass" target="_blank" rel="noopener" class="badge badge-neutral" style="margin-top: 10px; text-decoration: none" hidden>★ <span id="uc-star-count"></span> stars on GitHub</a>
+      </div>
+      <div style="display: flex; gap: 72px; flex-wrap: wrap; font-size: 14px">
+        <div style="display: grid; gap: 10px; align-content: start">
+          <span style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #6e7278">Product</span>
+          <a href="/#how" style="text-decoration: none; color: #6e7278">How it works</a>
+          <a href="/setup" style="text-decoration: none; color: #6e7278">Your setup</a>
+          <a href="/#teams" style="text-decoration: none; color: #6e7278">Teams</a>
+          <a href="/#pricing" style="text-decoration: none; color: #6e7278">Pricing</a>
+        </div>
+        <div style="display: grid; gap: 10px; align-content: start">
+          <span style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #6e7278">Proof</span>
+          <a href="/#benchmarks" style="text-decoration: none; color: #6e7278">Benchmarks</a>
+          <a href="https://github.com/undercutsh/firstpass/tree/main/testing/results" style="text-decoration: none; color: #6e7278">Raw results</a>
+          <a href="https://github.com/undercutsh/firstpass/blob/main/testing/README.md" style="text-decoration: none; color: #6e7278">Methodology</a>
+        </div>
+        <div style="display: grid; gap: 10px; align-content: start">
+          <span style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #6e7278">Repo</span>
+          <a href="https://github.com/undercutsh/firstpass" style="text-decoration: none; color: #6e7278">GitHub</a>
+          <a href="https://github.com/undercutsh/firstpass/releases" style="text-decoration: none; color: #6e7278">Changelog</a>
+          <a href="https://github.com/undercutsh/firstpass/issues" style="text-decoration: none; color: #6e7278">Issues</a>
+        </div>
+      </div>
+    </div>
+    <div style="border-top: 1px solid #d4d0cb; padding-top: 24px; display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-size: 12.5px; color: #6e7278">
+      <span style="display: flex; gap: 18px; flex-wrap: wrap; align-items: baseline">
+        <span style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace" id="uc-copyright-year">&copy; 2026 Undercut &middot; MIT</span>
+        <span style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace">Works with: Claude Code &middot; Codex &middot; Cursor &middot; Copilot &middot; OpenCode &middot; and 29 more</span>
+      </span>
+      <span style="display: flex; gap: 18px; flex-wrap: wrap">
+        <a href="/about" style="color: #6e7278; text-decoration: none">About</a>
+        <a href="/privacy/" style="color: #6e7278; text-decoration: none">Privacy</a>
+        <a href="/terms/" style="color: #6e7278; text-decoration: none">Terms</a>
+        <a href="/accessibility" style="color: #6e7278; text-decoration: none">Accessibility</a>
+        <a href="/status" style="color: #6e7278; text-decoration: none">Status</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var y = document.getElementById('uc-copyright-year');
+  if (y) y.textContent = '© ' + new Date().getFullYear() + ' Undercut · MIT';
+})();
+</script>
+
+<!--
+  Footer "★ N stars on GitHub" chip — byte-identical reuse from claude-code.html. Live count via
+  GitHub's unauthenticated REST API, cached in sessionStorage for an hour. Fails closed: any
+  error falls back to a plain "View on GitHub" link, never a stale/fake number.
+-->
+<script>
+(function () {
+  var CACHE_KEY = 'uc-gh-stars-v1';
+  var TTL_MS = 60 * 60 * 1000;
+
+  function init() {
+    var chip = document.getElementById('uc-github-stars');
+    var countEl = document.getElementById('uc-star-count');
+    if (!chip || !countEl) return;
+
+    function render(count) {
+      countEl.textContent = count.toLocaleString('en-US');
+      chip.hidden = false;
+    }
+    function fallback() {
+      chip.textContent = 'View on GitHub';
+      chip.hidden = false;
+    }
+
+    try {
+      var cached = JSON.parse(sessionStorage.getItem(CACHE_KEY) || 'null');
+      if (cached && typeof cached.count === 'number' && Date.now() - cached.at < TTL_MS) {
+        render(cached.count);
+        return;
+      }
+    } catch (e) {}
+
+    var controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+    var timeoutId = setTimeout(function () { if (controller) controller.abort(); }, 8000);
+
+    fetch('https://api.github.com/repos/undercutsh/firstpass', {
+      headers: { Accept: 'application/vnd.github+json' },
+      signal: controller ? controller.signal : undefined
+    })
+      .then(function (res) {
+        clearTimeout(timeoutId);
+        if (!res.ok) throw new Error('GitHub API error ' + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        var count = data && typeof data.stargazers_count === 'number' ? data.stargazers_count : null;
+        if (count === null) { fallback(); return; }
+        try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ count: count, at: Date.now() })); } catch (e) {}
+        render(count);
+      })
+      .catch(function () {
+        clearTimeout(timeoutId);
+        fallback();
+      });
+  }
+
+  if (document.readyState === 'complete') init();
+  else window.addEventListener('load', init);
+})();
+</script>
+
+<!--
+  Segment router. Fetches /segments.json (the same file the app's onboarding wizard consumes) and
+  renders from it — no copy is hardcoded in this page. Progressive enhancement only: the
+  "Every segment, in full" section below always holds the complete, crawlable content, sourced
+  from the same fetch, so search engines and no-JS readers get the full honest picture either way.
+-->
+<script>
+(function () {
+  var state = { editor: null, provider: null, data: null };
+
+  function esc(s) {
+    var d = document.createElement('div');
+    d.textContent = s == null ? '' : s;
+    return d.innerHTML;
+  }
+
+  function resolveSegment(data, editorSlug, providerAnswer) {
+    var client = null;
+    for (var i = 0; i < data.clients.length; i++) {
+      if (data.clients[i].slug === editorSlug) { client = data.clients[i]; break; }
+    }
+    var clientSegment = client ? client.segment : undefined;
+    var rules = data.resolution_matrix.rules;
+    for (var r = 0; r < rules.length; r++) {
+      var rule = rules[r];
+      if ('if_client_segment' in rule && rule.if_client_segment !== clientSegment) continue;
+      if ('if_provider_answer' in rule && rule.if_provider_answer !== providerAnswer) continue;
+      return rule.result_segment;
+    }
+    return undefined; // no answers yet
+  }
+
+  function segmentCardHtml(seg, opts) {
+    opts = opts || {};
+    var flagBadge = seg.flag ? '<span class="badge badge-warn">' + esc(seg.flag.replace(/_/g, ' ')) + '</span>' : '<span class="badge">verified</span>';
+    return (
+      '<div class="segment-card"' + (opts.id ? ' id="' + opts.id + '"' : '') + '>' +
+        '<span class="mono">Segment ' + esc(seg.id) + ' — ' + esc(seg.name) + '</span> ' + flagBadge +
+        '<h2>' + esc(seg.headline) + '</h2>' +
+        '<p>' + esc(seg.body) + '</p>' +
+        '<div class="field-label">OpenRouter framing</div>' +
+        '<p style="margin-bottom:0">' + esc(seg.openrouter_framing) + '</p>' +
+        '<div class="caveat' + (seg.flag ? ' warn' : '') + '">' + esc(seg.honesty_caveat) + '</div>' +
+      '</div>'
+    );
+  }
+
+  function renderAllSegments(data) {
+    document.getElementById('uc-key-fact').textContent = data.key_fact;
+    var order = ['A', 'B', 'C', 'D'];
+    var html = '';
+    for (var i = 0; i < order.length; i++) {
+      html += segmentCardHtml(data.segments[order[i]], { id: 'uc-segment-' + order[i] });
+    }
+    document.getElementById('uc-segment-list').innerHTML = html;
+
+    var u = data.unresearched;
+    document.getElementById('uc-unresearched-card').innerHTML =
+      '<span class="mono">Not yet researched</span> <span class="badge badge-warn">' + esc(u.flag.replace(/_/g, ' ')) + '</span>' +
+      '<h2>' + esc(u.headline) + '</h2>' +
+      '<p>' + esc(u.body) + '</p>' +
+      '<div class="field-label">OpenRouter framing</div>' +
+      '<p style="margin-bottom:0">' + esc(u.openrouter_framing) + '</p>' +
+      '<div class="caveat warn">' + esc(u.honesty_caveat) + '</div>';
+
+    var oq = document.getElementById('uc-open-questions');
+    oq.innerHTML = '';
+    (data.open_questions || []).forEach(function (q) {
+      var li = document.createElement('li');
+      li.textContent = q;
+      oq.appendChild(li);
+    });
+  }
+
+  function renderOptions(data) {
+    var editorWrap = document.getElementById('uc-editor-options');
+    editorWrap.innerHTML = data.clients.map(function (c) {
+      return (
+        '<label class="opt">' +
+          '<input type="radio" name="uc-editor" value="' + esc(c.slug) + '">' +
+          '<span>' + esc(c.label) + '</span>' +
+        '</label>'
+      );
+    }).join('');
+
+    var providerWrap = document.getElementById('uc-provider-options');
+    providerWrap.innerHTML = data.provider_question.answers.map(function (a) {
+      return (
+        '<label class="opt provider-opt">' +
+          '<input type="radio" name="uc-provider" value="' + esc(a.id) + '">' +
+          '<span>' + esc(a.label) + '</span>' +
+        '</label>'
+      );
+    }).join('');
+
+    editorWrap.addEventListener('change', function (e) {
+      if (e.target && e.target.name === 'uc-editor') { state.editor = e.target.value; renderResult(); }
+    });
+    providerWrap.addEventListener('change', function (e) {
+      if (e.target && e.target.name === 'uc-provider') { state.provider = e.target.value; renderResult(); }
+    });
+  }
+
+  function renderResult() {
+    var data = state.data;
+    var resultEl = document.getElementById('uc-result');
+    var allSegmentsEl = document.getElementById('uc-all-segments');
+    if (!state.editor || !state.provider) {
+      resultEl.innerHTML = '';
+      allSegmentsEl.hidden = false;
+      return;
+    }
+    var segId = resolveSegment(data, state.editor, state.provider);
+    allSegmentsEl.hidden = true;
+    if (!segId) {
+      resultEl.innerHTML = segmentCardHtml(Object.assign({ id: 'unresearched', name: 'Not yet researched' }, data.unresearched));
+    } else {
+      resultEl.innerHTML = segmentCardHtml(data.segments[segId]);
+    }
+    resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  fetch('/segments.json')
+    .then(function (res) { if (!res.ok) throw new Error('segments.json ' + res.status); return res.json(); })
+    .then(function (data) {
+      state.data = data;
+      renderOptions(data);
+      renderAllSegments(data);
+    })
+    .catch(function () {
+      document.getElementById('uc-segment-list').innerHTML =
+        '<p style="color:#6e7278">Couldn\'t load segment data client-side. See the prose version: <a href="/setup.md">/setup.md</a>, or the raw source: <a href="https://github.com/undercutsh/firstpass/blob/main/site/segments.json">segments.json</a>.</p>';
+    });
+})();
+</script>
+
+</body>
+</html>
