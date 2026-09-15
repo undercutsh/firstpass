@@ -36,6 +36,7 @@ Most real requests mix both kinds of work in one session — a planning/judgment
 - [Agent instructions for this codebase (AGENTS.md)](https://raw.githubusercontent.com/undercutsh/firstpass/main/AGENTS.md)
 - [Pricing (machine-readable)](https://getundercut.sh/pricing.md)
 - [Which segment are you? (machine-readable — editor + provider-setup segment router)](https://getundercut.sh/setup.md)
+- [The policy file (machine-readable — Pro's signed policy schema, ed25519 verification, and revocation manifest, for anyone auditing the trust model)](https://getundercut.sh/policy-file.md)
 
 ## Install
 - `npx skills add undercutsh/firstpass`
