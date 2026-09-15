@@ -67,7 +67,7 @@ function openBrowser(url) {
   }
 }
 
-function waitForCallback(server, timeoutMs) {
+export function waitForCallback(server, timeoutMs) {
   return new Promise((resolve, reject) => {
     const timer = setTimeout(() => {
       reject(new Error("timed out waiting for browser approval"));
@@ -101,6 +101,11 @@ function waitForCallback(server, timeoutMs) {
 }
 
 export async function login(opts) {
+  // Injectable for tests: defaults to the real cross-platform browser
+  // opener, but a caller (the test suite) can pass its own function to
+  // observe the activate URL (and thus the OS-assigned callback port +
+  // CSRF state) without ever spawning a real browser process.
+  const doOpenBrowser = opts.openBrowser ?? openBrowser;
   const state = crypto.randomBytes(16).toString("hex");
 
   const server = http.createServer();
@@ -128,7 +133,7 @@ export async function login(opts) {
   );
   console.log("");
 
-  const opened = openBrowser(activateUrl);
+  const opened = doOpenBrowser(activateUrl);
   if (!opened) {
     console.log(
       "  (couldn't auto-open a browser here — copy the URL above manually)"
