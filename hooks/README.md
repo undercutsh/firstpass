@@ -17,7 +17,10 @@ This is a small local Claude Code hooks package that does two things:
 
 Everything here is local. No network calls, no telemetry, no second model.
 The ledger (`~/.undercut/ledger.jsonl`) only ever gets written to and read
-from this machine.
+from this machine. (Pro's policy sync — a separate, opt-in mechanism — is
+the one network exception to that: an authenticated licence check, not
+telemetry about your work. See [getundercut.sh/data](https://getundercut.sh/data)
+for exactly what it reveals.)
 
 ## What's in here
 
