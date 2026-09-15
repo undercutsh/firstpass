@@ -1,7 +1,9 @@
 {
-  "//": "Single source of truth for the /setup segment router (site/setup.html + site/setup.md), per pro-teams-backend-prd-2026-09-14.md §5.1.3. Segment copy blocks below are derived verbatim/near-verbatim from internal/business/editor-provider-compatibility-2026-09-14.md and must not be reworded here without updating that research doc and setup.md together. Reuses site/clients.json's 34-client list for the editor question -- see 'clients' below. This file is consumed by both the public setup.html/setup.md pair and (per the PRD) the authenticated app onboarding wizard, so it is the only place segment copy is allowed to live.",
+  "//": "Single source of truth for the /setup segment router (site/setup.html + site/setup.md), per pro-teams-backend-prd-2026-09-14.md §5.1.3. Segment copy blocks below are derived verbatim/near-verbatim from internal/business/editor-provider-compatibility-2026-09-14.md and must not be reworded here without updating that research doc and setup.md together. Segment A's openrouter_framing and connect_openrouter fields carry the reframed 'additive, not a replacement' pitch from internal/business/openrouter-provisioning-and-segment-a-pitch-2026-09-14.md Part 2 (folded in 2026-09-15) -- that superseded the earlier 'switch tools' framing; check that doc before editing Segment A again. Reuses site/clients.json's 34-client list for the editor question -- see 'clients' below. This file is consumed by both the public setup.html/setup.md pair and (per the PRD) the authenticated app onboarding wizard, so it is the only place segment copy is allowed to live.",
   "research_doc": "internal/business/editor-provider-compatibility-2026-09-14.md",
-  "last_verified": "2026-09-14",
+  "segment_a_pitch_doc": "internal/business/openrouter-provisioning-and-segment-a-pitch-2026-09-14.md",
+  "last_verified": "2026-09-15",
+  "connect_openrouter_note": "Every segment's connect_openrouter.enabled is false until Phase 3's OAuth PKCE connect flow (internal build-backlog-2026-09-15-ecosystem-ladder.md Phase 3, branch claude/openrouter-connect-flow) merges and publishes a real initiate-redirect route. Until then the button on this page is a disabled, documented placeholder so we never link to a guessed path.",
   "key_fact": "As of 2026-01-09 (formalized in Anthropic's Consumer ToS on 2026-02-19), Claude Pro/Max subscription auth tokens are blocked in third-party tools. Practically: anyone routing Claude traffic through a non-Claude-Code tool today is already paying per-token API rates for whichever vendor, not subscription rates -- regardless of whether they've configured Undercut or added an OpenRouter key.",
 
   "editor_question": {
@@ -103,20 +105,30 @@
     "A": {
       "id": "A",
       "name": "Claude Code + Claude subscription, no other keys",
-      "headline": "Claude Code on a Claude subscription, no other keys configured -- real value, but bounded.",
-      "body": "Undercut routes only within Anthropic's own tier ladder (haiku → sonnet → opus → fable). That's real, non-trivial value: the escalation rubric still catches over-escalation within that ladder, and Pro's real-time pooled testing and effort-level tuning still apply to Anthropic's tiers specifically. It does not reach the biggest dollar swings -- openweights tiers cost pennies compared to dollars for Anthropic's tiers, per our own cost data.",
-      "openrouter_framing": "Requires a tool switch -- a real tradeoff. If cross-vendor savings matter to you, the honest recommendation is switching to an open/BYO-model tool (see the Segment C story), with the tradeoff stated plainly: you'd be giving up Claude-specific subscription pricing in exchange for full routing flexibility. We do not recommend the unofficial ANTHROPIC_BASE_URL proxy workaround as a way to reach OpenRouter from inside Claude Code itself -- it's ToS-gray, fragile, and could break without notice.",
-      "honesty_caveat": "This is the lower-value-ceiling segment of the four, and we're saying so plainly rather than overselling it -- overstating value here is the specific trust problem this page exists to avoid.",
-      "flag": null
+      "headline": "Claude Code on a Claude subscription -- you're already getting routing discipline on it. OpenRouter adds a second, cheaper lane on top.",
+      "body": "Undercut routes within Anthropic's own tier ladder (haiku → sonnet → opus → fable) on your existing subscription -- that's real, non-trivial value on its own: the escalation rubric still catches over-escalation within that ladder, and Pro's real-time pooled testing and effort-level tuning still apply to Anthropic's tiers specifically. Your subscription alone doesn't reach the biggest dollar swings -- openweights tiers run 5-10x cheaper again than Anthropic's own cheapest tier on the task categories where they hold up, per our own cost data.",
+      "openrouter_framing": "Additive, not a replacement. You don't have to leave Claude Code or your Claude subscription -- the unlock is connecting OpenRouter as a second, API-billed lane alongside it, the same pattern Undercut already uses for its own internal subagent routing. Your subscription keeps handling whatever it already handles well; OpenRouter access is what lets the same routing logic also reach the tiers your subscription can't. Connect OpenRouter (one click, your own account, your own billing) and nothing about your subscription changes -- it's additive, never a replacement, and never implied to be inferior. We still do not recommend the unofficial ANTHROPIC_BASE_URL proxy workaround as a way to reach other vendors from inside Claude Code itself -- it's ToS-gray, fragile, and could break without notice; the OpenRouter connect flow is the supported path.",
+      "honesty_caveat": "This is the lower-value-ceiling segment of the four on your subscription alone, and we say so plainly rather than overselling it. We also never compare this to Undercut's own subscription pricing or unit economics on this page -- that's Anthropic's pricing to explain, not ours to characterize.",
+      "flag": null,
+      "connect_openrouter": {
+        "cta_label": "Connect OpenRouter -- your account, your billing",
+        "helper_text": "Adds a second lane on top of your Claude subscription. Nothing about the subscription lane changes, and declining keeps you on your current setup permanently -- not a nag state.",
+        "enabled": false
+      }
     },
     "B": {
       "id": "B",
       "name": "Cursor / Windsurf / Copilot",
       "headline": "Cursor, Windsurf, or GitHub Copilot -- reach the tier your subscription doesn't include.",
       "body": "Your native subscription already includes multi-vendor frontier-lab access (Claude, GPT, Gemini) -- that part isn't Undercut's value-add. What Undercut adds: evidence-based escalation logic on top of whatever's already available, plus reaching openweights tiers (DeepSeek, GLM, and similar) that native subscriptions don't include at all.",
-      "openrouter_framing": "Unlocks a tier you don't have. Add an OpenRouter key in your tool's own BYOK settings specifically to reach the cheap openweights tier -- this is presented as unlocking access your subscription doesn't include, not as a generic 'add a key' instruction.",
+      "openrouter_framing": "Unlocks a tier you don't have. Add an OpenRouter key in your tool's own BYOK settings specifically to reach the cheap openweights tier -- this is presented as unlocking access your subscription doesn't include, not as a generic 'add a key' instruction. Additive on top of what you already have; your existing multi-vendor access through the tool's own subscription is untouched.",
       "honesty_caveat": "The multi-vendor frontier-lab access you already have is not something Undercut is adding -- we're only claiming the part that's genuinely new: the openweights tier and the routing logic on top of it.",
-      "flag": null
+      "flag": null,
+      "connect_openrouter": {
+        "cta_label": "Connect OpenRouter -- unlock the openweights tier",
+        "helper_text": "Adds the openweights tier your subscription doesn't include. Your tool's native multi-vendor access keeps working exactly as it does today.",
+        "enabled": false
+      }
     },
     "C": {
       "id": "C",
@@ -125,7 +137,12 @@
       "body": "As of 2026-01-09 (formalized in Anthropic's Consumer ToS on 2026-02-19), Claude Pro/Max subscription auth tokens are blocked in third-party tools. Practically, anyone routing model traffic through one of these tools today is already paying per-token API rates for whichever vendor -- there's no subscription being used here to give up. Adding an OpenRouter key to reach openweights tiers is pure upside, zero tradeoff.",
       "openrouter_framing": "Zero-downside, pure upside. This is the strongest, cleanest pitch of any segment: already on your tool paying API rates? Add an OpenRouter key and there's no downside -- only savings.",
       "honesty_caveat": "This segment's story only holds because there was never a subscription being used here to trade away -- it's not a special Undercut trick, it's a fact about how these tools already bill.",
-      "flag": null
+      "flag": null,
+      "connect_openrouter": {
+        "cta_label": "Connect OpenRouter -- pure upside, no downside",
+        "helper_text": "There's no subscription lane here to protect -- this is straightforwardly cheaper access on top of the API billing you already have.",
+        "enabled": false
+      }
     },
     "D": {
       "id": "D",
@@ -134,7 +151,12 @@
       "body": "Zed bundles its own Zed Pro subscription and cannot use a personal Claude subscription at all, regardless of Undercut.",
       "openrouter_framing": "Unverified for your editor. Whether Zed's own BYOK settings can reach OpenRouter specifically was not confirmed in our research pass -- we're flagging that openly rather than asserting it works. Check Zed's own provider settings directly before assuming this path is available to you.",
       "honesty_caveat": "We'd rather tell you we don't know than guess. This is the one segment where we're explicitly withholding a specific recommendation until it's verified.",
-      "flag": "unverified_for_your_editor"
+      "flag": "unverified_for_your_editor",
+      "connect_openrouter": {
+        "cta_label": null,
+        "helper_text": "We don't show a connect button for this segment -- Zed's own OpenRouter BYOK support is unverified, so we'd rather point you at Zed's provider settings than assert a path that might not exist.",
+        "enabled": false
+      }
     }
   },
 
@@ -144,6 +166,41 @@
     "openrouter_framing": "No claim either way, with one exception that generalizes: if your tool bills you per-token with no subscription in the mix, the Segment C story (adding an OpenRouter key is pure upside) most likely applies to you too. If you're on a subscription for this tool, we don't yet know how it interacts with OpenRouter or other provider keys.",
     "honesty_caveat": "We'd rather say 'not yet researched' than assign you a segment we can't back up.",
     "flag": "not_yet_researched"
+  },
+
+  "//reference_table": "Plain 4-segments-at-a-glance table for docs/setup.md and the setup.html reference section, per internal/business/build-backlog-2026-09-15-ecosystem-ladder.md Phase 4. Each row's fields are short summaries of the matching segment above, not new claims -- if these ever disagree with the segment blocks above, the segment blocks are the source of truth.",
+  "reference_table": {
+    "columns": ["segment", "tools", "how_you_pay_today", "what_undercut_adds", "openrouter_pitch"],
+    "rows": [
+      {
+        "segment": "A",
+        "tools": "Claude Code",
+        "how_you_pay_today": "Claude Pro/Max subscription only",
+        "what_undercut_adds": "Escalation rubric + effort-level tuning within Anthropic's own tier ladder",
+        "openrouter_pitch": "Additive second lane, same tool/subscription -- reaches tiers your subscription can't"
+      },
+      {
+        "segment": "B",
+        "tools": "Cursor, Windsurf, GitHub Copilot",
+        "how_you_pay_today": "Tool's native multi-vendor subscription",
+        "what_undercut_adds": "Escalation logic on top, plus the openweights tier the subscription doesn't include",
+        "openrouter_pitch": "Unlocks a tier you don't have"
+      },
+      {
+        "segment": "C",
+        "tools": "OpenCode, Continue.dev, Cline, Aider, Roo Code, Kilo Code",
+        "how_you_pay_today": "Per-token API billing (no subscription in the mix)",
+        "what_undercut_adds": "Full category-aware routing across whatever vendors you add",
+        "openrouter_pitch": "Zero-downside, pure upside -- the strongest pitch of any segment"
+      },
+      {
+        "segment": "D",
+        "tools": "Zed",
+        "how_you_pay_today": "Bundled Zed Pro subscription",
+        "what_undercut_adds": "Routing within Zed's own available models",
+        "openrouter_pitch": "Unverified for this editor -- no claim made either way"
+      }
+    ]
   },
 
   "open_questions": [
