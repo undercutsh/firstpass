@@ -207,6 +207,15 @@ for build/test commands and repo conventions.
 [getundercut.sh/developers](https://getundercut.sh/developers) — there isn't
 one yet; here's what exists today and where to hear about it when it ships.
 
+**Optional, for Undercut Pro — [`cli/`](cli/):** `@undercut/cli` pairs a
+machine with a Pro account and syncs the signed policy file that overrides
+`models.md`. `status` and `logout` work today with no network calls;
+`login` and `sync` are real, tested control flow pointed at a backend that
+hasn't shipped yet, and fail with a clear error rather than pretending to
+succeed. Not yet published to npm — run it from a clone in the meantime.
+Full command reference: [getundercut.sh/cli.md](https://getundercut.sh/cli.md)
+or [`cli/README.md`](cli/README.md).
+
 **Optional, for Claude Code — [`hooks/`](hooks/):** a local, opt-in package
 that guarantees the rubric is in context every session and prints a
 session-end receipt with real token/cost data (never a guess). No network
