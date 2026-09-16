@@ -91,6 +91,20 @@ function saveResults(results, meta, stats) {
 }
 
 /**
+ * Partial --ablation checkpoint: one overwritten file per vendor × suite,
+ * written after each arm finishes (see runAblation's onArmDone). Same
+ * results[vendor][arm][suite] shape as the final snapshot so --compare can
+ * read a partial run too.
+ */
+function savePartialAblation(results, meta) {
+  mkdirSync(RESULTS_DIR, { recursive: true });
+  const file = path.join(RESULTS_DIR, `ablation-partial-${meta.policy}-${meta.vendor}-${meta.suite}.json`);
+  writeFileSync(file, JSON.stringify({ meta: { ...meta, partial: true, generated: new Date().toISOString() }, results }, null, 2));
+  process.stdout.write(`  💾 checkpoint: ${path.basename(file)} (through ${meta.lastArm})\n`);
+  return file;
+}
+
+/**
  * Wilson CI on pass rate + seed-cluster bootstrap CI on cost-per-pass, for
  * every vendor/arm/suite cell. Additive sibling to `results` — same shape,
  * doesn't touch the existing results[vendor][arm][suite] unit arrays that
@@ -354,6 +368,15 @@ async function runAblationMode(args, { vendors }) {
         apexChat,
         apexModel: VENDORS[vendor].tiers.apex,
         onArm: (arm) => process.stdout.write(`  ${vendor}/${suite}: ${arm} …\n`),
+        // Checkpoint every finished arm (live only) so a mid-sweep failure
+        // doesn't lose paid results. Overwrites one file per vendor/suite.
+        onArmDone: args.mock
+          ? null
+          : (arm, units) => {
+              results[vendor][arm] ??= {};
+              results[vendor][arm][suite] = units;
+              savePartialAblation(results, { policy: args.policy, vendor, suite, seeds, lastArm: arm });
+            },
       });
       for (const [arm, units] of Object.entries(byArm)) {
         results[vendor][arm] ??= {};

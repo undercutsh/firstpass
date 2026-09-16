@@ -34,8 +34,9 @@ export const ABLATION_ARMS = [...STATIC_ARMS, 'tiered'];
  * Run every ablation arm over one suite for one vendor.
  * `makeAttempt(arm)` builds a fresh attempter per arm (the mock attempter
  * keeps per-(task,tier) retry state, so arms must not share one).
+ * `onArmDone(arm, units)` fires after each arm completes, for checkpointing.
  */
-export async function runAblation({ vendor, suite, seeds = 1, concurrency = 8, policy, makeAttempt, apexChat, apexModel, arms = ABLATION_ARMS, onArm = null }) {
+export async function runAblation({ vendor, suite, seeds = 1, concurrency = 8, policy, makeAttempt, apexChat, apexModel, arms = ABLATION_ARMS, onArm = null, onArmDone = null }) {
   const byArm = {};
   for (const arm of arms) {
     if (onArm) onArm(arm);
@@ -50,6 +51,9 @@ export async function runAblation({ vendor, suite, seeds = 1, concurrency = 8, p
       concurrency,
       policy,
     });
+    // Let the caller checkpoint after every arm: a live run that dies
+    // mid-sweep (rate limit, 402, network) keeps every finished arm.
+    if (onArmDone) onArmDone(arm, byArm[arm]);
   }
   return byArm;
 }

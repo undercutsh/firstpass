@@ -98,6 +98,7 @@ describe('runAblation', () => {
     const suite = [easy, hard, never];
 
     const armsSeen = [];
+    const armsDone = [];
     const byArm = await runAblation({
       vendor: 'anthropic',
       suite,
@@ -108,9 +109,12 @@ describe('runAblation', () => {
       apexChat: mockApex((id) => (id === never.id ? null : 'ok')),
       apexModel: 'mock-apex',
       onArm: (a) => armsSeen.push(a),
+      onArmDone: (a, units) => armsDone.push([a, units.length]),
     });
 
     assert.deepEqual(armsSeen, ABLATION_ARMS);
+    // onArmDone fires once per arm, after that arm's units exist (checkpoint hook).
+    assert.deepEqual(armsDone, ABLATION_ARMS.map((a) => [a, suite.length * 2]));
     assert.deepEqual(Object.keys(byArm), ABLATION_ARMS);
     for (const arm of ABLATION_ARMS) assert.equal(byArm[arm].length, suite.length * 2, arm);
 
