@@ -5,6 +5,7 @@
 //   node src/main.js --mock                   run with the mock LLM (no key, plumbing check)
 //   node src/main.js --effort high             apply one reasoning-effort level (low|medium|high) to every tier
 //   node src/main.js --effort-by-tier frontier:high,apex:high   apply effort per tier (unlisted tiers use provider default)
+//   node src/main.js --ablation --suites agentic   static-<tier> picks vs tiered, side by side (see ablation.js)
 
 import { VENDORS, ARMS, DEFAULT_SEEDS, TIER_ORDER } from './config.js';
 import { hasKey, verifyModels, chat } from './llm.js';
@@ -25,22 +26,25 @@ import { debugSuite } from './suites/debug.js';
 import { refactorSuite } from './suites/refactor.js';
 import { documentationSuite } from './suites/documentation.js';
 import { securitySuite } from './suites/security.js';
+import { agenticSuite } from './suites/agentic.js';
+import { runAblation, summarizeAblation, printAblation, ABLATION_ARMS } from './ablation.js';
 import { loadGsm8k, loadHumanEval, loadMbpp } from './benchmarks.js';
 import { summarizeWithCI } from './stats.js';
 import { writeFileSync, mkdirSync, readFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 
-const SUITES = { code: codeSuite, reasoning: reasoningSuite, mechanical: mechanicalSuite, debug: debugSuite, refactor: refactorSuite, documentation: documentationSuite, security: securitySuite };
+const SUITES = { code: codeSuite, reasoning: reasoningSuite, mechanical: mechanicalSuite, debug: debugSuite, refactor: refactorSuite, documentation: documentationSuite, security: securitySuite, agentic: agenticSuite };
 const RESULTS_DIR = path.join(import.meta.dirname, '..', 'results');
 
 function parseArgs(argv) {
-  const a = { smoke: false, verifyOnly: false, mock: false, flagtest: false, seeds: null, vendors: null, arms: null, suites: null, policy: 'latest', compare: null, baseline: null, dispatcher: 'cheap', benchmark: null, selfactivation: false, selfactivationInit: null, selfactivationReport: null, selfactivationN: 10, effort: null, effortByTier: null };
+  const a = { smoke: false, verifyOnly: false, mock: false, flagtest: false, seeds: null, vendors: null, arms: null, suites: null, policy: 'latest', compare: null, baseline: null, dispatcher: 'cheap', benchmark: null, selfactivation: false, selfactivationInit: null, selfactivationReport: null, selfactivationN: 10, effort: null, effortByTier: null, ablation: false };
   for (let i = 0; i < argv.length; i++) {
     switch (argv[i]) {
       case '--smoke': a.smoke = true; break;
       case '--verify-only': a.verifyOnly = true; break;
       case '--mock': a.mock = true; break;
       case '--flagtest': a.flagtest = true; break;
+      case '--ablation': a.ablation = true; break;
       case '--selfactivation': a.selfactivation = true; break;
       case '--selfactivation-init': a.selfactivationInit = argv[++i]; break;
       case '--selfactivation-report': a.selfactivationReport = argv[++i]; break;
@@ -196,6 +200,14 @@ async function main() {
   const vendors = args.vendors ? args.vendors : Object.keys(VENDORS);
   const arms = args.arms ? args.arms : Object.keys(ARMS);
 
+  // --ablation: static-<tier> single-model picks vs the tiered policy, per
+  // vendor + suite, with Newcombe diff-CIs. Defaults to the agentic suite
+  // (the TB2-shaped workload this ablation exists for); --suites overrides.
+  if (args.ablation) {
+    await runAblationMode(args, { vendors });
+    return;
+  }
+
   // --benchmark: load public benchmark suites (GSM8K reasoning, HumanEval
   // code, MBPP code) into the suite set. They replace/join the built-in
   // suites. gsm8k/humaneval fetch live from HuggingFace; mbpp is a fixed
@@ -260,7 +272,9 @@ async function main() {
         const apexChat = args.mock
           ? mockApex((id) => {
               const t = suiteMap[suite].find((x) => x.id === id);
-              return t ? t.answerKey : null;
+              // A task whose mock profile is minTier 'none' is unsolved at
+              // apex too (see runner.js's mockAttempter).
+              return t && t.mock?.minTier !== 'none' ? t.answerKey : null;
             })
           : chat;
         const units = await runSuite({
@@ -290,6 +304,80 @@ async function main() {
       mode: 'live',
       generated: new Date().toISOString(),
     }, stats);
+  }
+}
+
+/**
+ * --ablation mode. For each vendor × suite runs every arm in ABLATION_ARMS
+ * (static-cheap … static-apex, then tiered), prints the side-by-side report,
+ * and (live only) saves a results snapshot in the usual
+ * results[vendor][arm][suite] shape so --compare still works on it.
+ */
+async function runAblationMode(args, { vendors }) {
+  const suites = args.suites ?? ['agentic'];
+  for (const s of suites) if (!SUITES[s]) throw new Error(`unknown suite: ${s} (use ${Object.keys(SUITES).join(', ')})`);
+  const seeds = args.smoke ? 1 : args.seeds ?? DEFAULT_SEEDS;
+  const policy = createPolicy(args.policy);
+
+  console.log(`\nTiered-dispatch ABLATION run`);
+  console.log(`  mode:      ${args.mock ? 'MOCK (no spend)' : 'LIVE (OpenRouter)'}`);
+  console.log(`  policy:    ${args.policy}`);
+  console.log(`  vendors:   ${vendors.join(', ')}`);
+  console.log(`  arms:      ${ABLATION_ARMS.join(', ')}`);
+  console.log(`  suites:    ${suites.join(', ')}`);
+  console.log(`  seeds:     ${seeds}`);
+
+  const results = {};
+  const summaries = {};
+  for (const vendor of vendors) {
+    results[vendor] = {};
+    summaries[vendor] = {};
+    for (const suite of suites) {
+      const tasks = SUITES[suite];
+      const makeAttempt = () =>
+        args.mock
+          ? mockAttempter()
+          : makeAttempter({ model: VENDORS[vendor], runMeta: { temperature: 0.2, effort: args.effort, effortByTier: args.effortByTier }, policy });
+      const apexChat = args.mock
+        ? mockApex((id) => {
+            const t = tasks.find((x) => x.id === id);
+            return t && t.mock?.minTier !== 'none' ? t.answerKey : null;
+          })
+        : chat;
+      const byArm = await runAblation({
+        vendor,
+        suite: tasks,
+        seeds,
+        concurrency: args.concurrency ?? 8,
+        policy,
+        makeAttempt,
+        apexChat,
+        apexModel: VENDORS[vendor].tiers.apex,
+        onArm: (arm) => process.stdout.write(`  ${vendor}/${suite}: ${arm} …\n`),
+      });
+      for (const [arm, units] of Object.entries(byArm)) {
+        results[vendor][arm] ??= {};
+        results[vendor][arm][suite] = units;
+      }
+      const summary = summarizeAblation(byArm);
+      summaries[vendor][suite] = summary;
+      printAblation(summary, { vendor, suite, seeds, policyVersion: args.policy, mock: args.mock });
+    }
+  }
+
+  console.log(`\n${args.mock ? 'MOCK' : 'LIVE'} · ${seeds} seed(s) · ${new Date().toISOString()}`);
+
+  if (!args.mock) {
+    saveResults(results, {
+      policy: args.policy,
+      vendors,
+      arms: ABLATION_ARMS,
+      suites,
+      seeds,
+      mode: 'live',
+      ablation: true,
+      generated: new Date().toISOString(),
+    }, computeStats(results));
   }
 }
 

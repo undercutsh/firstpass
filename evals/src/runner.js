@@ -8,7 +8,7 @@
 // ONE apex call, then grades every residual item against it.
 
 import { chat } from './llm.js';
-import { VENDORS, TIER_ORDER, MAX_ATTEMPTS_PER_UNIT } from './config.js';
+import { VENDORS, TIER_ORDER, MAX_ATTEMPTS_PER_UNIT, MAX_TIER_RETRIES } from './config.js';
 import { extractJson } from './tasks.js';
 import { WORKER_CONTRACT } from './types.js';
 
@@ -162,6 +162,23 @@ async function runUnitForArm(arm, task, attempt, policy) {
     return summarize(task, trace, policy);
   }
 
+  // Static arms (`static-<tier>`, the --ablation baselines): ONE pinned
+  // tier, no escalation, and the SAME per-tier attempt budget the ladder
+  // gives any single tier (MAX_TIER_RETRIES + 1), so "tiered vs static-X"
+  // is apples-to-apples — the ladder never gets more tries at tier X than
+  // the static arm does. This is what an up-front classifier that guessed
+  // tier X would deliver: whatever X produces, shipped as-is.
+  if (isStaticArm(arm)) {
+    const tier = staticArmTier(arm);
+    const trace = { attempts: [], finalTier: null, escalated: false, needsApex: false };
+    for (let i = 0; i < MAX_TIER_RETRIES + 1; i++) {
+      const r = await attempt(tier, task, null);
+      trace.attempts.push({ ...r, tier });
+      if (r.verdict.pass) { trace.finalTier = tier; break; }
+    }
+    return summarize(task, trace, policy);
+  }
+
   // Baseline arms: same unit, single tier, no escalation.
   const tier = arm === 'all-frontier' ? 'frontier' : 'standard';
   const trace = { attempts: [], finalTier: null, escalated: false, needsApex: false };
@@ -171,6 +188,16 @@ async function runUnitForArm(arm, task, attempt, policy) {
     if (r.verdict.pass) { trace.finalTier = tier; break; }
   }
   return summarize(task, trace, policy);
+}
+
+/** `static-<tier>` arm helpers (see --ablation in main.js / ablation.js). */
+export const STATIC_ARMS = TIER_ORDER.map((t) => `static-${t}`);
+export function isStaticArm(arm) {
+  return typeof arm === 'string' && arm.startsWith('static-') && TIER_ORDER.includes(arm.slice('static-'.length));
+}
+export function staticArmTier(arm) {
+  if (!isStaticArm(arm)) throw new Error(`not a static arm: ${arm}`);
+  return arm.slice('static-'.length);
 }
 
 function summarize(task, trace, policy) {
@@ -240,6 +267,13 @@ const MOCK_SOLUTIONS = {
 // in runner.test.js.
 const APEX_PROBE_IDS = new Set(['reasoning:apex-tiebreak']);
 
+// Per-tier mock cost for tasks carrying a `mock` difficulty profile (the
+// agentic suite). Roughly the real cheap:standard:frontier:apex price ladder
+// so the --mock --ablation cost columns aren't all identical — the report's
+// cost-per-completed-task ordering is meaningless if every tier costs the
+// same. Tasks without a profile keep the flat 0.001 the other suites use.
+const MOCK_TIER_COST = { cheap: 0.0005, standard: 0.003, frontier: 0.015, apex: 0.03 };
+
 /**
  * Build a mock attempter. For known-correct answers it returns the task's
  * answerKey at any tier (so cheap passes fast); unknown answers fail on the
@@ -248,10 +282,45 @@ const APEX_PROBE_IDS = new Set(['reasoning:apex-tiebreak']);
  */
 export function mockAttempter({ alwaysPass = false } = {}) {
   const attempts = [];
+  // Per (task, tier) attempt counter for the agentic suite's
+  // `mock.retryAtMinTier` profile — "fails once at its solve tier, then
+  // passes", which is the hysteresis retry path (max ONE retry per tier).
+  const seen = new Map();
   return async (tier, task) => {
     let shouldPass;
     if (alwaysPass) shouldPass = true;
-    else if (task.category === 'code') {
+    else if (task.mock?.minTier) {
+      // Agentic-suite difficulty profile: the mock "solves" the task at
+      // `minTier` and above ('none' = never), and — when `retryAtMinTier` — only on its
+      // SECOND attempt at that tier. The answer it returns is the task's
+      // reference solution, so the REAL grader (bash sandbox, vm, JSON)
+      // still runs end to end; a cheap-fail returns a deliberately wrong
+      // answer of the right general shape. This is what gives --mock
+      // --ablation a varied pass/fail surface per arm: static-cheap fails
+      // everything above cheap, static-frontier passes everything except
+      // apex-only tasks, tiered climbs exactly as far as each task needs.
+      const key = `${task.id}@${tier}`;
+      const n = (seen.get(key) ?? 0) + 1;
+      seen.set(key, n);
+      const tierIdx = TIER_ORDER.indexOf(tier);
+      // minTier 'none' = the mock never solves it at any local tier (and
+      // main.js's mockApex declines it too), so the "exhausted the whole
+      // ladder and still failed" path is exercised in --mock.
+      const minIdx = task.mock.minTier === 'none' ? Infinity : TIER_ORDER.indexOf(task.mock.minTier);
+      const strongEnough = tierIdx >= minIdx;
+      const retryGate = task.mock.retryAtMinTier && tierIdx === minIdx ? n >= 2 : true;
+      shouldPass = strongEnough && retryGate;
+      const answer = shouldPass ? task.answerKey : typeof task.answerKey === 'string' ? 'echo mock-wrong-answer' : { wrong: 'mock-fail' };
+      attempts.push(tier);
+      return {
+        answer,
+        status: 'grounded',
+        uncertaintyReason: null,
+        verdict: await task.grader(answer),
+        cost: MOCK_TIER_COST[tier] ?? 0.001,
+        usage: { in: 100, out: 50, costUsd: MOCK_TIER_COST[tier] ?? 0.001 },
+      };
+    } else if (task.category === 'code') {
       // Mock code tasks always pass (reference solution) regardless of tier —
       // in the real run cheap models genuinely solve them.
       const sol = MOCK_SOLUTIONS[task.id.replace('code:', '')];

@@ -69,9 +69,13 @@ export function createPolicy(version = 'latest') {
       : '';
     // Category-specific answer guidance. Code workers must return the raw
     // function source as a plain string — wrapped objects (implementation,
-    // language, explanation) are rejected by the mechanical grader.
+    // language, explanation) are rejected by the mechanical grader. A task
+    // may override the category default with its own `answerNote` (the
+    // agentic suite's `code`-category shell tasks want a bash script).
     const categoryNote =
-      task.category === 'code'
+      task.answerNote
+        ? `\n${task.answerNote}`
+        : task.category === 'code'
         ? '\nANSWER FORMAT: the "answer" field MUST be the raw JavaScript function source code as a plain string. Do NOT wrap it in an object, do not add explanation. Example: {"status": "grounded", "reason": null, "answer": "function main(arr){ ... }"}'
         : task.category === 'mbpp' || task.category === 'humaneval'
         ? '\nANSWER FORMAT: the "answer" field MUST be the raw Python function source code as a plain string. Do NOT wrap it in an object, do not add explanation, do not include markdown fences. Example: {"status": "grounded", "reason": null, "answer": "def foo(x):\\n    return x"}'
