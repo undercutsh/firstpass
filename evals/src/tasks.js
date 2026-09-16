@@ -2,6 +2,10 @@
 // Graders are mechanical (exec, exact-match, schema) — never an LLM judging.
 
 import vm from 'node:vm';
+import { spawnSync } from 'node:child_process';
+import { mkdtempSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
 
 /**
  * @typedef {Object} Task
@@ -11,13 +15,22 @@ import vm from 'node:vm';
  * @property {Object} flags      rubric flags {unverifiable, ambiguous, blast, crossCutting, novel}
  * @property {string} answerKey  ground-truth answer (for reasoning/mechanical)
  * @property {Function} grader   (answer) => {pass:boolean, reason:string}
+ * @property {string} [answerNote]  optional per-task ANSWER FORMAT note appended to
+ *                                  the worker prompt (overrides the category default
+ *                                  in policy.js's workerPrompt — used by the agentic
+ *                                  suite, whose `code`-category tasks want a bash
+ *                                  script, not a JS function)
+ * @property {Object} [mock]      optional --mock difficulty profile, see runner.js's
+ *                                mockAttempter: {minTier, retryAtMinTier}
  */
 
-export function makeTask({ id, category, prompt, flags, answerKey, grader }) {
+export function makeTask({ id, category, prompt, flags, answerKey, grader, answerNote, mock }) {
   return {
     id,
     category,
     prompt,
+    ...(answerNote ? { answerNote } : {}),
+    ...(mock ? { mock } : {}),
     flags: {
       unverifiable: false,
       ambiguous: false,
@@ -133,6 +146,119 @@ export function gradeCode(solution, testCases) {
     passed++;
   }
   return { pass: passed === testCases.length, reason: `${passed}/${testCases.length} cases passed` };
+}
+
+/* ------------------------------------------------------------------ */
+/* Shell grader (agentic suite)                                        */
+/* ------------------------------------------------------------------ */
+
+const SHELL_TIMEOUT_MS = 5000;
+const SHELL_MAX_OUTPUT = 256 * 1024;
+
+// Probed once per process. `unshare -rn` (Linux user + network namespace,
+// unprivileged) gives the graded script a loopback-only network view, so a
+// submitted script that tries to `curl` anything fails fast instead of
+// reaching out. Not every CI runner permits unprivileged user namespaces
+// (Ubuntu 24.04 restricts them via AppArmor), so this is best-effort: when
+// the probe fails we fall back to plain bash and the remaining guards
+// (timeout, scrubbed env, throwaway cwd, output cap) still apply.
+let netnsWrapper;
+export function shellNetworkIsolation() {
+  if (netnsWrapper !== undefined) return netnsWrapper;
+  try {
+    const probe = spawnSync('unshare', ['-rn', 'true'], { timeout: 2000, stdio: 'ignore' });
+    netnsWrapper = probe.status === 0 ? ['unshare', '-rn'] : null;
+  } catch {
+    netnsWrapper = null;
+  }
+  return netnsWrapper;
+}
+
+function normalizeStdout(s) {
+  return String(s ?? '')
+    .replace(/\r\n/g, '\n')
+    .split('\n')
+    .map((l) => l.replace(/\s+$/, ''))
+    .join('\n')
+    .replace(/\n+$/, '');
+}
+
+/**
+ * Execute a submitted bash script against a fixture tree and compare its
+ * stdout to an exact expected string. The TB2-shaped grader: the worker has
+ * to produce a real terminal artifact (a shell pipeline/script) that does a
+ * multi-step job over real files, and the check is the same kind a terminal
+ * benchmark would run — did the right bytes come out.
+ *
+ * Sandbox, mirroring how gradeCode bounds vm execution (see #182):
+ *   - runs in a fresh mkdtemp directory that holds ONLY the fixtures, and is
+ *     removed afterwards, so the script can't read or clobber the repo;
+ *   - `bash --noprofile --norc` with a scrubbed env (PATH/HOME/LC_ALL/TMPDIR
+ *     only — no API keys, no proxy vars leak in);
+ *   - hard wall-clock timeout (SIGKILL) so an infinite loop fails the case
+ *     instead of hanging the run, and a stdout/stderr byte cap;
+ *   - network namespace isolation via `unshare -rn` when the host allows it
+ *     (see shellNetworkIsolation).
+ *
+ * fixtures: { 'relative/path.txt': 'contents', ... }. expected: exact stdout
+ * (trailing whitespace per line and trailing newlines are ignored; nothing
+ * else is). Deterministic by construction: same script + same fixtures =>
+ * same bytes; every fixture is inline, none depend on the clock, locale, or
+ * network. Non-zero exit is a failure even when stdout happens to match.
+ */
+export function gradeShell(script, fixtures, expected) {
+  if (typeof script !== 'string' || script.trim().length === 0) {
+    return { pass: false, reason: 'no script returned' };
+  }
+  // Layout: <root>/work is the script's cwd and holds ONLY the fixtures;
+  // the script itself and its scratch TMPDIR live beside it, not inside, so
+  // a `grep -r .` / `find .` in the solution can't see (or match) itself.
+  const root = mkdtempSync(path.join(tmpdir(), 'fp-shell-'));
+  const dir = path.join(root, 'work');
+  const scratch = path.join(root, 'tmp');
+  try {
+    mkdirSync(dir);
+    mkdirSync(scratch);
+    for (const [rel, content] of Object.entries(fixtures ?? {})) {
+      const abs = path.join(dir, rel);
+      if (!abs.startsWith(dir + path.sep)) throw new Error(`fixture path escapes sandbox: ${rel}`);
+      mkdirSync(path.dirname(abs), { recursive: true });
+      writeFileSync(abs, content);
+    }
+    const scriptPath = path.join(root, 'solution.sh');
+    writeFileSync(scriptPath, script.endsWith('\n') ? script : script + '\n');
+    const wrapper = shellNetworkIsolation() ?? [];
+    const argv = [...wrapper, 'bash', '--noprofile', '--norc', scriptPath];
+    const res = spawnSync(argv[0], argv.slice(1), {
+      cwd: dir,
+      env: { PATH: '/usr/local/bin:/usr/bin:/bin', HOME: scratch, TMPDIR: scratch, LC_ALL: 'C', LANG: 'C' },
+      timeout: SHELL_TIMEOUT_MS,
+      killSignal: 'SIGKILL',
+      maxBuffer: SHELL_MAX_OUTPUT,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+    if (res.error) {
+      if (res.error.code === 'ETIMEDOUT' || res.signal === 'SIGKILL') {
+        return { pass: false, reason: `timed out after ${SHELL_TIMEOUT_MS}ms (possible infinite loop)` };
+      }
+      if (res.error.code === 'ENOBUFS') return { pass: false, reason: 'output exceeded cap' };
+      return { pass: false, reason: `spawn error: ${res.error.message}` };
+    }
+    if (res.signal) return { pass: false, reason: `killed by ${res.signal}` };
+    const got = normalizeStdout(res.stdout);
+    const want = normalizeStdout(expected);
+    if (res.status !== 0) {
+      const err = String(res.stderr ?? '').trim().split('\n')[0] ?? '';
+      return { pass: false, reason: `exit ${res.status}: ${err.slice(0, 160)}` };
+    }
+    if (got !== want) {
+      return { pass: false, reason: `stdout mismatch: expected ${JSON.stringify(want.slice(0, 120))} got ${JSON.stringify(got.slice(0, 120))}` };
+    }
+    return { pass: true, reason: 'stdout matched, exit 0' };
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
 }
 
 /** Exact-match grader for reasoning tasks (normalized, case-insensitive). */

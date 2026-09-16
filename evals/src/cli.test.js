@@ -273,3 +273,47 @@ describe('--compare', () => {
     assert.match(stderr, /results file not found/);
   });
 });
+
+describe('--suites agentic (TB2-shaped suite in the normal arms)', () => {
+  test('runs under --mock with the standard arms and prints a per-suite table', () => {
+    const { status, stdout } = runCli(['--mock', '--seeds', '1', '--vendors', 'anthropic', '--suites', 'agentic']);
+    assert.equal(status, 0, stdout);
+    assert.match(stdout, /anthropic \/ agentic/);
+    assert.match(stdout, /agentic:shell-top-ips/);
+    assert.match(stdout, /tiered per-task mechanics \(\d+ tasks\)/);
+  });
+});
+
+describe('--ablation', () => {
+  test('runs static-<tier> arms plus tiered on the agentic suite by default under --mock, with diff-CIs and a headline', () => {
+    const { status, stdout } = runCli(['--mock', '--ablation', '--seeds', '1', '--vendors', 'anthropic']);
+    assert.equal(status, 0, stdout);
+    assert.match(stdout, /ABLATION · anthropic \/ agentic/);
+    for (const arm of ['static-cheap', 'static-standard', 'static-frontier', 'static-apex', 'tiered']) {
+      assert.match(stdout, new RegExp(`^${arm}\\s+\\d+/\\d+`, 'm'), `missing arm row ${arm}`);
+    }
+    assert.match(stdout, /Newcombe 95% CI/);
+    assert.match(stdout, /HEADLINE: tiered \d+% vs best static pick static-\w+/);
+    assert.match(stdout, /per-category pass/);
+    // Static arms never escalate and never reach apex.
+    assert.match(stdout, /^static-cheap\s+\d+\/\d+\s+\S+\s+\S+\s+\S+\s+0%\s+0$/m);
+  });
+
+  test('accepts --suites to ablate a non-agentic suite', () => {
+    const { status, stdout } = runCli(['--mock', '--ablation', '--seeds', '1', '--vendors', 'openai', '--suites', 'reasoning']);
+    assert.equal(status, 0, stdout);
+    assert.match(stdout, /ABLATION · openai \/ reasoning/);
+  });
+
+  test('rejects an unknown suite', () => {
+    const { status, stderr } = runCli(['--mock', '--ablation', '--suites', 'nope']);
+    assert.notEqual(status, 0);
+    assert.match(stderr, /unknown suite: nope/);
+  });
+
+  test('refuses to run live without a key', () => {
+    const { status, stderr } = runCli(['--ablation']);
+    assert.notEqual(status, 0);
+    assert.match(stderr, /OPENROUTER_API_KEY/);
+  });
+});

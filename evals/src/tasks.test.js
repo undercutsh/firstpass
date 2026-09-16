@@ -13,7 +13,67 @@
 
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
-import { extractJson, gradeJsonSubset, gradeCode, gradeExact, gradeJudge, makeTask } from './tasks.js';
+import { extractJson, gradeJsonSubset, gradeCode, gradeExact, gradeJudge, gradeShell, makeTask } from './tasks.js';
+
+// --- gradeShell (agentic suite): sandboxed bash execution ---------------
+describe('gradeShell', () => {
+  test('passes when stdout matches exactly (trailing whitespace/newlines ignored) and exit is 0', () => {
+    const v = gradeShell('sort -u words.txt', { 'words.txt': 'b\na\nb\n' }, 'a\nb\n\n');
+    assert.equal(v.pass, true, v.reason);
+  });
+
+  test('fails on stdout mismatch, naming both sides', () => {
+    const v = gradeShell('echo nope', {}, 'yes');
+    assert.equal(v.pass, false);
+    assert.match(v.reason, /stdout mismatch/);
+  });
+
+  test('fails on a non-zero exit even when stdout matches', () => {
+    const v = gradeShell('echo ok; exit 2', {}, 'ok');
+    assert.equal(v.pass, false);
+    assert.match(v.reason, /exit 2/);
+  });
+
+  test('rejects an empty or non-string script without spawning anything', () => {
+    assert.equal(gradeShell('', {}, '').pass, false);
+    assert.equal(gradeShell(null, {}, '').pass, false);
+    assert.equal(gradeShell({ script: 'echo hi' }, {}, 'hi').pass, false);
+  });
+
+  test('kills an infinite loop at the timeout instead of hanging the run', () => {
+    const t0 = Date.now();
+    const v = gradeShell('while true; do :; done', {}, '');
+    assert.equal(v.pass, false);
+    assert.match(v.reason, /timed out/);
+    assert.ok(Date.now() - t0 < 10_000, 'timeout should bound the call');
+  });
+
+  test('runs in a throwaway directory holding only the fixtures, with a scrubbed env', () => {
+    const v = gradeShell(
+      'ls -A | sort; echo "key=${OPENROUTER_API_KEY:-unset}"; echo "proxy=${HTTPS_PROXY:-unset}"',
+      { 'a.txt': '', 'sub/b.txt': '' },
+      'a.txt\nsub\nkey=unset\nproxy=unset',
+    );
+    assert.equal(v.pass, true, v.reason);
+  });
+
+  test('the solution script is not visible from the working directory', () => {
+    // A `grep -r` over the cwd must not be able to match the solution's own
+    // source (which would let a regex-search task match itself).
+    const v = gradeShell("grep -rl 'NEEDLE_xyz' . | sort", { 'has.txt': 'NEEDLE_xyz\n' }, './has.txt');
+    assert.equal(v.pass, true, v.reason);
+  });
+
+  test('refuses fixture paths that escape the sandbox', () => {
+    assert.throws(() => gradeShell('true', { '../escape.txt': 'x' }, ''), /escapes sandbox/);
+  });
+
+  test('is deterministic: same script + fixtures => same verdict every time', () => {
+    const fx = { 'n.txt': '3\n1\n2\n' };
+    const runs = Array.from({ length: 3 }, () => gradeShell('sort -n n.txt | tail -1', fx, '3'));
+    assert.ok(runs.every((r) => r.pass), runs.map((r) => r.reason).join('; '));
+  });
+});
 
 // --- extractJson() -----------------------------------------------------
 

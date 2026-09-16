@@ -112,6 +112,7 @@ Three properties make the results defensible:
 | `all-frontier` | every unit on the vendor's frontier tier — the status quo |
 | `all-standard` | every unit on the vendor's standard tier — the cheap status quo |
 | `tiered` | the skill: rubric → base tier, cheap-to-verify override, escalation on verification failure ×2 / disagreement / uncertainty, hysteresis, residue-only payload, batched apex |
+| `static-<tier>` | `--ablation` only: every unit pinned to one tier (`cheap`/`standard`/`frontier`/`apex`), no escalation, same per-tier attempt budget the ladder gives one tier — what an up-front classifier that guessed that tier would deliver |
 
 ## Metrics
 
@@ -151,14 +152,46 @@ OPENROUTER_API_KEY=sk-or-... node src/main.js --arms tiered --baseline <saved-ru
 
 # compare two saved runs (policy versions, or before/after)
 node src/main.js --compare <run-a.json>,<run-b.json>
+
+# ablation: rubric + verification-gated escalation vs. every static
+# single-tier pick, side by side, on the TB2-shaped agentic suite
+node src/main.js --mock --ablation --suites agentic
+OPENROUTER_API_KEY=sk-or-... node src/main.js --ablation --suites agentic --vendors anthropic --seeds 5
 ```
 
 Flags: `--mock`, `--verify-only`, `--smoke`, `--vendors anthropic,openai,gemini,openweights`,
-`--arms all-frontier,all-standard,tiered`, `--suites code,reasoning,mechanical,debug,refactor,documentation,security`,
+`--arms all-frontier,all-standard,tiered`, `--suites code,reasoning,mechanical,debug,refactor,documentation,security,agentic`,
 `--seeds N`, `--policy v1|latest|probe`, `--baseline <file>`, `--compare a,b`,
 `--concurrency N`, `--benchmark gsm8k,humaneval,mbpp`, `--flagtest` (measure
 dispatcher flag-reproduction accuracy; needs `OPENROUTER_API_KEY`),
-`--dispatcher cheap|<model slug>` (dispatcher model for `--flagtest`, default `cheap`).
+`--dispatcher cheap|<model slug>` (dispatcher model for `--flagtest`, default `cheap`),
+`--ablation` (static-vs-tiered ablation, see below).
+
+### `--ablation`: static single-model pick vs. rubric + escalation
+
+Up-front routers (Kilo Auto Model, `openrouter/auto`) pick ONE model per
+task from a classifier guess and ship whatever it produces; nothing checks
+the output. The one ablation none of them publish is whether checking the
+output and escalating on failure beats the *best* static pick — not just
+the cheapest — and at what cost per completed task. `--ablation` runs that,
+per vendor × suite:
+
+- one `static-<tier>` arm per tier in `TIER_ORDER` (cheap, standard,
+  frontier, apex): every task pinned to that tier, no escalation,
+  `MAX_TIER_RETRIES + 1` attempts (the same budget the ladder gives any one
+  tier, so the comparison is apples-to-apples);
+- the `tiered` arm: the real policy.
+
+It reports, per arm, pass rate with a Wilson CI, total cost, **cost per
+completed task** (Kilo's "72% cheaper" divides by attempts, which silently
+drops the 53% of TB2 tasks its cheap pick never completed), esc% and apex
+count; then for each static arm the Newcombe diff-CI of tiered's pass rate
+minus that arm's and the cost ratios; then a per-category ledger (the
+agentic suite spans all seven categories). The headline line is tiered vs.
+the best static arm by pass rate: "rubric + escalation beats the best
+static pick by X pp [CI] at Y× the cost per completed task". Defaults to
+`--suites agentic`; any suite works. Live runs save a snapshot in the usual
+`results[vendor][arm][suite]` shape, so `--compare` works on them.
 
 ### Policy versions
 
@@ -191,6 +224,7 @@ benchmark content. See `src/suites/`.
 | `refactor` | JSON schema / exact-match | refactoring judgment (dead code, pure-rename vs behavior-change, code-smell → pattern) |
 | `documentation` | JSON schema (structural fields only, free-text descriptions ungraded) | generating structured docstrings from a signature + behavior description |
 | `security` | JSON schema / exact-match | vulnerability classification against a fixed enum (`sql-injection`, `xss`, `path-traversal`, `hardcoded-secret`, `insecure-deserialization`, `missing-auth-check`, `none`) |
+| `agentic` | bash script executed in a sandbox (temp dir, scrubbed env, SIGKILL timeout, no network where `unshare -rn` is permitted) with exact stdout match; JS in the `vm` sandbox; JSON schema / exact-match for plans, manifests and resolutions | Terminal-Bench-2.0-shaped multi-step work that is still offline-gradable: log forensics across services, shell pipelines over fixture trees, config/manifest generation, dependency/migration resolution with a stated tie-break, multi-file refactor plans, repo secret scans. 31 tasks; each sets `category` to one of the seven above so results land in the per-category ledger. See the header of `src/suites/agentic.js` for the design constraint and what was cut to keep graders deterministic |
 
 ## Public benchmark suites (`--benchmark`)
 

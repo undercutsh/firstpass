@@ -4,13 +4,69 @@
 
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
-import { runSuite, mockAttempter, mockApex } from './runner.js';
+import { runSuite, mockAttempter, mockApex, STATIC_ARMS, isStaticArm, staticArmTier } from './runner.js';
 import vm from 'node:vm';
 import { makeTask } from './tasks.js';
 import { createPolicy } from './policy.js';
 import { codeSuite } from './suites/code.js';
 import { reasoningSuite } from './suites/reasoning.js';
 import { TIER_ORDER, MAX_TIER_RETRIES } from './config.js';
+
+// --- static-<tier> arms (the --ablation baselines) -----------------------
+describe('static-<tier> arms', () => {
+  const grader = (answer) => ({ pass: answer === 'ok', reason: '' });
+  const solvedAtStandard = makeTask({ id: 'agentic:s', category: 'code', prompt: 'x', flags: {}, answerKey: 'ok', grader, mock: { minTier: 'standard' } });
+  const retryAtCheap = makeTask({ id: 'agentic:r', category: 'code', prompt: 'x', flags: {}, answerKey: 'ok', grader, mock: { minTier: 'cheap', retryAtMinTier: true } });
+
+  test('helpers recognise exactly static-<tier> for tiers in TIER_ORDER', () => {
+    assert.deepEqual(STATIC_ARMS, TIER_ORDER.map((t) => `static-${t}`));
+    assert.equal(isStaticArm('static-frontier'), true);
+    assert.equal(isStaticArm('static-turbo'), false);
+    assert.equal(isStaticArm('tiered'), false);
+    assert.equal(staticArmTier('static-apex'), 'apex');
+    assert.throws(() => staticArmTier('tiered'), /not a static arm/);
+  });
+
+  test('pins every attempt to one tier, never escalates, and spends at most MAX_TIER_RETRIES + 1 attempts', async () => {
+    const policy = createPolicy('latest');
+    const units = await runSuite({ arm: 'static-cheap', vendor: 'anthropic', suite: [solvedAtStandard], attempt: mockAttempter(), apexChat: null, apexModel: null, seeds: 1, policy });
+    const [u] = units;
+    assert.equal(u.passed, false);
+    assert.equal(u.escalated, false);
+    assert.equal(u.needsApex, false);
+    assert.equal(u.attempts, MAX_TIER_RETRIES + 1);
+    assert.deepEqual(u.tiersUsed, ['cheap']);
+  });
+
+  test('passes when its pinned tier can solve the task, stopping at the first pass', async () => {
+    const policy = createPolicy('latest');
+    const units = await runSuite({ arm: 'static-standard', vendor: 'anthropic', suite: [solvedAtStandard], attempt: mockAttempter(), apexChat: null, apexModel: null, seeds: 1, policy });
+    const [u] = units;
+    assert.equal(u.passed, true);
+    assert.equal(u.attempts, 1);
+    assert.equal(u.finalTier, 'standard');
+  });
+
+  test('mock retryAtMinTier profile fails once then passes — the hysteresis retry path, in both static and tiered arms', async () => {
+    const policy = createPolicy('latest');
+    for (const arm of ['static-cheap', 'tiered']) {
+      const [u] = await runSuite({ arm, vendor: 'anthropic', suite: [retryAtCheap], attempt: mockAttempter(), apexChat: null, apexModel: null, seeds: 1, policy });
+      assert.equal(u.passed, true, arm);
+      assert.equal(u.attempts, 2, arm);
+      assert.deepEqual(u.attemptLog.map((a) => a.tier), ['cheap', 'cheap'], arm);
+      assert.equal(u.escalated, false, arm);
+    }
+  });
+
+  test('mock difficulty profile makes the tiered arm climb exactly as far as the task needs', async () => {
+    const policy = createPolicy('latest');
+    const [u] = await runSuite({ arm: 'tiered', vendor: 'anthropic', suite: [solvedAtStandard], attempt: mockAttempter(), apexChat: null, apexModel: null, seeds: 1, policy });
+    assert.equal(u.passed, true);
+    assert.deepEqual(u.attemptLog.map((a) => a.tier), ['cheap', 'cheap', 'standard']);
+    assert.equal(u.finalTier, 'standard');
+    assert.equal(u.escalated, true);
+  });
+});
 
 const task = makeTask({
   id: 'reasoning:t1',
