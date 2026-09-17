@@ -7,7 +7,7 @@ claims** — anyone can re-verify any cell.
 
 ## TL;DR
 
-- **Synthetic suites (our own 68 tasks across 7 categories):** tiered routing (`probe` policy) is
+- **Synthetic suites (our own 69 tasks across 7 categories):** tiered routing (`probe` policy) is
   equal-or-better quality at **31–96% lower cost** on 3 of 4 model families.
 - **Public benchmarks (GSM8K, HumanEval):** the same pattern holds on
   third-party, MIT-licensed, uncontested tasks — **up to −71% (GSM8K) and
@@ -17,7 +17,42 @@ claims** — anyone can re-verify any cell.
   (2 benchmarks × 4 vendors) tiered pass rate was equal-or-better to
   all-standard except GSM8K/Gemini (−2, within seed noise).
 - **Robust to imperfect flagging.** A stock dispatcher model reproduces 90% of
-  rubric flags but routes 100% of units to the correct tier.
+  rubric flags but routes 100% of units to the correct tier — but see the
+  standing limitation immediately below before reading that as rubric evidence.
+
+## Standing limitation: these numbers measure the ladder, not the rubric
+
+`baseTier()` in `evals/src/policy.js` opens with
+`if (!task.flags.unverifiable) return 'cheap';`, and `unverifiable` is `false`
+on all 69 hand-labelled tasks. That line therefore returns for every task: the
+rubric's flag count is never consulted, and the `frontier` branch below it has
+never executed. Full reachability analysis in `evals/LABEL-AUDIT.md`.
+
+Every published number on this page was produced under that defect. The
+consequences, stated plainly:
+
+- **The cost and pass-rate cells measure escalation behaviour, not rubric
+  assignment.** Every unit started at `cheap` regardless of its flags, so what
+  the tables show is what the cheap-first ladder and the `formatStrict` ladder
+  cap do — not what the six-flag rubric assigns. Claims of the form "the
+  six-flag rubric produces these savings" are not supported by these runs.
+- **"Routes 100% of units to the correct tier" is weak evidence.**
+  `evals/src/flagtest.js` derives *both* sides of that comparison from
+  `baseTier()`: `truthTier` from the hand-labelled flags and `predictedTier`
+  from the dispatcher's flags (`flagtest.js:97–99`). Under the clamp both
+  collapse to `cheap` for every task, whatever either flag set says, so a 100%
+  match is close to an artifact of the defect rather than a measurement of
+  dispatcher reliability. The 90%/93% raw *flag agreement* figures are
+  unaffected — they compare flags directly and never touch `baseTier()`.
+- **The public-benchmark cells are not affected.** The GSM8K, HumanEval and
+  `mbpp` tasks are minted by the loaders in `evals/src/benchmarks.js` with an
+  all-false flag object and no `formatStrict`, so they carry zero rubric flags
+  and base at `cheap` under every policy version with or without the defect.
+  Those numbers stand as measured.
+
+A fix is open in a PR. Nothing has been re-run, so this page states no
+expectation about which cells move or by how much; the numbers below are the
+numbers that were measured, under the behaviour described here.
 
 ## How to read the result files
 
@@ -40,7 +75,7 @@ compare. Every `--compare` invocation in `evals/` accepts two of these files.
 
 ## Synthetic suites (own tasks, deterministic graders)
 
-68 original tasks across 7 categories — 10 code (sandboxed `vm` exec), 10
+69 original tasks across 7 categories — 10 code (sandboxed `vm` exec), 11
 reasoning (exact-match), 10 mechanical (JSON schema), 10 debug, 8 refactor,
 10 documentation, and 10 security (all four of the latter graded by JSON
 schema / exact-match, added below — not yet in the results table since none
@@ -171,6 +206,13 @@ dispatching agent to score them. Test: can a stock dispatcher reproduce them?
 
 **Conclusion: no custom flagging model required.** Flags steer; verification +
 escalation decide.
+
+The two **100% tier-match** figures above carry very little weight: both the
+truth and the predicted tier are computed by `baseTier()`, which under the
+defect described in the standing limitation returns `cheap` for every task and
+every flag set. Read them as "no flag error changed a base tier *while the
+rubric was unreachable*", not as evidence that dispatcher flag errors are
+harmless. The flag-agreement percentages are unaffected.
 
 ## Reproduction
 

@@ -5,6 +5,40 @@ Controlled with/without A/B testing of the tiered-dispatch routing policy.
 31–96% cost reduction at equal-or-better quality across 3 of 4 model families
 measured.** Reproduce everything with the harness in `evals/`.
 
+## Standing limitation: these numbers measure the ladder, not the rubric
+
+`baseTier()` in `evals/src/policy.js` opens with
+`if (!task.flags.unverifiable) return 'cheap';`, and `unverifiable` is `false`
+on all 69 hand-labelled tasks in `evals/src/suites/`. That line returns for
+every task, so the rubric's flag count is never consulted and the `frontier`
+branch below it has never executed. Reachability analysis:
+`evals/LABEL-AUDIT.md`.
+
+Every number on this page was produced under that defect, which bounds what
+they can be read as evidence for:
+
+- **The cost and pass-rate tables measure escalation behaviour, not rubric
+  assignment.** Every unit started at `cheap` whatever its flags, so the cells
+  reflect the cheap-first ladder and the `formatStrict` cap — not a tier chosen
+  by the six-flag rubric. Finding #1's cheap-first conclusion is a statement
+  about the ladder and stands on that basis; any reading of these tables as
+  "the six-flag rubric produces these savings" does not.
+- **Finding #2's "100% of units to the correct tier" is weak evidence.**
+  `evals/src/flagtest.js` derives both the truth label and the predicted tier
+  from `baseTier()` (`flagtest.js:97–99`). Under the clamp both collapse to
+  `cheap` for every task and every flag set, so the 100% match is close to an
+  artifact of the defect rather than a measurement of how much a wrong flag
+  costs. The 90% flag-agreement figure in that finding is unaffected: it
+  compares flags directly and never calls `baseTier()`.
+- **Not affected:** the GSM8K, HumanEval and `mbpp` cells reported in
+  `testing/README.md`. Those tasks are minted by `evals/src/benchmarks.js` with
+  an all-false flag object and no `formatStrict`, so they carry zero rubric
+  flags and base at `cheap` either way, defect or no defect.
+
+A fix is open in a PR; nothing has been re-run. This page therefore makes no
+claim about which cells will move or in which direction — the tables below are
+what was measured, under the behaviour described here.
+
 ## Methodology (why this is reputable)
 
 The skill is a **routing policy**, not an agent. Public benchmarks score a
