@@ -43,6 +43,12 @@ jobs:
         run: node scripts/validate-dc-drift.js --check
       - name: Client list in sync across FAQ/llms.txt/README.md/AGENTS.md
         run: node scripts/validate-client-list.js --check
+      # Every companion page now has its own link-preview card. The failure
+      # mode is a new page landing with the copy-pasted default meta still
+      # in its <head>: a wrong-but-valid OG image looks fine in every check
+      # that isn't a human sharing that exact link.
+      - name: Per-page og:image/twitter:image point at their own card
+        run: node scripts/validate-og-images.js --check
       - name: models.md in sync with evals/src/config.js
         run: node scripts/sync-models-md.js --check
       # Colour contrast is the one design property nobody can eyeball, and

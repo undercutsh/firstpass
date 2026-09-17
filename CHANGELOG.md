@@ -50,6 +50,31 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ### Added
 
+- **A per-page Open Graph card for every companion page.** All 45 pages
+  under `site/` shared one `og-image.png`, so every link preview of the
+  site looked identical no matter which of the 34 agent guides was
+  shared. `scripts/build-og-images.py` now renders one 1200x630 card per
+  companion page into `site/og/<slug>.png`, driven entirely off
+  `site/clients.json` (the client's display name is `labels.llms`, the one
+  variant that matches every companion page's own `<title>`), and each
+  page's `og:image` / `twitter:image` points at its own card. Follows the
+  brand kit's per-page template: dark `#1c2027` ground, the tier-ladder
+  motif down the left 39%, a Fragment Mono eyebrow, "Undercut for
+  <client>" in Bricolage Grotesque 500 at -0.028em, and a mono footer.
+  Same `fc-list` font guard as `build-brand-rasters.py` — it warns loudly
+  rather than silently rendering a fallback sans. Cards are 10–15KB each
+  (401KB for all 34, against a 200KB-per-file budget), and they add
+  nothing to any rendered page's weight: an OG image is fetched only by a
+  crawler unfurling a link, never by a browser rendering the page. The
+  non-companion utility pages (`404`, `about`, `privacy`, `terms`,
+  `accessibility`, `status`, `setup`, `data`, `developers`, `brand`) and
+  the home page keep the shared default on purpose.
+  `scripts/validate-og-images.js --check` (new, in CI, unit-tested) holds
+  the invariant, because the failure mode is a new companion page landing
+  with the copy-pasted default meta still in its `<head>` — a
+  wrong-but-valid OG image looks fine in every check that isn't a human
+  sharing that exact link.
+
 - **`/data` — "What we can see" public page (PRD §5.1.5f).** New
   `site/data.html` + `site/data.md` (registered as a real markdown twin in
   `middleware.ts`, same pattern as `/` and `/setup`) states plainly what

@@ -51,6 +51,7 @@ node scripts/validate-jsonld.js --check       # <script type="application/ld+jso
 node scripts/generate-changelog-feed.js --check  # site/changelog.xml matches CHANGELOG.md
 node scripts/spellcheck.js                    # site copy (site/*.html) against scripts/wordlist.txt
 node scripts/sync-models-md.js --check        # skills/firstpass/models.md matches evals/src/config.js
+node scripts/validate-og-images.js --check    # every companion page's og:image points at its own card
 ```
 
 Four of these (`validate-sitemap.js`, `validate-jsonld.js`,
@@ -61,6 +62,23 @@ updating the generated file. `check-plugin-version.js` and `spellcheck.js`
 have no auto-fix mode; fix the flagged file by hand (bump `plugin.json`,
 or add a real word to `scripts/wordlist.txt` if the "typo" is a genuine
 addition to the vocabulary).
+
+### Link-preview images
+
+Every companion page listed in `site/clients.json` has its own 1200x630
+Open Graph card at `site/og/<slug>.png`; the non-companion utility pages
+(`404`, `about`, `privacy`, `terms`, `accessibility`, `status`, `setup`,
+`data`, `developers`, `brand`) and the home page share the default
+`site/og-image.png`. After adding a client to `site/clients.json`,
+regenerate the cards and point the new page's meta at its own:
+
+```sh
+python3 scripts/build-og-images.py   # needs cairosvg, pillow, and the two OFL brand faces
+```
+
+`validate-og-images.js` is pure node and reads the committed PNGs, so CI
+does not need python — but it will fail if you add a companion page and
+leave the copy-pasted default `og:image` in its `<head>`.
 
 Then, from `evals/`:
 
