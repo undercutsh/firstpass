@@ -6,6 +6,67 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ## [Unreleased]
 
+### Fixed
+
+- **Sitewide WCAG 2.2 AA colour-contrast defects: 3,267 failing text nodes
+  in 12 distinct colour pairs across 44 pages.** The palette lives as
+  literal hex repeated inline in 44 self-contained pages with no shared
+  stylesheet, which let one value serve two different grounds. The worst
+  cases: secondary text `#6e7278` measured 4.25:1 on the light ground
+  (`#f2f0ec`, 1,829 nodes) *and* 3.38:1 on the dark ground (`#1c2027`, 484
+  nodes) — failing in opposite directions, so no single value fixed both.
+  Also 3.15:1 inside code chips, 4.30:1 for the frontier tier label on
+  dark, and 3.19–3.33:1 for accent text and filled `.tag` chips on light.
+  Resolved with ground-specific variants: secondary text is `--mute
+  #61656c` on light and `--deep-mute #9a9ea4` on dark, and each tier accent
+  carries three values — a base for strokes, graph fills and 24px+ display
+  type (3:1 is all SC 1.4.11 asks there), an `-ink` variant for small text
+  and filled chips on light grounds, and a `-dim` variant for small text on
+  dark. Contrast being symmetric, one `-ink` value covers both a tier label
+  on paper and `--paper` text on a filled chip, at 4.51:1. Code chips now
+  pin their own `--ink` colour rather than inheriting, because no chip
+  ground light enough to clear AA stays visually distinct from paper.
+  `setup.html` and `replit.html` each needed a hand fix where one
+  declaration served both grounds.
+
+### Added
+
+- **`site/brand.html` — a public brand-assets page for press and
+  partners.** Name and naming rules, the approved tagline / descriptor /
+  one-sentence / boilerplate strings, both logo marks as SVG downloads with
+  clear-space and misuse rules, the palette including the light/dark text
+  variants, type rules, a photography note, and a permission paragraph
+  separating what the MIT licence covers (the code) from what it does not
+  (the name and the marks). Every copy string is quoted verbatim from the
+  shipped site so third-party coverage cannot drift from ours; cost and
+  pass-rate figures are deliberately not restated, and the page points at
+  the landing page and the benchmark methodology instead. Linked from the
+  footer of 43 of 45 pages (`brand.html` itself and `404.html` excepted),
+  in `sitemap.xml` and `llms.txt`, with WebPage + Organization JSON-LD.
+- **`scripts/validate-contrast.js` — a CI guard so the palette cannot
+  regress.** Two independent halves: a hand-written matrix of the 27
+  sanctioned foreground/ground pairs with the AA threshold that applies to
+  each (pure arithmetic over declared constants, so it cannot
+  false-positive), and a DOM sweep that walks each page maintaining a
+  `{color, background, font-size, font-weight}` stack and checks the
+  effective pair at every text node — which is what catches a nested case a
+  same-attribute grep cannot see. Conservative by design: a pair is judged
+  only when both sides were explicitly declared, and `aria-hidden`
+  subtrees are exempt. Runs on every pull request.
+- **`scripts/fix-contrast.js` — the committed codemod** that performed the
+  mechanical part of the migration, kept because a diff that size is
+  otherwise unauditable. It attributes each text node back to the
+  declaration that coloured it, resolves the ground from the DOM rather
+  than the string, and refuses rather than guesses when one declaration
+  serves both grounds.
+- **`scripts/*.test.js` now runs in CI.** The unit coverage for the repo's
+  own guards existed but was never executed, so it was dead code. 110 tests
+  pass, including `validate-contrast.test.js`, which feeds deliberately
+  broken palettes and markup and asserts the failure is produced.
+- **Brand raster set and generator** (`scripts/build-brand-rasters.py`) for
+  the GitHub org avatar and repository social previews, plus a
+  generator–verifier gap diagram in the README.
+
 ### Changed
 
 - **Pricing section (`site/index.html` §13) restructured: trial-primary,
