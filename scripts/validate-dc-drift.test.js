@@ -20,6 +20,11 @@ import {
   normalizeText,
   extractDcScript,
   extractFallbackBlock,
+  extractHeadBlock,
+  extractHelmetBlock,
+  parseMetaTags,
+  checkMetaDrift,
+  META_DRIFT_EXEMPT,
   checkCommentedXdcTag,
   fallbackDemoLogLines,
   mdDemoLogLines,
@@ -281,9 +286,123 @@ describe('FAQ subset drift', () => {
   });
 });
 
+describe('meta-block extraction', () => {
+  test('extractHeadBlock returns the real <head>, not the helmet copy', () => {
+    const html = '<html><head><meta name="a" content="1"></head><body><x-dc><helmet><meta name="b" content="2"></helmet></x-dc></body></html>';
+    assert.ok(extractHeadBlock(html).includes('name="a"'));
+    assert.ok(!extractHeadBlock(html).includes('name="b"'));
+    assert.ok(extractHelmetBlock(html).includes('name="b"'));
+    assert.ok(!extractHelmetBlock(html).includes('name="a"'));
+  });
+
+  test('throws with a clear message when either block is absent', () => {
+    assert.throws(() => extractHeadBlock('<html><body>no head</body></html>'), /could not find <head>/);
+    assert.throws(() => extractHelmetBlock('<html><head></head></html>'), /could not find <helmet>/);
+  });
+});
+
+describe('parseMetaTags', () => {
+  test('keys on name, property, http-equiv and charset', () => {
+    const metas = parseMetaTags(`
+      <meta charset="utf-8">
+      <meta name="Description" content="d">
+      <meta property="og:title" content="t">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    `);
+    assert.deepEqual(metas.get('charset'), ['utf-8']);
+    assert.deepEqual(metas.get('description'), ['d']); // key lowercased
+    assert.deepEqual(metas.get('og:title'), ['t']);
+    assert.deepEqual(metas.get('http-equiv:x-ua-compatible'), ['IE=edge']);
+  });
+
+  test('handles single quotes, unquoted values and entity-encoded content', () => {
+    const metas = parseMetaTags(`<meta name='twitter:card' content=summary><meta name="x" content="a &amp; b">`);
+    assert.deepEqual(metas.get('twitter:card'), ['summary']);
+    assert.deepEqual(metas.get('x'), ['a & b']);
+  });
+
+  test('keeps repeated keys as a multiset and ignores meta with nothing identifying', () => {
+    const metas = parseMetaTags(`<meta property="og:image" content="b"><meta property="og:image" content="a"><meta content="orphan">`);
+    assert.deepEqual(metas.get('og:image'), ['b', 'a']);
+    assert.equal(metas.size, 1);
+  });
+});
+
+describe('checkMetaDrift', () => {
+  const head = (s) => parseMetaTags(s);
+
+  test('zero errors when the two blocks carry the same tags (order and spacing aside)', () => {
+    const a = head(`<meta name="description" content="d">\n<meta property="og:title" content="t">`);
+    const b = head(`<meta property="og:title"  content="t"><meta name="description" content="d">`);
+    assert.deepEqual(checkMetaDrift(a, b).errors, []);
+    assert.equal(checkMetaDrift(a, b).compared, 2);
+  });
+
+  test('catches the real-world case: a tag in <head> that the helmet copy lost', () => {
+    // This is verbatim the drift that shipped: site/index.html's real head
+    // carries twitter:creator and the <x-dc><helmet> copy does not.
+    const a = head(`<meta name="twitter:card" content="summary_large_image"><meta name="twitter:creator" content="@jcwinter">`);
+    const b = head(`<meta name="twitter:card" content="summary_large_image">`);
+    const { errors } = checkMetaDrift(a, b);
+    assert.equal(errors.length, 1);
+    assert.match(errors[0], /twitter:creator/);
+    assert.match(errors[0], /missing from the <x-dc><helmet> copy/);
+  });
+
+  test('catches a helmet-only tag too (invisible to crawlers and JS-less visitors)', () => {
+    const { errors } = checkMetaDrift(head(''), head(`<meta name="keywords" content="k">`));
+    assert.equal(errors.length, 1);
+    assert.match(errors[0], /missing from site\/index\.html's real <head>/);
+  });
+
+  test('catches a content value that differs between the blocks', () => {
+    const { errors } = checkMetaDrift(
+      head(`<meta property="og:description" content="old copy">`),
+      head(`<meta property="og:description" content="new copy">`)
+    );
+    assert.equal(errors.length, 1);
+    assert.match(errors[0], /content differs/);
+    assert.match(errors[0], /old copy/);
+    assert.match(errors[0], /new copy/);
+  });
+
+  test('catches a dropped duplicate (two og:image in head, one in the helmet)', () => {
+    const { errors } = checkMetaDrift(
+      head(`<meta property="og:image" content="a"><meta property="og:image" content="b">`),
+      head(`<meta property="og:image" content="a">`)
+    );
+    assert.equal(errors.length, 1);
+    assert.match(errors[0], /content differs/);
+  });
+
+  test('does NOT fire on any exempt key, in either direction', () => {
+    for (const key of Object.keys(META_DRIFT_EXEMPT)) {
+      const tag = key === 'charset' ? `<meta charset="utf-8">` : `<meta name="${key}" content="v">`;
+      assert.deepEqual(checkMetaDrift(head(tag), head('')).errors, [], `${key} fired as head-only drift`);
+      assert.deepEqual(checkMetaDrift(head(''), head(tag)).errors, [], `${key} fired as helmet-only drift`);
+      const other = key === 'charset' ? `<meta charset="latin1">` : `<meta name="${key}" content="different">`;
+      assert.deepEqual(checkMetaDrift(head(tag), head(other)).errors, [], `${key} fired as a value difference`);
+    }
+  });
+
+  test('every exemption carries a written reason (the list is the guard’s only hole)', () => {
+    for (const [key, reason] of Object.entries(META_DRIFT_EXEMPT)) {
+      assert.equal(typeof reason, 'string');
+      assert.ok(reason.length > 20, `exemption "${key}" needs a real reason, got "${reason}"`);
+    }
+  });
+
+  test('exempt keys are not counted as compared, so coverage cannot be inflated', () => {
+    const { compared } = checkMetaDrift(head(`<meta charset="utf-8"><meta name="description" content="d">`), head(`<meta name="description" content="d">`));
+    assert.equal(compared, 1);
+  });
+});
+
 describe('checkAll (integration)', () => {
-  function buildHtml({ ladderRows, installClients, pricingGrid, faqs, demoLine, installLi, faqBlock }) {
+  function buildHtml({ ladderRows, installClients, pricingGrid, faqs, demoLine, installLi, faqBlock, headMeta = '', helmetMeta = '' }) {
     return `
+      <head>${headMeta}</head>
+      <x-dc><helmet>${helmetMeta}</helmet></x-dc>
       <div id="dc-fallback">
         <h3>Example run</h3><ul>${demoLine}</ul>
         <h3>Install for your agent</h3><ul>${installLi}</ul>
@@ -308,16 +427,36 @@ describe('checkAll (integration)', () => {
   const pricingMd = `## Free\n- **Includes:** community support\n\n## Teams\n- **Includes:** email support\n\n## Enterprise\n- **Includes:** dedicated support\n`;
   const md = `## Example run\n- code:refactor-1 --novel ✓ tiered\n\n## Next\nunrelated\n\n### Install for your agent\n| Agent | Command | Note |\n| --- | --- | --- |\n| Claude Code | \`npx skills add undercutsh/firstpass\` | reads skill from .claude/skills |\n\n## Next2\n`;
 
+  const cleanMeta = '<meta name="description" content="d"><meta property="og:title" content="t">';
+
   test('zero errors when every substitute matches the x-dc content', () => {
     const html = buildHtml({
       ladderRows, installClients, pricingGrid, faqs,
       demoLine: '<li>code:refactor-1 --novel ✓ tiered</li>',
       installLi: `<li><strong>Claude Code</strong> — <code>npx skills add undercutsh/firstpass</code></li>`,
       faqBlock: '<p>Does this cost money?</p><p>No, it is free.</p>',
+      // Exempt tags present in only the head, to prove a clean run stays
+      // clean when the two blocks legitimately differ.
+      headMeta: `<meta charset="utf-8"><meta name="theme-color" content="#13161b">${cleanMeta}`,
+      helmetMeta: cleanMeta,
     });
     const { errors, counts } = checkAll({ html, md, pricingMd });
     assert.deepEqual(errors, []);
-    assert.deepEqual(counts, { ladderRows: 1, installClients: 1, faqPairs: 1 });
+    assert.deepEqual(counts, { ladderRows: 1, installClients: 1, faqPairs: 1, metaKeys: 2 });
+  });
+
+  test('a meta tag the helmet copy is missing is caught, and only reported as meta drift', () => {
+    const html = buildHtml({
+      ladderRows, installClients, pricingGrid, faqs,
+      demoLine: '<li>code:refactor-1 --novel ✓ tiered</li>',
+      installLi: `<li><strong>Claude Code</strong> — <code>npx skills add undercutsh/firstpass</code></li>`,
+      faqBlock: '<p>Does this cost money?</p><p>No, it is free.</p>',
+      headMeta: `${cleanMeta}<meta name="twitter:creator" content="@jcwinter">`,
+      helmetMeta: cleanMeta,
+    });
+    const { errors } = checkAll({ html, md, pricingMd });
+    assert.equal(errors.length, 1);
+    assert.match(errors[0], /^meta drift: "twitter:creator"/);
   });
 
   test('a single drifted substitute (demo log result changed) is caught without disturbing the others', () => {
@@ -326,6 +465,8 @@ describe('checkAll (integration)', () => {
       demoLine: '<li>code:refactor-1 --novel ✓ apex</li>', // drifted: apex instead of tiered
       installLi: `<li><strong>Claude Code</strong> — <code>npx skills add undercutsh/firstpass</code></li>`,
       faqBlock: '<p>Does this cost money?</p><p>No, it is free.</p>',
+      headMeta: cleanMeta,
+      helmetMeta: cleanMeta,
     });
     const { errors } = checkAll({ html, md, pricingMd });
     assert.ok(errors.length > 0);
