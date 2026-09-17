@@ -2,7 +2,8 @@
 //
 // Versioned so the harness can A/B the CURRENT policy against the original
 // v1 (pre-formatStrict) — the cross-vendor "does the principle carry over?"
-// test. Pure logic: rubric → base tier, cheap-to-verify override, escalation
+// test. Pure logic: rubric → base tier (cheap-to-verify is one rubric flag,
+// not an override — see baseTier), escalation
 // triggers (verify fail x2, disagreement, uncertainty flag), hysteresis
 // (max 1 retry per tier, never de-escalate), residue-only payload schema,
 // single batched apex tie-break. No I/O — the runner injects `attempt()`.
@@ -18,8 +19,8 @@ export function countFlags(task) {
 /**
  * Build a policy engine for a given version.
  *
- * v1      — original rubric. No formatStrict concept: any mechanically
- *           verifiable task starts cheap, ladder caps at frontier.
+ * v1      — original rubric. No formatStrict concept: formatStrict is just
+ *           another counted flag and the ladder caps at frontier.
  * latest  — round 2-3 findings: formatStrict tasks start at standard (cheap
  *           death-spirals on strict schema output) and CAP at standard
  *           (frontier is *worse* than standard on format-constrained work:
@@ -30,6 +31,18 @@ export function countFlags(task) {
  *           tasks START cheap (let the cheap tier prove itself) but CAP at
  *           standard (never spend frontier on format work). Adaptive: cheap
  *           passes → cheapest; cheap fails → standard, then batched apex.
+ *
+ * CONSEQUENCE of correcting the cheap-to-verify semantics (see baseTier):
+ * because FORMAT-STRICT is itself one of the six rubric flags, any
+ * formatStrict unit now scores >= 1 flag and so bases at 'standard' (or
+ * higher, clamped to its cap) on its own. `probe`'s "formatStrict starts
+ * cheap" reversal therefore no longer has any reachable input that
+ * distinguishes it from `latest`: over the 69 hand-labelled suite tasks the
+ * two arms now produce IDENTICAL base tiers and identical caps. The
+ * `latest`-only guard below is kept because it is `latest`'s definition, but
+ * it is currently subsumed by the rubric. Restoring a real probe/latest
+ * contrast would mean changing what FORMAT-STRICT contributes to the count —
+ * a separate, unmade decision.
  */
 export function createPolicy(version = 'latest') {
   const isV1 = version === 'v1';
@@ -41,19 +54,50 @@ export function createPolicy(version = 'latest') {
       : TIER_ORDER[TIER_ORDER.length - 2];
 
   const baseTier = (task) => {
-    // latest only: formatStrict ⇒ standard base (hardcoded rule that proved
-    // vendor-specific and was REJECTED in round 5 — probe restores cheap-first).
+    // GUARD ORDER, part 1 — `latest` only: formatStrict ⇒ standard base. This
+    // stays FIRST because it is `latest`'s defining rule (a hardcoded
+    // "format work starts at standard" that round 5 found vendor-specific and
+    // probe reverses). It also has to precede the rubric so `latest` can never
+    // emit a base tier above its own formatStrict cap of 'standard'.
     if (!isV1 && !isProbe && task.flags.formatStrict) return 'standard';
 
-    // Override: cheap-to-verify ⇒ cheap-to-generate. If output is
-    // mechanically verifiable AND free-form (exec or exact-match), assign the
-    // LOWEST tier regardless of apparent difficulty.
-    if (!task.flags.unverifiable) return 'cheap';
-
+    // GUARD ORDER, part 2 — the rubric (SKILL.md Step 1), which now actually
+    // runs. It used to be preceded by
+    //     if (!task.flags.unverifiable) return 'cheap';
+    // an unconditional clamp reading "if this unit's output is mechanically
+    // checkable, start at the lowest tier no matter what else is flagged."
+    // Because every task in every suite is mechanically graded by
+    // construction (`unverifiable` is false on all 69 hand-labelled tasks,
+    // and false is also makeTask()'s default), that clamp returned before the
+    // flag count was ever consulted: 69/69 tasks based at 'cheap' under v1
+    // and probe, and the 'frontier' arm below had never once executed.
+    //
+    // CORRECTED SEMANTICS: "cheap-to-verify ⇒ cheap-to-generate" is a reason
+    // to *try cheap first*, not a veto over the rubric. UNVERIFIABLE is one of
+    // the six rubric flags, so mechanical verifiability already lowers a
+    // unit's flag count by one — that is where it belongs, and it is why a
+    // verifiable unit with nothing else flagged still lands at 'cheap' below.
+    // The cheap-first bias is then carried by the ladder itself: a unit starts
+    // at this tier and only moves up when verification actually fails
+    // (runUnitLadder, never de-escalating). BLAST / 3+ flags are ownership and
+    // judgment calls; being checkable afterwards does not make them cheap to
+    // get right, so they are no longer clamped down to 'cheap'.
     const flags = countFlags(task);
-    if (flags >= 3 || task.flags.blast) return 'frontier'; // ownership/judgment
-    if (flags >= 1) return 'standard';
-    return 'cheap';
+    const rubricTier =
+      flags >= 3 || task.flags.blast
+        ? 'frontier' // ownership/judgment
+        : flags >= 1
+        ? 'standard'
+        : 'cheap';
+
+    // INVARIANT: base tier <= ladder cap. Without this clamp a formatStrict +
+    // BLAST unit under v1-less versions bases at 'frontier' while capTier() is
+    // 'standard'; runUnitLadder then never reaches `tier === cap`, escalates
+    // past 'frontier' to 'apex', and spins there forever (escalate() saturates
+    // at the last tier while the cap check never matches). Verified: such a
+    // unit made 200+ attempts without terminating before this clamp existed.
+    const cap = capTier(task);
+    return TIER_ORDER[Math.min(TIER_ORDER.indexOf(rubricTier), TIER_ORDER.indexOf(cap))];
   };
 
   /** Step 2 — the single escalation trigger: one tier up, never down. */
