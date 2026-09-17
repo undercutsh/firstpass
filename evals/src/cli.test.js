@@ -92,7 +92,7 @@ describe('--selfactivation-report', () => {
       runCli(['--selfactivation-init', file, '--selfactivation-n', '1']);
       const { status, stdout } = runCli(['--selfactivation-report', file]);
       assert.equal(status, 0);
-      assert.match(stdout, /No completed trials yet/);
+      assert.match(stdout, /No scorable completed trials yet/);
     } finally {
       rmSync(dir, { recursive: true, force: true });
     }
@@ -106,7 +106,14 @@ describe('--selfactivation-report', () => {
       const data = JSON.parse(readFileSync(file, 'utf8'));
       // Fill in every trial: condition A never activates, B always does —
       // mirrors the documented worst-case scenario in selfactivation.test.js.
-      for (const t of data.trials) t.activated = t.condition === 'B';
+      // host + installShape are required to score: an unlabeled trial is
+      // excluded from every rate, since a rate whose install shape is unknown
+      // is not a rate (hooks/ force-injects the rubric).
+      for (const t of data.trials) {
+        t.activated = t.condition === 'B';
+        t.host = 'claude-code';
+        t.installShape = 'skill-only';
+      }
       writeFileSync(file, JSON.stringify(data, null, 2));
 
       const { status, stdout } = runCli(['--selfactivation-report', file]);

@@ -26,6 +26,40 @@
 //      (summarizeSelfActivation), reusing the same statistic main.js already
 //      uses for pass rates.
 //
+// TWO REPORTING HAZARDS THIS MODULE IS BUILT TO MAKE IMPOSSIBLE, NOT MERELY
+// DISCOURAGED:
+//
+//   (a) INSTALL SHAPE. This repo ships two install shapes, and one of them
+//       has a self-activation rate of ~100% *by construction*:
+//       hooks/session-start.js force-injects a condensed rubric via
+//       SessionStart `additionalContext`, so the rubric is in context whether
+//       or not the host's matcher ever looked at SKILL.md. (hooks/README.md
+//       is clear that hooks are opt-in and not part of the shipped skill —
+//       that answers the product question, but it does nothing about the
+//       reporting hazard: a percentage published without saying which shape
+//       produced it would flatter us.) So every trial carries `installShape`
+//       (INSTALL_SHAPES), and summarizeSelfActivation partitions on it. There
+//       is no field anywhere in its output that blends shapes, because a
+//       blended field cannot be misread if it does not exist.
+//
+//   (b) DENOMINATOR. The rate is only defined for hosts that *discover*
+//       skills by matching SKILL.md's `description:` (HOST_KINDS
+//       'skill-discovering'). For instruction-file hosts — GitHub Copilot,
+//       Gemini CLI, the generic root-AGENTS.md path — the documented install
+//       appends the policy to a file the host loads unconditionally. There is
+//       no matcher, so there is no decision to observe: the "rate" is neither
+//       0% nor 100%, it is undefined. Those hosts are reported as
+//       notApplicable, never scored, and never folded into anyone else's
+//       denominator. The denominator is *skill-discovering hosts, per host* —
+//       a single blended cross-client percentage would be a fabrication
+//       dressed as a mean, so no code path here can emit one.
+//
+// Consequence of (a)+(b): summarizeSelfActivation returns a LIST OF STRATA,
+// one per (host × installShape), and no cross-stratum aggregate. Trials
+// missing either label are `unlabeled` and — exactly like `activated: null`
+// — excluded from every numerator and every denominator. Nothing in this
+// file ever supplies a default host, install shape, or activation outcome.
+//
 // See evals/self-activation/README.md for the full protocol.
 
 import { wilsonInterval } from './stats.js';
@@ -52,6 +86,97 @@ export const TRIGGER_PHRASES = [
 // reasonable user would actually type," not a magic incantation.
 export const EXPLICIT_INSTRUCTION =
   'Use your routing skill (the tiered-dispatch / firstpass skill) to handle this.';
+
+// ---------------------------------------------------------------------------
+// Install shape — the environment property that decides whether the question
+// is even being asked. Declared as a closed map (same instinct as
+// TRIGGER_PHRASES: one authoritative list, validated against, never inferred).
+// ---------------------------------------------------------------------------
+
+/**
+ * @typedef {'skill-only'|'skill-plus-hook'} InstallShape
+ */
+
+export const INSTALL_SHAPES = Object.freeze({
+  'skill-only': Object.freeze({
+    label: 'skill only (as shipped)',
+    // The shape the headline number is about: SKILL.md present via the host's
+    // normal install path, nothing registered that puts the rubric in context
+    // on its own. Activation here is a real matcher decision.
+    detail:
+      "skills/firstpass/SKILL.md installed via the host's normal path; no SessionStart hook registered, nothing force-injected. Activation is the host matcher's own decision.",
+    forcedInjection: false,
+  }),
+  'skill-plus-hook': Object.freeze({
+    label: 'skill + hooks/ installed',
+    // hooks/session-start.js writes RUBRIC_CONTEXT into every session via
+    // hookSpecificOutput.additionalContext. The rubric is therefore in
+    // context unconditionally, so a "self-activation rate" measured in this
+    // shape is ~100% by construction and measures the hook, not the matcher.
+    detail:
+      'hooks/ registered in settings.json, so hooks/session-start.js force-injects the condensed rubric via SessionStart additionalContext. The rubric is in context unconditionally; any rate measured here is a property of the hook, not of the description-matcher.',
+    forcedInjection: true,
+  }),
+});
+
+/** @returns {InstallShape[]} */
+export function installShapeIds() {
+  return Object.keys(INSTALL_SHAPES);
+}
+
+// ---------------------------------------------------------------------------
+// Hosts and host kinds — the denominator.
+// ---------------------------------------------------------------------------
+
+export const HOST_KINDS = Object.freeze({
+  'skill-discovering': Object.freeze({
+    label: 'skill-discovering',
+    scorable: true,
+    why: "host reads SKILL.md's description: frontmatter and decides, per session, whether to load the skill — there is an actual decision to observe.",
+  }),
+  'instruction-file': Object.freeze({
+    label: 'instruction-file',
+    scorable: false,
+    why: 'documented install appends the policy to an instruction file the host loads unconditionally (copilot-instructions.md / GEMINI.md / root AGENTS.md). There is no matcher and no per-session decision, so a self-activation rate is undefined here — not 0%, not 100%, undefined.',
+  }),
+});
+
+/**
+ * Every host in site/index.html's INSTALL_CLIENTS, classified by whether a
+ * self-activation rate is defined for it at all. Keep the ids in sync with
+ * that list (and with README.md/AGENTS.md's client table, which
+ * scripts/validate-client-list.js guards) — an id missing here is rejected
+ * rather than silently scored.
+ * @type {Readonly<Record<string, {label: string, kind: keyof typeof HOST_KINDS, note: string}>>}
+ */
+export const HOSTS = Object.freeze({
+  'claude-code': { label: 'Claude Code', kind: 'skill-discovering', note: 'plugin/marketplace or .claude/skills/' },
+  codex: { label: 'Codex CLI', kind: 'skill-discovering', note: '.agents/skills/' },
+  cursor: { label: 'Cursor', kind: 'skill-discovering', note: '.cursor/skills/' },
+  opencode: { label: 'OpenCode', kind: 'skill-discovering', note: '.opencode/skills/' },
+  junie: { label: 'JetBrains Junie', kind: 'skill-discovering', note: '.junie/skills/' },
+  amp: { label: 'Amp', kind: 'skill-discovering', note: '.agents/skills/' },
+  devin: { label: 'Devin', kind: 'skill-discovering', note: '.devin/skills/' },
+  copilot: { label: 'GitHub Copilot', kind: 'instruction-file', note: 'appends to .github/copilot-instructions.md' },
+  gemini: { label: 'Gemini CLI', kind: 'instruction-file', note: 'appends to .gemini/GEMINI.md' },
+  windsurf: { label: 'Windsurf / generic AGENTS.md', kind: 'instruction-file', note: 'appends to root AGENTS.md' },
+});
+
+/** Host ids for which a self-activation rate is defined at all. */
+export function scorableHostIds() {
+  return Object.keys(HOSTS).filter((id) => HOST_KINDS[HOSTS[id].kind].scorable);
+}
+
+/** @returns {keyof typeof HOST_KINDS} throws on an unknown host id. */
+export function hostKindOf(hostId) {
+  const host = HOSTS[hostId];
+  if (!host) {
+    throw new Error(
+      `unknown host "${hostId}" — must be one of: ${Object.keys(HOSTS).join(', ')} (see HOSTS in evals/src/selfactivation.js)`
+    );
+  }
+  return host.kind;
+}
 
 /**
  * @typedef {Object} SelfActivationTask
@@ -165,13 +290,48 @@ export function buildPrompt(task, condition) {
 }
 
 /**
- * Build an empty results scaffold: every task × condition × trial slot,
- * `activated: null` (pending — never a guessed true/false). A human or
- * live-agent operator fills these in per evals/self-activation/README.md,
- * then feeds the file to summarizeSelfActivation / printSelfActivationReport.
+ * @typedef {Object} SelfActivationTrial
+ * @property {string} taskId
+ * @property {'trigger'|'control'} category
+ * @property {'A'|'B'} condition
+ * @property {number} trial
+ * @property {string} prompt
+ * @property {string|null} host  a HOSTS id. Required to score; `null` means
+ *   unlabeled, which is excluded from every rate (see summarizeSelfActivation).
+ * @property {InstallShape|null} installShape  an INSTALL_SHAPES id. Required
+ *   to score; `null` is unlabeled and likewise excluded. A rate whose install
+ *   shape is unknown is not a rate — hooks/session-start.js force-injects the
+ *   rubric, so 'skill-plus-hook' is ~100% by construction.
+ * @property {boolean|null} activated  true/false only from an observed
+ *   transcript; `null` = pending. Never defaulted.
+ * @property {string} evidence
  */
-export function scaffoldResults({ n = 10, agent = null } = {}) {
+
+/**
+ * Build an empty results scaffold: every task × condition × trial slot,
+ * `activated: null` (pending — never a guessed true/false). `host` and
+ * `installShape` are stamped on every trial when supplied and validated
+ * against HOSTS / INSTALL_SHAPES; left out, they are stamped `null`, which is
+ * unscorable in exactly the way `activated: null` is — an unlabeled trial can
+ * never end up inside a number. A human or live-agent operator fills these in
+ * per evals/self-activation/README.md, then feeds the file to
+ * summarizeSelfActivation / printSelfActivationReport.
+ */
+export function scaffoldResults({ n = 10, host = null, installShape = null } = {}) {
   if (!Number.isInteger(n) || n < 1) throw new Error(`scaffoldResults: n must be a positive integer, got ${n}`);
+  if (host !== null) {
+    const kind = hostKindOf(host); // throws on an unknown id
+    if (!HOST_KINDS[kind].scorable) {
+      throw new Error(
+        `scaffoldResults: host "${host}" is an ${kind} host — ${HOST_KINDS[kind].why} Scaffolding a results file for it would invite a number that cannot exist. Scorable hosts: ${scorableHostIds().join(', ')}.`
+      );
+    }
+  }
+  if (installShape !== null && !Object.hasOwn(INSTALL_SHAPES, installShape)) {
+    throw new Error(
+      `scaffoldResults: unknown installShape "${installShape}" — must be one of: ${installShapeIds().join(', ')}`
+    );
+  }
   const trials = [];
   for (const task of TASKS) {
     for (const condition of ['A', 'B']) {
@@ -182,6 +342,8 @@ export function scaffoldResults({ n = 10, agent = null } = {}) {
           condition,
           trial,
           prompt: buildPrompt(task, condition),
+          host, // a HOSTS id; null = unlabeled = excluded from every rate
+          installShape, // an INSTALL_SHAPES id; null = unlabeled = excluded
           activated: null, // fill with true/false after running it for real
           evidence: '', // e.g. "Skill tool invoked: firstpass" or "no skill invocation in transcript"
         });
@@ -192,11 +354,13 @@ export function scaffoldResults({ n = 10, agent = null } = {}) {
     meta: {
       skill: SKILL_ID,
       n,
-      agent,
+      host,
+      hostKind: host === null ? null : hostKindOf(host),
+      installShape,
       tasks: TASKS.length,
       generated: new Date().toISOString(),
       note:
-        'Scaffold only — every trial starts pending (activated: null). Run each prompt in a FRESH live agent session per evals/self-activation/README.md, then set activated to true/false and fill evidence before reporting.',
+        'Scaffold only — every trial starts pending (activated: null). Run each prompt in a FRESH live agent session per evals/self-activation/README.md, then set activated to true/false and fill evidence before reporting. Every trial must also carry the host it ran on and the install shape it ran under (skill-only vs skill-plus-hook); trials missing either are excluded from all rates, because a rate whose install shape is unknown is not a rate.',
     },
     trials,
   };
@@ -213,6 +377,19 @@ export function validateResults(data) {
     if (t.activated !== null && typeof t.activated !== 'boolean') {
       throw new Error(`results: trial ${i} (${t.taskId}/${t.condition}) activated must be true, false, or null (pending) — got ${JSON.stringify(t.activated)}`);
     }
+    // host / installShape: absent-or-null is allowed (unlabeled, and
+    // therefore unscorable), but a *present* value has to be a real id. A
+    // typo'd host would otherwise become its own silent stratum.
+    if (t.host !== undefined && t.host !== null && !Object.hasOwn(HOSTS, t.host)) {
+      throw new Error(
+        `results: trial ${i} (${t.taskId}/${t.condition}) has unknown host ${JSON.stringify(t.host)} — must be null or one of: ${Object.keys(HOSTS).join(', ')}`
+      );
+    }
+    if (t.installShape !== undefined && t.installShape !== null && !Object.hasOwn(INSTALL_SHAPES, t.installShape)) {
+      throw new Error(
+        `results: trial ${i} (${t.taskId}/${t.condition}) has unknown installShape ${JSON.stringify(t.installShape)} — must be null or one of: ${installShapeIds().join(', ')}`
+      );
+    }
   }
   return true;
 }
@@ -222,17 +399,8 @@ function wilsonOf(rows) {
   return { ...wilsonInterval(yes, rows.length, { confidence: 0.95 }), yes, total: rows.length };
 }
 
-/**
- * Compute self-activation rates (Wilson 95% CI) from a filled results file's
- * `trials` array. Trials with `activated === null` (still pending) are
- * excluded from every rate and counted in `pending` instead — a partially
- * run set never silently gets scored as 0% on the unrun slots.
- */
-export function summarizeSelfActivation(trials) {
-  const pending = trials.filter((t) => t.activated === null);
-  const run = trials.filter((t) => t.activated !== null);
-
-  const byCondition = { A: run.filter((t) => t.condition === 'A'), B: run.filter((t) => t.condition === 'B') };
+/** Rates for one (host × installShape) stratum. Never spans two of either. */
+function summarizeStratum(run) {
   const byCategory = {};
   for (const category of ['trigger', 'control']) {
     byCategory[category] = {
@@ -250,20 +418,119 @@ export function summarizeSelfActivation(trials) {
       B: wilsonOf(taskRows.filter((t) => t.condition === 'B')),
     };
   }
-
   return {
     n: run.length,
-    pending: pending.length,
-    overall: { A: wilsonOf(byCondition.A), B: wilsonOf(byCondition.B) },
+    // Per-stratum only. Deliberately NOT named the same as a cross-stratum
+    // total, because there is no cross-stratum total in this object.
+    overall: {
+      A: wilsonOf(run.filter((t) => t.condition === 'A')),
+      B: wilsonOf(run.filter((t) => t.condition === 'B')),
+    },
     byCategory,
     byTask,
+  };
+}
+
+/**
+ * Compute self-activation rates (Wilson 95% CI) from a filled results file's
+ * `trials` array, **partitioned by (host × installShape)**.
+ *
+ * Exclusions, all of which keep a trial out of BOTH the numerator and the
+ * denominator rather than scoring it as a miss:
+ *   - `activated === null` — pending, not yet observed → `pending`.
+ *   - `host` or `installShape` missing/null — unlabeled → `unlabeled`. A
+ *     rate whose install shape is unknown is not a rate: 'skill-plus-hook'
+ *     force-injects the rubric and is ~100% by construction.
+ *   - host is an instruction-file host → `notApplicable`. Its install path
+ *     appends to a file the host loads unconditionally; there is no matcher,
+ *     so the rate is undefined, not zero.
+ *
+ * The return value has NO cross-host and NO cross-shape aggregate. That
+ * absence is the point: the headline figure is condition A's rate for the
+ * 'skill-only' shape **of one named host**, and a blended cross-client
+ * percentage cannot be read off this object because it is not in it.
+ */
+export function summarizeSelfActivation(trials) {
+  const labeled = (t) =>
+    t.host !== null && t.host !== undefined && t.installShape !== null && t.installShape !== undefined;
+
+  const pending = trials.filter((t) => t.activated === null);
+  const observed = trials.filter((t) => t.activated !== null);
+
+  const unlabeled = observed.filter((t) => !labeled(t));
+  const withLabels = observed.filter(labeled);
+
+  // Instruction-file hosts are counted, named and explained — never scored.
+  const notApplicable = [];
+  const scorable = [];
+  for (const t of withLabels) {
+    if (Object.hasOwn(HOSTS, t.host) && HOST_KINDS[HOSTS[t.host].kind].scorable) scorable.push(t);
+    else notApplicable.push(t);
+  }
+  const naByHost = {};
+  for (const t of notApplicable) {
+    const entry = (naByHost[t.host] ??= {
+      host: t.host,
+      hostKind: Object.hasOwn(HOSTS, t.host) ? HOSTS[t.host].kind : 'unknown',
+      trials: 0,
+    });
+    entry.trials++;
+  }
+
+  const groups = new Map();
+  for (const t of scorable) {
+    // Ids are validated against closed sets, so a JSON key pair is an
+    // unambiguous grouping key (no separator a host id could contain).
+    const key = JSON.stringify([t.host, t.installShape]);
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(t);
+  }
+
+  const strata = [...groups.entries()]
+    .map(([key, rows]) => {
+      const [host, installShape] = JSON.parse(key);
+      return {
+        host,
+        hostLabel: HOSTS[host].label,
+        hostKind: HOSTS[host].kind,
+        installShape,
+        installShapeLabel: INSTALL_SHAPES[installShape].label,
+        forcedInjection: INSTALL_SHAPES[installShape].forcedInjection,
+        ...summarizeStratum(rows),
+      };
+    })
+    .sort((a, b) => a.host.localeCompare(b.host) || a.installShape.localeCompare(b.installShape));
+
+  return {
+    // Counts of trials, for provenance. Deliberately not rates: `scored` is
+    // how many observations went into the strata, not a pooled numerator.
+    scored: scorable.length,
+    pending: pending.length,
+    unlabeled: unlabeled.length,
+    notApplicable: Object.values(naByHost),
+    strata,
   };
 }
 
 /** Print the protocol: every prompt an operator needs to paste into a fresh live session, per condition. */
 export function printSelfActivationTasks() {
   console.log('\nSELF-ACTIVATION PROTOCOL — see evals/self-activation/README.md for the full methodology.\n');
-  console.log(`Precondition: ${SKILL_ID} is installed exactly as shipped (description-matched SKILL.md, no SessionStart hook, no forced injection) in the agent under test.\n`);
+  console.log(
+    `Preconditions: run each trial on a named skill-discovering host (${scorableHostIds().join(', ')}), and record which install shape it ran under:`
+  );
+  for (const id of installShapeIds()) {
+    console.log(`  ${id.padEnd(16)} ${INSTALL_SHAPES[id].detail}`);
+  }
+  console.log(
+    `\nBoth shapes are real: hooks/ is opt-in and not part of the shipped skill, but this repo does ship hooks/session-start.js, which force-injects the rubric. A rate recorded without its install shape is unusable, so the report excludes any trial that lacks one.`
+  );
+  console.log(
+    `Not measurable at all (instruction-file hosts — install appends to a file the host loads unconditionally, so there is no matcher decision to observe): ${Object.keys(
+      HOSTS
+    )
+      .filter((id) => !HOST_KINDS[HOSTS[id].kind].scorable)
+      .join(', ')}\n`
+  );
   console.log(`Trigger phrases (from SKILL.md's description:): ${TRIGGER_PHRASES.join(', ')}\n`);
   for (const task of TASKS) {
     console.log(`── ${task.id} [${task.category}]${task.phrasesUsed.length ? ` (uses: ${task.phrasesUsed.join(', ')})` : ''} ──`);
@@ -271,39 +538,74 @@ export function printSelfActivationTasks() {
     console.log(`  B (explicit mention): ${buildPrompt(task, 'B')}`);
     console.log('');
   }
-  console.log('Run each prompt in a FRESH session (no prior context) for N trials per condition, record activation yes/no with evidence, then run --selfactivation-report on the filled file.');
+  console.log('Run each prompt in a FRESH session (no prior context) for N trials per condition, record activation yes/no with evidence plus the host and install shape it ran under, then run --selfactivation-report on the filled file.');
 }
 
 function fmtPct(w) {
+  // An empty cell prints as "no trials", never as "0%". A zero denominator is
+  // an absence of measurement, and rendering it as a percentage is the same
+  // class of mistake as blending strata: a number where there is no number.
+  if (w.total === 0) return 'no trials (0/0)';
   return `${(w.point * 100).toFixed(0)}% (${w.yes}/${w.total}, 95% CI ${(w.lower * 100).toFixed(0)}–${(w.upper * 100).toFixed(0)}%)`;
 }
 
-/** Print a human-readable self-activation report from summarizeSelfActivation()'s output. */
+/**
+ * Print a human-readable self-activation report from
+ * summarizeSelfActivation()'s output: one block per (host × install shape),
+ * and no pooled figure anywhere — there is nothing in the summary to pool.
+ */
 export function printSelfActivationReport(summary) {
   console.log('\nSELF-ACTIVATION REPORT');
   console.log('='.repeat(72));
   if (summary.pending > 0) {
     console.log(`⚠ ${summary.pending} trial(s) still pending (activated: null) — excluded from the rates below.`);
   }
-  if (summary.n === 0) {
-    console.log('No completed trials yet. This is a scaffold, not a result — see evals/self-activation/README.md.');
+  if (summary.unlabeled > 0) {
+    console.log(
+      `⚠ ${summary.unlabeled} observed trial(s) missing a host and/or installShape — excluded from every rate. ` +
+        `A rate whose install shape is unknown is not a rate: '${INSTALL_SHAPES['skill-plus-hook'].label}' force-injects the rubric and is ~100% by construction. ` +
+        `Label them (host: one of ${scorableHostIds().join('/')}, installShape: one of ${installShapeIds().join('/')}) and re-run.`
+    );
+  }
+  for (const na of summary.notApplicable) {
+    const kind = Object.hasOwn(HOST_KINDS, na.hostKind) ? HOST_KINDS[na.hostKind] : null;
+    console.log(
+      `ⓘ ${na.trials} trial(s) on ${na.host} — NOT SCORED (${na.hostKind}). ${kind ? kind.why : 'unrecognised host kind.'}`
+    );
+  }
+  if (summary.strata.length === 0) {
+    console.log('\nNo scorable completed trials yet. This is a scaffold, not a result — see evals/self-activation/README.md.');
     return;
   }
-  console.log(`\nOverall (n=${summary.n} completed trials):`);
-  console.log(`  Condition A (no mention):       ${fmtPct(summary.overall.A)}`);
-  console.log(`  Condition B (explicit mention): ${fmtPct(summary.overall.B)}`);
 
-  console.log(`\nBy category:`);
-  for (const category of ['trigger', 'control']) {
-    const c = summary.byCategory[category];
-    if (!c) continue;
-    console.log(`  ${category.padEnd(9)} A: ${fmtPct(c.A)}`);
-    console.log(`  ${''.padEnd(9)} B: ${fmtPct(c.B)}`);
+  for (const s of summary.strata) {
+    console.log(`\n── ${s.hostLabel} (${s.host}) · install shape: ${s.installShape} — ${s.installShapeLabel} ──`);
+    if (s.forcedInjection) {
+      console.log(
+        '   ⚠ This shape force-injects the rubric via SessionStart additionalContext. Any rate below is a property of the hook, NOT of the description-matcher. Do not publish it as a self-activation rate.'
+      );
+    }
+    console.log(`   n=${s.n} completed trials`);
+    console.log(`   Condition A (no mention):       ${fmtPct(s.overall.A)}`);
+    console.log(`   Condition B (explicit mention): ${fmtPct(s.overall.B)}`);
+    console.log('   By category:');
+    for (const category of ['trigger', 'control']) {
+      const c = s.byCategory[category];
+      if (!c) continue;
+      console.log(`     ${category.padEnd(9)} A: ${fmtPct(c.A)}`);
+      console.log(`     ${''.padEnd(9)} B: ${fmtPct(c.B)}`);
+    }
+    console.log('   By task:');
+    for (const [id, t] of Object.entries(s.byTask)) {
+      console.log(`     ${id.padEnd(28)} [${t.category.padEnd(7)}] A: ${fmtPct(t.A)}   B: ${fmtPct(t.B)}`);
+    }
   }
 
-  console.log(`\nBy task:`);
-  for (const [id, t] of Object.entries(summary.byTask)) {
-    console.log(`  ${id.padEnd(28)} [${t.category.padEnd(7)}] A: ${fmtPct(t.A)}   B: ${fmtPct(t.B)}`);
-  }
+  console.log(
+    `\n${summary.strata.length} stratum/strata reported separately and deliberately NOT pooled. There is no blended cross-host or ` +
+      'cross-install-shape percentage here, and none can be computed from this report: the denominator is skill-discovering ' +
+      'hosts, per host, per install shape. Averaging strata would mix a matcher decision with a force-injected rubric, and ' +
+      'would put hosts that have no matcher at all into a denominator they do not belong in.'
+  );
   console.log('');
 }

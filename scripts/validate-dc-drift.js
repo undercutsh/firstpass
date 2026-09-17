@@ -34,6 +34,23 @@
 //     answer to be a normalized *prefix* of the x-dc answer for the same
 //     question, not an exact match — an exact-match check would falsely flag
 //     that intentional truncation as drift.
+//   - META TAGS: site/index.html carries its link-preview/SEO meta block
+//     TWICE — once in the real server-rendered <head> (lines ~3-260), and
+//     once inside <x-dc><helmet> (~line 337), which the dc-runtime clones
+//     into document.head after boot (support.js's createHelmetManager:
+//     `doc.head.appendChild(child.cloneNode(true))` for every META/LINK
+//     child). Same recurring bug class as the rest of this file: two
+//     hand-maintained copies of the same data, and an edit to one that
+//     nobody mirrors into the other. It had already happened and nothing
+//     caught it — the real <head> carries twitter:creator and the helmet
+//     copy does not — because this script diffed the x-dc *data* and never
+//     the two meta blocks. checkMetaDrift closes that, comparing both
+//     directions (a tag in only one block, and a tag whose content differs)
+//     with a deliberate, individually-justified exemption list
+//     (META_DRIFT_EXEMPT) for the tags that legitimately belong to only one
+//     of the two blocks. That list is the whole reason this check is safe to
+//     leave enabled: a guard that fires on a correct difference gets deleted
+//     by the next person it blocks, which is worse than no guard.
 //
 // Usage:
 //   node scripts/validate-dc-drift.js          # same as --check (read-only)
@@ -130,6 +147,20 @@ export function extractFallbackBlock(html) {
     if (depth === 0) return html.slice(startIdx, tagRe.lastIndex);
   }
   throw new Error('unbalanced <div id="dc-fallback"> — could not find its closing tag');
+}
+
+export function extractHeadBlock(html) {
+  const m = /<head(?:\s[^>]*)?>([\s\S]*?)<\/head\s*>/i.exec(html);
+  if (!m) throw new Error('could not find <head>...</head> in site/index.html');
+  return m[1];
+}
+
+export function extractHelmetBlock(html) {
+  // Source spelling is <helmet> (support.js rewrites it to <sc-helmet> at
+  // runtime, after this file has already read the source).
+  const m = /<helmet(?:\s[^>]*)?>([\s\S]*?)<\/helmet\s*>/i.exec(html);
+  if (!m) throw new Error('could not find <helmet>...</helmet> inside the x-dc element in site/index.html');
+  return m[1];
 }
 
 // ---------------------------------------------------------------------------
@@ -361,6 +392,144 @@ export function checkFaqDrift(pairs, faqs) {
 }
 
 // ---------------------------------------------------------------------------
+// 5. Meta tags: real <head> vs the <x-dc><helmet> copy
+// ---------------------------------------------------------------------------
+
+// Parse a head/helmet block's <meta> tags into { key -> [content, ...] }.
+//
+// The key is whatever identifies the tag to a consumer: `name`, `property`
+// (OpenGraph), or `http-equiv`, lowercased. A <meta> with none of those but
+// with `charset` keys as "charset" and carries the charset value as its
+// content, so the exemption list can name it. Anything else (a <meta> with
+// no identifying attribute at all) is ignored rather than guessed at.
+//
+// Values are arrays because a key may legitimately repeat (multiple
+// og:image:* variants, an og:image per size, ...); comparing sorted arrays
+// means "same multiset of values", so reordering the block is not drift but
+// dropping one of two copies is.
+export function parseMetaTags(block) {
+  const out = new Map();
+  for (const m of block.matchAll(/<meta\b[^>]*>/gi)) {
+    const tag = m[0];
+    const attr = (name) => {
+      const am = new RegExp(`\\b${name}\\s*=\\s*("([^"]*)"|'([^']*)'|([^\\s>]+))`, 'i').exec(tag);
+      if (!am) return null;
+      return am[2] ?? am[3] ?? am[4] ?? '';
+    };
+    const name = attr('name');
+    const property = attr('property');
+    const httpEquiv = attr('http-equiv');
+    const charset = attr('charset');
+    let key;
+    let value;
+    if (name !== null) {
+      key = name.toLowerCase();
+      value = attr('content') ?? '';
+    } else if (property !== null) {
+      key = property.toLowerCase();
+      value = attr('content') ?? '';
+    } else if (httpEquiv !== null) {
+      key = `http-equiv:${httpEquiv.toLowerCase()}`;
+      value = attr('content') ?? '';
+    } else if (charset !== null) {
+      key = 'charset';
+      value = charset;
+    } else {
+      continue; // nothing identifying — not something we can diff
+    }
+    const values = out.get(key) ?? [];
+    values.push(normalizeText(value));
+    out.set(key, values);
+  }
+  return out;
+}
+
+// Tags that legitimately differ between the server-rendered <head> and the
+// client-rendered <helmet> copy, each with the reason it is exempt. Exempt
+// means "the two blocks are allowed to disagree about this key, including one
+// of them omitting it entirely" — it does NOT mean the key is forbidden
+// anywhere.
+//
+// Keep this list SHORT and argued. Every entry is a hole in the guard, and
+// the guard's value is precisely that everything not listed here must match.
+export const META_DRIFT_EXEMPT = Object.freeze({
+  // Head-only by specification: the encoding declaration must appear within
+  // the first 1024 bytes of the document, and by the time the dc-runtime
+  // clones helmet children into document.head the parser has long since
+  // committed to an encoding. A cloned <meta charset> is a no-op the HTML
+  // spec ignores, so mirroring it into the helmet would be cargo cult.
+  charset: 'encoding declaration; only meaningful in the parsed <head>, ignored if appended after boot',
+
+  // Head-only on purpose: theme-color paints the browser/OS chrome around
+  // first paint. The helmet copy lands after React + the dc-runtime have
+  // loaded from a CDN, i.e. after the moment it would have mattered, and a
+  // crawler or a JS-less visitor never runs the helmet at all. The real head
+  // is the only place it does any work.
+  'theme-color': 'first-paint browser-chrome hint; the helmet copy is applied after boot, too late to matter',
+
+  // Per-route / runtime-rewritten: the served head must name the URL that was
+  // actually served, while the helmet belongs to a client-rendered template
+  // that can be mounted under a different path (and the runtime rewrites the
+  // URL when it does). Requiring these to match would fire the moment a
+  // second route reuses the template.
+  'og:url': 'per-route canonical URL; the static head names the served URL, the client-rendered copy names the mounted route',
+  robots: 'per-page indexing directive; a JS-applied copy cannot retract or add a directive for a crawler that never runs it, so the two are allowed to differ',
+
+  // Helmet-only by design: the dc-runtime's own control channel
+  // (support.js's DESIGN_DOC_MODE_RE reads it out of the rendered template).
+  // It must never appear in the served head, so it is exempt rather than
+  // required.
+  design_doc_mode: "dc-runtime control meta read by support.js; belongs to the rendered template only, never to the served head",
+});
+
+/**
+ * Diff the two meta blocks. Reports, for every non-exempt key:
+ *   - present in <head> but missing from <helmet> (the twitter:creator case)
+ *   - present in <helmet> but missing from <head>
+ *   - present in both with different content
+ * Returns an error-string array plus how many keys were actually compared, so
+ * the caller can report coverage instead of silently checking nothing if a
+ * regex stops matching.
+ */
+export function checkMetaDrift(headMetas, helmetMetas) {
+  const errors = [];
+  const keys = [...new Set([...headMetas.keys(), ...helmetMetas.keys()])].sort();
+  let compared = 0;
+  for (const key of keys) {
+    if (Object.hasOwn(META_DRIFT_EXEMPT, key)) continue;
+    const inHead = headMetas.get(key);
+    const inHelmet = helmetMetas.get(key);
+    compared++;
+    if (inHead && !inHelmet) {
+      errors.push(
+        `meta drift: "${key}" is in site/index.html's real <head> but missing from the <x-dc><helmet> copy (head value: "${inHead.join(
+          '", "'
+        )}"). Add it to the helmet block, or — if it genuinely belongs to only one of the two — add it to META_DRIFT_EXEMPT in scripts/validate-dc-drift.js with the reason.`
+      );
+      continue;
+    }
+    if (!inHead && inHelmet) {
+      errors.push(
+        `meta drift: "${key}" is in the <x-dc><helmet> copy but missing from site/index.html's real <head> (helmet value: "${inHelmet.join(
+          '", "'
+        )}"). Crawlers and JS-less visitors only ever see the real <head>, so a helmet-only tag is invisible to them. Mirror it into <head>, or exempt it in META_DRIFT_EXEMPT with the reason.`
+      );
+      continue;
+    }
+    const a = [...inHead].sort();
+    const b = [...inHelmet].sort();
+    if (a.length !== b.length || a.some((v, i) => v !== b[i])) {
+      errors.push(
+        `meta drift: "${key}" content differs between the two blocks in site/index.html\n    <head>:   ${a.join(
+          ' | '
+        )}\n    <helmet>: ${b.join(' | ')}`
+      );
+    }
+  }
+  return { errors, compared };
+}
+
+// ---------------------------------------------------------------------------
 // Orchestration — pure, given the three raw source documents.
 // ---------------------------------------------------------------------------
 
@@ -385,7 +554,18 @@ export function checkAll({ html, md, pricingMd }) {
   const faqPairCount = fallbackFaqPairs(fallbackBlock).length;
   errors.push(...checkFaqDrift(fallbackFaqPairs(fallbackBlock), faqs));
 
-  return { errors, counts: { ladderRows: ladderRows.length, installClients: installClients.length, faqPairs: faqPairCount } };
+  const meta = checkMetaDrift(parseMetaTags(extractHeadBlock(html)), parseMetaTags(extractHelmetBlock(html)));
+  errors.push(...meta.errors);
+
+  return {
+    errors,
+    counts: {
+      ladderRows: ladderRows.length,
+      installClients: installClients.length,
+      faqPairs: faqPairCount,
+      metaKeys: meta.compared,
+    },
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -409,7 +589,7 @@ function main() {
   const { errors, counts } = result;
 
   if (errors.length > 0) {
-    console.error('x-dc content has drifted from its static substitutes (#dc-fallback / site/index.md / site/pricing.md):\n');
+    console.error('x-dc content has drifted from its static substitutes (#dc-fallback / site/index.md / site/pricing.md) or from the real <head>:\n');
     for (const e of errors) console.error(`  - ${e}\n`);
     console.error(
       `${errors.length} drift issue(s) found. Update the static substitute(s) to match the <x-dc> content in site/index.html, or update x-dc if the substitute is the source of truth.`
@@ -417,7 +597,7 @@ function main() {
     process.exit(1);
   } else {
     console.log(
-      `x-dc content is in sync with its static substitutes (${counts.ladderRows} demo-log rows, ${counts.installClients} install clients, pricingGrid Support row, ${counts.faqPairs} FAQ pairs checked).`
+      `x-dc content is in sync with its static substitutes (${counts.ladderRows} demo-log rows, ${counts.installClients} install clients, pricingGrid Support row, ${counts.faqPairs} FAQ pairs, ${counts.metaKeys} meta keys checked).`
     );
     process.exit(0);
   }
