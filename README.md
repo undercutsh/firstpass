@@ -77,6 +77,10 @@ verification failure, not on predicted difficulty. Only unverifiable judgment
 work needs to start on an expensive model. This gap is the single biggest
 lever in the system.
 
+<p align="center">
+  <img src="assets/readme/generator-verifier-gap.svg" alt="The generator-verifier gap. When output is mechanically verifiable (tests, schema, a diff, exact match), generating a correct answer is expensive and uncertain while checking one is cheap and certain — that difference is the gap, and the policy is to attempt at the cheapest tier, verify, and escalate only on failure. When there is nothing to check against (taste, ownership, judgment calls) no mechanical check exists, there is no gap to exploit, and the work starts at the tier you would trust." width="720">
+</p>
+
 ## How it works
 
 **Base tier: a 6-flag rubric.** Score each unit on whether it's unverifiable,
