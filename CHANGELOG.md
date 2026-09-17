@@ -6,6 +6,31 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-09-17
+
+### Changed
+
+- **The headline cost claim is now one number everywhere: up to −71%.** The
+  homepage `h1` said "up to 71%" while the meta description and
+  `og:description` on it and on 33 other pages said "up to −95% cost". Both
+  are real measured cells — −95% is HumanEval on Gemini ($1.13 → $0.05 at
+  100/100 pass in both arms), −71% is GSM8K on OpenAI at +8 pass — but as
+  bare headline claims side by side they read as inconsistent, and a reader
+  who sees both has reason to trust neither. 99 meta tags across 33 pages
+  now lead with −71%, and −95% appears only where it is labelled as the
+  HumanEval/Gemini cell it is. `site/llms.txt` already stated both
+  precisely ("up to −95% cost on HumanEval, up to −71% on GSM8K") and is
+  unchanged; the `index.md`/`llms.md` front-matter descriptions and the
+  README summary line follow the pages. Every measured table cell is
+  untouched, as is every mention of a 95% *confidence* test, which is
+  statistics and not a cost claim.
+
+  Worth stating plainly for whoever reads this next: −71% is not a typical
+  case either, it is a second benchmark maximum. The genuinely typical
+  figure is the ~36% blended number the site already derives in its
+  honest-limits section, and leading with that instead remains an open
+  option.
+
 ### Fixed
 
 - **Sitewide WCAG 2.2 AA colour-contrast defects: 3,267 failing text nodes

@@ -1,6 +1,6 @@
 ---
 title: "Undercut — llms.md"
-description: "A routing policy your coding agent follows — cheap tier first, escalate only on evidence. Measured up to −95% cost on public benchmarks at equal-or-better pass rate."
+description: "A routing policy your coding agent follows — cheap tier first, escalate only on evidence. Measured up to −71% cost on public benchmarks at equal-or-better pass rate."
 canonical: "https://getundercut.sh/"
 last-updated: "2026-09-14"
 ---

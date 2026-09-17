@@ -15,7 +15,7 @@ Escalate on evidence, not vibes.
 
 > The install slug is `tiered-dispatch`; the product is **Undercut**.
 
-Measured, not promised: **up to −95% cost on public benchmarks, equal-or-better
+Measured, not promised: **up to −71% cost on public benchmarks, equal-or-better
 quality, across 4 model families.** Every number below is reproducible from the
 raw data in [`testing/`](testing/).
 
