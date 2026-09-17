@@ -37,6 +37,17 @@ jobs:
         run: node scripts/validate-jsonld.js --check
       - name: changelog.xml in sync with CHANGELOG.md
         run: node scripts/generate-changelog-feed.js --check
+      # Release backdating: a branch cut before a release and merged after it
+      # lands its [Unreleased] entry in what has by then become a DATED
+      # section, so work that shipped after the release is documented as part
+      # of it (#189 into 0.4.0 — the same incident that left the feed above
+      # stale). Both PRs were green against their own base, so a
+      # single-revision lint cannot see it: this compares each dated section
+      # against its own state at the commit that cut it. Relies on the
+      # fetch-depth: 0 history above, and skips the comparison rather than
+      # failing when history is unavailable.
+      - name: CHANGELOG.md dated sections match the release that cut them
+        run: node scripts/validate-changelog-release.js --check
       - name: Spellcheck site copy (site/*.html)
         run: node scripts/spellcheck.js
       - name: x-dc content in sync with static substitutes (fallback/index.md/pricing.md)
