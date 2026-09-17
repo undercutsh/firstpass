@@ -65,7 +65,7 @@
 // touches the filesystem or process.exit.
 
 import { readFileSync, readdirSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import path from 'node:path';
 // Reused rather than reimplemented: the sibling guard already parses the
 // x-dc script's first-party JS object literals, and a second copy of that
@@ -577,7 +577,7 @@ async function main() {
   // Imported, not parsed: HOSTS/HOST_KINDS are the live exported tables, so
   // this guard can never disagree with what the harness actually uses.
   const { HOSTS, HOST_KINDS } = await import(
-    path.join(repoRoot, 'evals', 'src', 'selfactivation.js').replace(/^/, 'file://')
+    pathToFileURL(path.join(repoRoot, 'evals', 'src', 'selfactivation.js')).href
   );
 
   const errors = checkAll({
