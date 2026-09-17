@@ -119,7 +119,7 @@ export const TOKENS = {
   'deep-ink': '#13161b',   // darkest ground (terminals, inset cards)
   // Ink
   ink: '#13161b',          // body text on light grounds
-  mute: '#6a6d73',         // secondary text on LIGHT grounds only
+  mute: '#61656c',         // secondary text on LIGHT grounds only
   'deep-mute': '#9a9ea4',  // secondary text on DARK grounds only
   // Rules (decorative hairlines — not UI component boundaries)
   rule: '#d4d0cb',

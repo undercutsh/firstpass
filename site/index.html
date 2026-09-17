@@ -282,9 +282,9 @@
   changes materially.
 -->
 <div id="dc-fallback" hidden style="max-width: 720px; margin: 0 auto; padding: 48px 24px 80px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #13161b; background: #f2f0ec; line-height: 1.6">
-  <p style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: #6a6d73; margin: 0 0 8px">Undercut</p>
+  <p style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: #61656c; margin: 0 0 8px">Undercut</p>
   <h1 style="font-size: 32px; line-height: 1.15; margin: 0 0 16px">Cut your AI coding bill up to 71%. Not your pass rate.</h1>
-  <p style="font-size: 16px; color: #6a6d73; margin: 0 0 24px">A routing policy your coding agent follows — cheap tier first, escalate only on evidence, never on a vibe. Measured on public benchmarks, not promised.</p>
+  <p style="font-size: 16px; color: #61656c; margin: 0 0 24px">A routing policy your coding agent follows — cheap tier first, escalate only on evidence, never on a vibe. Measured on public benchmarks, not promised.</p>
   <p style="font-size: 13px; color: #a35c0f; background: rgba(194,110,18,0.1); border: 1px solid #c26e12; padding: 10px 14px; margin: 0 0 24px">This page's interactive calculator, forms, and FAQ accordion need a script that didn't load (probably a blocked or unreachable CDN). Here's the essential content in the meantime — reload the page to try again.</p>
   <ul style="display: flex; gap: 24px; flex-wrap: wrap; list-style: none; padding: 0; margin: 0 0 28px; font-size: 14px">
     <li><strong style="color: #287c42">−71%</strong> GSM8K cost, OpenAI</li>
@@ -295,8 +295,8 @@
   <p style="font-size: 14px; margin: 0 0 8px">Install (free, MIT, no signup):</p>
   <pre style="background: #13161b; color: #f2f0ec; padding: 14px 16px; overflow-x: auto; font-size: 13px; margin: 0 0 32px"><code>npx skills add undercutsh/firstpass</code></pre>
   <h2 style="font-size: 18px; margin: 0 0 12px">Install for your agent</h2>
-  <p style="color: #6a6d73; margin: 0 0 12px">Per-client commands (see the picker at getundercut.sh/#install for the interactive version):</p>
-  <ul style="list-style: none; padding: 0; margin: 0 0 32px; font-family: monospace; font-size: 13px; line-height: 1.9; color: #6a6d73">
+  <p style="color: #61656c; margin: 0 0 12px">Per-client commands (see the picker at getundercut.sh/#install for the interactive version):</p>
+  <ul style="list-style: none; padding: 0; margin: 0 0 32px; font-family: monospace; font-size: 13px; line-height: 1.9; color: #61656c">
     <li><strong>Claude Code</strong> — <code>/plugin marketplace add undercutsh/firstpass</code></li>
     <li><strong>Codex CLI</strong> — <code>npx skills add undercutsh/firstpass -a codex</code></li>
     <li><strong>Cursor</strong> — <code>mkdir -p .cursor/skills &amp;&amp; cp -r firstpass/skills/firstpass ./.cursor/skills/firstpass</code></li>
@@ -311,15 +311,15 @@
   <h2 style="font-size: 18px; margin: 0 0 12px">Frequently asked</h2>
   <div style="margin: 0 0 32px">
     <p style="font-weight: 600; margin: 0 0 4px">Can it quietly ship worse code?</p>
-    <p style="color: #6a6d73; margin: 0 0 16px">Cheap-tier output only stands if it passes mechanical verification (tests, schema, diff). Work that can't be checked mechanically starts at a high tier by rule. In the published benchmarks, pass rate was equal or better in every cell.</p>
+    <p style="color: #61656c; margin: 0 0 16px">Cheap-tier output only stands if it passes mechanical verification (tests, schema, diff). Work that can't be checked mechanically starts at a high tier by rule. In the published benchmarks, pass rate was equal or better in every cell.</p>
     <p style="font-weight: 600; margin: 0 0 4px">Is the free plan actually free forever?</p>
-    <p style="color: #6a6d73; margin: 0 0 16px">Yes. The MIT skill is the product's credibility, not a lead magnet for it — it stays free and full-featured for individual use indefinitely.</p>
+    <p style="color: #61656c; margin: 0 0 16px">Yes. The MIT skill is the product's credibility, not a lead magnet for it — it stays free and full-featured for individual use indefinitely.</p>
     <p style="font-weight: 600; margin: 0 0 4px">Does this touch our network or data?</p>
-    <p style="color: #6a6d73; margin: 0">No — it's a policy file the agent reads locally. Nothing proxies traffic, nothing calls home.</p>
+    <p style="color: #61656c; margin: 0">No — it's a policy file the agent reads locally. Nothing proxies traffic, nothing calls home.</p>
   </div>
   <h2 style="font-size: 18px; margin: 0 0 12px">Example run</h2>
-  <p style="color: #6a6d73; margin: 0 0 12px">A representative batch of 8 units, dispatched under the shipped policy:</p>
-  <ul style="list-style: none; padding: 0; margin: 0 0 32px; font-family: monospace; font-size: 13px; line-height: 1.9; color: #6a6d73">
+  <p style="color: #61656c; margin: 0 0 12px">A representative batch of 8 units, dispatched under the shipped policy:</p>
+  <ul style="list-style: none; padding: 0; margin: 0 0 32px; font-family: monospace; font-size: 13px; line-height: 1.9; color: #61656c">
     <li>unit 041 — 0 flags → cheap — <span style="color: #287c42">✓ pass</span></li>
     <li>unit 042 — 0 flags → cheap — <span style="color: #287c42">✓ pass</span></li>
     <li>unit 043 — 1 flag → standard — <span style="color: #287c42">✓ pass</span></li>
@@ -3704,6 +3704,7 @@
         <a href="/privacy/" class="muted">Privacy</a>
         <a href="/terms/" class="muted">Terms</a>
         <a href="/accessibility" class="muted">Accessibility</a>
+        <a href="/brand" class="muted">Brand</a>
         <a href="/status" class="muted">Status</a>
         <a href="https://github.com/undercutsh/firstpass/blob/main/testing/README.md" class="muted">Benchmark data</a>
         <a href="https://github.com/undercutsh/firstpass/blob/main/CHANGELOG.md" class="muted">Changelog</a>

@@ -50,11 +50,11 @@
   a { color: #13161b; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
   a:hover { color: #00959c; }
   .wrap { max-width: 880px; margin: 0 auto; padding: 0 32px; }
-  .mono { font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 12px; color: #6a6d73; text-transform: uppercase; letter-spacing: .08em; }
+  .mono { font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 12px; color: #61656c; text-transform: uppercase; letter-spacing: .08em; }
   code { background: #d4d0cb; color: #13161b; padding: 1px 5px; border-radius: 3px; font-size: .92em; font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; }
   .badge { display: inline-flex; align-items: center; justify-content: center; height: 20px; padding: 0 8px; border-radius: 6px; font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; background: rgba(0,149,156,0.08); color: #00959c; }
   .badge-warn { background: rgba(194,110,18,0.12); color: #a35a0e; }
-  .badge-neutral { background: rgba(110,114,120,0.16); color: #6a6d73; }
+  .badge-neutral { background: rgba(110,114,120,0.16); color: #61656c; }
   fieldset { border: 1px solid #d4d0cb; border-radius: 10px; padding: 20px 22px 22px; margin: 0 0 28px; }
   legend { font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 13px; font-weight: 700; padding: 0 8px; }
   .opt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; margin-top: 8px; }
@@ -85,9 +85,9 @@
 <nav style="position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 14px 32px; background: rgba(242,240,236,0.94); backdrop-filter: blur(8px); border-bottom: 1px solid #d4d0cb; flex-wrap: wrap;">
   <a href="/" style="display: flex; align-items: center; gap: 8px; text-decoration: none"><svg width="20" height="20" viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect x="2" y="4" width="22" height="6" rx="1" fill="#13161b"></rect><rect x="2" y="16" width="12" height="6" rx="1" fill="#00959c"></rect><path d="M16 22 L24 12" stroke="#13161b" stroke-width="2" stroke-linecap="round"></path></svg><span style="font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; font-weight: 500; font-size: 17px; letter-spacing: -0.02em">undercut</span></a>
   <div style="display: flex; align-items: center; gap: 24px; font-size: 14px; flex-wrap: wrap;">
-    <a href="/#pricing" style="text-decoration: none; color: #6a6d73">Pricing</a>
-    <a href="/#benchmarks" style="text-decoration: none; color: #6a6d73">Benchmarks</a>
-    <a href="https://github.com/undercutsh/firstpass" style="text-decoration: none; color: #6a6d73; font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 13px">GitHub &#8599;</a>
+    <a href="/#pricing" style="text-decoration: none; color: #61656c">Pricing</a>
+    <a href="/#benchmarks" style="text-decoration: none; color: #61656c">Benchmarks</a>
+    <a href="https://github.com/undercutsh/firstpass" style="text-decoration: none; color: #61656c; font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 13px">GitHub &#8599;</a>
   </div>
 </nav>
 
@@ -145,9 +145,9 @@
 <section style="padding: 24px 32px 88px; border-top: 1px solid #d4d0cb">
   <div class="wrap">
     <p class="mono" style="margin: 0 0 14px">Open questions</p>
-    <p style="font-size: 14.5px; line-height: 1.6; color: #6a6d73; margin: 0 0 10px">This research pass left a few things unconfirmed — listed here rather than papered over:</p>
+    <p style="font-size: 14.5px; line-height: 1.6; color: #61656c; margin: 0 0 10px">This research pass left a few things unconfirmed — listed here rather than papered over:</p>
     <ul id="uc-open-questions" style="font-size: 14.5px; line-height: 1.7; color: #6e7278; margin: 0 0 24px; padding-left: 20px"></ul>
-    <p style="font-size: 13px; color: #6a6d73; margin: 0">Source: the full compatibility research and every segment's copy trace to <a href="https://github.com/undercutsh/firstpass/blob/main/site/segments.json" style="color: #6a6d73">segments.json</a> in the repo. Full feature comparison and prices: <a href="/#pricing" style="color: #6a6d73">pricing</a>. Machine-readable pricing: <a href="/pricing.md" style="color: #6a6d73">pricing.md</a>.</p>
+    <p style="font-size: 13px; color: #61656c; margin: 0">Source: the full compatibility research and every segment's copy trace to <a href="https://github.com/undercutsh/firstpass/blob/main/site/segments.json" style="color: #61656c">segments.json</a> in the repo. Full feature comparison and prices: <a href="/#pricing" style="color: #61656c">pricing</a>. Machine-readable pricing: <a href="/pricing.md" style="color: #61656c">pricing.md</a>.</p>
   </div>
 </section>
 
@@ -156,43 +156,44 @@
     <div style="display: flex; justify-content: space-between; gap: 48px; flex-wrap: wrap; margin: 0 0 48px">
       <div>
         <div style="display: flex; align-items: center; gap: 8px; margin: 0 0 10px"><svg width="20" height="20" viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect x="2" y="4" width="22" height="6" rx="1" fill="#13161b"></rect><rect x="2" y="16" width="12" height="6" rx="1" fill="#00959c"></rect><path d="M16 22 L24 12" stroke="#13161b" stroke-width="2" stroke-linecap="round"></path></svg><span style="font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; font-weight: 500; font-size: 17px; letter-spacing: -0.02em">undercut</span></div>
-        <p style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 12.5px; color: #6a6d73; margin: 0">MIT License &middot; <a href="https://github.com/undercutsh/firstpass" style="color: #6a6d73">github.com/undercutsh/firstpass</a></p>
-        <p style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 12.5px; color: #6a6d73; margin: 6px 0 0">Built by <a rel="me author" href="https://iamjustinwinter.com/" style="color: #6a6d73">Justin Winter</a></p>
+        <p style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 12.5px; color: #61656c; margin: 0">MIT License &middot; <a href="https://github.com/undercutsh/firstpass" style="color: #61656c">github.com/undercutsh/firstpass</a></p>
+        <p style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 12.5px; color: #61656c; margin: 6px 0 0">Built by <a rel="me author" href="https://iamjustinwinter.com/" style="color: #61656c">Justin Winter</a></p>
         <a id="uc-github-stars" href="https://github.com/undercutsh/firstpass" target="_blank" rel="noopener" class="badge badge-neutral" style="margin-top: 10px; text-decoration: none" hidden>★ <span id="uc-star-count"></span> stars on GitHub</a>
       </div>
       <div style="display: flex; gap: 72px; flex-wrap: wrap; font-size: 14px">
         <div style="display: grid; gap: 10px; align-content: start">
-          <span style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #6a6d73">Product</span>
-          <a href="/#how" style="text-decoration: none; color: #6a6d73">How it works</a>
-          <a href="/setup" style="text-decoration: none; color: #6a6d73">Your setup</a>
-          <a href="/#teams" style="text-decoration: none; color: #6a6d73">Teams</a>
-          <a href="/#pricing" style="text-decoration: none; color: #6a6d73">Pricing</a>
+          <span style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #61656c">Product</span>
+          <a href="/#how" style="text-decoration: none; color: #61656c">How it works</a>
+          <a href="/setup" style="text-decoration: none; color: #61656c">Your setup</a>
+          <a href="/#teams" style="text-decoration: none; color: #61656c">Teams</a>
+          <a href="/#pricing" style="text-decoration: none; color: #61656c">Pricing</a>
         </div>
         <div style="display: grid; gap: 10px; align-content: start">
-          <span style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #6a6d73">Proof</span>
-          <a href="/#benchmarks" style="text-decoration: none; color: #6a6d73">Benchmarks</a>
-          <a href="https://github.com/undercutsh/firstpass/tree/main/testing/results" style="text-decoration: none; color: #6a6d73">Raw results</a>
-          <a href="https://github.com/undercutsh/firstpass/blob/main/testing/README.md" style="text-decoration: none; color: #6a6d73">Methodology</a>
+          <span style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #61656c">Proof</span>
+          <a href="/#benchmarks" style="text-decoration: none; color: #61656c">Benchmarks</a>
+          <a href="https://github.com/undercutsh/firstpass/tree/main/testing/results" style="text-decoration: none; color: #61656c">Raw results</a>
+          <a href="https://github.com/undercutsh/firstpass/blob/main/testing/README.md" style="text-decoration: none; color: #61656c">Methodology</a>
         </div>
         <div style="display: grid; gap: 10px; align-content: start">
-          <span style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #6a6d73">Repo</span>
-          <a href="https://github.com/undercutsh/firstpass" style="text-decoration: none; color: #6a6d73">GitHub</a>
-          <a href="https://github.com/undercutsh/firstpass/releases" style="text-decoration: none; color: #6a6d73">Changelog</a>
-          <a href="https://github.com/undercutsh/firstpass/issues" style="text-decoration: none; color: #6a6d73">Issues</a>
+          <span style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #61656c">Repo</span>
+          <a href="https://github.com/undercutsh/firstpass" style="text-decoration: none; color: #61656c">GitHub</a>
+          <a href="https://github.com/undercutsh/firstpass/releases" style="text-decoration: none; color: #61656c">Changelog</a>
+          <a href="https://github.com/undercutsh/firstpass/issues" style="text-decoration: none; color: #61656c">Issues</a>
         </div>
       </div>
     </div>
-    <div style="border-top: 1px solid #d4d0cb; padding-top: 24px; display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-size: 12.5px; color: #6a6d73">
+    <div style="border-top: 1px solid #d4d0cb; padding-top: 24px; display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-size: 12.5px; color: #61656c">
       <span style="display: flex; gap: 18px; flex-wrap: wrap; align-items: baseline">
         <span style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace" id="uc-copyright-year">&copy; 2026 Undercut &middot; MIT</span>
         <span style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace">Works with: Claude Code &middot; Codex &middot; Cursor &middot; Copilot &middot; OpenCode &middot; and 29 more</span>
       </span>
       <span style="display: flex; gap: 18px; flex-wrap: wrap">
-        <a href="/about" style="color: #6a6d73; text-decoration: none">About</a>
-        <a href="/privacy/" style="color: #6a6d73; text-decoration: none">Privacy</a>
-        <a href="/terms/" style="color: #6a6d73; text-decoration: none">Terms</a>
-        <a href="/accessibility" style="color: #6a6d73; text-decoration: none">Accessibility</a>
-        <a href="/status" style="color: #6a6d73; text-decoration: none">Status</a>
+        <a href="/about" style="color: #61656c; text-decoration: none">About</a>
+        <a href="/privacy/" style="color: #61656c; text-decoration: none">Privacy</a>
+        <a href="/terms/" style="color: #61656c; text-decoration: none">Terms</a>
+        <a href="/accessibility" style="color: #61656c; text-decoration: none">Accessibility</a>
+        <a href="/brand" style="color: #61656c; text-decoration: none">Brand</a>
+        <a href="/status" style="color: #61656c; text-decoration: none">Status</a>
       </span>
     </div>
   </div>

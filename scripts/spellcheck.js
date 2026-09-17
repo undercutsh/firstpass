@@ -136,6 +136,7 @@ const ALLOWLIST = [
   'FAQs', 'MCP', 'LLM', 'LLMs', 'README', 'https', 'src', 'cp', 'mkdir', 'auth', 'config',
   'onclick', 'frontmatter', "frontmatter's", 'crawler', 'endpoint', 'endpoints', 'webhook',
   'monospace', 'org', 'repo', "repo's", 'repos', 'workspace', 'worktree', 'subagent',
+  'favicon', 'favicons', 'logomark', 'wordmark', 'tagline', 'Bricolage',
   'subagent-model-routing', 'codebase', 'eval', 'evals', 'Eval', 'eval-harness', 'xhigh',
   'yml', 'Sitemap', 'Edgee', 'Observability', 'dev', 'devs', 'onboarding', 're-runnable',
   'signup', 'agentic', 'git', 'prem', 'div', 'divs', 'img', 'quo', 'ent', 'serverless',
@@ -194,6 +195,12 @@ function extractVisibleText(html) {
     // Mustache-style template bindings ("{{ row.ent }}") used by the
     // sc-for/sc-bind custom elements are data expressions, not prose.
     .replace(/\{\{[\s\S]*?\}\}/g, ' ')
+    // CSS hex colour literals appearing as visible text (the brand page
+    // prints the palette as #f2f0ec, #61656c and so on). WORD_RE keeps only
+    // letter runs, so a hex value does not survive as one token: #fbfaf8
+    // arrives as the fragment "fbfaf", which is neither a word nor a
+    // meaningful thing to allowlist. Strip the whole literal instead.
+    .replace(/#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?\b/g, ' ')
     // Only text between tags is kept — attribute values (href, src, alt)
     // are dropped along with the tags themselves.
     .replace(/<[^>]+>/g, '\n');
