@@ -68,6 +68,126 @@ describe('--selfactivation-init', () => {
     }
   });
 
+  test('unlabelled by default, and says out loud that the file is not scorable', () => {
+    // Optional-but-not-defaultable: no host/shape means null, never a guess,
+    // and the CLI has to say so rather than hand back a quietly useless file.
+    const dir = mkdtempSync(path.join(tmpdir(), 'fp-selfact-'));
+    const file = path.join(dir, 'unlabelled.json');
+    try {
+      const { status, stdout } = runCli(['--selfactivation-init', file, '--selfactivation-n', '1']);
+      assert.equal(status, 0);
+      assert.match(stdout, /NOT SCORABLE YET/);
+      assert.match(stdout, /--selfactivation-host <id> and --selfactivation-install-shape <id>/);
+      const data = JSON.parse(readFileSync(file, 'utf8'));
+      assert.equal(data.meta.host, null);
+      assert.equal(data.meta.installShape, null);
+      assert.ok(data.trials.every((t) => t.host === null && t.installShape === null));
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  test('--selfactivation-host and --selfactivation-install-shape label every trial', () => {
+    const dir = mkdtempSync(path.join(tmpdir(), 'fp-selfact-'));
+    const file = path.join(dir, 'labelled.json');
+    try {
+      const { status, stdout } = runCli([
+        '--selfactivation-init', file,
+        '--selfactivation-n', '1',
+        '--selfactivation-host', 'claude-code',
+        '--selfactivation-install-shape', 'skill-only',
+      ]);
+      assert.equal(status, 0);
+      assert.match(stdout, /Labelled: host=claude-code \(skill-discovering\), installShape=skill-only/);
+      assert.doesNotMatch(stdout, /NOT SCORABLE YET/);
+      const data = JSON.parse(readFileSync(file, 'utf8'));
+      assert.equal(data.meta.host, 'claude-code');
+      assert.equal(data.meta.installShape, 'skill-only');
+      assert.equal(data.meta.hostKind, 'skill-discovering');
+      assert.ok(data.trials.every((t) => t.host === 'claude-code' && t.installShape === 'skill-only'));
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  test('the hook install shape is stampable too, and is reported as its own stratum', () => {
+    const dir = mkdtempSync(path.join(tmpdir(), 'fp-selfact-'));
+    const file = path.join(dir, 'hooked.json');
+    try {
+      runCli([
+        '--selfactivation-init', file,
+        '--selfactivation-n', '1',
+        '--selfactivation-host', 'codex',
+        '--selfactivation-install-shape', 'skill-plus-hook',
+      ]);
+      const data = JSON.parse(readFileSync(file, 'utf8'));
+      for (const t of data.trials) t.activated = t.condition === 'B';
+      writeFileSync(file, JSON.stringify(data, null, 2));
+      const { status, stdout } = runCli(['--selfactivation-report', file]);
+      assert.equal(status, 0);
+      assert.match(stdout, /Codex CLI \(codex\)/);
+      assert.match(stdout, /install shape: skill-plus-hook/);
+      // The force-injection warning must ride along with the hook stratum.
+      assert.match(stdout, /property of the hook/);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  test('a labelled scaffold is scorable end to end with no hand-editing of host/shape', () => {
+    // The whole point of the flags: init -> fill activated -> report, with no
+    // step where an operator has to know a JSON field exists.
+    const dir = mkdtempSync(path.join(tmpdir(), 'fp-selfact-'));
+    const file = path.join(dir, 'e2e.json');
+    try {
+      runCli([
+        '--selfactivation-init', file,
+        '--selfactivation-n', '1',
+        '--selfactivation-host', 'cursor',
+        '--selfactivation-install-shape', 'skill-only',
+      ]);
+      const data = JSON.parse(readFileSync(file, 'utf8'));
+      for (const t of data.trials) t.activated = t.condition === 'B';
+      writeFileSync(file, JSON.stringify(data, null, 2));
+      const { status, stdout } = runCli(['--selfactivation-report', file]);
+      assert.equal(status, 0);
+      assert.match(stdout, /Cursor \(cursor\)/);
+      assert.doesNotMatch(stdout, /missing a host and\/or installShape/);
+      assert.match(stdout, /Condition A \(no mention\):\s+0%/);
+      assert.match(stdout, /Condition B \(explicit mention\):\s+100%/);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  describe('rejection paths (validation lives in scaffoldResults, not main.js)', () => {
+    function failsWith(args, re) {
+      const dir = mkdtempSync(path.join(tmpdir(), 'fp-selfact-'));
+      const file = path.join(dir, 'never-written.json');
+      try {
+        const { status, stdout, stderr } = runCli(['--selfactivation-init', file, '--selfactivation-n', '1', ...args]);
+        assert.equal(status, 1, 'must exit non-zero');
+        assert.match(stdout + stderr, re);
+        assert.throws(() => readFileSync(file, 'utf8'), 'must not write a half-valid scaffold');
+      } finally {
+        rmSync(dir, { recursive: true, force: true });
+      }
+    }
+
+    test('rejects an unknown host', () => {
+      failsWith(['--selfactivation-host', 'clade-code'], /unknown host "clade-code"/);
+    });
+
+    test('rejects an unknown install shape', () => {
+      failsWith(['--selfactivation-install-shape', 'skill-plus-vibes'], /unknown installShape "skill-plus-vibes"/);
+    });
+
+    test('refuses an instruction-file host outright, naming why', () => {
+      failsWith(['--selfactivation-host', 'copilot'], /instruction-file host/);
+      failsWith(['--selfactivation-host', 'gemini'], /instruction-file host/);
+    });
+  });
+
   test('--selfactivation-n overrides trial count per task/condition', () => {
     const dir = mkdtempSync(path.join(tmpdir(), 'fp-selfact-'));
     const file = path.join(dir, 'scaffold.json');

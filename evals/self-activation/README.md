@@ -194,18 +194,32 @@ node src/main.js --selfactivation
 #    N=10 mirrors the ten-session count in the JetBrains/Ponytail finding
 #    this test is answering. One file per (host × install shape), named for
 #    both, because that is the granularity the report scores at.
-node src/main.js --selfactivation-init self-activation/results/run-<host>-<shape>-<date>.json --selfactivation-n 10
+#    Label the scaffold at creation with the host and install shape it will be
+#    run under: the flags are validated against the closed HOSTS /
+#    INSTALL_SHAPES maps, so a typo or an instruction-file host is refused
+#    here rather than discovered at report time.
+node src/main.js --selfactivation-init self-activation/results/run-<host>-<shape>-<date>.json \
+  --selfactivation-n 10 \
+  --selfactivation-host claude-code \
+  --selfactivation-install-shape skill-only
+
+#    Both label flags are optional. Omit them and the scaffold is still
+#    written, with host/installShape null and a loud "NOT SCORABLE YET"
+#    notice — unlabelled is a legitimate artifact (you may want the prompts
+#    before you have picked a host) and it is correctly excluded from every
+#    rate. Nothing is ever defaulted on your behalf.
 
 # 3. For EACH trial slot in that file (24 tasks×conditions × N trials each):
 #      a. Start a FRESH session — no prior context, no memory of earlier
 #         trials in this sweep. Contamination from a prior trial (the agent
 #         "remembering" it should route) invalidates the run.
-#      b. Set `host` to the host id you are running on (one of the
+#      b. Confirm `host` matches the host you are actually running on (already
+#         stamped if you passed --selfactivation-host; one of the
 #         skill-discovering ids: claude-code, codex, cursor, opencode, junie,
 #         amp, devin — `--selfactivation` prints the list). Copilot / Gemini /
 #         generic AGENTS.md are instruction-file hosts and are not measurable
 #         at all; see "The denominator" above.
-#      c. Set `installShape`, and make the machine match it:
+#      c. Make the machine match `installShape`:
 #           skill-only       SKILL.md present via its normal install path, and
 #                            hooks/ NOT registered in settings.json — verify
 #                            this, don't assume it. If hooks/session-start.js
@@ -220,11 +234,9 @@ node src/main.js --selfactivation-init self-activation/results/run-<host>-<shape
 #      e. Watch the transcript. Record `activated: true|false` per the
 #         operational definition above, and a one-line `evidence` quoting or
 #         describing what you saw (or didn't).
-#    Edit the JSON file directly — it's just the scaffold with `host`,
-#    `installShape`, `activated` and `evidence` filled in per trial.
-#    (`--selfactivation-init` stamps host/installShape as null; main.js has no
-#    flag to pre-stamp them yet, so fill them in with your editor's
-#    find-and-replace, or keep one file per host × shape and set them once.)
+#    Edit the JSON file directly — it's just the scaffold with `activated` and
+#    `evidence` filled in per trial (and `host`/`installShape` too, if you
+#    didn't pass the flags in step 2).
 
 # 4. Once trials are filled in (partially-filled is fine — pending trials are
 #    excluded from the rates, not scored as failures):

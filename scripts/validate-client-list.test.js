@@ -25,6 +25,12 @@ import {
   checkReadme,
   checkAgentsMd,
   checkAll,
+  HOST_SLUG_ALIASES,
+  slugToHostId,
+  kindFromInstallCommand,
+  checkHostsCoverage,
+  checkHostsCoverDetailedClients,
+  checkHostKinds,
 } from './validate-client-list.js';
 
 // A small, self-consistent 4-client fixture (3 detailed — 2 given their own
@@ -266,6 +272,167 @@ describe('checkAgentsMd', () => {
   });
 });
 
+// --- HOSTS table fixtures -------------------------------------------------
+//
+// Shaped like the real INSTALL_CLIENTS entries, including the full raw
+// GitHub URL, because that URL contains the literal substring "skills/" for
+// every client — the thing that made the first draft of the mechanism
+// matcher classify instruction-file hosts as ambiguous.
+const RAW = 'https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md';
+
+const INSTALL_CLIENTS_FIXTURE = [
+  { id: 'claude-code', cmd: '/plugin marketplace add undercutsh/firstpass' },
+  { id: 'cursor', cmd: 'mkdir -p .cursor/skills && cp -r firstpass/skills/firstpass ./.cursor/skills/firstpass' },
+  { id: 'copilot', cmd: `mkdir -p .github && curl -fsSL ${RAW} >> .github/copilot-instructions.md` },
+];
+
+const HOSTS_FIXTURE = {
+  'claude-code': { label: 'Claude Code', kind: 'skill-discovering', note: '' },
+  cursor: { label: 'Cursor', kind: 'skill-discovering', note: '' },
+  copilot: { label: 'GitHub Copilot', kind: 'instruction-file', note: '' },
+};
+
+const HOST_KINDS_FIXTURE = {
+  'skill-discovering': { scorable: true },
+  'instruction-file': { scorable: false },
+};
+
+describe('slugToHostId / HOST_SLUG_ALIASES', () => {
+  test('passes an id through unchanged when no alias applies', () => {
+    assert.equal(slugToHostId('claude-code'), 'claude-code');
+  });
+
+  test('maps the one documented slug/id asymmetry', () => {
+    assert.equal(slugToHostId('gemini-cli'), 'gemini');
+  });
+
+  test('every alias is a real rename, not an identity entry', () => {
+    for (const [slug, id] of Object.entries(HOST_SLUG_ALIASES)) {
+      assert.notEqual(slug, id, `alias "${slug}" -> "${id}" is a no-op and should be deleted`);
+    }
+  });
+});
+
+describe('kindFromInstallCommand', () => {
+  test('a skills-directory install is skill-discovering', () => {
+    assert.equal(kindFromInstallCommand('mkdir -p .junie/skills && cp -r firstpass/skills/firstpass ./.junie/skills/firstpass'), 'skill-discovering');
+    assert.equal(kindFromInstallCommand('npx skills add undercutsh/firstpass -a codex'), 'skill-discovering');
+    assert.equal(kindFromInstallCommand('/plugin marketplace add undercutsh/firstpass'), 'skill-discovering');
+  });
+
+  test('an append-to-instruction-file install is instruction-file', () => {
+    assert.equal(kindFromInstallCommand(`mkdir -p .gemini && curl -fsSL ${RAW} >> .gemini/GEMINI.md`), 'instruction-file');
+    assert.equal(kindFromInstallCommand(`echo "" >> AGENTS.md && curl -fsSL ${RAW} >> AGENTS.md`), 'instruction-file');
+  });
+
+  test('the source URL never decides the mechanism (regression: "skills/" is in every raw URL)', () => {
+    // Both commands fetch from a path containing "skills/"; only the
+    // destination differs, and only the destination may classify.
+    assert.equal(kindFromInstallCommand(`curl -fsSL ${RAW} >> .github/copilot-instructions.md`), 'instruction-file');
+    assert.equal(kindFromInstallCommand(`curl -fsSL ${RAW} -o .claude/skills/firstpass/SKILL.md`), 'skill-discovering');
+  });
+
+  test('returns null for an unrecognised mechanism rather than guessing', () => {
+    assert.equal(kindFromInstallCommand('brew install cursor-undercut-policy'), null);
+    assert.equal(kindFromInstallCommand(''), null);
+  });
+
+  test('returns null when a command looks like both mechanisms at once', () => {
+    assert.equal(kindFromInstallCommand('cp -r x ./.claude/skills/firstpass && cat y >> AGENTS.md'), null);
+  });
+});
+
+describe('checkHostsCoverage', () => {
+  test('zero errors when HOSTS and INSTALL_CLIENTS agree exactly', () => {
+    assert.deepEqual(checkHostsCoverage(HOSTS_FIXTURE, INSTALL_CLIENTS_FIXTURE), []);
+  });
+
+  test('catches an install client that nobody classified in HOSTS', () => {
+    const { copilot, ...missingCopilot } = HOSTS_FIXTURE;
+    const errors = checkHostsCoverage(missingCopilot, INSTALL_CLIENTS_FIXTURE);
+    assert.equal(errors.length, 1);
+    assert.match(errors[0], /install client "copilot".*not classified/s);
+  });
+
+  test('catches a HOSTS entry that is no longer an install client (rename or typo)', () => {
+    const errors = checkHostsCoverage({ ...HOSTS_FIXTURE, cursorr: { kind: 'skill-discovering' } }, INSTALL_CLIENTS_FIXTURE);
+    assert.equal(errors.length, 1);
+    assert.match(errors[0], /host "cursorr".*not an install client/s);
+    assert.match(errors[0], /its own stratum/);
+  });
+});
+
+describe('checkHostsCoverDetailedClients', () => {
+  const clients = [
+    { slug: 'claude-code', detailed: true },
+    { slug: 'gemini-cli', detailed: true },
+    { slug: 'zed', detailed: false },
+  ];
+
+  test('a detailed client reaches HOSTS through the documented alias', () => {
+    const hosts = { 'claude-code': { kind: 'skill-discovering' }, gemini: { kind: 'instruction-file' } };
+    assert.deepEqual(checkHostsCoverDetailedClients(hosts, clients), []);
+  });
+
+  test('catches a detailed client with no HOSTS entry', () => {
+    const errors = checkHostsCoverDetailedClients({ 'claude-code': { kind: 'skill-discovering' } }, clients);
+    assert.equal(errors.length, 1);
+    assert.match(errors[0], /"gemini-cli".*no HOSTS entry "gemini"/s);
+  });
+
+  test('does NOT require the additional (detailed: false) clients — the documented exemption', () => {
+    // 24 clients in the real manifest have companion pages but no install
+    // picker entry, so there is no mechanism to derive a kind from. Demanding
+    // them here would be demanding false equality.
+    const hosts = { 'claude-code': { kind: 'skill-discovering' }, gemini: { kind: 'instruction-file' } };
+    assert.deepEqual(checkHostsCoverDetailedClients(hosts, clients), []);
+    assert.ok(!Object.hasOwn(hosts, 'zed'));
+  });
+});
+
+describe('checkHostKinds', () => {
+  test('zero errors when every declared kind matches its install mechanism', () => {
+    assert.deepEqual(checkHostKinds(HOSTS_FIXTURE, HOST_KINDS_FIXTURE, INSTALL_CLIENTS_FIXTURE), []);
+  });
+
+  test('catches the dangerous case: an instruction-file host declared skill-discovering', () => {
+    const hosts = { ...HOSTS_FIXTURE, copilot: { ...HOSTS_FIXTURE.copilot, kind: 'skill-discovering' } };
+    const errors = checkHostKinds(hosts, HOST_KINDS_FIXTURE, INSTALL_CLIENTS_FIXTURE);
+    assert.equal(errors.length, 1);
+    assert.match(errors[0], /kind mismatch for "copilot"/);
+    assert.match(errors[0], /is the instruction-file mechanism/);
+  });
+
+  test('catches the reverse: a skills-directory host declared instruction-file', () => {
+    const hosts = { ...HOSTS_FIXTURE, cursor: { ...HOSTS_FIXTURE.cursor, kind: 'instruction-file' } };
+    const errors = checkHostKinds(hosts, HOST_KINDS_FIXTURE, INSTALL_CLIENTS_FIXTURE);
+    assert.equal(errors.length, 1);
+    assert.match(errors[0], /kind mismatch for "cursor"/);
+  });
+
+  test('fails loudly on an unrecognised mechanism instead of passing it', () => {
+    const clients = INSTALL_CLIENTS_FIXTURE.map((c) =>
+      c.id === 'cursor' ? { ...c, cmd: 'brew install cursor-undercut-policy' } : c
+    );
+    const errors = checkHostKinds(HOSTS_FIXTURE, HOST_KINDS_FIXTURE, clients);
+    assert.equal(errors.length, 1);
+    assert.match(errors[0], /kind unverifiable for "cursor"/);
+    assert.match(errors[0], /teach kindFromInstallCommand/);
+  });
+
+  test('catches a kind that is not a declared HOST_KINDS key', () => {
+    const hosts = { ...HOSTS_FIXTURE, cursor: { ...HOSTS_FIXTURE.cursor, kind: 'skill-discovery' } };
+    const errors = checkHostKinds(hosts, HOST_KINDS_FIXTURE, INSTALL_CLIENTS_FIXTURE);
+    assert.equal(errors.length, 1);
+    assert.match(errors[0], /not a key of HOST_KINDS/);
+  });
+
+  test('stays quiet about a host with no install client — checkHostsCoverage owns that error', () => {
+    const hosts = { ...HOSTS_FIXTURE, devin: { kind: 'skill-discovering' } };
+    assert.deepEqual(checkHostKinds(hosts, HOST_KINDS_FIXTURE, INSTALL_CLIENTS_FIXTURE), []);
+  });
+});
+
 describe('checkAll (integration)', () => {
   test('zero errors when every source matches the manifest', () => {
     const errors = checkAll({
@@ -277,6 +444,51 @@ describe('checkAll (integration)', () => {
       agents: GOOD_AGENTS_MD,
     });
     assert.deepEqual(errors, []);
+  });
+
+  test('skips the HOSTS section when the caller passes no table, rather than passing it vacuously', () => {
+    // GOOD_INDEX_HTML has no x-dc script, so attempting the HOSTS section
+    // would throw. The section is opt-in for exactly that reason; main()
+    // always opts in (covered by the CLI-level check in CI).
+    const errors = checkAll({
+      manifest: { clients: CLIENTS },
+      diskSlugs: ['claude-code', 'cursor', 'devin', 'windsurf'],
+      indexHtml: GOOD_INDEX_HTML,
+      llmsTxt: GOOD_LLMS_TXT,
+      readme: GOOD_README,
+      agents: GOOD_AGENTS_MD,
+    });
+    assert.deepEqual(errors, []);
+  });
+
+  test('runs the HOSTS section end to end when the tables are passed in', () => {
+    const indexWithXdc =
+      GOOD_INDEX_HTML +
+      `\n<script type="text/x-dc">\nconst INSTALL_CLIENTS = ${JSON.stringify(
+        CLIENTS.filter((c) => c.detailed).map((c) => ({
+          id: c.slug,
+          cmd: `mkdir -p .x/skills && cp -r firstpass/skills/firstpass ./.x/skills/firstpass # ${c.slug}`,
+        }))
+      )};\n</script>\n`;
+    const hosts = Object.fromEntries(
+      CLIENTS.filter((c) => c.detailed).map((c) => [c.slug, { label: c.labels.faq, kind: 'skill-discovering', note: '' }])
+    );
+    const base = {
+      manifest: { clients: CLIENTS },
+      diskSlugs: ['claude-code', 'cursor', 'devin', 'windsurf'],
+      indexHtml: indexWithXdc,
+      llmsTxt: GOOD_LLMS_TXT,
+      readme: GOOD_README,
+      agents: GOOD_AGENTS_MD,
+      hostKinds: HOST_KINDS_FIXTURE,
+    };
+    assert.deepEqual(checkAll({ ...base, hosts }), []);
+
+    // And it actually bites through checkAll, not just in isolation.
+    const { devin, ...withoutDevin } = hosts;
+    const errors = checkAll({ ...base, hosts: withoutDevin });
+    assert.ok(errors.length > 0);
+    assert.ok(errors.every((e) => /HOSTS/.test(e)));
   });
 
   test('a single drifted source (llms.txt missing a client) is caught without disturbing the others', () => {
