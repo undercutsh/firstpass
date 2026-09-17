@@ -5,6 +5,12 @@
 //   node src/main.js --mock                   run with the mock LLM (no key, plumbing check)
 //   node src/main.js --effort high             apply one reasoning-effort level (low|medium|high) to every tier
 //   node src/main.js --effort-by-tier frontier:high,apex:high   apply effort per tier (unlisted tiers use provider default)
+//   node src/main.js --selfactivation         print the self-activation protocol (every prompt, both conditions)
+//   node src/main.js --selfactivation-init <file> --selfactivation-host claude-code --selfactivation-install-shape skill-only
+//                                             scaffold a results file already labelled with the host and install
+//                                             shape it will be run under (both optional; an unlabelled scaffold is
+//                                             correctly unscorable and says so)
+//   node src/main.js --selfactivation-report <file>   rates per (host x install shape) from a filled-in file
 
 import { VENDORS, ARMS, DEFAULT_SEEDS, TIER_ORDER } from './config.js';
 import { hasKey, verifyModels, chat } from './llm.js';
@@ -13,6 +19,8 @@ import { createPolicy } from './policy.js';
 import { runFlagTest, printFlagReport } from './flagtest.js';
 import {
   scaffoldResults,
+  scorableHostIds,
+  installShapeIds,
   validateResults,
   summarizeSelfActivation,
   printSelfActivationTasks,
@@ -34,7 +42,7 @@ const SUITES = { code: codeSuite, reasoning: reasoningSuite, mechanical: mechani
 const RESULTS_DIR = path.join(import.meta.dirname, '..', 'results');
 
 function parseArgs(argv) {
-  const a = { smoke: false, verifyOnly: false, mock: false, flagtest: false, seeds: null, vendors: null, arms: null, suites: null, policy: 'latest', compare: null, baseline: null, dispatcher: 'cheap', benchmark: null, selfactivation: false, selfactivationInit: null, selfactivationReport: null, selfactivationN: 10, effort: null, effortByTier: null };
+  const a = { smoke: false, verifyOnly: false, mock: false, flagtest: false, seeds: null, vendors: null, arms: null, suites: null, policy: 'latest', compare: null, baseline: null, dispatcher: 'cheap', benchmark: null, selfactivation: false, selfactivationInit: null, selfactivationReport: null, selfactivationN: 10, selfactivationHost: null, selfactivationInstallShape: null, effort: null, effortByTier: null };
   for (let i = 0; i < argv.length; i++) {
     switch (argv[i]) {
       case '--smoke': a.smoke = true; break;
@@ -45,6 +53,12 @@ function parseArgs(argv) {
       case '--selfactivation-init': a.selfactivationInit = argv[++i]; break;
       case '--selfactivation-report': a.selfactivationReport = argv[++i]; break;
       case '--selfactivation-n': a.selfactivationN = Number(argv[++i]); break;
+      // Pass-through only. selfactivation.js's scaffoldResults is the single
+      // validator for these (closed HOSTS / INSTALL_SHAPES maps, and it
+      // refuses an instruction-file host outright) — duplicating that check
+      // here would give us two places to disagree about what a host is.
+      case '--selfactivation-host': a.selfactivationHost = argv[++i]; break;
+      case '--selfactivation-install-shape': a.selfactivationInstallShape = argv[++i]; break;
       case '--seeds': a.seeds = Number(argv[++i]); break;
       case '--vendors': a.vendors = argv[++i].split(','); break;
       case '--arms': a.arms = argv[++i].split(','); break;
@@ -130,13 +144,46 @@ async function main() {
   //   --selfactivation                 print the protocol + every prompt
   //   --selfactivation-init <file>     scaffold a blank results file (all
   //                                    trials `activated: null`, i.e. pending)
+  //     --selfactivation-host <id>           label every trial with the host it
+  //                                          will run on (a HOSTS id)
+  //     --selfactivation-install-shape <id>  label every trial with the install
+  //                                          shape it will run under
+  //                                          (skill-only | skill-plus-hook)
   //   --selfactivation-report <file>   compute rates from a FILLED-IN file
+  //
+  // The two label flags are OPTIONAL but not defaultable. An unlabelled
+  // scaffold is a legitimate artifact -- you may want the prompts before you
+  // have decided which host to run them on -- and it is *correctly* unscorable:
+  // summarizeSelfActivation excludes an unlabelled trial from every numerator
+  // and denominator, because a rate whose install shape is unknown is not a
+  // rate. So this never invents a label; it either stamps the one you gave
+  // (validated by scaffoldResults, which throws on an unknown id or an
+  // instruction-file host) or leaves null and says out loud that the file is
+  // not yet scorable. The trap being closed is silence, not absence.
   if (args.selfactivationInit) {
-    const scaffold = scaffoldResults({ n: args.selfactivationN });
+    const scaffold = scaffoldResults({
+      n: args.selfactivationN,
+      host: args.selfactivationHost,
+      installShape: args.selfactivationInstallShape,
+    });
     mkdirSync(path.dirname(path.resolve(args.selfactivationInit)), { recursive: true });
     writeFileSync(args.selfactivationInit, JSON.stringify(scaffold, null, 2));
     console.log(`Scaffolded ${scaffold.trials.length} pending trials (${scaffold.meta.tasks} tasks × 2 conditions × ${args.selfactivationN} trials) to ${args.selfactivationInit}`);
     console.log('Every trial starts activated: null. Fill in true/false + evidence per evals/self-activation/README.md before running --selfactivation-report.');
+    if (scaffold.meta.host && scaffold.meta.installShape) {
+      console.log(`Labelled: host=${scaffold.meta.host} (${scaffold.meta.hostKind}), installShape=${scaffold.meta.installShape}.`);
+    } else {
+      const missing = [
+        scaffold.meta.host ? null : '--selfactivation-host <id>',
+        scaffold.meta.installShape ? null : '--selfactivation-install-shape <id>',
+      ].filter(Boolean);
+      console.log(
+        `\n⚠ NOT SCORABLE YET: ${missing.join(' and ')} ${missing.length > 1 ? 'were' : 'was'} not given, so every trial is unlabelled ` +
+          '(host/installShape null). Unlabelled trials are excluded from every rate -- not scored as misses, not scored at all. ' +
+          `Re-run with ${missing.join(' ')} (hosts: ${scorableHostIds().join(', ')}; shapes: ${installShapeIds().join(', ')}), ` +
+          'or set the fields in the JSON before reporting.'
+      );
+    }
     return;
   }
   if (args.selfactivationReport) {

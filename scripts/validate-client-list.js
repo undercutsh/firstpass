@@ -24,6 +24,36 @@
 // scripts/validate-dc-drift.js for why generating hand-written prose from
 // data is a worse trade here than just catching drift at review time.
 //
+// A fifth location, added later, is code rather than prose:
+//
+//   5. evals/src/selfactivation.js's HOSTS table, which classifies each
+//      primary install client as 'skill-discovering' (the host matches
+//      SKILL.md's description: and decides per session whether to load it)
+//      or 'instruction-file' (the documented install appends the policy to
+//      a file the host loads unconditionally). The self-activation harness
+//      uses that classification to decide which hosts a rate exists for at
+//      all, and refuses an id it does not know.
+//
+// THE EXACT FAILURE MODE DEFENDED (5): a new primary client lands in
+// site/clients.json + site/index.html's INSTALL_CLIENTS picker, and nobody
+// adds it to HOSTS. Two ways that bites, both silent until someone is
+// already running trials:
+//
+//   - The harness throws "unknown host" for a client the product documents
+//     as supported, so the operator either guesses a neighbouring id or
+//     leaves the trial unlabelled (and unlabelled trials are excluded from
+//     every rate, so a whole sweep can quietly score nothing).
+//   - Worse: a client IS in HOSTS but with the wrong `kind`. An
+//     instruction-file host misclassified as skill-discovering gets a
+//     published self-activation percentage for a mechanism that has no
+//     matcher to measure — a fabricated number with real provenance
+//     attached. Nothing else in the repo would catch that.
+//
+// The HOSTS table carried only a "keep this in sync" comment, which is
+// exactly the convention-not-construction problem the rest of this file
+// exists to remove. checkHosts* below encode the real invariants instead.
+// See "What the HOSTS checks do and do not assert" above checkHostsCoverage.
+//
 // Usage:
 //   node scripts/validate-client-list.js          # print a report
 //   node scripts/validate-client-list.js --check  # exit 1 on any drift
@@ -35,8 +65,12 @@
 // touches the filesystem or process.exit.
 
 import { readFileSync, readdirSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import path from 'node:path';
+// Reused rather than reimplemented: the sibling guard already parses the
+// x-dc script's first-party JS object literals, and a second copy of that
+// logic here is one more thing to drift.
+import { extractDcScript, extractArrayLiteral } from './validate-dc-drift.js';
 
 // Non-companion pages that live in site/*.html but aren't per-agent
 // companion pages, so they're never expected in clients.json. Mirrors the
@@ -325,10 +359,174 @@ export function checkAgentsMd(agents, clients) {
 }
 
 // ---------------------------------------------------------------------------
+// 5. evals/src/selfactivation.js's HOSTS table vs the install clients
+// ---------------------------------------------------------------------------
+
+// Companion-page slug -> install-client/HOSTS id, for the cases where the two
+// id spaces legitimately disagree. site/<slug>.html is a URL and reads as a
+// product name ("gemini-cli"); the install picker and HOSTS use the shorter
+// key the rest of the tooling passes around ("gemini"). Neither is wrong, so
+// the mapping is declared rather than one side being bent to the other.
+export const HOST_SLUG_ALIASES = Object.freeze({
+  'gemini-cli': 'gemini',
+});
+
+export function slugToHostId(slug) {
+  return HOST_SLUG_ALIASES[slug] ?? slug;
+}
+
+// Install-command shapes that are *evidence* of a host kind. Deliberately
+// narrow: each pattern describes a mechanism, not a vendor.
+//
+// URLs are stripped before matching, and that is load-bearing rather than
+// tidiness. Every curl-based install fetches the policy from
+// .../main/skills/firstpass/SKILL.md — so the literal string "skills/"
+// appears in the command of instruction-file hosts too, and matching it raw
+// made all three of them look like both mechanisms at once. The install
+// *destination* is what identifies the mechanism; the source URL is the same
+// for everyone. (Caught by running this check against the real repo before
+// committing it, which is the only reason it isn't shipped as a guard that
+// fires on correct content.)
+const URL_RE = /\bhttps?:\/\/\S+/g;
+const APPEND_TO_INSTRUCTION_FILE = /(^|\s)>>\s*\S+\.md\b/; // `... >> AGENTS.md`
+const INSTALLS_INTO_SKILLS = /npx skills add|\/plugin marketplace add|[\w.]+\/skills\b/;
+
+/**
+ * What an install command implies about the host's kind, or null when the
+ * command matches neither shape (or both) and the classification therefore
+ * cannot be derived. Exported so the tests can pin the mechanism mapping
+ * without going through a whole fixture.
+ */
+export function kindFromInstallCommand(cmd) {
+  const destination = String(cmd).replace(URL_RE, ' ');
+  const appends = APPEND_TO_INSTRUCTION_FILE.test(destination);
+  const skills = INSTALLS_INTO_SKILLS.test(destination);
+  if (appends && !skills) return 'instruction-file';
+  if (skills && !appends) return 'skill-discovering';
+  return null;
+}
+
+// WHAT THE HOSTS CHECKS DO AND DO NOT ASSERT
+//
+// Asserted (the real invariant):
+//   a. Every id in site/index.html's INSTALL_CLIENTS picker is classified in
+//      HOSTS, and every id in HOSTS is one of those clients. The picker is
+//      the set of install paths the product documents per host, and HOSTS'
+//      whole job is to say what a self-activation rate means for each of
+//      them — so on this set the two must correspond exactly.
+//   b. Every `detailed: true` client in site/clients.json reaches a HOSTS id
+//      (through HOST_SLUG_ALIASES). This is the earlier tripwire: a primary
+//      client usually lands in the manifest and its companion page before
+//      anyone touches the evals harness.
+//   c. Each host's declared `kind` agrees with the mechanism its install
+//      command actually uses (kindFromInstallCommand). A wrong kind is the
+//      dangerous case — it is the one that yields a published number for a
+//      mechanism that cannot produce one.
+//
+// NOT asserted, deliberately:
+//   - The 24 `detailed: false` "additional clients" are NOT required to be
+//     in HOSTS. They have companion pages but no entry in the install
+//     picker, so the repo does not document a per-host install mechanism for
+//     them — there is nothing to derive a `kind` from, and inventing one to
+//     satisfy a guard is exactly the failure this check exists to prevent.
+//     If someone wants to run trials on one, the harness refuses the id
+//     loudly (`unknown host`), which is the safe failure: the fix is to
+//     classify it deliberately, not to have been guessed at in advance.
+//   - Labels/notes are not compared. HOSTS' label is a display string for a
+//     report heading ("Windsurf / generic AGENTS.md"); the picker's is UI
+//     copy. Requiring them to match would be demanding false equality on
+//     two things that legitimately read differently.
+//   - HOSTS is not required to cover every id in *other* arrays in
+//     index.html (the calculator's vendor ids and so on). Only
+//     INSTALL_CLIENTS is the install-path list.
+
+export function checkHostsCoverage(hosts, installClients) {
+  const errors = [];
+  const hostIds = Object.keys(hosts);
+  const clientIds = installClients.map((c) => c.id);
+
+  for (const id of clientIds) {
+    if (!Object.hasOwn(hosts, id)) {
+      errors.push(
+        `HOSTS drift: install client "${id}" is in site/index.html's INSTALL_CLIENTS but is not classified in ` +
+          "evals/src/selfactivation.js's HOSTS. Add it with the kind its install mechanism implies " +
+          '(skill-discovering if it installs into a skills directory, instruction-file if the install appends ' +
+          'the policy to a file the host loads unconditionally) — otherwise the self-activation harness rejects ' +
+          'the id as unknown for a client the product documents as supported.'
+      );
+    }
+  }
+  for (const id of hostIds) {
+    if (!clientIds.includes(id)) {
+      errors.push(
+        `HOSTS drift: host "${id}" is classified in evals/src/selfactivation.js's HOSTS but is not an install ` +
+          "client in site/index.html's INSTALL_CLIENTS. Either the client was renamed/removed from the picker " +
+          '(drop or rename the HOSTS entry) or the id is a typo, which would silently become its own stratum ' +
+          'in a self-activation report.'
+      );
+    }
+  }
+  return errors;
+}
+
+export function checkHostsCoverDetailedClients(hosts, clients) {
+  const errors = [];
+  for (const client of clients.filter((c) => c.detailed)) {
+    const id = slugToHostId(client.slug);
+    if (!Object.hasOwn(hosts, id)) {
+      errors.push(
+        `HOSTS drift: site/clients.json lists "${client.slug}" as a detailed (primary) client, but no HOSTS ` +
+          `entry "${id}" exists in evals/src/selfactivation.js. Add it, or — if the slug and the install id ` +
+          'legitimately differ — add the mapping to HOST_SLUG_ALIASES in scripts/validate-client-list.js ' +
+          'with the reason.'
+      );
+    }
+  }
+  return errors;
+}
+
+export function checkHostKinds(hosts, hostKinds, installClients) {
+  const errors = [];
+  const byId = new Map(installClients.map((c) => [c.id, c]));
+  for (const [id, host] of Object.entries(hosts)) {
+    if (!Object.hasOwn(hostKinds, host.kind)) {
+      errors.push(
+        `HOSTS drift: host "${id}" declares kind "${host.kind}", which is not a key of HOST_KINDS ` +
+          `(${Object.keys(hostKinds).join(', ')}). The report code indexes HOST_KINDS by this value.`
+      );
+      continue;
+    }
+    const client = byId.get(id);
+    if (!client) continue; // already reported by checkHostsCoverage
+    const implied = kindFromInstallCommand(client.cmd);
+    if (implied === null) {
+      errors.push(
+        `HOSTS kind unverifiable for "${id}": its INSTALL_CLIENTS command does not match either recognised ` +
+          `mechanism, so this check cannot confirm the declared kind "${host.kind}".\n    cmd: ${client.cmd}\n` +
+          '    Resolve it deliberately: confirm the kind by hand, then teach kindFromInstallCommand the new ' +
+          'mechanism in scripts/validate-client-list.js. This fails rather than passes because a wrong kind ' +
+          'publishes a self-activation rate for a mechanism that has no matcher to measure.'
+      );
+      continue;
+    }
+    if (implied !== host.kind) {
+      errors.push(
+        `HOSTS kind mismatch for "${id}": HOSTS declares "${host.kind}", but its documented install command ` +
+          `is the ${implied} mechanism.\n    cmd: ${client.cmd}\n    A host whose install appends the policy to ` +
+          'an instruction file has no matcher, so its self-activation rate is undefined, not measurable; a host ' +
+          'that installs into a skills directory does have a matcher and must not be excluded from the ' +
+          'denominator. Fix whichever of the two is wrong.'
+      );
+    }
+  }
+  return errors;
+}
+
+// ---------------------------------------------------------------------------
 // Orchestration — pure, given every source string + the parsed manifest.
 // ---------------------------------------------------------------------------
 
-export function checkAll({ manifest, diskSlugs, indexHtml, llmsTxt, readme, agents }) {
+export function checkAll({ manifest, diskSlugs, indexHtml, llmsTxt, readme, agents, hosts, hostKinds }) {
   const clients = manifest.clients;
   const errors = [];
   const manifestSlugs = clients.map((c) => c.slug).sort();
@@ -344,6 +542,16 @@ export function checkAll({ manifest, diskSlugs, indexHtml, llmsTxt, readme, agen
   errors.push(...checkReadme(readme, clients));
   errors.push(...checkAgentsMd(agents, clients));
 
+  // The HOSTS checks need the evals table passed in; callers that don't have
+  // it (older fixtures) skip this section rather than get a spurious pass —
+  // main() always passes it, and a test asserts that.
+  if (hosts && hostKinds) {
+    const installClients = extractArrayLiteral(extractDcScript(indexHtml), 'INSTALL_CLIENTS', { bareConst: true });
+    errors.push(...checkHostsCoverage(hosts, installClients));
+    errors.push(...checkHostsCoverDetailedClients(hosts, clients));
+    errors.push(...checkHostKinds(hosts, hostKinds, installClients));
+  }
+
   return errors;
 }
 
@@ -351,7 +559,7 @@ export function checkAll({ manifest, diskSlugs, indexHtml, llmsTxt, readme, agen
 // main() — filesystem + CLI, only runs when invoked directly.
 // ---------------------------------------------------------------------------
 
-function main() {
+async function main() {
   const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
   const siteDir = path.join(repoRoot, 'site');
 
@@ -366,7 +574,22 @@ function main() {
   const readme = readFileSync(path.join(repoRoot, 'README.md'), 'utf8');
   const agents = readFileSync(path.join(repoRoot, 'AGENTS.md'), 'utf8');
 
-  const errors = checkAll({ manifest, diskSlugs, indexHtml, llmsTxt, readme, agents });
+  // Imported, not parsed: HOSTS/HOST_KINDS are the live exported tables, so
+  // this guard can never disagree with what the harness actually uses.
+  const { HOSTS, HOST_KINDS } = await import(
+    pathToFileURL(path.join(repoRoot, 'evals', 'src', 'selfactivation.js')).href
+  );
+
+  const errors = checkAll({
+    manifest,
+    diskSlugs,
+    indexHtml,
+    llmsTxt,
+    readme,
+    agents,
+    hosts: HOSTS,
+    hostKinds: HOST_KINDS,
+  });
 
   const checkOnly = process.argv.includes('--check');
 
@@ -374,7 +597,8 @@ function main() {
     console.log(
       `Client list is in sync: ${clients.length} companion pages (${detailedClients.length} detailed + ` +
       `${additionalClients.length} additional) match site/clients.json, site/index.html's FAQ ` +
-      `(JSON-LD + x-dc), site/llms.txt, README.md, and AGENTS.md.`
+      `(JSON-LD + x-dc), site/llms.txt, README.md, AGENTS.md, and evals/src/selfactivation.js's ` +
+      `HOSTS table (${Object.keys(HOSTS).length} hosts classified, kinds cross-checked against their install commands).`
     );
     process.exit(0);
   }
@@ -390,5 +614,8 @@ function main() {
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
-  main();
+  main().catch((e) => {
+    console.error(`validate-client-list.js: ${e.message}`);
+    process.exit(1);
+  });
 }
