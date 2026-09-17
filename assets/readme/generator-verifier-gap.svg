@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 300" width="720" height="300" role="img" aria-label="The generator-verifier gap. For mechanically verifiable output, generating a correct answer is expensive but checking one is cheap, so the policy is to attempt at the cheapest tier and escalate only when verification fails. For unverifiable judgment work there is no mechanical check, so the work starts at the tier you would trust.">
+  <title>The generator–verifier gap</title>
+  <rect x="0" y="0" width="720" height="300" rx="10" fill="#f9f8f6" stroke="#d4d0cb" stroke-width="1"/>
+
+  <!-- column divider: the two cases are mutually exclusive, so a hard rule -->
+  <line x1="360" y1="24" x2="360" y2="276" stroke="#d4d0cb" stroke-width="1"/>
+
+  <!-- ── left: verifiable ───────────────────────────────────────────── -->
+  <text x="24" y="42" font-family="Menlo,Consolas,monospace" font-size="13" font-weight="700" fill="#00959c">OUTPUT IS MECHANICALLY VERIFIABLE</text>
+  <text x="24" y="62" font-family="Menlo,Consolas,monospace" font-size="11.5" fill="#6e7278">tests · schema · a diff · exact match</text>
+
+  <text x="24" y="92" font-family="Menlo,Consolas,monospace" font-size="11" fill="#6e7278">cost to generate a correct answer</text>
+  <rect x="24" y="100" width="312" height="34" rx="3" fill="none" stroke="#13161b" stroke-width="2.5"/>
+  <text x="36" y="122" font-family="Menlo,Consolas,monospace" font-size="13" fill="#13161b">expensive · uncertain</text>
+
+  <text x="24" y="160" font-family="Menlo,Consolas,monospace" font-size="11" fill="#6e7278">cost to check one</text>
+  <rect x="24" y="168" width="46" height="30" rx="3" fill="none" stroke="#00959c" stroke-width="2.5"/>
+  <text x="80" y="188" font-family="Menlo,Consolas,monospace" font-size="13" fill="#00959c">cheap · certain</text>
+
+  <!-- the gap itself, bracketed between the two bar lengths -->
+  <path d="M70 208 V216 H336 V208" fill="none" stroke="#c26e12" stroke-width="1.5"/>
+  <text x="203" y="234" font-family="Menlo,Consolas,monospace" font-size="12" font-weight="700" text-anchor="middle" fill="#c26e12">the gap</text>
+
+  <line x1="24" y1="246" x2="336" y2="246" stroke="#d4d0cb" stroke-width="1"/>
+  <text x="24" y="266" font-family="Menlo,Consolas,monospace" font-size="12.5" fill="#4a4e57">attempt cheap → verify → escalate on failure</text>
+
+  <!-- ── right: unverifiable ────────────────────────────────────────── -->
+  <text x="384" y="42" font-family="Menlo,Consolas,monospace" font-size="13" font-weight="700" fill="#6e7278">NOTHING TO CHECK AGAINST</text>
+  <text x="384" y="62" font-family="Menlo,Consolas,monospace" font-size="11.5" fill="#6e7278">taste · ownership · judgment calls</text>
+
+  <text x="384" y="92" font-family="Menlo,Consolas,monospace" font-size="11" fill="#6e7278">cost to generate a correct answer</text>
+  <rect x="384" y="100" width="312" height="34" rx="3" fill="none" stroke="#13161b" stroke-width="2.5"/>
+  <text x="396" y="122" font-family="Menlo,Consolas,monospace" font-size="13" fill="#13161b">expensive · uncertain</text>
+
+  <text x="384" y="160" font-family="Menlo,Consolas,monospace" font-size="11" fill="#6e7278">cost to check one</text>
+  <rect x="384" y="168" width="312" height="30" rx="3" fill="none" stroke="#6e7278" stroke-width="2" stroke-dasharray="4 4"/>
+  <text x="396" y="188" font-family="Menlo,Consolas,monospace" font-size="13" fill="#6e7278">no mechanical check exists</text>
+
+  <text x="540" y="234" font-family="Menlo,Consolas,monospace" font-size="12" font-weight="700" text-anchor="middle" fill="#6e7278">no gap to exploit</text>
+
+  <line x1="384" y1="246" x2="696" y2="246" stroke="#d4d0cb" stroke-width="1"/>
+  <text x="384" y="266" font-family="Menlo,Consolas,monospace" font-size="12.5" fill="#4a4e57">start at the tier you would trust</text>
+</svg>
