@@ -88,7 +88,7 @@ jobs:
       - name: Policy parity (probe vs v1 vs latest sanity)
         run: node src/main.js --mock --seeds 1 --policy probe
         working-directory: evals
-      - name: Lint @undercut/cli (syntax check)
+      - name: Lint @undercutsh/cli (syntax check)
         run: npm run lint
         working-directory: cli
       - name: Unit/integration tests (login.js callback server, sync.js cache)

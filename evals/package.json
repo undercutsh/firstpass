@@ -1,5 +1,5 @@
 {
-  "name": "@undercut/evals",
+  "name": "@undercutsh/evals",
   "version": "1.0.0",
   "type": "module",
   "description": "A/B eval harness for the tiered-dispatch skill (all-frontier vs all-standard vs tiered routing, per vendor, on deterministically-graded task suites), publishing its confidence-interval / significance-testing module (wilsonInterval, newcombeDiffInterval, seedBootstrapCI, summarizeWithCI) as this package's public API. See README.md's \"Public API\" and \"Consumed by the private backend\" sections.",

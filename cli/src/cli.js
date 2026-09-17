@@ -10,7 +10,7 @@ export function buildProgram() {
   const program = new Command();
 
   program
-    .name("undercut")
+    .name("undercutsh")
     .description(
       "Undercut Pro CLI — pair this machine, sync your policy, check status, log out."
     )

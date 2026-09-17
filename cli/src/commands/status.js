@@ -29,7 +29,7 @@ export async function status() {
   if (!credentials) {
     console.log("Connection state: not paired");
     console.log("");
-    console.log("Run `undercut login` to pair this machine, then `undercut sync`.");
+    console.log("Run `undercutsh login` to pair this machine, then `undercutsh sync`.");
     console.log("Until then, dispatch uses the free static model map (models.md).");
     return;
   }
@@ -41,7 +41,7 @@ export async function status() {
 
   if (!policy) {
     console.log("Policy: not synced yet");
-    console.log("Run `undercut sync` to fetch it.");
+    console.log("Run `undercutsh sync` to fetch it.");
     return;
   }
 
@@ -54,13 +54,13 @@ export async function status() {
   console.log(`  Channel:         ${policy.channel ?? "unknown"}`);
   console.log(`  Policy version:  ${policy.policy_version ?? "unknown"}`);
   console.log(
-    `  Age:             ${age === null ? "unknown" : formatAge(age)}${stale ? " (stale — run `undercut sync`)" : ""}`
+    `  Age:             ${age === null ? "unknown" : formatAge(age)}${stale ? " (stale — run `undercutsh sync`)" : ""}`
   );
   console.log(
     `  Signature:       ${verification.verified ? "verified" : `NOT verified (${verification.reason})`}`
   );
   console.log(
-    "  Next refresh:    on next session-start hook, `undercut sync`, or CI/postinstall"
+    "  Next refresh:    on next session-start hook, `undercutsh sync`, or CI/postinstall"
   );
 
   if (!verification.verified) {

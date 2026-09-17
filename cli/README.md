@@ -1,6 +1,6 @@
-# @undercut/cli
+# @undercutsh/cli
 
-`undercut` is the command that pairs a local machine with an Undercut Pro
+`undercutsh` is the command that pairs a local machine with an Undercut Pro
 account, syncs the signed policy artifact that overrides the free static
 model map, and reports connection status. This package is a **structural
 scaffold** built ahead of the backend it talks to (`undercut-app`, the
@@ -12,17 +12,17 @@ If you're evaluating what's real here, read this file before the code.
 
 ## What's real today
 
-- **`undercut status`** — reads `~/.undercut/credentials.json` and
+- **`undercutsh status`** — reads `~/.undercut/credentials.json` and
   `~/.undercut/policy.json` and reports pairing state, policy version,
   cache age, and staleness. No network calls. Works right now.
-- **`undercut logout`** — deletes `~/.undercut/credentials.json`,
+- **`undercutsh logout`** — deletes `~/.undercut/credentials.json`,
   `policy.json`, and `policy.md`. No network calls. Works right now.
 - **File handling.** Credentials and the cached policy are written with
   `0600` permissions via `src/lib/fs-secure.js` (temp file + atomic
   rename, so a crash mid-write can't leave a truncated file). This is
   real, tested code, not a stub — see `src/lib/fs-secure.js` if you want
   to verify the permission bits yourself.
-- **The `login` control flow's shape.** `undercut login` genuinely: opens
+- **The `login` control flow's shape.** `undercutsh login` genuinely: opens
   your default browser, starts a local HTTP server on an OS-assigned
   random port, waits for a `GET /callback` on it, validates a CSRF
   `state` param, and writes whatever it receives to
@@ -35,10 +35,10 @@ If you're evaluating what's real here, read this file before the code.
 
 - **The backend it talks to does not exist.** `app.getundercut.sh` and
   `policy.getundercut.sh` are placeholder hostnames (see
-  `src/lib/config.js`). `undercut login` will open a browser to a URL
+  `src/lib/config.js`). `undercutsh login` will open a browser to a URL
   that 404s (or won't resolve at all), and will then sit waiting for a
   callback that never arrives until it times out after 5 minutes.
-  `undercut sync` fails immediately with an explicit error explaining
+  `undercutsh sync` fails immediately with an explicit error explaining
   why, rather than pretending to succeed.
 - **Signature verification is a stub.** `src/lib/verify.js`'s
   `verifyPolicySignature()` always returns `{ verified: false, reason:
@@ -73,22 +73,22 @@ needs to change once `undercut-app` ships, and nothing else should.
 
 ```
 npm install
-node bin/undercut.js --help
+node bin/undercutsh.js --help
 
-node bin/undercut.js status   # real — reads local cache
-node bin/undercut.js logout   # real — deletes local cache
-node bin/undercut.js login    # structurally real, points at a placeholder backend
-node bin/undercut.js sync     # structurally real, points at a placeholder backend
+node bin/undercutsh.js status   # real — reads local cache
+node bin/undercutsh.js logout   # real — deletes local cache
+node bin/undercutsh.js login    # structurally real, points at a placeholder backend
+node bin/undercutsh.js sync     # structurally real, points at a placeholder backend
 ```
 
-Once published, the intended entry point is `npx @undercut/cli <command>`
-per the PRD's design (`bin.undercut` in `package.json`).
+Once published, the intended entry point is `npx @undercutsh/cli <command>`
+per the PRD's design (`bin.undercutsh` in `package.json`).
 
 ## Where things live
 
 ```
 cli/
-├── bin/undercut.js          # shebang entry point
+├── bin/undercutsh.js          # shebang entry point
 ├── src/
 │   ├── cli.js                # commander program + command wiring
 │   ├── commands/

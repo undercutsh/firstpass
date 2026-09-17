@@ -9,7 +9,7 @@
 //   1. Undercut's backend signs the policy artifact with an Ed25519
 //      private key held server-side only (never in this CLI, never in
 //      undercut-app's client bundle — see PRD §5.5, "Boundary review
-//      before @undercut/cli first publishes: it must carry the public
+//      before @undercutsh/cli first publishes: it must carry the public
 //      key and verification logic and nothing about entitlement
 //      evaluation, the vetting pipeline, or cost economics").
 //   2. This CLI ships pinned with the corresponding Ed25519 *public* key
