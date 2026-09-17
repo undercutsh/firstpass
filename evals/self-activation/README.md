@@ -240,7 +240,7 @@ node src/main.js --selfactivation-init self-activation/results/run-<host>-<shape
 
 # 4. Once trials are filled in (partially-filled is fine — pending trials are
 #    excluded from the rates, not scored as failures):
-node src/main.js --selfactivation-report self-activation/results/run-<agent>-<date>.json
+node src/main.js --selfactivation-report self-activation/results/run-<host>-<shape>-<date>.json
 ```
 
 The report prints **one block per (host × install shape)**, each with Wilson
