@@ -1,13 +1,13 @@
 ---
-title: "Undercut — @undercut/cli reference"
-description: "@undercut/cli pairs a machine with Undercut Pro and syncs the signed policy file. status and logout are real today — no network calls. login and sync are structurally real but point at a backend that hasn't shipped yet. Full command reference, credential file locations, and 0600 permissions."
+title: "Undercut — @undercutsh/cli reference"
+description: "@undercutsh/cli pairs a machine with Undercut Pro and syncs the signed policy file. status and logout are real today — no network calls. login and sync are structurally real but point at a backend that hasn't shipped yet. Full command reference, credential file locations, and 0600 permissions."
 canonical: "https://getundercut.sh/cli.md"
 last-updated: "2026-09-15"
 ---
 
-# @undercut/cli
+# @undercutsh/cli
 
-> Machine-readable reference for `@undercut/cli`, the command that pairs a
+> Machine-readable reference for `@undercutsh/cli`, the command that pairs a
 > local machine with an Undercut Pro account, syncs the signed policy
 > artifact that overrides the free static model map (`models.md`), and
 > reports connection status. Source: [`cli/`](https://github.com/undercutsh/firstpass/tree/main/cli)
@@ -24,11 +24,11 @@ whether this is useful to you yet.
 
 ## Install
 
-`@undercut/cli` is **not published to npm yet** (`package.json` is marked
+`@undercutsh/cli` is **not published to npm yet** (`package.json` is marked
 `"private": true`). The intended entry point, once it ships, is:
 
 ```
-npx @undercut/cli <command>
+npx @undercutsh/cli <command>
 ```
 
 Until then, run it from a clone of the repo:
@@ -37,7 +37,7 @@ Until then, run it from a clone of the repo:
 git clone https://github.com/undercutsh/firstpass
 cd firstpass/cli
 npm install
-node bin/undercut.js <command>
+node bin/undercutsh.js <command>
 ```
 
 Requirements: Node.js ≥ 22 (see `cli/package.json`'s `engines` field). No
@@ -45,7 +45,7 @@ API key or account is needed to run `status` or `logout`.
 
 ## Commands
 
-### `undercut login`
+### `undercutsh login`
 
 Pairs this machine with your Undercut Pro account using a localhost-callback
 flow (`vercel login` / `wrangler login` style — see
@@ -55,7 +55,7 @@ random port, waits for a `GET /callback` on it, validates a CSRF `state`
 param, and writes the result to `~/.undercut/credentials.json`.
 
 ```
-$ node bin/undercut.js login
+$ node bin/undercutsh.js login
 Undercut: pairing this machine with your Pro account.
 
   Opening https://app.getundercut.sh/activate?callback_port=54213&state=…
@@ -79,7 +79,7 @@ Options: `--port <port>` forces the local callback server to a specific
 port instead of an OS-assigned one (for testing). `--code <code>` is
 reserved for a pre-bound pairing code flow and is not yet wired up.
 
-### `undercut sync`
+### `undercutsh sync`
 
 Fetches the signed policy artifact and caches it at
 `~/.undercut/policy.json` and a human-readable render at
@@ -87,7 +87,7 @@ Fetches the signed policy artifact and caches it at
 [`cli/src/commands/sync.js`](https://github.com/undercutsh/firstpass/blob/main/cli/src/commands/sync.js)).
 
 ```
-$ node bin/undercut.js sync
+$ node bin/undercutsh.js sync
 Fetching policy from https://policy.getundercut.sh/v2/pro [PLACEHOLDER — see cli/README.md]...
 sync is not wired to a real backend yet: https://policy.getundercut.sh/v2/pro does not exist. This is expected until undercut-app ships (see cli/README.md and TODOs in src/commands/sync.js).
 Falling back to the free static model map (models.md) — sync never fails a dispatch.
@@ -106,7 +106,7 @@ Options: `--if-stale` no-ops if the cached policy is still within its TTL
 token instead of reusing a paired-session credential, for CI/postinstall
 use — also not wired up yet, since it needs the same nonexistent backend.
 
-### `undercut status` — real, works today
+### `undercutsh status` — real, works today
 
 Reads the two local cache files and reports what's actually on disk. No
 network calls.
@@ -114,17 +114,17 @@ network calls.
 Not paired yet:
 
 ```
-$ node bin/undercut.js status
+$ node bin/undercutsh.js status
 Connection state: not paired
 
-Run `undercut login` to pair this machine, then `undercut sync`.
+Run `undercutsh login` to pair this machine, then `undercutsh sync`.
 Until then, dispatch uses the free static model map (models.md).
 ```
 
 Paired, with a cached (but always-unverified-today) policy:
 
 ```
-$ node bin/undercut.js status
+$ node bin/undercutsh.js status
 Connection state: paired
   Device:    my-laptop
   Paired at: 2026-09-15T04:12:33.000Z
@@ -132,7 +132,7 @@ Connection state: paired
 Policy:
   Channel:         pro
   Policy version:  3
-  Age:             2h (stale — run `undercut sync`)
+  Age:             2h (stale — run `undercutsh sync`)
   Signature:       NOT verified (stub)
 
   Unverified policy is not trusted for dispatch; falling back to models.md.
@@ -144,7 +144,7 @@ signature verification is a stub today (see below) — always reports
 `NOT verified (stub)` and tells you dispatch is falling back to the free
 static model map regardless of what's in the cache.
 
-### `undercut logout` — real, works today
+### `undercutsh logout` — real, works today
 
 Deletes `~/.undercut/credentials.json`, `~/.undercut/policy.json`, and
 `~/.undercut/policy.md`. No network calls — there's no server-side session
@@ -152,7 +152,7 @@ to invalidate yet, and even once there is, deleting the local files is
 what makes the CLI behave as logged-out regardless of server state.
 
 ```
-$ node bin/undercut.js logout
+$ node bin/undercutsh.js logout
 Removed local credentials and cached policy.
 Reverted to the free static model map (models.md).
 ```
@@ -160,7 +160,7 @@ Reverted to the free static model map (models.md).
 Running it again with nothing left to remove:
 
 ```
-$ node bin/undercut.js logout
+$ node bin/undercutsh.js logout
 Already logged out (no local credentials or policy cache found).
 ```
 
@@ -196,13 +196,13 @@ after the write completes.
 
 | | Status |
 |---|---|
-| `undercut status` | **Real.** Reads local cache, reports pairing state/policy age/staleness. No network calls. |
-| `undercut logout` | **Real.** Deletes the three cache files. No network calls. |
+| `undercutsh status` | **Real.** Reads local cache, reports pairing state/policy age/staleness. No network calls. |
+| `undercutsh logout` | **Real.** Deletes the three cache files. No network calls. |
 | File handling (`fs-secure.js`) | **Real, tested.** `0600` atomic writes, as described above. |
-| `undercut login`'s control flow | **Real shape**, placeholder backend. Local callback server, CSRF `state`, browser auto-open — all genuine. `PLACEHOLDER_ACTIVATE_URL` (`https://app.getundercut.sh/activate`) doesn't resolve. |
-| `undercut sync`'s control flow | **Real shape**, placeholder backend. Cache write, TTL check, markdown render — all genuine. `fetchPolicy()` throws on purpose; `PLACEHOLDER_POLICY_URL` (`https://policy.getundercut.sh/v2/pro`) doesn't resolve. |
+| `undercutsh login`'s control flow | **Real shape**, placeholder backend. Local callback server, CSRF `state`, browser auto-open — all genuine. `PLACEHOLDER_ACTIVATE_URL` (`https://app.getundercut.sh/activate`) doesn't resolve. |
+| `undercutsh sync`'s control flow | **Real shape**, placeholder backend. Cache write, TTL check, markdown render — all genuine. `fetchPolicy()` throws on purpose; `PLACEHOLDER_POLICY_URL` (`https://policy.getundercut.sh/v2/pro`) doesn't resolve. |
 | Signature verification | **Stub.** `verifyPolicySignature()` in `cli/src/lib/verify.js` always returns `{ verified: false, reason: "stub" }`. There is no Ed25519 signing key yet — the backend is meant to sign policy artifacts server-side and this CLI ship pinned with only the corresponding public key. Not built. |
-| npm publish | **Not done.** `package.json` is `"private": true`; `npx @undercut/cli` is the intended future entry point, not a working command today. |
+| npm publish | **Not done.** `package.json` is `"private": true`; `npx @undercutsh/cli` is the intended future entry point, not a working command today. |
 
 Every stub in the source is marked with a `TODO` comment naming exactly
 what to build and pointing at the relevant PRD section.

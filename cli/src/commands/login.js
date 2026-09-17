@@ -176,5 +176,5 @@ export async function login(opts) {
 
   await writeSecureJson(credentialsPath(), credentials);
   console.log(`Wrote credentials to ${credentialsPath()} (mode 0600).`);
-  console.log("Run `undercut sync` to fetch your policy.");
+  console.log("Run `undercutsh sync` to fetch your policy.");
 }

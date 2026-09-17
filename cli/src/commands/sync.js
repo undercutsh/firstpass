@@ -21,7 +21,7 @@ import { PLACEHOLDER_POLICY_URL, POLICY_TTL_MS } from "../lib/config.js";
 //     `GET ${PLACEHOLDER_POLICY_URL}` request, sending the short-lived
 //     access token from credentials.json in an Authorization header
 //     (PRD: "short-lived access token in header").
-//   - Handle 401 (token expired/revoked -> prompt `undercut login` again)
+//   - Handle 401 (token expired/revoked -> prompt `undercutsh login` again)
 //     and use the response's ETag for `--if-stale` conditional requests
 //     instead of only our own local TTL clock.
 //   - `--ci` should exchange a machine API key for a short-lived access
@@ -54,7 +54,7 @@ export async function sync(opts) {
   const credentials = await readJsonIfExists(credentialsPath());
   if (!credentials && !opts.ci) {
     console.error(
-      "Not paired. Run `undercut login` first (or pass --ci with a machine API key)."
+      "Not paired. Run `undercutsh login` first (or pass --ci with a machine API key)."
     );
     process.exitCode = 1;
     return;

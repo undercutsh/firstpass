@@ -1,5 +1,5 @@
 {
-  "name": "@undercut/cli",
+  "name": "@undercutsh/cli",
   "version": "0.1.0",
   "description": "Undercut Pro CLI: pair a machine, sync the signed policy artifact, check status, and log out. Most of this package is a structural scaffold — see README.md for what actually talks to a server today (nothing does yet).",
   "type": "module",
@@ -9,15 +9,15 @@
     "node": ">=22"
   },
   "bin": {
-    "undercut": "./bin/undercut.js"
+    "undercutsh": "./bin/undercutsh.js"
   },
   "files": [
     "bin",
     "src"
   ],
   "scripts": {
-    "start": "node bin/undercut.js",
-    "lint": "node --check bin/undercut.js && for f in src/**/*.js; do node --check \"$f\"; done",
+    "start": "node bin/undercutsh.js",
+    "lint": "node --check bin/undercutsh.js && for f in src/**/*.js; do node --check \"$f\"; done",
     "test": "node --test 'src/**/*.test.js'"
   },
   "dependencies": {

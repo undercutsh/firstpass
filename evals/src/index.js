@@ -1,4 +1,4 @@
-// Public entry point for the `@undercut/evals` package.
+// Public entry point for the `@undercutsh/evals` package.
 //
 // This harness (src/main.js, src/runner.js, src/suites/, …) is an internal
 // CLI tool run in CI and by hand — it is not part of this package's public

@@ -1,4 +1,4 @@
-# tiered-dispatch evals (`@undercut/evals`)
+# tiered-dispatch evals (`@undercutsh/evals`)
 
 Controlled A/B harness for the tiered-dispatch skill: does routing work to the
 cheapest tier that can pass verification cost less than "one model for
@@ -35,9 +35,9 @@ fixtures, OpenRouter client, …) is an implementation detail of the harness
 and isn't importable from outside this package.
 
 ```js
-import { wilsonInterval, newcombeDiffInterval } from '@undercut/evals';
+import { wilsonInterval, newcombeDiffInterval } from '@undercutsh/evals';
 // or, equivalently:
-import { wilsonInterval, newcombeDiffInterval } from '@undercut/evals/stats';
+import { wilsonInterval, newcombeDiffInterval } from '@undercutsh/evals/stats';
 ```
 
 ## Consumed by the private backend
@@ -53,7 +53,7 @@ staying purely internal to the eval harness.
 workflow exists yet, and this repo carries no npm credentials), so
 `undercut-app`'s `src/vetting/stats.ts` and `src/policy` carry a verbatim
 TypeScript port of this file instead, each flagged with a
-`TODO: replace with a published @undercut/evals package once available`
+`TODO: replace with a published @undercutsh/evals package once available`
 comment pointing back here.
 
 **Once published**, the intended consumption pattern is a normal pinned
@@ -62,7 +62,7 @@ comment pointing back here.
 ```json
 {
   "dependencies": {
-    "@undercut/evals": "1.0.0"
+    "@undercutsh/evals": "1.0.0"
   }
 }
 ```
@@ -74,7 +74,7 @@ bump and re-test on the consuming side. `undercut-app` would then delete its
 local TS port and its `TODO` comments, and import directly:
 
 ```ts
-import { wilsonInterval, newcombeDiffInterval } from '@undercut/evals';
+import { wilsonInterval, newcombeDiffInterval } from '@undercutsh/evals';
 ```
 
 This package versions independently of `undercut-app`'s own release cadence;

@@ -4,7 +4,7 @@
 // package's package.json `exports` and README) — it's also consumed
 // outside this harness by undercut-app's vetting pipeline (currently a
 // TypeScript port copied in at `src/vetting/stats.ts`, pending publication
-// of this package as `@undercut/evals`; see that file's header).
+// of this package as `@undercutsh/evals`; see that file's header).
 //
 // Four exports:
 //
