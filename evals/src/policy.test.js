@@ -8,6 +8,13 @@ import assert from 'node:assert/strict';
 import { createPolicy, countFlags } from './policy.js';
 import { makeTask } from './tasks.js';
 import { TIER_ORDER } from './config.js';
+import { codeSuite } from './suites/code.js';
+import { reasoningSuite } from './suites/reasoning.js';
+import { mechanicalSuite } from './suites/mechanical.js';
+import { debugSuite } from './suites/debug.js';
+import { refactorSuite } from './suites/refactor.js';
+import { documentationSuite } from './suites/documentation.js';
+import { securitySuite } from './suites/security.js';
 
 // --- countFlags boundary tests: 0/1/2/3 flags -------------------------------
 
@@ -49,7 +56,12 @@ describe('countFlags', () => {
 
 // --- baseTier() across policy versions --------------------------------------
 
-describe('baseTier — cheap-to-verify override (no formatStrict)', () => {
+describe('baseTier — zero-flag units still base at cheap on every version', () => {
+  // The cheap-to-verify principle survives the semantics correction exactly
+  // here: a mechanically verifiable unit with nothing else flagged scores 0
+  // rubric flags and bases at 'cheap'. What no longer happens is verifiability
+  // clamping a BLAST / 3+-flag unit down to 'cheap' (see the reachability
+  // tests at the bottom of this file).
   for (const version of ['v1', 'probe', 'latest']) {
     test(`${version}: verifiable, no flags -> cheap`, () => {
       const policy = createPolicy(version);
@@ -75,17 +87,24 @@ describe('baseTier — v1-vs-probe/latest formatStrict divergence', () => {
       grader: () => {},
     });
 
-  test('v1 ignores formatStrict entirely -> cheap (override applies)', () => {
+  // UPDATED with the cheap-to-verify semantics correction. Both cases below
+  // asserted 'cheap' while the `if (!flags.unverifiable) return 'cheap'` clamp
+  // existed, i.e. they pinned the defect: the clamp fired for every verifiable
+  // unit and returned before the rubric ran. FORMAT-STRICT is itself one of
+  // the six rubric flags, so this unit scores 1 flag and the rubric's
+  // "1-2 flags -> standard" row now governs.
+  test('v1: formatStrict is a counted flag -> 1 flag -> standard', () => {
     const policy = createPolicy('v1');
-    assert.equal(policy.baseTier(formatStrictVerifiable()), 'cheap');
+    assert.equal(countFlags(formatStrictVerifiable()), 1);
+    assert.equal(policy.baseTier(formatStrictVerifiable()), 'standard');
   });
 
-  test('probe restores cheap-first on formatStrict -> cheap', () => {
+  test('probe: formatStrict is a counted flag -> 1 flag -> standard', () => {
     const policy = createPolicy('probe');
-    assert.equal(policy.baseTier(formatStrictVerifiable()), 'cheap');
+    assert.equal(policy.baseTier(formatStrictVerifiable()), 'standard');
   });
 
-  test('latest hardcodes formatStrict -> standard, even though cheap-to-verify', () => {
+  test('latest hardcodes formatStrict -> standard (same tier, via its own guard)', () => {
     const policy = createPolicy('latest');
     assert.equal(policy.baseTier(formatStrictVerifiable()), 'standard');
   });
@@ -109,9 +128,16 @@ describe('baseTier — v1-vs-probe/latest formatStrict divergence', () => {
     assert.equal(policy.baseTier(formatStrictUnverifiableBlast()), 'frontier');
   });
 
-  test('probe: same fallthrough as v1 -> frontier', () => {
+  // UPDATED: this asserted 'frontier' for probe, which is a base tier ABOVE
+  // probe's own capTier() of 'standard' for formatStrict work. That is not a
+  // harmless mismatch: runUnitLadder() terminates only on `tier === cap`, so a
+  // unit starting above its cap escalates past frontier to apex and then spins
+  // at apex forever (escalate() saturates while the cap check never matches).
+  // baseTier() now clamps to capTier(), so probe bases this unit at 'standard'.
+  test('probe: rubric says frontier but the formatStrict cap is standard -> clamped to standard', () => {
     const policy = createPolicy('probe');
-    assert.equal(policy.baseTier(formatStrictUnverifiableBlast()), 'frontier');
+    assert.equal(policy.capTier(formatStrictUnverifiableBlast()), 'standard');
+    assert.equal(policy.baseTier(formatStrictUnverifiableBlast()), 'standard');
   });
 
   test('latest: hardcoded formatStrict rule wins over blast -> standard', () => {
@@ -123,9 +149,9 @@ describe('baseTier — v1-vs-probe/latest formatStrict divergence', () => {
 describe('baseTier — flag-count ladder for unverifiable tasks (shared by v1/probe)', () => {
   // NOTE: countFlags() counts ALL true flags, including `unverifiable`
   // itself — so an unverifiable task with no other flags already has
-  // countFlags() === 1, not 0. There is no way to reach 'cheap' once
-  // unverifiable is true; the cheap-to-verify override only fires when
-  // unverifiable is false.
+  // countFlags() === 1, not 0, and cannot reach 'cheap'. That is the whole
+  // mechanism by which mechanical verifiability lowers a unit's tier now:
+  // one fewer counted flag, not a clamp to 'cheap'.
   test('unverifiable with no other flags -> countFlags is 1 -> standard', () => {
     const policy = createPolicy('probe');
     const task = makeTask({ id: 'u0', category: 'reasoning', prompt: 'x', flags: { unverifiable: true }, answerKey: 'x', grader: () => {} });
@@ -341,5 +367,154 @@ describe('runUnitDual', () => {
     };
     await policy.runUnitDual(task, attempt, 'standard');
     assert.deepEqual(seenTiers, ['standard', 'standard']);
+  });
+});
+
+// --- baseTier(): every tier is reachable, and the corrected cheap-to-verify
+// semantics are pinned ------------------------------------------------------
+//
+// These exist because of a reachability defect: baseTier() used to open with
+//   if (!task.flags.unverifiable) return 'cheap';
+// and `unverifiable` is false on all 69 hand-labelled suite tasks (it is also
+// makeTask()'s default), so that line returned for every task in every suite
+// and the 'frontier' arm below it had never once executed. Published benchmark
+// numbers produced under it measured escalation behaviour, not the rubric.
+
+describe('baseTier — tier reachability from synthetic flag combinations', () => {
+  const task = (flags) => makeTask({ id: 'r', category: 'reasoning', prompt: 'x', flags, answerKey: 'x', grader: () => {} });
+
+  test('cheap is reachable: 0 flags, every version', () => {
+    for (const version of ['v1', 'probe', 'latest']) {
+      assert.equal(createPolicy(version).baseTier(task({})), 'cheap');
+    }
+  });
+
+  test('standard is reachable: 1-2 flags, every version', () => {
+    for (const version of ['v1', 'probe', 'latest']) {
+      assert.equal(createPolicy(version).baseTier(task({ novel: true })), 'standard');
+      assert.equal(createPolicy(version).baseTier(task({ novel: true, crossCutting: true })), 'standard');
+    }
+  });
+
+  test('frontier is reachable via 3+ flags on a mechanically VERIFIABLE unit', () => {
+    // The exact shape the old clamp made unreachable: unverifiable === false
+    // (so the unit is mechanically checkable) yet three other flags set.
+    const t = task({ unverifiable: false, ambiguous: true, crossCutting: true, novel: true });
+    assert.equal(countFlags(t), 3);
+    for (const version of ['v1', 'probe', 'latest']) {
+      assert.equal(createPolicy(version).baseTier(t), 'frontier');
+    }
+  });
+
+  test('frontier is reachable via BLAST alone on a mechanically VERIFIABLE unit', () => {
+    const t = task({ unverifiable: false, blast: true });
+    assert.equal(countFlags(t), 1); // below the 3-flag threshold: blast alone carries it
+    for (const version of ['v1', 'probe', 'latest']) {
+      assert.equal(createPolicy(version).baseTier(t), 'frontier');
+    }
+  });
+
+  test('apex is never a base tier — it is only ever reached by the batched tie-break', () => {
+    const every = [
+      {}, { novel: true }, { blast: true },
+      { unverifiable: true, ambiguous: true, crossCutting: true, novel: true, blast: true, formatStrict: true },
+    ];
+    for (const version of ['v1', 'probe', 'latest']) {
+      for (const flags of every) {
+        assert.notEqual(createPolicy(version).baseTier(task(flags)), 'apex');
+      }
+    }
+  });
+});
+
+describe('baseTier — cheap-to-verify is a counted flag, not a clamp', () => {
+  const task = (flags) => makeTask({ id: 's', category: 'reasoning', prompt: 'x', flags, answerKey: 'x', grader: () => {} });
+
+  test('verifiability lowers the tier by exactly one counted flag, nothing more', () => {
+    // Same unit, flipping only UNVERIFIABLE: 2 flags -> standard,
+    // 3 flags -> frontier. Under the old clamp the verifiable variant
+    // returned 'cheap' regardless of the other two flags.
+    const verifiable = task({ unverifiable: false, ambiguous: true, crossCutting: true });
+    const notVerifiable = task({ unverifiable: true, ambiguous: true, crossCutting: true });
+    assert.equal(countFlags(verifiable), 2);
+    assert.equal(countFlags(notVerifiable), 3);
+    const policy = createPolicy('v1');
+    assert.equal(policy.baseTier(verifiable), 'standard');
+    assert.equal(policy.baseTier(notVerifiable), 'frontier');
+  });
+
+  test('BLAST is not discounted by verifiability', () => {
+    const policy = createPolicy('v1');
+    assert.equal(policy.baseTier(task({ unverifiable: false, blast: true })), 'frontier');
+    assert.equal(policy.baseTier(task({ unverifiable: true, blast: true })), 'frontier');
+  });
+});
+
+describe('baseTier <= capTier invariant', () => {
+  // runUnitLadder() only terminates on `tier === cap`. A base tier above the
+  // cap escalates past frontier to apex and then spins at apex forever, since
+  // escalate() saturates at the last tier while the cap check never matches.
+  const combos = [];
+  const keys = ['unverifiable', 'ambiguous', 'blast', 'crossCutting', 'novel', 'formatStrict'];
+  for (let mask = 0; mask < 1 << keys.length; mask++) {
+    const flags = {};
+    keys.forEach((k, i) => { flags[k] = Boolean(mask & (1 << i)); });
+    combos.push(flags);
+  }
+
+  for (const version of ['v1', 'probe', 'latest']) {
+    test(`${version}: holds for all ${combos.length} flag combinations`, () => {
+      const policy = createPolicy(version);
+      for (const flags of combos) {
+        const t = makeTask({ id: 'i', category: 'reasoning', prompt: 'x', flags, answerKey: 'x', grader: () => {} });
+        const base = TIER_ORDER.indexOf(policy.baseTier(t));
+        const cap = TIER_ORDER.indexOf(policy.capTier(t));
+        assert.ok(base <= cap, `${version}: base ${policy.baseTier(t)} > cap ${policy.capTier(t)} for ${JSON.stringify(flags)}`);
+      }
+    });
+  }
+});
+
+describe('baseTier — base-tier distribution over the real hand-labelled suites', () => {
+  // Regression pin on the MEASURED distribution, so a future change to
+  // baseTier() or to a suite's labels cannot silently collapse the arms back
+  // to "everything starts cheap" the way the old clamp did.
+  const allTasks = [
+    ...codeSuite, ...reasoningSuite, ...mechanicalSuite, ...debugSuite,
+    ...refactorSuite, ...documentationSuite, ...securitySuite,
+  ];
+
+  const distribution = (version) => {
+    const policy = createPolicy(version);
+    const d = { cheap: 0, standard: 0, frontier: 0, apex: 0 };
+    for (const t of allTasks) d[policy.baseTier(t)]++;
+    return d;
+  };
+
+  test('the suites carry 69 tasks, and UNVERIFIABLE/AMBIGUOUS are constant-false across them', () => {
+    assert.equal(allTasks.length, 69);
+    assert.equal(allTasks.filter((t) => t.flags.unverifiable).length, 0);
+    assert.equal(allTasks.filter((t) => t.flags.ambiguous).length, 0);
+  });
+
+  test('v1: 20 cheap / 43 standard / 6 frontier', () => {
+    assert.deepEqual(distribution('v1'), { cheap: 20, standard: 43, frontier: 6, apex: 0 });
+  });
+
+  for (const version of ['probe', 'latest']) {
+    // All 6 rubric-frontier tasks in the suites are security tasks and all 6
+    // are formatStrict, whose cap is 'standard' on probe/latest — so frontier
+    // is legitimately unreachable on these two arms over THESE tasks (by the
+    // cap, not by a dead branch). The synthetic reachability tests above cover
+    // the branch itself.
+    test(`${version}: 20 cheap / 49 standard / 0 frontier (all 6 frontier tasks are formatStrict, capped at standard)`, () => {
+      assert.deepEqual(distribution(version), { cheap: 20, standard: 49, frontier: 0, apex: 0 });
+    });
+  }
+
+  test('no arm bases every task at cheap any more (the defect signature)', () => {
+    for (const version of ['v1', 'probe', 'latest']) {
+      assert.notEqual(distribution(version).cheap, allTasks.length);
+    }
   });
 });
