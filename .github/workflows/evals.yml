@@ -45,6 +45,19 @@ jobs:
         run: node scripts/validate-client-list.js --check
       - name: models.md in sync with evals/src/config.js
         run: node scripts/sync-models-md.js --check
+      # Colour contrast is the one design property nobody can eyeball, and
+      # the palette lives as literal hex repeated inline across 44 pages, so
+      # a value that reads correctly on the light ground silently ships
+      # broken on the dark one. This measures both the sanctioned token
+      # pairs and the resolved pair at every text node.
+      - name: WCAG 2.2 AA colour contrast (token matrix + DOM sweep)
+        run: node scripts/validate-contrast.js --check
+      # scripts/*.test.js existed but was never executed by CI, so the unit
+      # coverage for the guards themselves was dead code. The guards are the
+      # thing standing between a content mistake and production; their own
+      # detection logic needs testing too.
+      - name: Unit tests (scripts/ guards)
+        run: node --test 'scripts/**/*.test.js'
       # Heavier eval-harness steps last, cheapest-of-these first: unit tests
       # exercise policy.js/tasks.js in isolation, the mock harness runs the
       # full CLI end-to-end, and the policy-parity run is the slowest/most

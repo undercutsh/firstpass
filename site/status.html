@@ -36,11 +36,11 @@
   a { color: #13161b; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
   a:hover { color: #00959c; }
   .wrap { max-width: 720px; margin: 0 auto; padding: 0 24px; }
-  .mono { font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 12px; color: #6e7278; text-transform: uppercase; letter-spacing: .08em; }
-  code { background: #d4d0cb; padding: 1px 5px; border-radius: 3px; font-size: .92em; font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; }
+  .mono { font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 12px; color: #6a6d73; text-transform: uppercase; letter-spacing: .08em; }
+  code { background: #d4d0cb; color: #13161b; padding: 1px 5px; border-radius: 3px; font-size: .92em; font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; }
   .badge { display: inline-flex; align-items: center; justify-content: center; height: 20px; padding: 0 8px; border-radius: 6px; font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; background: rgba(0,149,156,0.08); color: #00959c; }
   .badge-amber { background: rgba(199,125,46,0.08); color: #c26e12; }
-  .badge-neutral { background: rgba(110,114,120,0.16); color: #6e7278; }
+  .badge-neutral { background: rgba(110,114,120,0.16); color: #6a6d73; }
   .btn { display: inline-flex; align-items: center; justify-content: center; font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 14px; font-weight: 700; height: 32px; padding: 0 20px; border-radius: 10px; box-sizing: border-box; text-decoration: none; }
   .btn-primary { background: #13161b; color: #f2f0ec; border: none; }
   .btn-outline { background: transparent; color: #13161b; border: 1px solid #d4d0cb; }
@@ -57,7 +57,7 @@
   .metric-row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 11px 0; border-bottom: 1px solid #d4d0cb; flex-wrap: wrap; }
   .metric-row:last-of-type { border-bottom: none; padding-bottom: 2px; }
   .metric-name { font-size: 14.5px; }
-  .metric-name span { display: block; font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 11.5px; color: #6e7278; margin-top: 2px; text-transform: none; letter-spacing: 0; }
+  .metric-name span { display: block; font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 11.5px; color: #6a6d73; margin-top: 2px; text-transform: none; letter-spacing: 0; }
   .closing-card { border: 1px dashed #d4d0cb; border-radius: 10px; padding: 20px 22px; }
 </style>
 </head>
@@ -66,21 +66,21 @@
 <nav style="display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 14px 32px; border-bottom: 1px solid #d4d0cb; flex-wrap: wrap;">
   <a href="/" style="display: flex; align-items: center; gap: 8px; text-decoration: none"><svg width="20" height="20" viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect x="2" y="4" width="22" height="6" rx="1" fill="#13161b"></rect><rect x="2" y="16" width="12" height="6" rx="1" fill="#00959c"></rect><path d="M16 22 L24 12" stroke="#13161b" stroke-width="2" stroke-linecap="round"></path></svg><span style="font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; font-weight: 500; font-size: 17px; letter-spacing: -0.02em">undercut</span></a>
   <div style="display: flex; align-items: center; gap: 24px; font-size: 14px; flex-wrap: wrap;">
-    <a href="/#calculator" style="text-decoration: none; color: #6e7278">Free audit</a>
-    <a href="/#benchmarks" style="text-decoration: none; color: #6e7278">Benchmarks</a>
-    <a href="https://github.com/undercutsh/firstpass" style="text-decoration: none; color: #6e7278; font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 13px">GitHub &#8599;</a>
+    <a href="/#calculator" style="text-decoration: none; color: #6a6d73">Free audit</a>
+    <a href="/#benchmarks" style="text-decoration: none; color: #6a6d73">Benchmarks</a>
+    <a href="https://github.com/undercutsh/firstpass" style="text-decoration: none; color: #6a6d73; font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 13px">GitHub &#8599;</a>
   </div>
 </nav>
 
 <header class="wrap" style="padding: 56px 24px 0">
   <p class="mono" style="margin: 0 0 14px">Status</p>
   <h1 style="font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; font-weight: 800; font-size: clamp(28px, 4vw, 42px); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 16px; text-wrap: balance">Three things we can honestly report on, and one we won't.</h1>
-  <p style="font-size: 15.5px; color: #6e7278; margin: 0 0 40px; max-width: 66ch">Undercut is a static site plus one serverless function today: there's no server fleet, no SLA, and nothing that would make an &ldquo;uptime %&rdquo; figure honest. Below is <strong>Build</strong> &mdash; the real pass/fail history of our CI, live from GitHub &mdash; plus two sections, <strong>Routing intelligence</strong> and <strong>Service</strong>, that will report live data once Pro's routing backend ships. They're shown now, clearly marked pending, so this page's shape doesn't change out from under anyone later.</p>
+  <p style="font-size: 15.5px; color: #6a6d73; margin: 0 0 40px; max-width: 66ch">Undercut is a static site plus one serverless function today: there's no server fleet, no SLA, and nothing that would make an &ldquo;uptime %&rdquo; figure honest. Below is <strong>Build</strong> &mdash; the real pass/fail history of our CI, live from GitHub &mdash; plus two sections, <strong>Routing intelligence</strong> and <strong>Service</strong>, that will report live data once Pro's routing backend ships. They're shown now, clearly marked pending, so this page's shape doesn't change out from under anyone later.</p>
 </header>
 
 <main class="wrap" style="padding: 0 24px 80px">
   <div class="card">
-    <p class="card-label"><span class="mono" style="margin: 0">Build</span><span class="mono" style="margin: 0; color: #6e7278">Live &middot; GitHub Actions</span></p>
+    <p class="card-label"><span class="mono" style="margin: 0">Build</span><span class="mono" style="margin: 0; color: #6a6d73">Live &middot; GitHub Actions</span></p>
     <div id="status-loading" class="mono">Checking latest run&hellip;</div>
 
     <div id="status-current" style="display: none">
@@ -90,7 +90,7 @@
 
     <div id="status-fallback">
       <p style="margin: 0 0 4px"><strong>Live status is unavailable right now</strong> &mdash; GitHub's API didn't respond (likely a public rate limit; this page makes an unauthenticated request).</p>
-      <p style="margin: 0; font-size: 14px; color: #6e7278">See the run history directly on GitHub instead:</p>
+      <p style="margin: 0; font-size: 14px; color: #6a6d73">See the run history directly on GitHub instead:</p>
     </div>
 
     <div style="margin: 20px 0 4px">
@@ -104,37 +104,37 @@
     </div>
   </div>
 
-  <p style="margin-top: 24px; font-size: 13px; color: #6e7278">Each dot is one run of <code>.github/workflows/evals.yml</code> (unit tests for the routing policy, plus a mocked eval-harness smoke run). Green = passed, red = failed, amber = another result (cancelled, in progress, etc). Data comes from <code>api.github.com/repos/undercutsh/firstpass/actions/workflows/evals.yml/runs</code> at page load &mdash; it is not cached or edited by hand.</p>
+  <p style="margin-top: 24px; font-size: 13px; color: #6a6d73">Each dot is one run of <code>.github/workflows/evals.yml</code> (unit tests for the routing policy, plus a mocked eval-harness smoke run). Green = passed, red = failed, amber = another result (cancelled, in progress, etc). Data comes from <code>api.github.com/repos/undercutsh/firstpass/actions/workflows/evals.yml/runs</code> at page load &mdash; it is not cached or edited by hand.</p>
 
   <div class="card">
     <p class="card-label"><span class="mono" style="margin: 0">Routing intelligence</span><span class="badge badge-neutral">Coming with Pro</span></p>
     <div class="metric-row">
       <span class="metric-name">Policy artifact version<span>The <code>policy_version</code> currently being served on the <code>pro</code> and <code>teams:*</code> channels.</span></span>
-      <span class="mono" style="color: #6e7278">Pending backend</span>
+      <span class="mono" style="color: #6a6d73">Pending backend</span>
     </div>
     <div class="metric-row">
       <span class="metric-name">Signature validity<span>Whether the live artifact's ed25519 signature verifies clean against the published key.</span></span>
-      <span class="mono" style="color: #6e7278">Pending backend</span>
+      <span class="mono" style="color: #6a6d73">Pending backend</span>
     </div>
     <div class="metric-row">
       <span class="metric-name">Roster coverage<span>Share of a Teams org's connected roster the latest artifact was compiled for.</span></span>
-      <span class="mono" style="color: #6e7278">Pending backend</span>
+      <span class="mono" style="color: #6a6d73">Pending backend</span>
     </div>
-    <p style="margin: 16px 0 0; font-size: 13.5px; color: #6e7278">There is no Pro routing backend live yet, so there is nothing here to check &mdash; these three rows are placeholders, not a stand-in for real numbers. Once Pro ships, this section will read live: see <a href="/policy-file.md">the policy file</a> for what a verified artifact and its signature actually mean.</p>
+    <p style="margin: 16px 0 0; font-size: 13.5px; color: #6a6d73">There is no Pro routing backend live yet, so there is nothing here to check &mdash; these three rows are placeholders, not a stand-in for real numbers. Once Pro ships, this section will read live: see <a href="/policy-file.md">the policy file</a> for what a verified artifact and its signature actually mean.</p>
   </div>
 
   <div class="card">
     <p class="card-label"><span class="mono" style="margin: 0">Service</span><span class="badge badge-neutral">Coming with Pro</span></p>
     <div class="metric-row">
       <span class="metric-name">Basic reachability<span>Whether the policy-fetch endpoint Pro/Teams clients check for a fresh artifact is answering requests.</span></span>
-      <span class="mono" style="color: #6e7278">Pending backend</span>
+      <span class="mono" style="color: #6a6d73">Pending backend</span>
     </div>
-    <p style="margin: 16px 0 0; font-size: 13.5px; color: #6e7278">Same caveat as above: there's no endpoint running today to be reachable or not. This will become a real, live reachability check once one exists.</p>
+    <p style="margin: 16px 0 0; font-size: 13.5px; color: #6a6d73">Same caveat as above: there's no endpoint running today to be reachable or not. This will become a real, live reachability check once one exists.</p>
   </div>
 
   <div class="closing-card">
-    <p class="mono" style="margin: 0 0 12px; color: #6e7278">What we don't publish, and why</p>
-    <p style="margin: 0; font-size: 14.5px; color: #6e7278">No uptime percentage appears anywhere on this page, and won't once Pro ships either. An honest uptime number requires a request path the number is actually measuring &mdash; and by design, Undercut mostly isn't in that path. A client that can't reach us falls back to its last verified cached policy, and if it has none, to the free static <code>models.md</code> tier&rarr;model map shipped in the skill itself, offline, no network required (see &ldquo;What happens on a failed or expired verification&rdquo; in <a href="/policy-file.md">the policy file</a>). Since routing keeps working &mdash; just on slightly staler information &mdash; a percentage here would describe our servers, not whether coding agents kept dispatching correctly. We'd rather show three honest pending rows than one dishonest healthy one.</p>
+    <p class="mono" style="margin: 0 0 12px; color: #6a6d73">What we don't publish, and why</p>
+    <p style="margin: 0; font-size: 14.5px; color: #6a6d73">No uptime percentage appears anywhere on this page, and won't once Pro ships either. An honest uptime number requires a request path the number is actually measuring &mdash; and by design, Undercut mostly isn't in that path. A client that can't reach us falls back to its last verified cached policy, and if it has none, to the free static <code>models.md</code> tier&rarr;model map shipped in the skill itself, offline, no network required (see &ldquo;What happens on a failed or expired verification&rdquo; in <a href="/policy-file.md">the policy file</a>). Since routing keeps working &mdash; just on slightly staler information &mdash; a percentage here would describe our servers, not whether coding agents kept dispatching correctly. We'd rather show three honest pending rows than one dishonest healthy one.</p>
   </div>
 </main>
 
@@ -144,53 +144,53 @@
     <div style="display: flex; justify-content: space-between; gap: 48px; flex-wrap: wrap; margin: 0 0 48px">
       <div>
         <div style="display: flex; align-items: center; gap: 8px; margin: 0 0 10px"><svg width="20" height="20" viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect x="2" y="4" width="22" height="6" rx="1" fill="#13161b"></rect><rect x="2" y="16" width="12" height="6" rx="1" fill="#00959c"></rect><path d="M16 22 L24 12" stroke="#13161b" stroke-width="2" stroke-linecap="round"></path></svg><span style="font-family: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; font-weight: 500; font-size: 17px; letter-spacing: -0.02em">undercut</span></div>
-        <p style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 12.5px; color: #6e7278; margin: 0">MIT License &middot; <a href="https://github.com/undercutsh/firstpass" style="color: #6e7278">github.com/undercutsh/firstpass</a></p>
-        <p style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 12.5px; color: #6e7278; margin: 6px 0 0">Built by <a rel="me author" href="https://iamjustinwinter.com/" style="color: #6e7278">Justin Winter</a></p>
+        <p style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 12.5px; color: #6a6d73; margin: 0">MIT License &middot; <a href="https://github.com/undercutsh/firstpass" style="color: #6a6d73">github.com/undercutsh/firstpass</a></p>
+        <p style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 12.5px; color: #6a6d73; margin: 6px 0 0">Built by <a rel="me author" href="https://iamjustinwinter.com/" style="color: #6a6d73">Justin Winter</a></p>
         <a id="uc-github-stars" href="https://github.com/undercutsh/firstpass" target="_blank" rel="noopener" class="badge badge-neutral" style="margin-top: 10px; text-decoration: none" hidden>★ <span id="uc-star-count"></span> stars on GitHub</a>
       </div>
       <div style="display: flex; gap: 72px; flex-wrap: wrap; font-size: 14px">
         <div style="display: grid; gap: 10px; align-content: start">
-          <span style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #6e7278">Product</span>
-          <a href="/#how" style="text-decoration: none; color: #6e7278">How it works</a>
-          <a href="/#calculator" style="text-decoration: none; color: #6e7278">Free audit</a>
-          <a href="/#teams" style="text-decoration: none; color: #6e7278">Teams</a>
-          <a href="/#pricing" style="text-decoration: none; color: #6e7278">Pricing</a>
-          <a href="/#install" style="text-decoration: none; color: #6e7278">Install</a>
+          <span style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #6a6d73">Product</span>
+          <a href="/#how" style="text-decoration: none; color: #6a6d73">How it works</a>
+          <a href="/#calculator" style="text-decoration: none; color: #6a6d73">Free audit</a>
+          <a href="/#teams" style="text-decoration: none; color: #6a6d73">Teams</a>
+          <a href="/#pricing" style="text-decoration: none; color: #6a6d73">Pricing</a>
+          <a href="/#install" style="text-decoration: none; color: #6a6d73">Install</a>
         </div>
         <div style="display: grid; gap: 10px; align-content: start">
-          <span style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #6e7278">Proof</span>
-          <a href="/#benchmarks" style="text-decoration: none; color: #6e7278">Benchmarks</a>
-          <a href="https://github.com/undercutsh/firstpass/tree/main/testing/results" style="text-decoration: none; color: #6e7278">Raw results</a>
-          <a href="https://github.com/undercutsh/firstpass/blob/main/testing/README.md" style="text-decoration: none; color: #6e7278">Methodology</a>
+          <span style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #6a6d73">Proof</span>
+          <a href="/#benchmarks" style="text-decoration: none; color: #6a6d73">Benchmarks</a>
+          <a href="https://github.com/undercutsh/firstpass/tree/main/testing/results" style="text-decoration: none; color: #6a6d73">Raw results</a>
+          <a href="https://github.com/undercutsh/firstpass/blob/main/testing/README.md" style="text-decoration: none; color: #6a6d73">Methodology</a>
         </div>
         <div style="display: grid; gap: 10px; align-content: start">
-          <span style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #6e7278">Repo</span>
-          <a href="https://github.com/undercutsh/firstpass" style="text-decoration: none; color: #6e7278">GitHub</a>
-          <a href="https://github.com/undercutsh/firstpass/releases" style="text-decoration: none; color: #6e7278">Changelog</a>
-          <a href="https://github.com/undercutsh/firstpass/issues" style="text-decoration: none; color: #6e7278">Issues</a>
+          <span style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #6a6d73">Repo</span>
+          <a href="https://github.com/undercutsh/firstpass" style="text-decoration: none; color: #6a6d73">GitHub</a>
+          <a href="https://github.com/undercutsh/firstpass/releases" style="text-decoration: none; color: #6a6d73">Changelog</a>
+          <a href="https://github.com/undercutsh/firstpass/issues" style="text-decoration: none; color: #6a6d73">Issues</a>
         </div>
       </div>
     </div>
-    <div style="border-top: 1px solid #d4d0cb; padding-top: 24px; display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-size: 12.5px; color: #6e7278">
+    <div style="border-top: 1px solid #d4d0cb; padding-top: 24px; display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-size: 12.5px; color: #6a6d73">
       <span style="display: flex; gap: 18px; flex-wrap: wrap; align-items: baseline">
         <span style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace" id="uc-copyright-year">&copy; 2026 Undercut &middot; MIT</span>
         <span style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace">Works with: Claude Code &middot; Codex &middot; Cursor &middot; Copilot &middot; OpenCode</span>
       </span>
       <span style="display: flex; gap: 18px; flex-wrap: wrap">
-        <a href="/privacy/" style="color: #6e7278; text-decoration: none">Privacy</a>
-        <a href="/terms/" style="color: #6e7278; text-decoration: none">Terms</a>
-        <a href="/accessibility" style="color: #6e7278; text-decoration: none">Accessibility</a>
-        <a href="/status" style="color: #6e7278; text-decoration: none">Status</a>
-        <a href="https://github.com/undercutsh/firstpass/blob/main/testing/README.md" style="color: #6e7278; text-decoration: none">Benchmark data</a>
-        <a href="https://github.com/undercutsh/firstpass/blob/main/CHANGELOG.md" style="color: #6e7278; text-decoration: none">Changelog</a>
+        <a href="/privacy/" style="color: #6a6d73; text-decoration: none">Privacy</a>
+        <a href="/terms/" style="color: #6a6d73; text-decoration: none">Terms</a>
+        <a href="/accessibility" style="color: #6a6d73; text-decoration: none">Accessibility</a>
+        <a href="/status" style="color: #6a6d73; text-decoration: none">Status</a>
+        <a href="https://github.com/undercutsh/firstpass/blob/main/testing/README.md" style="color: #6a6d73; text-decoration: none">Benchmark data</a>
+        <a href="https://github.com/undercutsh/firstpass/blob/main/CHANGELOG.md" style="color: #6a6d73; text-decoration: none">Changelog</a>
       </span>
     </div>
-    <div style="margin-top: 10px; padding-top: 14px; border-top: 1px solid #d4d0cb; display: flex; gap: 18px; flex-wrap: wrap; font-size: 11px; color: #6e7278">
+    <div style="margin-top: 10px; padding-top: 14px; border-top: 1px solid #d4d0cb; display: flex; gap: 18px; flex-wrap: wrap; font-size: 11px; color: #6a6d73">
       <span style="font-family: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace">agent &amp; crawler files:</span>
-      <a href="/llms.txt" style="color: #6e7278; text-decoration: none">llms.txt</a>
-      <a href="/humans.txt" style="color: #6e7278; text-decoration: none">humans.txt</a>
-      <a href="/robots.txt" style="color: #6e7278; text-decoration: none">robots.txt</a>
-      <a href="/changelog.xml" style="color: #6e7278; text-decoration: none">changelog.xml</a>
+      <a href="/llms.txt" style="color: #6a6d73; text-decoration: none">llms.txt</a>
+      <a href="/humans.txt" style="color: #6a6d73; text-decoration: none">humans.txt</a>
+      <a href="/robots.txt" style="color: #6a6d73; text-decoration: none">robots.txt</a>
+      <a href="/changelog.xml" style="color: #6a6d73; text-decoration: none">changelog.xml</a>
     </div>
   </div>
 </footer>
