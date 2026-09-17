@@ -37,6 +37,7 @@
   .wrap{max-width:880px;margin:0 auto;padding:56px 24px 72px}
   a{color:#13161b;text-underline-offset:3px}
   a:hover{color:#007a80}
+  a:focus-visible{outline:2px solid #00959c;outline-offset:2px}
   h1{font-size:40px;font-weight:500;letter-spacing:-.03em;line-height:1.1;margin:18px 0 0}
   h2{font-size:21px;font-weight:600;letter-spacing:-.015em;margin:48px 0 0}
   h3{font-size:15px;font-weight:600;margin:24px 0 0}
@@ -61,6 +62,7 @@
   table{border-collapse:collapse;width:100%;margin-top:16px;font-size:14px}
   th,td{text-align:left;padding:9px 10px;border-bottom:1px solid #d4d0cb;vertical-align:top}
   th{font-family:'Fragment Mono','SF Mono',Menlo,Consolas,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:#61656c;font-weight:400}
+  tbody th{font-family:inherit;font-size:14px;text-transform:none;letter-spacing:normal;color:#13161b}
 </style>
 <script type="application/ld+json">
 {
@@ -112,12 +114,12 @@
 
   <div class="grid2">
     <div>
-      <div class="markbox"><img src="/brand/undercut-logomark.svg" alt="The Undercut logomark: two stacked bars with a diagonal slash through the lower one." width="88" height="88"></div>
+      <div class="markbox"><img src="/brand/undercut-logomark.svg" alt="The Undercut logomark: a long bar above a shorter one, with a diagonal slash rising from the end of the shorter bar." width="88" height="88"></div>
       <p class="swl">Logomark &middot; SVG</p>
       <p style="margin-top:10px"><a class="btn" href="/brand/undercut-logomark.svg" download>Download logomark</a></p>
     </div>
     <div>
-      <div class="markbox"><img src="/brand/undercut-lockup-horizontal.svg" alt="The Undercut horizontal lockup: the logomark followed by the word undercut." width="220" height="48"></div>
+      <div class="markbox"><img src="/brand/undercut-lockup-horizontal.svg" alt="The Undercut horizontal lockup: the logomark followed by the word undercut." width="200" height="48"></div>
       <p class="swl">Horizontal lockup &middot; SVG</p>
       <p style="margin-top:10px"><a class="btn" href="/brand/undercut-lockup-horizontal.svg" download>Download lockup</a></p>
     </div>
@@ -148,12 +150,13 @@
   <p class="small" style="margin-top:16px">The three accents above are the display values, cleared for strokes, fills and large type. For small text each has a darker variant for light grounds and a lighter one for dark grounds, because no single value clears AA on both:</p>
 
   <table>
-    <thead><tr><th>Role</th><th>On light</th><th>On dark</th></tr></thead>
+    <caption class="small" style="text-align:left;caption-side:top;padding:0 0 10px">Small-text variants of the three accents.</caption>
+    <thead><tr><th scope="col">Role</th><th scope="col">On light</th><th scope="col">On dark</th></tr></thead>
     <tbody>
-      <tr><td>Secondary text</td><td><code>#61656c</code></td><td><code>#9a9ea4</code></td></tr>
-      <tr><td>Cheap tier, small text</td><td><code>#007a80</code></td><td><code>#03969d</code></td></tr>
-      <tr><td>Frontier tier, small text</td><td><code>#a35c0f</code></td><td><code>#c4741b</code></td></tr>
-      <tr><td>Verified, small text</td><td><code>#287c42</code></td><td><code>#359954</code></td></tr>
+      <tr><th scope="row">Secondary text</th><td><code>#61656c</code></td><td><code>#9a9ea4</code></td></tr>
+      <tr><th scope="row">Cheap tier, small text</th><td><code>#007a80</code></td><td><code>#03969d</code></td></tr>
+      <tr><th scope="row">Frontier tier, small text</th><td><code>#a35c0f</code></td><td><code>#c4741b</code></td></tr>
+      <tr><th scope="row">Verified, small text</th><td><code>#287c42</code></td><td><code>#359954</code></td></tr>
     </tbody>
   </table>
 
