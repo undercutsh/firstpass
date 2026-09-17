@@ -1,6 +1,6 @@
 ---
 title: "Undercut — pricing"
-description: "Pro $9/month or $59/year, available now — starts with a trial of the full bundle. Teams $349/month or $2,988/year, includes 12 seats, +$29/month per additional seat — coming soon, join the waitlist for founder-run onboarding. Free for individuals, forever. Enterprise contact-only (SSO, SCIM, access logs, HIPAA with BAA, uptime SLA — scoped per contract). Money-back guarantee, no questions asked: 30 days on monthly, days 90–120 on annual."
+description: "Pro $9/month or $59/year, available now — starts with a trial of the full bundle. Teams $349/month or $2,988/year, includes 12 seats, +$29/month per additional seat — available now, founder-onboarded. Free for individuals, forever. Enterprise contact-only (SSO, SCIM, access logs, HIPAA with BAA, uptime SLA — scoped per contract). Money-back guarantee, no questions asked: 30 days on monthly, days 90–120 on annual."
 canonical: "https://getundercut.sh/pricing.md"
 last-updated: "2026-09-14"
 ---
@@ -25,7 +25,7 @@ Tiers, in the order the page presents them: Pro (the primary plan for individual
 ## Teams
 
 - **Price:** $349 / month, includes 12 seats; or $2,988 / year for the same 12 seats (≈$249/month equivalent, 29% off monthly). Each additional seat is +$29 / month ($290 / year on the annual plan). Priced as a 12-seat minimum on purpose: a team under ~12 people rarely needs org-wide policy enforcement — Pro per person covers them.
-- **Status:** coming soon — join the waitlist at https://getundercut.sh/#pricing: a three-field intake (company email, team size, LLM provider setup), then optionally request one of the founder's published onboarding windows. Onboarding is not live yet; it will be run personally by the founder once it opens, and requests are worked through in the order they arrive, confirmed or re-proposed by email. No card up front — billing will be set up on the onboarding call.
+- **Status:** available now, founder-onboarded — start at https://getundercut.sh/#pricing: a three-field intake (company email, team size, LLM provider setup), then request one of the founder's published onboarding windows. Onboarding is handled personally by the founder and is currently backlogged; a requested window is confirmed or re-proposed by email, in the order requests arrive. No card up front — billing is set up on the onboarding call.
 - **Guarantee:** same as Pro — 30 days on monthly, days 90–120 on annual, no questions asked
 - **Includes:** everything in Pro, for every seat — the same feature bundle, not a different one — plus a shared team dashboard, org-wide tier policy enforcement, and seat management (organization roles — admin/member — invitations, and custom permissions); SSO/directory sync and an audit log are not part of Teams — they are Enterprise line items; email support, onboarding run by the founder
 - **Note:** Teams is not a bigger product than Pro. A solo dev and a fifty-person team get identical routing intelligence; Teams only adds the collaboration and admin surface a team needs on top.
@@ -76,5 +76,5 @@ Three of the seven task categories — the ones where the extra dimensions chang
 ## Notes
 
 - Prices above are the launch rate card, not illustrative placeholders. Annual discounts are deliberately unequal: Pro's is steep (45%) because at $9/mo the monthly→annual switch has to look like a bargain to be worth making; Teams' is shallower (29%) because Teams buyers anchor on contract value and the plan carries real per-seat cost. Additional Teams seats keep the ~17% annual discount, not the base plan's 29%.
-- Pro starts from the pricing card: enter an email, we follow up from there, and the trial runs on the full bundle before the first charge. Teams is coming soon and bought through founder-handled onboarding once it opens — there is no self-serve Teams checkout; billing will be set up on the onboarding call, and the page says so.
+- Pro starts from the pricing card: enter an email, we follow up from there, and the trial runs on the full bundle before the first charge. Teams is bought through founder-handled onboarding — there is no self-serve Teams checkout; billing is set up on the onboarding call, and the page says so.
 - No new vendor contract or network-layer access is required at any tier — Undercut is a policy file your agent reads, never a proxy sitting between your agent and its model calls.
