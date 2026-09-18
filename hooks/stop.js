@@ -19,6 +19,7 @@ function formatReceipt(rows) {
     `  ${summary.cheapOrStandard} of ${summary.total} dispatches -> cheap/standard tier`,
   ];
   if (summary.escalated > 0) lines.push(`  ${summary.escalated} escalated to frontier/apex`);
+  if (summary.unclassified > 0) lines.push(`  ${summary.unclassified} unclassified (unrecognized model ID)`);
   if (savingsLine) lines.push(`  ${savingsLine}`);
   lines.push(`  ${terminalLink()}`);
   lines.push("────────────────────────────────────────────");

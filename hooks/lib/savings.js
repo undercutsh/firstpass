@@ -19,7 +19,12 @@ const { planMonthlyCostUsd } = require("./ledger");
 function summarize(rows) {
   const total = rows.length;
   const cheapOrStandard = rows.filter((r) => r.tier === "cheap" || r.tier === "standard").length;
-  const escalated = total - cheapOrStandard;
+  // escalated must be counted explicitly, never as (total - cheapOrStandard):
+  // a row whose model ID didn't resolve has tier null, and the subtraction
+  // silently reported it as escalated -- inverting the product's own claim
+  // (a Haiku dispatch shown as "escalated to frontier/apex").
+  const escalated = rows.filter((r) => r.tier === "frontier" || r.tier === "apex").length;
+  const unclassified = total - cheapOrStandard - escalated;
 
   let actualCost = 0;
   let frontierCost = 0;
@@ -40,7 +45,7 @@ function summarize(rows) {
   const planCost = planMonthlyCostUsd();
   const pctOfPlan = estimatedSavings !== null && planCost ? (estimatedSavings / planCost) * 100 : null;
 
-  return { total, cheapOrStandard, escalated, actualCost, estimatedSavings, unpriced, planCost, pctOfPlan };
+  return { total, cheapOrStandard, escalated, unclassified, actualCost, estimatedSavings, unpriced, planCost, pctOfPlan };
 }
 
 function formatSavingsLine(summary) {
