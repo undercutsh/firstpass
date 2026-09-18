@@ -75,6 +75,13 @@ jobs:
       # detection logic needs testing too.
       - name: Unit tests (scripts/ guards)
         run: node --test 'scripts/**/*.test.js'
+      # hooks/ had no coverage and no CI step at all, which is how three
+      # arithmetic defects shipped in the receipt math and sat there: the
+      # hooks ran, wrote a ledger and printed a receipt, so nothing crashed
+      # and nothing surfaced the fact that the numbers were wrong. Cheap to
+      # run, and it guards the figure the tool exists to report.
+      - name: Unit tests (hooks/ receipt math)
+        run: node --test 'hooks/**/*.test.js'
       # Heavier eval-harness steps last, cheapest-of-these first: unit tests
       # exercise policy.js/tasks.js in isolation, the mock harness runs the
       # full CLI end-to-end, and the policy-parity run is the slowest/most
