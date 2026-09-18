@@ -12,6 +12,7 @@
 const { readAllRows, hasShownFirstActivation, markFirstActivationShown, lastDigestShownAt, markDigestShownNow } = require("./lib/ledger");
 const { summarize, formatSavingsLine } = require("./lib/savings");
 const { markdownLink } = require("./lib/links");
+const { hooksEnabled } = require("./lib/enabled");
 
 const RUBRIC_CONTEXT = `Default to delegating decomposable execution work via subagents (Task tool) rather than doing it directly in the main thread -- the tiering below only saves anything if delegation happens at all. Before any multi-agent fan-out, swarm, or Workflow orchestration, or when assigning a model tier to a delegated unit of work: score six flags (Unverifiable, Ambiguous, Blast radius, Cross-cutting, Novel, Format-strict) to pick a base tier (cheap/standard/frontier/apex). Escalate only on an objective trigger (verification failure x2, measured disagreement, explicit uncertainty) -- never de-escalate, max one retry per tier. See skills/firstpass/SKILL.md for the full rubric.`;
 
@@ -55,6 +56,10 @@ function buildFeedbackContext() {
 }
 
 async function main() {
+  // Exit before reading stdin or touching the ledger: a plugin install that
+  // hasn't opted in must be indistinguishable from not having the hooks.
+  if (!hooksEnabled()) process.exit(0);
+
   let input = "";
   for await (const chunk of process.stdin) input += chunk;
   try {

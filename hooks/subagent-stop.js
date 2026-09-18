@@ -9,6 +9,7 @@ const readline = require("readline");
 const path = require("path");
 const { costForUsage, tierForModel, isKnownModel, normalizeModel } = require("./lib/pricing");
 const { appendRow } = require("./lib/ledger");
+const { hooksEnabled } = require("./lib/enabled");
 
 async function sumUsageByModel(transcriptPath) {
   const totals = new Map();
@@ -61,6 +62,10 @@ async function sumUsageByModel(transcriptPath) {
 }
 
 async function main() {
+  // Gate before the ledger write: this is the hook that creates
+  // ~/.undercut, so an un-opted-in plugin install must never reach it.
+  if (!hooksEnabled()) process.exit(0);
+
   let input = "";
   for await (const chunk of process.stdin) input += chunk;
 

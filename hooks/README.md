@@ -55,7 +55,31 @@ It's an honest "value delivered relative to what you pay," not a refund
 claim. There's no API for a hook to detect which plan you're on, so this
 is opt-in and self-reported.
 
-## Install (opt-in, per machine)
+## Install
+
+Two shapes. Both are opt-in; they differ only in what counts as saying yes.
+
+### Plugin (Claude Code)
+
+```sh
+claude plugin marketplace add undercutsh/firstpass
+claude plugin install firstpass@firstpass
+mkdir -p ~/.undercut && touch ~/.undercut/hooks-enabled
+```
+
+The plugin registers `hooks/hooks.json` for you, so there is no path to
+paste and nothing in `settings.json` to maintain by hand. Because the
+registration happens automatically, wiring no longer implies intent — so
+every script no-ops unless `~/.undercut/hooks-enabled` exists. Installing
+the plugin for the skill alone starts no ledger and prints nothing.
+
+(`UNDERCUT_HOOKS=1` works instead of the marker file, for CI or a one-off
+session.)
+
+Restart the client after installing. To turn the hooks off again without
+uninstalling the skill, delete the marker file.
+
+### Manual (any client, or a clone of this repo)
 
 1. Copy this `hooks/` directory somewhere stable (or leave it in a clone of
    this repo).
@@ -65,11 +89,19 @@ is opt-in and self-reported.
 3. That's it — no build step, no dependencies beyond Node (uses only
    built-in `fs`/`readline`/`path`/`os`).
 
+A manual install needs **no** marker file. Hand-editing `settings.json` to
+point at these scripts is itself the opt-in, and every install that predates
+`hooks.json` keeps working untouched.
+
 ## Uninstall
 
-Delete the hook entries from `settings.json`. Optionally `rm -rf
-~/.undercut` to remove the local ledger. Nothing else on the machine
-changes.
+Plugin: `claude plugin uninstall firstpass@firstpass`, or just delete
+`~/.undercut/hooks-enabled` to keep the skill and stop the hooks.
+
+Manual: delete the hook entries from `settings.json`.
+
+Either way, optionally `rm -rf ~/.undercut` to remove the local ledger.
+Nothing else on the machine changes.
 
 ## Status
 
