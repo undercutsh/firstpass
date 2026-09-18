@@ -2,8 +2,13 @@
 // Pricing table for real dispatch-cost calculation.
 //
 // Keys here are Claude Code's own model ID strings (hyphenated, e.g.
-// "claude-haiku-4-5"), as they actually appear in local transcript JSONL
-// -- confirmed by reading a real subagent transcript on this machine.
+// "claude-haiku-4-5"), in their UNDATED form. Real transcripts are
+// inconsistent about this: on the same machine, in the same session, a
+// Sonnet dispatch logs "claude-sonnet-5" while a Haiku dispatch logs
+// "claude-haiku-4-5-20251001". Every lookup below therefore goes through
+// normalizeModel(), which strips a trailing -YYYYMMDD snapshot suffix.
+// Do NOT add dated variants as extra keys -- normalize instead, or the
+// table has to grow on every model snapshot release.
 // This is deliberately NOT the same string form as
 // ../../skills/firstpass/models.md's Anthropic column, which lists
 // OpenRouter catalog slugs (dotted, e.g. "anthropic/claude-haiku-4.5")
@@ -45,6 +50,15 @@ const MODEL_TO_TIER = {
   "claude-mythos-5-1": "apex",
 };
 
+// Claude Code logs some model IDs with a -YYYYMMDD snapshot suffix and
+// some without. Strip it so both forms hit the same table entry. An
+// unrecognized string is returned unchanged and simply misses the table,
+// which callers already handle as "unpriceable".
+function normalizeModel(model) {
+  if (typeof model !== "string") return model;
+  return model.replace(/-\d{8}$/, "");
+}
+
 const CACHE_WRITE_5M_RATIO = 1.25;
 const CACHE_WRITE_1H_RATIO = 2.0;
 const CACHE_READ_RATIO = 0.1;
@@ -55,7 +69,7 @@ const CACHE_READ_RATIO = 0.1;
  * callers must treat null as "unpriceable", never silently coerce to $0.
  */
 function costForUsage(model, usage) {
-  const rate = PER_MTOK[model];
+  const rate = PER_MTOK[normalizeModel(model)];
   if (!rate || !usage) return null;
 
   const inputTokens = usage.input_tokens || 0;
@@ -80,11 +94,11 @@ function costForUsage(model, usage) {
 }
 
 function tierForModel(model) {
-  return MODEL_TO_TIER[model] || null;
+  return MODEL_TO_TIER[normalizeModel(model)] || null;
 }
 
 function isKnownModel(model) {
-  return Object.prototype.hasOwnProperty.call(PER_MTOK, model);
+  return Object.prototype.hasOwnProperty.call(PER_MTOK, normalizeModel(model));
 }
 
 // Counterfactual for "what would this same work have cost if it had NOT
@@ -101,6 +115,7 @@ function frontierEquivalentCost(usage) {
 
 module.exports = {
   costForUsage,
+  normalizeModel,
   tierForModel,
   isKnownModel,
   frontierEquivalentCost,

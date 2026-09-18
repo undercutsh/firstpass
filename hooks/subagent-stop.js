@@ -7,7 +7,7 @@
 const fs = require("fs");
 const readline = require("readline");
 const path = require("path");
-const { costForUsage, tierForModel, isKnownModel } = require("./lib/pricing");
+const { costForUsage, tierForModel, isKnownModel, normalizeModel } = require("./lib/pricing");
 const { appendRow } = require("./lib/ledger");
 
 async function sumUsageByModel(transcriptPath) {
@@ -30,7 +30,10 @@ async function sumUsageByModel(transcriptPath) {
     const msg = entry.message;
     if (!msg || msg.role !== "assistant" || !msg.usage || !msg.model) continue;
 
-    const model = msg.model;
+    // Group on the normalized ID: Claude Code logs some models with a
+    // -YYYYMMDD snapshot suffix and some without, and a snapshot rollover
+    // mid-session would otherwise split one model across two ledger rows.
+    const model = normalizeModel(msg.model);
     const usage = msg.usage;
     const prev = totals.get(model) || {
       input_tokens: 0,
