@@ -9,6 +9,7 @@
 const { rowsForSession } = require("./lib/ledger");
 const { summarize, formatSavingsLine } = require("./lib/savings");
 const { terminalLink } = require("./lib/links");
+const { hooksEnabled } = require("./lib/enabled");
 
 function formatReceipt(rows) {
   const summary = summarize(rows);
@@ -28,6 +29,8 @@ function formatReceipt(rows) {
 }
 
 async function main() {
+  if (!hooksEnabled()) process.exit(0);
+
   let input = "";
   for await (const chunk of process.stdin) input += chunk;
 
