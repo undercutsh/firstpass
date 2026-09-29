@@ -710,6 +710,225 @@
       .uc-settle { animation: uc-settle 1s linear both; animation-timeline: view(); animation-range: entry 15% entry 90%; }
     }
   }
+
+  /* ---- at a glance (bento) -------------------------------------------
+     Local tokens: --mute is darkened to #61656c inside the grid so muted
+     text clears AA on the card ground. Motion follows the diagram-motion
+     contract below. */
+  #bento {
+    --mute: #61656c; --cheap-ink: #007a80; --cheap-dim: #03969d;
+    --frontier-ink: #a35c0f; --frontier-dim: #c4741b; --pass-ink: #287c42;
+    --sans: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
+    --mono: 'Fragment Mono', 'SF Mono', Menlo, Consolas, monospace;
+  }
+  #bento .bn-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px; }
+  #bento .bn-motion-toggle { display: none; font-family: var(--mono); font-size: 12.5px; font-weight: 400; }
+  #bento .bn-cap {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--mute); margin: 0;
+  }
+  /* ---- bento ---------------------------------------------------------- */
+  #bento .bn-bento {
+    display: grid; grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(24px, 2.4vw, 32px); margin-top: 44px;
+  }
+  #bento .bn-cell {
+    background: var(--card); border: 1px solid var(--rule); border-radius: 6px;
+    padding: 24px; display: flex; flex-direction: column; gap: 14px; min-width: 0;
+  }
+  #bento .bn-cell h3 { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3; margin: 0; text-wrap: balance; }
+  #bento .bn-cell p { font-size: 14.5px; line-height: 1.6; color: var(--mute); margin: 0; max-width: 54ch; }
+  #bento .bn-fig { margin-top: auto; padding-top: 10px; }
+  #bento .bn-fig svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+  #bento .bn-c-rubric { grid-column: span 7; }
+  #bento .bn-c-escalate { grid-column: span 5; }
+  #bento .bn-c-log { grid-column: span 5; }
+  #bento .bn-c-proof { grid-column: span 4; }
+  #bento .bn-c-photo { grid-column: span 3; }
+  #bento .bn-c-vetting { grid-column: span 5; }
+  #bento .bn-c-compat { grid-column: span 7; }
+
+  @media (max-width: 1000px) {
+    #bento .bn-bento { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    #bento .bn-c-rubric, #bento .bn-c-log, #bento .bn-c-compat { grid-column: span 6; }
+    #bento .bn-c-escalate, #bento .bn-c-proof, #bento .bn-c-photo, #bento .bn-c-vetting { grid-column: span 3; }
+  }
+  @media (max-width: 760px) {
+    #bento .bn-bento { grid-template-columns: minmax(0, 1fr); }
+    #bento .bn-bento > .bn-cell { grid-column: auto; }
+  }
+  /* Below this width a scaled-down figure would set its labels under 10px;
+     keep the drawing at a readable size and let it scroll in its own box. */
+  @media (max-width: 560px) {
+    #bento .bn-fig-wide { overflow-x: auto; }
+    #bento .bn-fig-wide svg { min-width: var(--fig-min); }
+  }
+
+  /* SVG type: language in the sans, data in the mono */
+  #bento .bn-t-lab { font-family: var(--mono); font-size: 12px; fill: var(--ink); }
+  #bento .bn-t-mute { font-family: var(--mono); font-size: 12px; fill: var(--mute); }
+  #bento .bn-t-cheap { font-family: var(--mono); font-size: 12px; fill: var(--cheap-ink); }
+  #bento .bn-t-front { font-family: var(--mono); font-size: 12px; fill: var(--frontier-ink); }
+  #bento .bn-t-pass { font-family: var(--mono); font-size: 12px; fill: var(--pass-ink); }
+
+  /* proof cell */
+  #bento .bn-cell .bn-numeral {
+    color: var(--ink); font-size: clamp(56px, 6vw, 72px); font-weight: 500; letter-spacing: -0.035em;
+    line-height: 1; margin: 4px 0 0; font-variant-numeric: tabular-nums;
+  }
+  #bento .bn-tb { border-collapse: collapse; width: 100%; font-family: var(--mono); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+  #bento .bn-tb caption { caption-side: bottom; text-align: left; padding-top: 10px; font-size: 12.5px; color: var(--mute); }
+  #bento .bn-tb th { text-align: left; font-weight: 400; color: var(--mute); padding: 9px 8px; border-bottom: 1px solid var(--ink); white-space: nowrap; }
+  #bento .bn-tb td { padding: 9px 8px; border-bottom: 1px solid var(--rule); }
+  #bento .bn-tb tr:last-child td { border-bottom: none; }
+  #bento .bn-tb th:first-child, #bento .bn-tb td:first-child { padding-left: 0; }
+  #bento .bn-tb .bn-num { text-align: right; }
+  #bento .bn-bars { display: grid; gap: 10px; margin-top: 16px; font-family: var(--mono); font-size: 12.5px; }
+  #bento .bn-bar-row { display: grid; grid-template-columns: 7.5em minmax(0, 1fr) 3em; align-items: center; gap: 10px; }
+  #bento .bn-bar { display: block; height: 10px; border: 1px solid var(--rule); }
+  #bento .bn-bar > span { display: block; height: 100%; }
+  #bento .bn-fill-std { background: var(--ink); }
+  #bento .bn-fill-cheap { background: var(--cheap); }
+  #bento .bn-bar-val { text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* log cell: the one deep card in the grid */
+  #bento .bn-c-log { background: var(--deep); border-color: var(--deep-rule); }
+  #bento .bn-c-log h3 { color: var(--paper); }
+  #bento .bn-c-log p, #bento .bn-c-log .bn-cap { color: var(--deep-mute); }
+  #bento .bn-term { background: var(--deep-ink); border: 1px solid var(--deep-rule); border-radius: 8px; padding: 16px; overflow-x: auto; }
+  #bento .bn-term pre {
+    margin: 0; font-family: var(--mono); font-size: 12.5px; line-height: 1.7;
+    color: var(--paper); white-space: pre;
+  }
+  #bento .bn-k-cheap { color: var(--cheap-dim); }
+  #bento .bn-k-esc { color: var(--frontier-dim); }
+  #bento .bn-k-mute { color: var(--deep-mute); }
+  #bento .bn-caret { display: inline-block; width: 7px; height: 14px; background: var(--paper); vertical-align: -2px; opacity: 0.9; }
+
+  /* photo cell: type sits in a solid block, the frame fills the rest */
+  #bento .bn-c-photo { padding-bottom: 0; }
+  #bento .bn-c-photo .bn-shot {
+    margin: auto -24px 0; flex: 1 1 auto; min-height: 240px; position: relative;
+    border-top: 1px solid var(--rule); overflow: hidden; border-radius: 0 0 5px 5px;
+  }
+  #bento .bn-c-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 62% 30%; display: block; }
+
+  #bento .bn-badge {
+    display: inline-flex; align-items: center; height: 22px; padding: 0 8px; box-sizing: border-box;
+    border: 1px solid var(--rule); border-radius: 4px; font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.04em; text-transform: uppercase; color: var(--mute); align-self: flex-start;
+  }
+
+  /* compatibility cell */
+  #bento .bn-marquee { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+  #bento .bn-marquee + .bn-marquee { margin-top: 8px; }
+  #bento .bn-track { display: flex; gap: 8px; width: max-content; margin: 0; padding: 0; list-style: none; }
+  #bento .bn-pill {
+    display: inline-flex; align-items: center; height: 26px; padding: 0 10px; box-sizing: border-box;
+    border: 1px solid var(--rule); border-radius: 999px; font-size: 12.5px; color: var(--mute);
+    background: var(--card); white-space: nowrap;
+  }
+  #bento .bn-install { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 18px; }
+  #bento .bn-chip {
+    font-family: var(--mono); font-size: 13px; color: var(--ink); background: var(--rule);
+    border-radius: 4px; padding: 7px 10px; overflow-wrap: anywhere;
+  }
+
+  #bento .bn-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 44px; }
+
+  /* ---- diagram motion --------------------------------------------------
+     Same contract as the site's hero figure. Additive only: every figure is
+     complete and legible as a static illustration, and nothing here carries
+     information that isn't in the resting frame. Everything lives inside
+     prefers-reduced-motion: no-preference, so a reduced-motion user gets the
+     plain diagram, not a frozen mid-frame. transform / opacity / clip-path /
+     stroke-dashoffset only, never a layout property, so no figure reflows.
+     Elements that exist only for motion carry opacity="0" at rest. */
+  @media (prefers-reduced-motion: no-preference) {
+    #bento .bn-motion-toggle { display: inline-flex; }
+
+    /* rubric: a read head steps down the six flags; the one flag lights
+       when it is reached; the route to standard pulses once the read ends */
+    @keyframes bn-a-scan {
+      0% { opacity: 1; transform: translateY(0); }
+      11% { transform: translateY(36px); }
+      22% { transform: translateY(72px); }
+      33% { transform: translateY(108px); }
+      44% { transform: translateY(144px); }
+      55% { opacity: 1; transform: translateY(180px); }
+      66%, 100% { opacity: 0; transform: translateY(180px); }
+    }
+    @keyframes bn-a-tick { 0%, 32.9% { opacity: 0; } 33%, 100% { opacity: 1; } }
+    @keyframes bn-a-pulse {
+      0%, 66% { opacity: 0; stroke-dashoffset: 14; }
+      67% { opacity: 1; }
+      80% { opacity: 1; stroke-dashoffset: -84; }
+      83%, 100% { opacity: 0; stroke-dashoffset: -84; }
+    }
+    @keyframes bn-a-land { 0%, 79.9% { opacity: 0.25; } 80%, 100% { opacity: 1; } }
+    #bento .bn-a-scan { animation: bn-a-scan 8s steps(1, end) infinite; }
+    #bento .bn-a-tick { animation: bn-a-tick 8s linear infinite; }
+    #bento .bn-a-pulse { animation: bn-a-pulse 8s linear infinite; }
+    #bento .bn-a-land { animation: bn-a-land 8s linear infinite; }
+
+    /* escalation: fail, fail, then the residue steps up one tier and passes */
+    @keyframes bn-b-g1 { 0%, 5% { opacity: 0; } 8%, 90% { opacity: 1; } 96%, 100% { opacity: 0; } }
+    @keyframes bn-b-g2 { 0%, 22% { opacity: 0; } 25%, 90% { opacity: 1; } 96%, 100% { opacity: 0; } }
+    @keyframes bn-b-path {
+      0%, 40% { stroke-dashoffset: 187; opacity: 1; }
+      58%, 90% { stroke-dashoffset: 0; opacity: 1; }
+      96%, 100% { stroke-dashoffset: 0; opacity: 0; }
+    }
+    @keyframes bn-b-g3 { 0%, 57% { opacity: 0; } 60%, 90% { opacity: 1; } 96%, 100% { opacity: 0; } }
+    #bento .bn-b-g1 { animation: bn-b-g1 9s linear infinite; }
+    #bento .bn-b-g2 { animation: bn-b-g2 9s linear infinite; }
+    #bento .bn-b-path { animation: bn-b-path 9s ease-out infinite; }
+    #bento .bn-b-g3 { animation: bn-b-g3 9s linear infinite; }
+
+    /* dispatch log: lines print one at a time, then the receipt holds */
+    @keyframes bn-d-print {
+      0% { clip-path: inset(0 0 100% 0); }
+      55%, 100% { clip-path: inset(0 0 0 0); }
+    }
+    @keyframes bn-caretblink { 0%, 49% { opacity: 0.9; } 50%, 100% { opacity: 0; } }
+    #bento .bn-term pre { animation: bn-d-print 12s steps(12, end) infinite; }
+    #bento .bn-caret { animation: bn-caretblink 1.1s steps(1, end) infinite; }
+
+    /* vetting: a release travels into the method, then out to the roster */
+    @keyframes bn-h-p1 {
+      0% { opacity: 0; stroke-dashoffset: 12; }
+      2% { opacity: 1; }
+      16% { opacity: 1; stroke-dashoffset: -30; }
+      18%, 100% { opacity: 0; stroke-dashoffset: -30; }
+    }
+    @keyframes bn-h-p2 {
+      0%, 52% { opacity: 0; stroke-dashoffset: 12; }
+      54% { opacity: 1; }
+      68% { opacity: 1; stroke-dashoffset: -80; }
+      70%, 100% { opacity: 0; stroke-dashoffset: -80; }
+    }
+    @keyframes bn-h-won { 0%, 67.9% { opacity: 0.3; } 68%, 94% { opacity: 1; } 100% { opacity: 0.3; } }
+    @keyframes bn-h-work { 0%, 17% { opacity: 0; } 20%, 50% { opacity: 1; } 53%, 100% { opacity: 0; } }
+    #bento .bn-h-p1 { animation: bn-h-p1 10s linear infinite; }
+    #bento .bn-h-p2 { animation: bn-h-p2 10s linear infinite; }
+    #bento .bn-h-won { animation: bn-h-won 10s linear infinite; }
+    #bento .bn-h-work { animation: bn-h-work 10s linear infinite; }
+
+    /* compatibility: two slow rows, opposite directions, stop on hover */
+    @keyframes bn-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    #bento .bn-track { animation: bn-marquee 70s linear infinite; }
+    #bento .bn-track.bn-rev { animation-direction: reverse; animation-duration: 80s; }
+    #bento .bn-marquee:hover .bn-track, #bento .bn-marquee:focus-within .bn-track { animation-play-state: paused; }
+
+    #bento[data-motion="paused"] .bn-bento * { animation-play-state: paused !important; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #bento .bn-marquee { -webkit-mask-image: none; mask-image: none; }
+    #bento .bn-track { flex-wrap: wrap; width: auto; }
+    #bento .bn-track .bn-dup { display: none; }
+  }
 </style>
 </helmet>
 
@@ -1058,6 +1277,236 @@
       <span class="compat"><img src="https://cdn.simpleicons.org/githubcopilot" width="16" height="16" style="display: block" alt="">Copilot</span>
       <span class="compat"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="1" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.4"></rect><path d="M4.5 5.5 L7 8 L4.5 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M8.5 10.5 H11.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path></svg>OpenCode</span>
     </div>
+  </div>
+</section>
+
+<section id="bento" data-screen-label="At a glance" class="sec" data-motion="playing" aria-labelledby="bento-heading">
+  <div class="wrap">
+  <div class="bn-head">
+    <div>
+      <p class="eyebrow muted" style="margin: 0 0 14px">Measured, not promised</p>
+      <h2 id="bento-heading" class="h2" style="max-width: 24ch">Undercut runs every unit of work at the cheapest model that can pass verification.</h2>
+    </div>
+    <button type="button" class="btn btn-ghost btn-sm bn-motion-toggle" id="bento-motion-toggle" aria-pressed="false">Pause motion</button>
+  </div>
+
+  <div class="bn-bento">
+
+    <!-- 1 · rubric -->
+    <article class="bn-cell bn-c-rubric">
+      <p class="bn-cap">Step 1 · base tier</p>
+      <h3>Six flags set the starting tier.</h3>
+      <p>Before a unit runs, the agent answers six questions about it. Zero flags starts on cheap. One or two starts on standard. Three or more starts on frontier.</p>
+      <div class="bn-fig bn-fig-wide" style="--fig-min: 540px">
+        <svg viewBox="0 0 600 250" role="img" aria-label="An example unit is checked against six flags: unverifiable, ambiguous, blast, cross-cutting, novel and format-strict. Only cross-cutting is flagged, so the unit starts on standard, the second rung of a four-rung ladder that runs cheap, standard, frontier, apex.">
+          <text x="0" y="14" class="bn-t-lab">example unit</text>
+          <text x="330" y="14" class="bn-t-mute" text-anchor="end">1 of 6 flagged</text>
+
+          <rect class="bn-a-scan" x="-4" y="26" width="338" height="36" fill="#13161b" fill-opacity="0.05" opacity="0"></rect>
+
+          <g stroke="#d4d0cb" stroke-width="1">
+            <line x1="0" y1="26" x2="330" y2="26"></line>
+            <line x1="0" y1="62" x2="330" y2="62"></line>
+            <line x1="0" y1="98" x2="330" y2="98"></line>
+            <line x1="0" y1="134" x2="330" y2="134"></line>
+            <line x1="0" y1="170" x2="330" y2="170"></line>
+            <line x1="0" y1="206" x2="330" y2="206"></line>
+            <line x1="0" y1="242" x2="330" y2="242"></line>
+          </g>
+          <text x="0" y="49" class="bn-t-lab">UNVERIFIABLE</text>
+          <text x="0" y="85" class="bn-t-lab">AMBIGUOUS</text>
+          <text x="0" y="121" class="bn-t-lab">BLAST</text>
+          <text x="0" y="157" class="bn-t-lab">CROSS-CUTTING</text>
+          <text x="0" y="193" class="bn-t-lab">NOVEL</text>
+          <text x="0" y="229" class="bn-t-lab">FORMAT-STRICT</text>
+          <g fill="none" stroke="#61656c" stroke-width="1.5">
+            <rect x="310" y="37" width="14" height="14" rx="2"></rect>
+            <rect x="310" y="73" width="14" height="14" rx="2"></rect>
+            <rect x="310" y="109" width="14" height="14" rx="2"></rect>
+            <rect x="310" y="181" width="14" height="14" rx="2"></rect>
+            <rect x="310" y="217" width="14" height="14" rx="2"></rect>
+          </g>
+          <rect x="310" y="145" width="14" height="14" rx="2" fill="none" stroke="#13161b" stroke-width="1.5"></rect>
+          <path class="bn-a-tick" d="M313.5 152 l3.5 3.5 l6 -7" fill="none" stroke="#13161b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+
+          <text x="376" y="143" class="bn-t-mute" text-anchor="middle">1 flag</text>
+          <path d="M334 152 H410" fill="none" stroke="#13161b" stroke-width="1.5"></path>
+          <path d="M408 147 L418 152 L408 157 Z" fill="#13161b"></path>
+          <path class="bn-a-pulse" d="M334 152 H410" fill="none" stroke="#13161b" stroke-width="3" stroke-dasharray="14 120" opacity="0"></path>
+
+          <text x="420" y="14" class="bn-t-mute">tier ladder</text>
+          <rect x="420" y="27" width="176" height="34" fill="none" stroke="#61656c" stroke-width="1.5" stroke-dasharray="5 4"></rect>
+          <text x="436" y="49" class="bn-t-mute">apex</text>
+          <rect x="420" y="81" width="176" height="34" fill="none" stroke="#c26e12" stroke-width="2"></rect>
+          <text x="436" y="103" class="bn-t-front">frontier</text>
+          <rect x="420" y="135" width="176" height="34" fill="none" stroke="#13161b" stroke-width="2"></rect>
+          <text x="436" y="157" class="bn-t-lab">standard</text>
+          <rect x="420" y="189" width="176" height="34" fill="none" stroke="#00959c" stroke-width="2"></rect>
+          <text x="436" y="211" class="bn-t-cheap">cheap</text>
+          <rect class="bn-a-land" x="572" y="148" width="8" height="8" rx="1" fill="#13161b"></rect>
+        </svg>
+      </div>
+    </article>
+
+    <!-- 2 · escalation -->
+    <article class="bn-cell bn-c-escalate">
+      <p class="bn-cap">Step 2 · escalation</p>
+      <h3>Escalate one tier, on evidence only.</h3>
+      <p>Three triggers move work up: a check fails twice, two cheap runs disagree, or the agent flags uncertainty. Only the unresolved part moves, and it never moves back down.</p>
+      <div class="bn-fig">
+        <svg viewBox="0 0 380 216" role="img" aria-label="Unit 213 of the GSM8K run starts on cheap and fails its check twice. Only the unresolved residue escalates, exactly one tier, along a right-angle step to standard, where it passes.">
+          <text x="0" y="14" class="bn-t-lab">unit 213 · GSM8K run</text>
+          <text x="380" y="14" class="bn-t-mute" text-anchor="end">residue only</text>
+
+          <rect x="1" y="26" width="378" height="82" fill="none" stroke="#13161b" stroke-width="2"></rect>
+          <text x="14" y="48" class="bn-t-lab">standard</text>
+          <rect x="1" y="130" width="378" height="82" fill="none" stroke="#00959c" stroke-width="2"></rect>
+          <text x="14" y="152" class="bn-t-cheap">cheap</text>
+
+          <g class="bn-b-g1">
+            <rect x="96" y="160" width="24" height="24" fill="none" stroke="#13161b" stroke-width="1.5"></rect>
+            <path d="M103 167 L113 177 M113 167 L103 177" fill="none" stroke="#13161b" stroke-width="2" stroke-linecap="round"></path>
+            <text x="108" y="202" class="bn-t-mute" text-anchor="middle">fail</text>
+          </g>
+          <g class="bn-b-g2">
+            <rect x="160" y="160" width="24" height="24" fill="none" stroke="#13161b" stroke-width="1.5"></rect>
+            <path d="M167 167 L177 177 M177 167 L167 177" fill="none" stroke="#13161b" stroke-width="2" stroke-linecap="round"></path>
+            <text x="172" y="202" class="bn-t-mute" text-anchor="middle">fail</text>
+          </g>
+
+          <path class="bn-b-path" d="M184 172 H236 V67 H266" fill="none" stroke="#c26e12" stroke-width="2.5" stroke-dasharray="187"></path>
+          <g class="bn-b-g3">
+            <path d="M266 62 L276 67 L266 72 Z" fill="#c26e12"></path>
+            <text x="244" y="124" class="bn-t-front">+1 tier</text>
+            <rect x="276" y="55" width="24" height="24" fill="none" stroke="#319751" stroke-width="2"></rect>
+            <path d="M281.5 67 l4 4 l8 -9" fill="none" stroke="#319751" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <text x="288" y="97" class="bn-t-pass" text-anchor="middle">pass</text>
+          </g>
+        </svg>
+      </div>
+    </article>
+
+    <!-- 3 · dispatch log -->
+    <article class="bn-cell bn-c-log">
+      <p class="bn-cap">Every dispatch narrates</p>
+      <h3>One grammar for every route.</h3>
+      <p>Each unit prints <span style="font-family: var(--mono); color: var(--paper)">Routing:</span> and its tier, so the log stays greppable. With the Claude Code hooks, the session ends with a local receipt. Nothing leaves your machine.</p>
+      <div class="bn-fig">
+        <div class="bn-term">
+<pre><span class="bn-k-mute">$</span> dispatch <span class="bn-k-mute">· GSM8K run, units 207–214</span>
+207  Routing: <span class="bn-k-cheap">cheap</span>
+208  Routing: <span class="bn-k-cheap">cheap</span>
+209  Routing: <span class="bn-k-cheap">cheap</span>
+210  Routing: <span class="bn-k-cheap">cheap</span>
+211  Routing: <span class="bn-k-cheap">cheap</span>
+212  Routing: <span class="bn-k-cheap">cheap</span>
+213  <span class="bn-k-esc">fail ×2 → escalate +1 ↑</span> standard
+214  Routing: <span class="bn-k-cheap">cheap</span>
+<span class="bn-k-mute">── undercut ──────────────────────────</span>
+  8 of 8 dispatches -&gt; cheap/standard tier
+<span class="bn-k-mute">$</span> <span class="bn-caret" aria-hidden="true"></span></pre>
+        </div>
+      </div>
+    </article>
+
+    <!-- 4 · proof -->
+    <article class="bn-cell bn-c-proof">
+      <p class="bn-cap">The proof · GSM8K</p>
+      <p class="bn-numeral" aria-hidden="true">−71%</p>
+      <p style="color: var(--ink)">Measured up to −71% cost on public benchmarks, at equal-or-better pass rate.</p>
+      <div class="bn-fig">
+        <table class="bn-tb">
+          <caption>GSM8K · 50 tasks × 5 seeds · official graders</caption>
+          <thead><tr><th scope="col">OpenAI arm</th><th scope="col" class="bn-num">Pass</th><th scope="col" class="bn-num">Δ cost</th></tr></thead>
+          <tbody>
+            <tr><td>all-standard</td><td class="bn-num">241/250</td><td class="bn-num">—</td></tr>
+            <tr><td>tiered</td><td class="bn-num">249/250</td><td class="bn-num">−71%</td></tr>
+          </tbody>
+        </table>
+        <div class="bn-bars" role="img" aria-label="Relative cost: all-standard 100 percent, tiered 29 percent.">
+          <div class="bn-bar-row"><span>all-standard</span><span class="bn-bar"><span class="bn-fill-std" style="width: 100%"></span></span><span class="bn-bar-val">100%</span></div>
+          <div class="bn-bar-row"><span>tiered</span><span class="bn-bar"><span class="bn-fill-cheap" style="width: 29%"></span></span><span class="bn-bar-val">29%</span></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 5 · photo -->
+    <article class="bn-cell bn-c-photo">
+      <p class="bn-cap">Free · MIT</p>
+      <h3>Stop watching the meter.</h3>
+      <p>Install one skill file. The routing runs on every dispatch after that.</p>
+      <div class="bn-shot">
+        <img src="/img/leaning-back.jpg" alt="A developer leans back from a desk in warm window light, smiling." decoding="async">
+      </div>
+    </article>
+
+    <!-- 6 · vetting -->
+    <article class="bn-cell bn-c-vetting">
+      <span class="bn-badge">Pro</span>
+      <h3>New models are tested before they route.</h3>
+      <p>Pro runs each new frontier-lab and open-weight release through the full methodology. A model that beats the roster for a tier is swapped in. One that doesn't is recorded.</p>
+      <div class="bn-fig bn-fig-wide" style="--fig-min: 380px">
+        <svg viewBox="0 0 400 170" role="img" aria-label="A new frontier-lab or open-weight release is tested to statistical significance, then either swapped into the roster for a tier when it wins, or recorded when it doesn't.">
+          <rect x="1" y="67" width="104" height="36" fill="none" stroke="#13161b" stroke-width="1.5"></rect>
+          <text x="53" y="89" class="bn-t-lab" text-anchor="middle">new release</text>
+          <path d="M105 85 H124" fill="none" stroke="#13161b" stroke-width="1.5"></path>
+          <path d="M122 80 L132 85 L122 90 Z" fill="#13161b"></path>
+          <path class="bn-h-p1" d="M105 85 H124" fill="none" stroke="#13161b" stroke-width="3" stroke-dasharray="12 60" opacity="0"></path>
+
+          <rect x="132" y="58" width="118" height="54" fill="none" stroke="#13161b" stroke-width="2"></rect>
+          <text x="191" y="81" class="bn-t-lab" text-anchor="middle">tested to</text>
+          <text x="191" y="97" class="bn-t-lab" text-anchor="middle">significance</text>
+          <rect class="bn-h-work" x="138" y="64" width="106" height="42" fill="#13161b" fill-opacity="0.05" opacity="0"></rect>
+
+          <path d="M250 85 H274 V33 H296" fill="none" stroke="#13161b" stroke-width="1.5"></path>
+          <path d="M274 85 V137 H296" fill="none" stroke="#13161b" stroke-width="1.5"></path>
+          <path d="M294 28 L304 33 L294 38 Z" fill="#13161b"></path>
+          <path d="M294 132 L304 137 L294 142 Z" fill="#13161b"></path>
+          <path class="bn-h-p2" d="M250 85 H274 V33 H296" fill="none" stroke="#319751" stroke-width="3" stroke-dasharray="12 120" opacity="0"></path>
+          <text x="266" y="54" class="bn-t-mute" text-anchor="end">wins</text>
+          <text x="266" y="126" class="bn-t-mute" text-anchor="end">doesn't</text>
+
+          <g class="bn-h-won">
+            <rect x="305" y="15" width="94" height="36" fill="none" stroke="#319751" stroke-width="2"></rect>
+            <text x="352" y="37" class="bn-t-pass" text-anchor="middle">swapped in</text>
+          </g>
+          <rect x="305" y="119" width="94" height="36" fill="none" stroke="#61656c" stroke-width="1.5"></rect>
+          <text x="352" y="141" class="bn-t-mute" text-anchor="middle">recorded</text>
+        </svg>
+      </div>
+    </article>
+
+    <!-- 7 · compatibility -->
+    <article class="bn-cell bn-c-compat">
+      <p class="bn-cap">Compatibility</p>
+      <h3>Works anywhere a SKILL.md is read.</h3>
+      <p>34 coding agents can read it. It runs inside your agent, so nothing proxies your traffic.</p>
+      <div class="bn-fig">
+        <div class="bn-marquee" tabindex="0" aria-label="Supported agents, first half">
+          <ul class="bn-track">
+            <li class="bn-pill">Claude Code</li><li class="bn-pill">Codex CLI</li><li class="bn-pill">Cursor</li><li class="bn-pill">GitHub Copilot</li><li class="bn-pill">OpenCode</li><li class="bn-pill">Gemini CLI</li><li class="bn-pill">Windsurf (Cascade)</li><li class="bn-pill">JetBrains Junie</li><li class="bn-pill">Amp</li><li class="bn-pill">Devin (CLI/Desktop)</li><li class="bn-pill">Cline</li><li class="bn-pill">Zed</li><li class="bn-pill">Warp</li><li class="bn-pill">Cody</li><li class="bn-pill">Continue</li><li class="bn-pill">Roo Code</li><li class="bn-pill">Kiro</li>
+            <li class="bn-pill bn-dup" aria-hidden="true">Claude Code</li><li class="bn-pill bn-dup" aria-hidden="true">Codex CLI</li><li class="bn-pill bn-dup" aria-hidden="true">Cursor</li><li class="bn-pill bn-dup" aria-hidden="true">GitHub Copilot</li><li class="bn-pill bn-dup" aria-hidden="true">OpenCode</li><li class="bn-pill bn-dup" aria-hidden="true">Gemini CLI</li><li class="bn-pill bn-dup" aria-hidden="true">Windsurf (Cascade)</li><li class="bn-pill bn-dup" aria-hidden="true">JetBrains Junie</li><li class="bn-pill bn-dup" aria-hidden="true">Amp</li><li class="bn-pill bn-dup" aria-hidden="true">Devin (CLI/Desktop)</li><li class="bn-pill bn-dup" aria-hidden="true">Cline</li><li class="bn-pill bn-dup" aria-hidden="true">Zed</li><li class="bn-pill bn-dup" aria-hidden="true">Warp</li><li class="bn-pill bn-dup" aria-hidden="true">Cody</li><li class="bn-pill bn-dup" aria-hidden="true">Continue</li><li class="bn-pill bn-dup" aria-hidden="true">Roo Code</li><li class="bn-pill bn-dup" aria-hidden="true">Kiro</li>
+          </ul>
+        </div>
+        <div class="bn-marquee" tabindex="0" aria-label="Supported agents, second half">
+          <ul class="bn-track bn-rev">
+            <li class="bn-pill">Void</li><li class="bn-pill">Trae</li><li class="bn-pill">Bolt</li><li class="bn-pill">Factory</li><li class="bn-pill">Lovable</li><li class="bn-pill">Qoder</li><li class="bn-pill">Tabnine</li><li class="bn-pill">Jules</li><li class="bn-pill">JetBrains AI Assistant</li><li class="bn-pill">Amazon Q Developer</li><li class="bn-pill">Firebase Studio</li><li class="bn-pill">Aider</li><li class="bn-pill">OpenHands</li><li class="bn-pill">Kilo Code</li><li class="bn-pill">Augment Code</li><li class="bn-pill">Goose</li><li class="bn-pill">Replit Agent</li>
+            <li class="bn-pill bn-dup" aria-hidden="true">Void</li><li class="bn-pill bn-dup" aria-hidden="true">Trae</li><li class="bn-pill bn-dup" aria-hidden="true">Bolt</li><li class="bn-pill bn-dup" aria-hidden="true">Factory</li><li class="bn-pill bn-dup" aria-hidden="true">Lovable</li><li class="bn-pill bn-dup" aria-hidden="true">Qoder</li><li class="bn-pill bn-dup" aria-hidden="true">Tabnine</li><li class="bn-pill bn-dup" aria-hidden="true">Jules</li><li class="bn-pill bn-dup" aria-hidden="true">JetBrains AI Assistant</li><li class="bn-pill bn-dup" aria-hidden="true">Amazon Q Developer</li><li class="bn-pill bn-dup" aria-hidden="true">Firebase Studio</li><li class="bn-pill bn-dup" aria-hidden="true">Aider</li><li class="bn-pill bn-dup" aria-hidden="true">OpenHands</li><li class="bn-pill bn-dup" aria-hidden="true">Kilo Code</li><li class="bn-pill bn-dup" aria-hidden="true">Augment Code</li><li class="bn-pill bn-dup" aria-hidden="true">Goose</li><li class="bn-pill bn-dup" aria-hidden="true">Replit Agent</li>
+          </ul>
+        </div>
+        <div class="bn-install">
+          <code class="bn-chip" id="bento-install-cmd">npx skills add undercutsh/firstpass</code>
+          <button type="button" class="btn btn-ghost btn-sm" id="bento-copy-install">Copy</button>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <div class="bn-cta">
+    <a class="btn" href="#install">Install</a>
+    <a class="btn btn-ghost" href="#benchmarks">Read the benchmarks</a>
+  </div>
   </div>
 </section>
 
@@ -4507,6 +4956,46 @@ class Component extends DCLogic {
       });
   }
 
+  if (document.readyState === 'complete') init();
+  else window.addEventListener('load', init);
+})();
+</script>
+<!--
+  "At a glance" bento: Pause motion toggle and install Copy button. Plain JS
+  outside x-dc, bound on window 'load' like the footer star chip above, and
+  delegated from document so it survives the x-dc render replacing nodes.
+-->
+<script>
+(function () {
+  function init() {
+    document.addEventListener('click', function (e) {
+      var toggle = e.target.closest && e.target.closest('#bento-motion-toggle');
+      if (toggle) {
+        var sec = document.getElementById('bento');
+        var paused = sec.getAttribute('data-motion') === 'paused';
+        sec.setAttribute('data-motion', paused ? 'playing' : 'paused');
+        toggle.setAttribute('aria-pressed', paused ? 'false' : 'true');
+        toggle.textContent = paused ? 'Pause motion' : 'Play motion';
+        return;
+      }
+      var copyBtn = e.target.closest && e.target.closest('#bento-copy-install');
+      if (!copyBtn) return;
+      var cmd = document.getElementById('bento-install-cmd');
+      function selectCmd() {
+        var r = document.createRange(); r.selectNodeContents(cmd);
+        var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+        copyBtn.textContent = 'Press Ctrl+C';
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(cmd.textContent).then(function () {
+          copyBtn.textContent = 'Copied';
+          setTimeout(function () { copyBtn.textContent = 'Copy'; }, 2000);
+        }, selectCmd);
+      } else {
+        selectCmd();
+      }
+    });
+  }
   if (document.readyState === 'complete') init();
   else window.addEventListener('load', init);
 })();
