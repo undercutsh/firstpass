@@ -90,6 +90,9 @@ jobs:
         working-directory: evals
       - name: Unit tests (hooks bylines/settings)
         run: node --test hooks/bylines.test.js
+      - name: Install @undercut/cli dependencies (commander, for the CLI command tests)
+        run: npm ci
+        working-directory: cli
       - name: Lint @undercut/cli (syntax check)
         run: npm run lint
         working-directory: cli
