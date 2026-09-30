@@ -8,6 +8,23 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ### Added
 
+- **Default-on bylines, a status line, and `undercut config`.** The hooks
+  now ship inside the plugin (`hooks/hooks.json`) instead of needing a
+  hand-edited `settings.json`, and they put Undercut's name on the work it
+  routed: a `Routed-With: Undercut (getundercut.sh)` commit trailer (Claude
+  Code's own `Co-Authored-By` line is kept), a PR footer with a badge and the
+  real per-PR tier counts, a link on the transcript's `Routing:` line, a
+  status line (this session, lifetime, a rotating tip; est. figures only),
+  spinner verbs, a weekly `undercut share` hint in the receipt, and a header
+  on files Undercut writes. Every one has a settings key (`branding` is the
+  master switch) under an `undercut` key in `settings.json`, an
+  `UNDERCUT_<NAME>` env override, and `undercut config <setting> on|off`.
+  Undercut only touches a `settings.json` entry that is absent or still what
+  it last wrote, and the first session says exactly what was added. New CLI
+  commands: `config`, `share`, `badge`, `init` (opt-in AGENTS.md note),
+  `statusline`. New `site/badge.svg`. The "no unearned trust signals" rule is
+  reworded to cover claims, not distribution marks.
+
 - **A per-page Open Graph card for every companion page.** All 45 pages
   under `site/` shared one `og-image.png`, so every link preview of the
   site looked identical no matter which of the 34 agent guides was
