@@ -69,6 +69,27 @@ function markDigestShownNow() {
   fs.writeFileSync(LAST_DIGEST_MARKER, new Date().toISOString(), "utf8");
 }
 
+// Generic once-only markers (e.g. "byline-disclosure").
+function hasMarker(name) {
+  ensureDir();
+  return fs.existsSync(path.join(UNDERCUT_DIR, name));
+}
+
+function setMarker(name) {
+  ensureDir();
+  fs.writeFileSync(path.join(UNDERCUT_DIR, name), new Date().toISOString(), "utf8");
+}
+
+// Milliseconds since a marker was last written, or null if it never was.
+function markerAgeMs(name) {
+  ensureDir();
+  try {
+    return Date.now() - fs.statSync(path.join(UNDERCUT_DIR, name)).mtimeMs;
+  } catch {
+    return null;
+  }
+}
+
 // Plan cost is set by the user via env var, not detected -- Claude Code
 // hooks have no API to read which subscription plan a session is on.
 // Unset by default; the digest/receipt fall back to a plan-independent
@@ -92,4 +113,7 @@ module.exports = {
   lastDigestShownAt,
   markDigestShownNow,
   planMonthlyCostUsd,
+  hasMarker,
+  setMarker,
+  markerAgeMs,
 };
