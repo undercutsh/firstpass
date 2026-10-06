@@ -168,7 +168,7 @@ Already logged out (no local credentials or policy cache found).
 
 All four commands read or write inside `~/.undercut/`, a directory already
 owned by [`hooks/`](https://github.com/undercutsh/firstpass/tree/main/hooks)
-(the opt-in, zero-network local telemetry package) — this CLI is the
+(the local, zero-network hooks package that ships with the Claude Code plugin) — this CLI is the
 second citizen of it, adding a Pro credential and a cached policy artifact
 alongside the hooks package's ledger.
 
@@ -198,6 +198,9 @@ after the write completes.
 |---|---|
 | `undercut status` | **Real.** Reads local cache, reports pairing state/policy age/staleness. No network calls. |
 | `undercut logout` | **Real.** Deletes the three cache files. No network calls. |
+| `undercut config [setting] [on\|off]` | **Real.** Lists or changes the byline and status-line settings (`branding` is the master switch) in `~/.claude/settings.json`. No network calls. |
+| `undercut share` | **Real.** Prints a copy-paste summary of the last 7 days from the local ledger, savings only as a labeled estimate. No network calls. |
+| `undercut badge`, `undercut init`, `undercut statusline` | **Real.** Print the README badge markdown; add a routing note to this repo's `AGENTS.md` (explicit only); print the status line for chaining. No network calls. |
 | File handling (`fs-secure.js`) | **Real, tested.** `0600` atomic writes, as described above. |
 | `undercut login`'s control flow | **Real shape**, placeholder backend. Local callback server, CSRF `state`, browser auto-open — all genuine. `PLACEHOLDER_ACTIVATE_URL` (`https://app.getundercut.sh/activate`) doesn't resolve. |
 | `undercut sync`'s control flow | **Real shape**, placeholder backend. Cache write, TTL check, markdown render — all genuine. `fetchPolicy()` throws on purpose; `PLACEHOLDER_POLICY_URL` (`https://policy.getundercut.sh/v2/pro`) doesn't resolve. |
