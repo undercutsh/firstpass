@@ -2,7 +2,7 @@
 title: "Undercut — what we can see"
 description: "Pro's policy sync is an authenticated licence check (account ID, IP, timestamp, policy version), not telemetry about your work. Retention: 30-day raw logs, then aggregate-only. Never correlated to session content or working directory. Includes a proxy-vs-Undercut comparison and the sync-cadence opt-out."
 canonical: "https://getundercut.sh/data.md"
-last-updated: "2026-09-15"
+last-updated: "2026-10-06"
 ---
 
 # Undercut — what we can see
@@ -45,6 +45,16 @@ Request logging on the policy endpoint runs off an explicit allowlist (the same 
 `/api/lead` uses for form fields) — nothing is captured by default. Never logged or transmitted:
 prompts, code, file contents, file paths, working directory, repo name, session content, the
 `User-Agent` string, or which coding agent you're running.
+
+## The pull request badge
+
+The Claude Code plugin adds a one-line footer to pull requests, with a small badge image served
+from `getundercut.sh/badge.svg`. That image is fetched by whoever views the pull request (through
+GitHub's image proxy), not by your machine, so we can see how many times the image is requested.
+The URL is the same static file for everyone: it carries no account, repo, user or session
+identifier, and the request tells us nothing about your code. Turn it off with
+`undercut config attributionBadge off` (the footer text stays), or the whole footer with
+`undercut config attribution off`.
 
 ## Retention
 

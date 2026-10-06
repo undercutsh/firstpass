@@ -6,6 +6,17 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ## [Unreleased]
 
+### Changed
+
+- **Site copy now matches the default-on hooks.** The homepage receipt card,
+  `index.md`, `cli.md` and `llms.txt` called the hooks "opt-in"; they now say
+  the hooks ship with the Claude Code plugin, are on by default, and have
+  one-command off switches. `cli.md` lists the new `config`, `share`,
+  `badge`, `init` and `statusline` commands. `data` (page and `data.md`)
+  gains a section on the pull request badge: it is fetched by whoever views
+  the pull request, so we can see image request counts, and it carries no
+  account, repo, user or session identifier.
+
 ### Added
 
 - **A per-page Open Graph card for every companion page.** All 45 pages
