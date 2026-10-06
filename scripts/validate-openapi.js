@@ -27,6 +27,7 @@ export const SPEC_PATH = path.join(repoRoot, 'site/openapi.json');
 // Handlers deliberately left out of the public spec, with the reason.
 export const UNDOCUMENTED = {
   'lead.js': 'POST form intake for the site\'s own pricing forms, not part of the public read-only data API',
+  'mcp.js': 'the MCP server (POST JSON-RPC at /mcp), not a REST path; held to the same data by scripts/validate-mcp.js',
 };
 
 // '/api/clients/{slug}' -> 'clients/[slug].js'

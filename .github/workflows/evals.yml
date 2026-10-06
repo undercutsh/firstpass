@@ -73,6 +73,12 @@ jobs:
       # validated against its documented schema.
       - name: openapi.json matches site/api/ handlers and their responses
         run: node scripts/validate-openapi.js --check
+      # The MCP server (/mcp) must serve exactly what the REST API serves:
+      # every tool is called through the real handler and compared with
+      # data.js and its outputSchema, and the generated output schemas,
+      # Server Card, AI Catalog entry, and /mcp rewrite must agree.
+      - name: MCP server tools, Server Card, and ai-catalog in sync with data.js
+        run: node scripts/validate-mcp.js --check
       # Colour contrast is the one design property nobody can eyeball, and
       # the palette lives as literal hex repeated inline across 44 pages, so
       # a value that reads correctly on the light ground silently ships
@@ -88,7 +94,8 @@ jobs:
         run: node --test 'scripts/**/*.test.js'
       # site/api/lead.test.js predates this step and was never run in CI
       # either; this picks it up alongside the public API's handler tests
-      # (site/api/_lib/api.test.js).
+      # (site/api/_lib/api.test.js) and the MCP protocol tests
+      # (site/api/_lib/mcp.test.js).
       - name: Unit tests (site/api functions)
         run: node --test 'site/api/**/*.test.js'
       # Heavier eval-harness steps last, cheapest-of-these first: unit tests

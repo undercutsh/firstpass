@@ -77,7 +77,22 @@
         },
         "attestations": ["MIT licensed", "source open on GitHub", "every response is generated from files published in the repository (scripts/build-api-data.js, staleness-checked in CI)"]
       }
+    },
+    {
+      "identifier": "urn:air:getundercut.sh:mcp:undercut",
+      "displayName": "Undercut MCP server (read-only)",
+      "type": "application/mcp-server-card+json",
+      "url": "https://getundercut.sh/mcp/server-card",
+      "description": "Server Card for Undercut's read-only, unauthenticated MCP server at https://getundercut.sh/mcp (Streamable HTTP, stateless, JSON responses; protocol 2026-07-28 plus 2025-11-25, 2025-06-18 and 2025-03-26). Tools: list_clients, get_client, get_segments, get_policy, get_models, get_benchmark_results, get_pricing, get_teams_availability. Each returns the same published data as the matching /api/* endpoint. No write tools, no auth, no routing or inference.",
+      "trustManifest": {
+        "identity": {
+          "name": "Undercut",
+          "url": "https://getundercut.sh/",
+          "repository": "https://github.com/undercutsh/firstpass"
+        },
+        "attestations": ["MIT licensed", "source open on GitHub", "CI calls every tool through the real handler and checks its result against the published data and its outputSchema (scripts/validate-mcp.js)"]
+      }
     }
   ],
-  "notes": "The free tier is a static policy file, not a running service: routing happens inside your own agent. A read-only, unauthenticated JSON API (described at https://getundercut.sh/openapi.json) serves data that is already published in the repository; it has no write endpoints, no auth flow, and no routing or inference endpoint. No MCP server or SDK exists yet. Claude Code can install the policy as a plugin (`/plugin marketplace add undercutsh/firstpass`); every other client uses the skill file directly."
+  "notes": "The free tier is a static policy file, not a running service: routing happens inside your own agent. A read-only, unauthenticated JSON API (described at https://getundercut.sh/openapi.json) serves data that is already published in the repository, and a read-only MCP server at https://getundercut.sh/mcp exposes the same data as MCP tools; neither has write endpoints, an auth flow, or a routing or inference endpoint. No SDK exists yet. Claude Code can install the policy as a plugin (`/plugin marketplace add undercutsh/firstpass`); every other client uses the skill file directly."
 }
