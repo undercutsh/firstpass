@@ -34,6 +34,30 @@ All notable changes to Undercut (firstpass) are documented here. Follows
   on `/developers`; AGENTS.md's "no API exists" rule now says exactly
   what does and doesn't exist. CI now also runs `site/api/**/*.test.js`,
   which picks up `lead.test.js` for the first time.
+- **A read-only MCP server at `https://getundercut.sh/mcp`.** Streamable
+  HTTP, stateless, hand-rolled with no dependencies (`site/api/mcp.js`,
+  protocol core in `site/api/_lib/mcp.js`): every request is a `POST`
+  answered with one JSON response, no session ID is issued, `GET`/`DELETE`
+  get `405`, and invalid `Origin` headers get `403`. Speaks MCP
+  `2026-07-28` (no handshake, `server/discover`, header/body validation)
+  and the `initialize`-based `2025-11-25`, `2025-06-18`, and `2025-03-26`
+  (JSON-RPC batches only for the last). Eight read-only tools, all
+  annotated `readOnlyHint: true` / `destructiveHint: false` /
+  `openWorldHint: false`: `list_clients`, `get_client`, `get_segments`,
+  `get_policy`, `get_models`, `get_benchmark_results`, `get_pricing`,
+  `get_teams_availability`, each returning exactly what its `/api/*` twin
+  returns (from `_lib/data.js`) as `structuredContent` plus a JSON text
+  block, with an `outputSchema` generated from `site/openapi.json`. No write
+  tools, no auth, no routing or inference. Discovery: a Server Card
+  (SEP-2127 draft shape) at `/mcp/server-card` and
+  `/.well-known/mcp/server-card.json`, a new `.well-known/ai-catalog.json`
+  entry (whose notes no longer say no MCP server exists), and an MCP
+  section on `/developers` with Claude Code, Cursor, and VS Code setup.
+  `scripts/validate-mcp.js --check` (new, in CI, unit-tested) calls every
+  tool through the real handler and fails when a result drifts from the
+  published data or its schema, or when the Server Card, catalog entry,
+  or `/mcp` rewrite falls out of sync; `site/api/_lib/mcp.test.js` covers
+  the protocol itself.
 
 - **A per-page Open Graph card for every companion page.** All 45 pages
   under `site/` shared one `og-image.png`, so every link preview of the

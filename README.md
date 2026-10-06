@@ -208,8 +208,11 @@ exact commands, a verify-your-install prompt, and troubleshooting — are in
 for build/test commands and repo conventions.
 
 **For developers looking for an API or MCP server:** see
-[getundercut.sh/developers](https://getundercut.sh/developers) — there isn't
-one yet; here's what exists today and where to hear about it when it ships.
+[getundercut.sh/developers](https://getundercut.sh/developers) — a read-only
+JSON API ([OpenAPI 3.1](https://getundercut.sh/openapi.json)) and a read-only
+MCP server at `https://getundercut.sh/mcp` serve the data this repo already
+publishes (`claude mcp add --transport http undercut https://getundercut.sh/mcp`).
+Neither routes or runs model calls; there is no auth, write endpoint, or SDK.
 
 **Optional, for Undercut Pro — [`cli/`](cli/):** `@undercut/cli` pairs a
 machine with a Pro account and syncs the signed policy file that overrides
