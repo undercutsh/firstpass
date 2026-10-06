@@ -80,6 +80,7 @@
   table.ref-table tr:last-child td { border-bottom: none; }
   [hidden] { display: none !important; }
 </style>
+<script src="/webmcp.js" defer></script>
 </head>
 <body>
 
@@ -102,7 +103,12 @@
 
 <section style="padding: 48px 32px 8px">
   <div class="wrap">
-    <form id="uc-setup-form">
+    <!-- Declarative WebMCP surface (https://github.com/webmachinelearning/webmcp/blob/main/declarative-api-explainer.md):
+         lets a browser agent fill in this read-only segment router. "Submitting" it never leaves the page or
+         sends anything anywhere: the submit handler below renders the matching segment on-page and, when
+         an agent invoked it, hands that same segment back to the agent. toolautosubmit is safe because there
+         is no side effect to confirm. -->
+    <form id="uc-setup-form" toolname="find_your_setup_segment" tooldescription="Find the honest Undercut segment for one setup: pick the coding agent you use and how you pay for model access today, and the page shows what Undercut adds for that setup, read from segments.json. Read-only: nothing is sent or saved." toolautosubmit>
       <fieldset>
         <legend>1. Which tool do you use?</legend>
         <div class="opt-grid" id="uc-editor-options" role="radiogroup" aria-label="Which tool do you use?"></div>
@@ -377,7 +383,7 @@
     editorWrap.innerHTML = data.clients.map(function (c) {
       return (
         '<label class="opt">' +
-          '<input type="radio" name="uc-editor" value="' + esc(c.slug) + '">' +
+          '<input type="radio" name="uc-editor" value="' + esc(c.slug) + '" required toolparamdescription="The coding agent (tool) used to write code, by slug.">' +
           '<span>' + esc(c.label) + '</span>' +
         '</label>'
       );
@@ -387,11 +393,35 @@
     providerWrap.innerHTML = data.provider_question.answers.map(function (a) {
       return (
         '<label class="opt provider-opt">' +
-          '<input type="radio" name="uc-provider" value="' + esc(a.id) + '">' +
+          '<input type="radio" name="uc-provider" value="' + esc(a.id) + '" required toolparamdescription="How model access is paid for today on that tool: subscription_only, subscription_plus_key, or api_billing_only.">' +
           '<span>' + esc(a.label) + '</span>' +
         '</label>'
       );
     }).join('');
+
+    // Declarative WebMCP submit (agent-filled form). Never navigates or sends anything:
+    // render the matching segment on-page and, for an agent, respond with the same data.
+    document.getElementById('uc-setup-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var form = e.target;
+      var ed = form.querySelector('input[name="uc-editor"]:checked');
+      var pr = form.querySelector('input[name="uc-provider"]:checked');
+      if (ed) state.editor = ed.value;
+      if (pr) state.provider = pr.value;
+      renderResult();
+      if (e.agentInvoked && typeof e.respondWith === 'function') {
+        var segId = (state.editor && state.provider) ? resolveSegment(data, state.editor, state.provider) : undefined;
+        var seg = segId ? data.segments[segId] : (segId === null ? data.unresearched : null);
+        e.respondWith(Promise.resolve(seg ? {
+          segment: segId || null,
+          headline: seg.headline,
+          body: seg.body,
+          openrouter_framing: seg.openrouter_framing,
+          honesty_caveat: seg.honesty_caveat,
+          source: 'https://getundercut.sh/segments.json'
+        } : { error: 'Pick both a tool (uc-editor) and a provider setup (uc-provider).' }));
+      }
+    });
 
     editorWrap.addEventListener('change', function (e) {
       if (e.target && e.target.name === 'uc-editor') { state.editor = e.target.value; renderResult(); }

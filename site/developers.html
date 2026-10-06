@@ -43,6 +43,7 @@
   code{background:#d4d0cb;color:#13161b;padding:1px 5px;border-radius:3px;font-size:.92em}
   .callout{border:1px solid #d4d0cb;border-radius:6px;padding:16px 18px;margin:20px 0}
 </style>
+<script src="/webmcp.js" defer></script>
 </head>
 <body>
 <div class="wrap">
@@ -65,6 +66,16 @@
 
   <h2>What doesn't exist yet</h2>
   <p>No hosted routing API. No MCP server. No SDK or client library. No webhook or telemetry endpoint. There is a first-party <a href="/cli.md"><code>@undercut/cli</code></a> package in this repo's <a href="https://github.com/undercutsh/firstpass/tree/main/cli"><code>cli/</code></a> directory, but it's a structural scaffold, not a published API: <code>status</code> and <code>logout</code> work today with no network calls, while <code>login</code> and <code>sync</code> are real control flow pointed at a backend that hasn't shipped yet, and it isn't published to npm. Full honesty write-up: <a href="/cli.md">getundercut.sh/cli.md</a>.</p>
+
+  <h2 id="webmcp">WebMCP (in-page tools)</h2>
+  <p>This site's own pages register a few read-only tools through <a href="https://webmachinelearning.github.io/webmcp/">WebMCP</a>, a proposed web standard (a W3C community group draft, in a Chrome origin trial) that lets an agent built into the browser call named functions on a page instead of scraping it. It is not an MCP server and not an API: the tools run inside the page you already have open, only in a browser that supports WebMCP, and in every other browser the script does nothing. Each tool reads a static file this site already publishes, at the moment it's called:</p>
+  <ul>
+    <li><code>list_supported_clients</code> and <code>get_client_install_instructions</code> — from <a href="/clients.json"><code>clients.json</code></a> and each agent's own install guide.</li>
+    <li><code>get_segment_recommendation</code> — from <a href="/segments.json"><code>segments.json</code></a>, with the same rules as <a href="/setup">Your setup</a>.</li>
+    <li><code>get_pricing</code> — from <a href="/pricing.md"><code>pricing.md</code></a>.</li>
+    <li><code>get_policy_summary</code> and <code>get_benchmark_summary</code> — from <a href="/llms.txt"><code>llms.txt</code></a>, linking the methodology and raw results in <code>testing/</code>.</li>
+  </ul>
+  <p>None of them submits a form, starts a trial or checkout, or sends anything anywhere. The <a href="/setup">Your setup</a> form is also marked up as a declarative WebMCP tool, since filling it in only changes what that page shows. Source: <a href="https://github.com/undercutsh/firstpass/blob/main/site/webmcp.js"><code>site/webmcp.js</code></a>.</p>
 
   <h2>What's planned</h2>
   <p>Undercut's paid tiers — Pro's pooled vetting ledger and hosted dashboard, and Teams' org-wide policy enforcement, shared dashboard, and seat management — are the most likely place an API or MCP server would eventually live, since that's where server-side state (usage, ledgers, org policy) actually needs to exist. Teams is sold today through founder-run onboarding, not a self-serve API; no public interface is built yet, and nothing here should be read as a commitment to a specific interface or timeline. Pro does already make one authenticated request the free tier doesn't: a periodic policy-file sync, not a routing API and not a telemetry endpoint. Exactly what it reveals: <a href="/data">What we can see</a>.</p>
