@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#13161b">
 <title>Developers — Undercut</title>
-<meta name="description" content="There is no public Undercut API or MCP server yet. Here's what exists today — the SKILL.md and the source repo — and where to hear about an API when it ships.">
+<meta name="description" content="Undercut has a read-only, unauthenticated public JSON API over data it already publishes, described by an OpenAPI 3.1 spec. No MCP server, SDK, or write endpoints yet.">
 <link rel="canonical" href="https://getundercut.sh/developers">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -17,7 +17,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Undercut">
 <meta property="og:title" content="Developers — Undercut">
-<meta property="og:description" content="There is no public Undercut API or MCP server yet. Here's what exists today — the SKILL.md and the source repo — and where to hear about an API when it ships.">
+<meta property="og:description" content="Undercut has a read-only, unauthenticated public JSON API over data it already publishes, described by an OpenAPI 3.1 spec. No MCP server, SDK, or write endpoints yet.">
 <meta property="og:url" content="https://getundercut.sh/developers">
 <meta property="og:image" content="https://getundercut.sh/og-image.png">
 <meta property="og:image:type" content="image/png">
@@ -27,7 +27,7 @@
 <meta name="twitter:creator" content="@jcwinter">
 <meta name="twitter:image" content="https://getundercut.sh/og-image.png">
 <meta name="twitter:title" content="Developers — Undercut">
-<meta name="twitter:description" content="There is no public Undercut API or MCP server yet. Here's what exists today — the SKILL.md and the source repo — and where to hear about an API when it ships.">
+<meta name="twitter:description" content="Undercut has a read-only, unauthenticated public JSON API over data it already publishes, described by an OpenAPI 3.1 spec. No MCP server, SDK, or write endpoints yet.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="alternate" type="application/rss+xml" title="Undercut changelog" href="https://getundercut.sh/changelog.xml">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Fragment+Mono:ital@0;1&display=swap">
@@ -47,11 +47,26 @@
 <body>
 <div class="wrap">
   <p class="mono">Developers — Undercut</p>
-  <h1>No public API or MCP server yet — here's what actually exists.</h1>
+  <h1>A read-only data API, and an honest list of what doesn't exist yet.</h1>
 
   <div class="callout">
-    <p style="margin:0">Honest status: there is no hosted API, no MCP server, and no SDK. The free tier is <a href="https://github.com/undercutsh/firstpass/blob/main/skills/firstpass/SKILL.md"><code>SKILL.md</code></a> — a policy file your agent reads locally. There are no endpoints to call.</p>
+    <p style="margin:0">Honest status: there is a read-only, unauthenticated JSON API over data Undercut already publishes, described by <a href="/openapi.json"><code>/openapi.json</code></a>. It does not route or proxy anything. There is no MCP server, no SDK, and no write endpoint. The product itself is still <a href="https://github.com/undercutsh/firstpass/blob/main/skills/firstpass/SKILL.md"><code>SKILL.md</code></a> — a policy file your agent reads locally.</p>
   </div>
+
+  <h2 id="api">The public data API</h2>
+  <p>Every endpoint is a plain <code>GET</code> on <code>https://getundercut.sh</code>: no account, no API key, no request body. Responses are JSON with open CORS, regenerated from <a href="https://github.com/undercutsh/firstpass">the repository</a> at each deploy, and each one links to the file it came from. Anything other than <code>GET</code> gets a <code>405</code>.</p>
+  <ul>
+    <li><code>/api/policy</code> — the routing policy (<code>SKILL.md</code>) as markdown, with its version.</li>
+    <li><code>/api/models</code> — the tier-to-model mapping (<code>models.md</code>), structured per tier and vendor.</li>
+    <li><code>/api/results</code> — benchmark totals and tiered-versus-baseline comparisons computed from the raw files in <code>testing/results/</code>, with the methodology's standing limitation and caveats attached.</li>
+    <li><code>/api/clients</code> and <code>/api/clients/{slug}</code> — the coding agents with a researched install guide.</li>
+    <li><code>/api/segments</code> — the editor and provider-setup segment router behind <a href="/setup">/setup</a>.</li>
+    <li><code>/api/pricing</code> — the published rate card (<a href="/pricing.md">pricing.md</a>).</li>
+    <li><code>/api/teams-availability</code> — the founder's published Teams onboarding windows.</li>
+    <li><code>/api/health</code> — status and the deployed package version.</li>
+  </ul>
+  <pre style="background:#d4d0cb;padding:12px 14px;border-radius:6px;overflow-x:auto"><code>curl https://getundercut.sh/api/models</code></pre>
+  <p>Full schemas and agent-oriented descriptions: <a href="/openapi.json">getundercut.sh/openapi.json</a> (OpenAPI 3.1). CI checks that every documented path has a handler and that every handler's real response matches its documented schema.</p>
 
   <h2>What exists today</h2>
   <p>Undercut ships as a single MIT-licensed skill file, not a service:</p>
@@ -61,25 +76,26 @@
   </ul>
   <p>Install it by copying the skill into your agent's skills directory, or:</p>
   <pre style="background:#d4d0cb;padding:12px 14px;border-radius:6px;overflow-x:auto"><code>npx skills add undercutsh/firstpass</code></pre>
-  <p>That's it — no account, no API key, no network call to us. Nothing here phones home.</p>
+  <p>That's it — no account, no API key, no network call to us. The policy never phones home; the data API above is something you call, not something it calls.</p>
 
   <h2>What doesn't exist yet</h2>
-  <p>No hosted routing API. No MCP server. No SDK or client library. No webhook or telemetry endpoint. There is a first-party <a href="/cli.md"><code>@undercut/cli</code></a> package in this repo's <a href="https://github.com/undercutsh/firstpass/tree/main/cli"><code>cli/</code></a> directory, but it's a structural scaffold, not a published API: <code>status</code> and <code>logout</code> work today with no network calls, while <code>login</code> and <code>sync</code> are real control flow pointed at a backend that hasn't shipped yet, and it isn't published to npm. Full honesty write-up: <a href="/cli.md">getundercut.sh/cli.md</a>.</p>
+  <p>No hosted routing API: the data API serves published files, it doesn't pick models or run calls. No MCP server. No auth flow and no write endpoints. No SDK or client library. No webhook or telemetry endpoint. There is a first-party <a href="/cli.md"><code>@undercut/cli</code></a> package in this repo's <a href="https://github.com/undercutsh/firstpass/tree/main/cli"><code>cli/</code></a> directory, but it's a structural scaffold, not a published API: <code>status</code> and <code>logout</code> work today with no network calls, while <code>login</code> and <code>sync</code> are real control flow pointed at a backend that hasn't shipped yet, and it isn't published to npm. Full honesty write-up: <a href="/cli.md">getundercut.sh/cli.md</a>.</p>
 
   <h2>What's planned</h2>
-  <p>Undercut's paid tiers — Pro's pooled vetting ledger and hosted dashboard, and Teams' org-wide policy enforcement, shared dashboard, and seat management — are the most likely place an API or MCP server would eventually live, since that's where server-side state (usage, ledgers, org policy) actually needs to exist. Teams is sold today through founder-run onboarding, not a self-serve API; no public interface is built yet, and nothing here should be read as a commitment to a specific interface or timeline. Pro does already make one authenticated request the free tier doesn't: a periodic policy-file sync, not a routing API and not a telemetry endpoint. Exactly what it reveals: <a href="/data">What we can see</a>.</p>
+  <p>Undercut's paid tiers — Pro's pooled vetting ledger and hosted dashboard, and Teams' org-wide policy enforcement, shared dashboard, and seat management — are the most likely place an authenticated API or MCP server would eventually live, since that's where server-side state (usage, ledgers, org policy) actually needs to exist. Teams is sold today through founder-run onboarding, not a self-serve API; beyond the read-only data API above, no public interface is built yet, and nothing here should be read as a commitment to a specific interface or timeline. Pro does already make one authenticated request the free tier doesn't: a periodic policy-file sync, not a routing API and not a telemetry endpoint. Exactly what it reveals: <a href="/data">What we can see</a>.</p>
   <p>The place to be when that ships is on a paid tier: <a href="https://getundercut.sh/#pricing">start a Pro trial</a> or <a href="https://getundercut.sh/#pricing">Teams onboarding</a>.</p>
 
   <h2>In the meantime</h2>
   <p>The most useful thing you can do as a developer today is read the policy file, run the eval harness yourself, or open an issue/PR against the repo:</p>
   <ul>
+    <li><a href="/openapi.json">OpenAPI 3.1 spec for the data API</a></li>
     <li><a href="https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md">Raw SKILL.md</a></li>
     <li><a href="https://github.com/undercutsh/firstpass/tree/main/testing">Eval harness + methodology (testing/README.md)</a></li>
     <li><a href="https://github.com/undercutsh/firstpass/blob/main/AGENTS.md">AGENTS.md</a> — build/test commands and repo conventions</li>
     <li><a href="https://github.com/undercutsh/firstpass/issues">Issues</a></li>
   </ul>
 
-  <p style="margin-top:40px;font-size:13px;color:#61656c">Updated 2026-09-15. <a href="/">Back to Undercut</a> · <a href="/about">About</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> &middot; <a href="/brand">Brand</a></p>
+  <p style="margin-top:40px;font-size:13px;color:#61656c">Updated 2026-10-03. <a href="/">Back to Undercut</a> · <a href="/about">About</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> &middot; <a href="/brand">Brand</a></p>
 </div>
 </body>
 </html>

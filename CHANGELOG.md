@@ -8,6 +8,33 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ### Added
 
+- **A read-only public JSON API over data the repo already publishes.**
+  Nine unauthenticated `GET` endpoints on getundercut.sh: `/api/policy`
+  (SKILL.md), `/api/models` (the tier→model map, structured per tier and
+  vendor), `/api/results` (per-run totals and tiered-vs-baseline deltas
+  computed from the raw files in `testing/results/`, with
+  `testing/README.md`'s standing limitation and caveats attached),
+  `/api/clients` and `/api/clients/{slug}`, `/api/segments`,
+  `/api/pricing`, `/api/teams-availability`, and `/api/health`. JSON with
+  open CORS, cache headers, and one error shape; any non-read method gets
+  a `405` with `Allow`. No write endpoints, no auth flow, no routing or
+  inference endpoint, no SDK. Vercel deploys from `site/`, so the
+  functions read a generated snapshot (`site/api/_lib/snapshot.js`, built
+  by the new `scripts/build-api-data.js`) through a shared, synchronous
+  data layer (`site/api/_lib/data.js`); `build-api-data.js --check` in CI
+  fails when a source file changes without a regenerated snapshot.
+- **`/openapi.json`: an OpenAPI 3.1 description of that API**, written for
+  AI agents (operationIds, schemas derived from the real data shapes,
+  `security: []` because there is no auth). `scripts/validate-openapi.js
+  --check` (new, in CI, unit-tested) fails when a documented path has no
+  handler, a handler is undocumented, or a handler's real response no
+  longer matches its documented schema. Advertised via a
+  `rel="service-desc"` `Link` header on `/`, two new
+  `.well-known/ai-catalog.json` entries, `llms.txt`, and a new API section
+  on `/developers`; AGENTS.md's "no API exists" rule now says exactly
+  what does and doesn't exist. CI now also runs `site/api/**/*.test.js`,
+  which picks up `lead.test.js` for the first time.
+
 - **A per-page Open Graph card for every companion page.** All 45 pages
   under `site/` shared one `og-image.png`, so every link preview of the
   site looked identical no matter which of the 34 agent guides was

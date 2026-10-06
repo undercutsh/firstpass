@@ -1,0 +1,517 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Undercut public data API",
+    "version": "0.1.0",
+    "summary": "Read-only, unauthenticated JSON over data Undercut already publishes.",
+    "description": "A read-only JSON API over data that is already public in the undercutsh/firstpass repository and on getundercut.sh: the routing policy (SKILL.md), the tier-to-model mapping (models.md), benchmark results computed from the raw files in testing/results, the supported coding-agent clients, the /setup segment router, the pricing rate card, and the published Teams onboarding windows.\n\nFor AI agents: every endpoint is a plain GET with no authentication, no API key, no rate-limit token, and no request body. Responses are JSON with `Access-Control-Allow-Origin: *`. Data is regenerated from the repository at deploy time, so it is exactly as current as the deployed site; each payload carries a `source` link to the file it came from. Errors always have the shape `{\"error\": {\"status\", \"code\", \"message\"}}`.\n\nWhat this API is not: it does not route, proxy, or run model calls; it has no write endpoints, no accounts, no auth flow, and no SDK. The routing itself happens inside your own agent, which reads the policy file (GET /api/policy returns it).",
+    "contact": {
+      "name": "Undercut (Justin Winter)",
+      "url": "https://github.com/undercutsh/firstpass/issues"
+    },
+    "license": {
+      "name": "MIT",
+      "identifier": "MIT"
+    }
+  },
+  "externalDocs": {
+    "description": "Developer page: what exists today and what does not",
+    "url": "https://getundercut.sh/developers"
+  },
+  "servers": [
+    { "url": "https://getundercut.sh" }
+  ],
+  "security": [],
+  "tags": [
+    { "name": "service", "description": "Service status." },
+    { "name": "policy", "description": "The routing policy and its tier-to-model mapping." },
+    { "name": "evidence", "description": "Published benchmark results." },
+    { "name": "clients", "description": "Coding agents Undercut has a verified install guide for, and the setup segment router." },
+    { "name": "commercial", "description": "Pricing and Teams onboarding availability." }
+  ],
+  "paths": {
+    "/api/health": {
+      "get": {
+        "operationId": "getHealth",
+        "tags": ["service"],
+        "summary": "Service status and deployed version",
+        "description": "Returns `status: ok` and the Undercut package version (from .claude-plugin/plugin.json) this deployment serves. Not cached.",
+        "responses": {
+          "200": { "description": "The API is up.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Health" } } } },
+          "405": { "$ref": "#/components/responses/MethodNotAllowed" },
+          "500": { "$ref": "#/components/responses/InternalError" }
+        }
+      }
+    },
+    "/api/clients": {
+      "get": {
+        "operationId": "listClients",
+        "tags": ["clients"],
+        "summary": "List supported coding-agent clients",
+        "description": "Every coding agent (Claude Code, Codex CLI, Cursor, GitHub Copilot, and more) that has a researched, cited install guide on getundercut.sh. Use a client's `slug` with GET /api/clients/{slug}, and its `url` for the human-readable install guide. `detailed: true` marks the clients expanded inline in the repository's AGENTS.md install matrix.",
+        "responses": {
+          "200": { "description": "All clients.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ClientList" } } } },
+          "405": { "$ref": "#/components/responses/MethodNotAllowed" },
+          "500": { "$ref": "#/components/responses/InternalError" }
+        }
+      }
+    },
+    "/api/clients/{slug}": {
+      "get": {
+        "operationId": "getClient",
+        "tags": ["clients"],
+        "summary": "Get one coding-agent client",
+        "description": "Looks up one client by slug (for example `claude-code`, `cursor`, `copilot`). Returns 404 when the slug is not a supported client; GET /api/clients lists every valid slug.",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "description": "Client slug, as listed by GET /api/clients.",
+            "schema": { "type": "string", "pattern": "^[a-z0-9-]{1,64}$", "examples": ["claude-code"] }
+          }
+        ],
+        "responses": {
+          "200": { "description": "The client.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Client" } } } },
+          "400": { "description": "The slug is not well-formed.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "404": { "description": "No client has this slug.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "405": { "$ref": "#/components/responses/MethodNotAllowed" },
+          "500": { "$ref": "#/components/responses/InternalError" }
+        }
+      }
+    },
+    "/api/segments": {
+      "get": {
+        "operationId": "getSegments",
+        "tags": ["clients"],
+        "summary": "Get the setup segment router",
+        "description": "The data behind getundercut.sh/setup: two questions (which coding tool, and how you pay for model access) and the rules that combine the answers into one of four segments (A-D) describing what Undercut adds for that setup. To place a user: find their tool in `clients` (its `segment` may be null when not yet researched), then apply `resolution_matrix.rules` in order; first match wins. A null result means use `unresearched`.",
+        "responses": {
+          "200": { "description": "The segment router.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Segments" } } } },
+          "405": { "$ref": "#/components/responses/MethodNotAllowed" },
+          "500": { "$ref": "#/components/responses/InternalError" }
+        }
+      }
+    },
+    "/api/policy": {
+      "get": {
+        "operationId": "getPolicy",
+        "tags": ["policy"],
+        "summary": "Get the routing policy (SKILL.md)",
+        "description": "The complete Undercut routing policy as markdown: the six-flag rubric that assigns a base tier (cheap, standard, frontier, apex) and the escalation ladder driven by objective signals. An agent can follow `markdown` directly at dispatch time. `version` is the package version; `rubricVersion` is the rubric's own spec version.",
+        "responses": {
+          "200": { "description": "The policy.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Policy" } } } },
+          "405": { "$ref": "#/components/responses/MethodNotAllowed" },
+          "500": { "$ref": "#/components/responses/InternalError" }
+        }
+      }
+    },
+    "/api/models": {
+      "get": {
+        "operationId": "getModels",
+        "tags": ["policy"],
+        "summary": "Get the tier-to-model mapping (models.md)",
+        "description": "Resolves the policy's generic tiers to concrete OpenRouter model slugs per vendor family. `tiers[].models` is keyed by vendor id (see `vendors`). These are the exact slugs the eval harness used, so the benchmark results are reproducible against them. `markdown` carries the full file, including the notes on why each pick was made.",
+        "responses": {
+          "200": { "description": "The mapping.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Models" } } } },
+          "405": { "$ref": "#/components/responses/MethodNotAllowed" },
+          "500": { "$ref": "#/components/responses/InternalError" }
+        }
+      }
+    },
+    "/api/results": {
+      "get": {
+        "operationId": "getResults",
+        "tags": ["evidence"],
+        "summary": "Get published benchmark results",
+        "description": "Benchmark evidence computed directly from the raw run files in testing/results: per-run metadata (`runs`), per vendor/arm/suite totals (`cells`), and tiered-versus-all-standard pairs with cost and pass deltas (`comparisons`). Always read `standingLimitation` and `caveats` before quoting a number: they state which numbers measure the escalation ladder rather than the rubric, and which cells the arithmetic alone does not explain. Every run links to its raw JSON.",
+        "responses": {
+          "200": { "description": "The results summary.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Results" } } } },
+          "405": { "$ref": "#/components/responses/MethodNotAllowed" },
+          "500": { "$ref": "#/components/responses/InternalError" }
+        }
+      }
+    },
+    "/api/pricing": {
+      "get": {
+        "operationId": "getPricing",
+        "tags": ["commercial"],
+        "summary": "Get pricing",
+        "description": "The published rate card (getundercut.sh/pricing.md): Pro, Teams, Enterprise, and Free. `plans[].price` and `plans[].status` are the plan's own Price and Status lines verbatim, and `details` holds every labelled line for that plan; `markdown` carries the full file, including the guarantee and notes. Prices are text as published, not parsed numbers.",
+        "responses": {
+          "200": { "description": "Pricing.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Pricing" } } } },
+          "405": { "$ref": "#/components/responses/MethodNotAllowed" },
+          "500": { "$ref": "#/components/responses/InternalError" }
+        }
+      }
+    },
+    "/api/teams-availability": {
+      "get": {
+        "operationId": "getTeamsAvailability",
+        "tags": ["commercial"],
+        "summary": "Get published Teams onboarding windows",
+        "description": "Onboarding windows the founder has published for Teams onboarding calls, as ISO-8601 UTC ranges. An empty `windows` list is a real state, meaning no windows are open right now; it is not an error. This endpoint only reads: requesting a window happens on getundercut.sh/#pricing.",
+        "responses": {
+          "200": { "description": "Availability.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/TeamsAvailability" } } } },
+          "405": { "$ref": "#/components/responses/MethodNotAllowed" },
+          "500": { "$ref": "#/components/responses/InternalError" }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "MethodNotAllowed": {
+        "description": "Only GET (and HEAD/OPTIONS) are supported; the API is read-only. The `Allow` header lists the accepted methods.",
+        "headers": { "Allow": { "schema": { "type": "string", "examples": ["GET, HEAD, OPTIONS"] } } },
+        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+      },
+      "InternalError": {
+        "description": "Unexpected server error.",
+        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": ["error"],
+        "properties": {
+          "error": {
+            "type": "object",
+            "required": ["status", "code", "message"],
+            "properties": {
+              "status": { "type": "integer", "description": "HTTP status code, repeated in the body." },
+              "code": { "type": "string", "enum": ["invalid_slug", "not_found", "method_not_allowed", "internal_error"] },
+              "message": { "type": "string", "description": "Human-readable explanation, including what to do instead." }
+            }
+          }
+        }
+      },
+      "Source": {
+        "type": "object",
+        "description": "Where this data is published.",
+        "properties": {
+          "url": { "type": "string", "format": "uri" },
+          "raw": { "type": "string", "format": "uri" },
+          "html": { "type": "string", "format": "uri" },
+          "rawData": { "type": "string", "format": "uri" }
+        },
+        "required": ["url"]
+      },
+      "Health": {
+        "type": "object",
+        "required": ["status", "name", "version"],
+        "properties": {
+          "status": { "type": "string", "const": "ok" },
+          "name": { "type": "string", "description": "Package name." },
+          "version": { "type": "string", "description": "Undercut package version (semver)." }
+        }
+      },
+      "Client": {
+        "type": "object",
+        "required": ["slug", "name", "detailed", "labels", "url"],
+        "properties": {
+          "slug": { "type": "string" },
+          "name": { "type": "string", "description": "Display name, matching the install guide's title." },
+          "detailed": { "type": "boolean", "description": "True for the clients expanded inline in AGENTS.md's install matrix." },
+          "labels": {
+            "type": "object",
+            "description": "The name as written in each of the four places the repository lists clients.",
+            "required": ["faq", "llms", "readme", "agents"],
+            "properties": {
+              "faq": { "type": "string" },
+              "llms": { "type": "string" },
+              "readme": { "type": "string" },
+              "agents": { "type": "string" }
+            }
+          },
+          "url": { "type": "string", "format": "uri", "description": "The client's install guide on getundercut.sh." }
+        }
+      },
+      "ClientList": {
+        "type": "object",
+        "required": ["count", "clients"],
+        "properties": {
+          "count": { "type": "integer" },
+          "clients": { "type": "array", "items": { "$ref": "#/components/schemas/Client" } }
+        }
+      },
+      "SegmentCopy": {
+        "type": "object",
+        "required": ["headline", "body", "openrouter_framing", "honesty_caveat", "flag"],
+        "properties": {
+          "id": { "type": "string", "enum": ["A", "B", "C", "D"] },
+          "name": { "type": "string" },
+          "headline": { "type": "string" },
+          "body": { "type": "string" },
+          "openrouter_framing": { "type": "string" },
+          "honesty_caveat": { "type": "string" },
+          "flag": { "type": ["string", "null"], "description": "Non-null when the segment carries an explicit caveat (e.g. unverified_for_your_editor, not_yet_researched)." },
+          "connect_openrouter": {
+            "type": "object",
+            "required": ["cta_label", "helper_text", "enabled"],
+            "properties": {
+              "cta_label": { "type": ["string", "null"], "description": "Null when the segment deliberately shows no connect button." },
+              "helper_text": { "type": "string" },
+              "enabled": { "type": "boolean", "description": "False until a real connect flow ships; never link a disabled flow." }
+            }
+          }
+        }
+      },
+      "Segments": {
+        "type": "object",
+        "required": ["last_verified", "key_fact", "editor_question", "provider_question", "clients", "resolution_matrix", "segments", "unresearched", "reference_table", "open_questions", "source"],
+        "properties": {
+          "research_doc": { "type": "string", "description": "Path of the internal research document this copy derives from." },
+          "segment_a_pitch_doc": { "type": "string" },
+          "last_verified": { "type": "string", "format": "date" },
+          "connect_openrouter_note": { "type": "string" },
+          "key_fact": { "type": "string" },
+          "editor_question": {
+            "type": "object",
+            "required": ["id", "prompt"],
+            "properties": { "id": { "type": "string" }, "prompt": { "type": "string" } }
+          },
+          "provider_question": {
+            "type": "object",
+            "required": ["id", "prompt", "answers"],
+            "properties": {
+              "id": { "type": "string" },
+              "prompt": { "type": "string" },
+              "answers": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["id", "label"],
+                  "properties": { "id": { "type": "string" }, "label": { "type": "string" } }
+                }
+              }
+            }
+          },
+          "clients": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["slug", "label", "segment"],
+              "properties": {
+                "slug": { "type": "string" },
+                "label": { "type": "string" },
+                "segment": { "type": ["string", "null"], "description": "A-D, or null when this tool is not yet researched." }
+              }
+            }
+          },
+          "resolution_matrix": {
+            "type": "object",
+            "required": ["description", "rules"],
+            "properties": {
+              "description": { "type": "string" },
+              "rules": {
+                "type": "array",
+                "description": "Apply in order; the first rule whose conditions match wins.",
+                "items": {
+                  "type": "object",
+                  "required": ["result_segment"],
+                  "properties": {
+                    "if_client_segment": { "type": ["string", "null"] },
+                    "if_provider_answer": { "type": "string" },
+                    "result_segment": { "type": ["string", "null"] },
+                    "note": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "segments": {
+            "type": "object",
+            "description": "Segment copy keyed by segment id (A-D).",
+            "additionalProperties": { "$ref": "#/components/schemas/SegmentCopy" }
+          },
+          "unresearched": { "$ref": "#/components/schemas/SegmentCopy" },
+          "reference_table": {
+            "type": "object",
+            "required": ["columns", "rows"],
+            "properties": {
+              "columns": { "type": "array", "items": { "type": "string" } },
+              "rows": { "type": "array", "items": { "type": "object", "additionalProperties": { "type": "string" } } }
+            }
+          },
+          "open_questions": { "type": "array", "items": { "type": "string" } },
+          "source": { "$ref": "#/components/schemas/Source" }
+        }
+      },
+      "Policy": {
+        "type": "object",
+        "required": ["name", "version", "rubricVersion", "format", "markdown", "source"],
+        "properties": {
+          "name": { "type": "string", "description": "Skill name from SKILL.md frontmatter." },
+          "version": { "type": "string", "description": "Undercut package version (semver)." },
+          "rubricVersion": { "type": "string", "description": "The six-flag rubric's own spec version; changes only when the rubric's rules change." },
+          "description": { "type": ["string", "null"], "description": "SKILL.md frontmatter description (what host agents match on)." },
+          "format": { "type": "string", "const": "text/markdown" },
+          "markdown": { "type": "string", "description": "The complete SKILL.md, frontmatter included." },
+          "source": { "$ref": "#/components/schemas/Source" }
+        }
+      },
+      "Models": {
+        "type": "object",
+        "required": ["lastUpdated", "vendors", "tiers", "format", "markdown", "source"],
+        "properties": {
+          "lastUpdated": { "type": ["string", "null"], "format": "date" },
+          "vendors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "label"],
+              "properties": { "id": { "type": "string" }, "label": { "type": "string" } }
+            }
+          },
+          "tiers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["tier", "models"],
+              "properties": {
+                "tier": { "type": "string", "enum": ["cheap", "standard", "frontier", "apex"] },
+                "models": { "type": "object", "description": "OpenRouter model slug keyed by vendor id.", "additionalProperties": { "type": "string" } }
+              }
+            }
+          },
+          "format": { "type": "string", "const": "text/markdown" },
+          "markdown": { "type": "string" },
+          "source": { "$ref": "#/components/schemas/Source" }
+        }
+      },
+      "ResultCell": {
+        "type": "object",
+        "required": ["vendor", "arm", "suite", "policy", "file", "units", "passed", "costUsd"],
+        "properties": {
+          "vendor": { "type": "string" },
+          "arm": { "type": "string", "enum": ["tiered", "all-standard"], "description": "tiered = the policy; all-standard = baseline." },
+          "suite": { "type": "string" },
+          "policy": { "type": "string" },
+          "file": { "type": "string", "description": "Raw run file in testing/results." },
+          "units": { "type": "integer", "description": "Tasks times seeds." },
+          "passed": { "type": "integer" },
+          "costUsd": { "type": "number", "description": "Sum of per-unit model cost in US dollars." }
+        }
+      },
+      "ComparisonSide": {
+        "type": "object",
+        "required": ["file", "policy", "units", "passed", "costUsd"],
+        "properties": {
+          "file": { "type": "string" },
+          "policy": { "type": "string" },
+          "units": { "type": "integer" },
+          "passed": { "type": "integer" },
+          "costUsd": { "type": "number" }
+        }
+      },
+      "Results": {
+        "type": "object",
+        "required": ["note", "standingLimitation", "caveats", "runs", "cells", "comparisons", "methodology", "source"],
+        "properties": {
+          "note": { "type": "string" },
+          "standingLimitation": { "type": "string", "description": "Markdown. Read before quoting any synthetic-suite number." },
+          "caveats": { "type": "string", "description": "Markdown." },
+          "runs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["file", "policy", "vendors", "arms", "suites", "seeds", "mode", "generated", "url", "raw"],
+              "properties": {
+                "file": { "type": "string" },
+                "policy": { "type": "string" },
+                "vendors": { "type": "array", "items": { "type": "string" } },
+                "arms": { "type": "array", "items": { "type": "string" } },
+                "suites": { "type": "array", "items": { "type": "string" } },
+                "seeds": { "type": "integer" },
+                "mode": { "type": "string" },
+                "generated": { "type": "string", "format": "date-time" },
+                "url": { "type": "string", "format": "uri" },
+                "raw": { "type": "string", "format": "uri" }
+              }
+            }
+          },
+          "cells": { "type": "array", "items": { "$ref": "#/components/schemas/ResultCell" } },
+          "comparisons": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["vendor", "suite", "baseline", "tiered", "costDeltaPct", "passDelta"],
+              "properties": {
+                "vendor": { "type": "string" },
+                "suite": { "type": "string" },
+                "baseline": { "$ref": "#/components/schemas/ComparisonSide" },
+                "tiered": { "$ref": "#/components/schemas/ComparisonSide" },
+                "costDeltaPct": { "type": "number", "description": "Tiered cost change versus baseline, percent (negative = cheaper)." },
+                "passDelta": { "type": "integer", "description": "Tiered passed units minus baseline passed units." }
+              }
+            }
+          },
+          "methodology": {
+            "type": "object",
+            "required": ["format", "markdown"],
+            "properties": {
+              "format": { "type": "string", "const": "text/markdown" },
+              "markdown": { "type": "string", "description": "The full testing/README.md." }
+            }
+          },
+          "source": { "$ref": "#/components/schemas/Source" }
+        }
+      },
+      "Plan": {
+        "type": "object",
+        "required": ["name", "price", "status", "details"],
+        "properties": {
+          "name": { "type": "string", "enum": ["Pro", "Teams", "Enterprise", "Free"] },
+          "price": { "type": ["string", "null"], "description": "The plan's Price line, verbatim." },
+          "status": { "type": ["string", "null"], "description": "The plan's Status line, verbatim." },
+          "details": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["label", "text"],
+              "properties": { "label": { "type": "string" }, "text": { "type": "string" } }
+            }
+          }
+        }
+      },
+      "Pricing": {
+        "type": "object",
+        "required": ["title", "summary", "lastUpdated", "plans", "format", "markdown", "source"],
+        "properties": {
+          "title": { "type": ["string", "null"] },
+          "summary": { "type": ["string", "null"] },
+          "lastUpdated": { "type": ["string", "null"], "format": "date" },
+          "plans": { "type": "array", "items": { "$ref": "#/components/schemas/Plan" } },
+          "format": { "type": "string", "const": "text/markdown" },
+          "markdown": { "type": "string" },
+          "source": { "$ref": "#/components/schemas/Source" }
+        }
+      },
+      "TeamsAvailability": {
+        "type": "object",
+        "required": ["slotMinutes", "leadTimeHours", "horizonDays", "windows", "taken", "notes", "source"],
+        "properties": {
+          "slotMinutes": { "type": "integer" },
+          "leadTimeHours": { "type": "integer" },
+          "horizonDays": { "type": "integer" },
+          "windows": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["start", "end"],
+              "properties": {
+                "start": { "type": "string", "format": "date-time" },
+                "end": { "type": "string", "format": "date-time" }
+              }
+            }
+          },
+          "taken": { "type": "array", "items": { "type": "string", "format": "date-time" } },
+          "notes": { "type": "string" },
+          "source": { "$ref": "#/components/schemas/Source" }
+        }
+      }
+    }
+  }
+}

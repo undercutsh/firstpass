@@ -21,7 +21,15 @@
     {
       "source": "/",
       "headers": [
-        { "key": "Link", "value": "</sitemap.xml>; rel=\"sitemap\", </index.md>; rel=\"alternate\"; type=\"text/markdown\", </changelog.xml>; rel=\"alternate\"; type=\"application/rss+xml\", </.well-known/ai-catalog.json>; rel=\"ai-catalog\"" }
+        { "key": "Link", "value": "</sitemap.xml>; rel=\"sitemap\", </index.md>; rel=\"alternate\"; type=\"text/markdown\", </changelog.xml>; rel=\"alternate\"; type=\"application/rss+xml\", </.well-known/ai-catalog.json>; rel=\"ai-catalog\", </openapi.json>; rel=\"service-desc\"; type=\"application/json\", </developers>; rel=\"service-doc\"" }
+      ]
+    },
+    {
+      "source": "/openapi.json",
+      "headers": [
+        { "key": "Content-Type", "value": "application/json; charset=utf-8" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Cache-Control", "value": "public, max-age=300, s-maxage=3600, stale-while-revalidate=86400" }
       ]
     },
     {

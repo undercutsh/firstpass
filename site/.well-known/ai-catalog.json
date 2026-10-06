@@ -47,7 +47,37 @@
           "url": "https://getundercut.sh/"
         }
       }
+    },
+    {
+      "identifier": "urn:air:getundercut.sh:api:openapi",
+      "displayName": "Undercut public data API (OpenAPI 3.1)",
+      "type": "application/vnd.oai.openapi+json",
+      "url": "https://getundercut.sh/openapi.json",
+      "description": "OpenAPI 3.1 description of Undercut's read-only public JSON API. Every operation is an unauthenticated GET; there are no write endpoints and no auth flow.",
+      "trustManifest": {
+        "identity": {
+          "name": "Undercut",
+          "url": "https://getundercut.sh/",
+          "repository": "https://github.com/undercutsh/firstpass"
+        },
+        "attestations": ["MIT licensed", "source open on GitHub", "CI checks every documented path against its handler and every handler's real response against its documented schema (scripts/validate-openapi.js)"]
+      }
+    },
+    {
+      "identifier": "urn:air:getundercut.sh:api:public-data",
+      "displayName": "Undercut public data API",
+      "type": "application/json",
+      "url": "https://getundercut.sh/api/health",
+      "description": "Read-only, unauthenticated JSON over data Undercut already publishes: the routing policy (/api/policy), the tier-to-model mapping (/api/models), benchmark results computed from the raw files in testing/results (/api/results), supported clients (/api/clients, /api/clients/{slug}), the setup segment router (/api/segments), pricing (/api/pricing), and published Teams onboarding windows (/api/teams-availability). CORS is open. It does not route, proxy, or run model calls.",
+      "trustManifest": {
+        "identity": {
+          "name": "Undercut",
+          "url": "https://getundercut.sh/",
+          "repository": "https://github.com/undercutsh/firstpass"
+        },
+        "attestations": ["MIT licensed", "source open on GitHub", "every response is generated from files published in the repository (scripts/build-api-data.js, staleness-checked in CI)"]
+      }
     }
   ],
-  "notes": "No public API or MCP server exists yet — the free tier is a static policy file, not a running service. Claude Code can install it as a plugin (`/plugin marketplace add undercutsh/firstpass`); every other client uses the skill file directly. This catalog will grow when the API/MCP server ships; see https://getundercut.sh/#teams for what's in development."
+  "notes": "The free tier is a static policy file, not a running service: routing happens inside your own agent. A read-only, unauthenticated JSON API (described at https://getundercut.sh/openapi.json) serves data that is already published in the repository; it has no write endpoints, no auth flow, and no routing or inference endpoint. No MCP server or SDK exists yet. Claude Code can install the policy as a plugin (`/plugin marketplace add undercutsh/firstpass`); every other client uses the skill file directly."
 }
