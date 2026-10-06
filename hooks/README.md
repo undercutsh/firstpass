@@ -53,6 +53,7 @@ with `undercut config <setting> off|on`.
 | `spinnerVerbs` | Four extra spinner verbs (Tiering, Verifying, Escalating on evidence, Undercutting) |
 | `receipt` | The session-end receipt |
 | `shareHint` | Once a week, the receipt mentions `undercut share` |
+| `updateNotice` | One line at session start, once per version, when the marketplace copy Claude Code already keeps locally is newer than the running plugin. No network call |
 | `generatedFileHeaders` | A one-line header on files Undercut itself writes (for example the cached `policy.md`). Never on your source code |
 
 Undercut only writes or removes an entry in `settings.json` if that entry is

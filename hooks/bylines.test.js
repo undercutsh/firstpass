@@ -135,3 +135,36 @@ test("status line savings are always labelled est.", () => {
 test("byline copy carries no dollar figure", () => {
   assert.doesNotMatch(branding.commitTrailer() + branding.prFooter(), /\$/);
 });
+
+test("update notice: newer marketplace version is flagged, same or older is not", () => {
+  const update = require("./lib/update");
+  assert.equal(update.isNewer("0.5.0", "0.4.0"), true);
+  assert.equal(update.isNewer("0.4.0", "0.4.0"), false);
+  assert.equal(update.isNewer("0.3.9", "0.4.0"), false);
+  assert.equal(update.isNewer("garbage", "0.4.0"), false);
+
+  reset();
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "undercut-root-"));
+  fs.mkdirSync(path.join(root, ".claude-plugin"));
+  fs.writeFileSync(path.join(root, ".claude-plugin", "plugin.json"), JSON.stringify({ version: "0.4.0" }));
+  assert.equal(update.check(root), null, "no marketplace clone: no notice");
+
+  const mk = path.join(home, ".claude", "plugins", "marketplaces", "firstpass", ".claude-plugin");
+  fs.mkdirSync(mk, { recursive: true });
+  fs.writeFileSync(path.join(mk, "plugin.json"), JSON.stringify({ version: "0.5.0" }));
+  assert.deepEqual(update.check(root), { current: "0.4.0", latest: "0.5.0" });
+});
+
+test("update notice honours known_marketplaces.json installLocation", () => {
+  reset();
+  const update = require("./lib/update");
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "undercut-root-"));
+  fs.mkdirSync(path.join(root, ".claude-plugin"));
+  fs.writeFileSync(path.join(root, ".claude-plugin", "plugin.json"), JSON.stringify({ version: "0.4.0" }));
+  const loc = fs.mkdtempSync(path.join(os.tmpdir(), "undercut-mk-"));
+  fs.mkdirSync(path.join(loc, ".claude-plugin"));
+  fs.writeFileSync(path.join(loc, ".claude-plugin", "plugin.json"), JSON.stringify({ version: "0.4.1" }));
+  fs.mkdirSync(path.join(home, ".claude", "plugins"), { recursive: true });
+  fs.writeFileSync(path.join(home, ".claude", "plugins", "known_marketplaces.json"), JSON.stringify({ firstpass: { installLocation: loc } }));
+  assert.deepEqual(update.check(root), { current: "0.4.0", latest: "0.4.1" });
+});

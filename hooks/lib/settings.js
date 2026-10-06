@@ -32,6 +32,7 @@ const DEFAULTS = {
   spinnerVerbs: true,
   receipt: true, // session-end receipt
   shareHint: true, // weekly "run undercut share" line in the receipt
+  updateNotice: true, // session-start line when a newer plugin version is cached
   generatedFileHeaders: true, // header on files Undercut itself writes
 };
 

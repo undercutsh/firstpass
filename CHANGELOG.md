@@ -22,7 +22,7 @@ All notable changes to Undercut (firstpass) are documented here. Follows
   Undercut only touches a `settings.json` entry that is absent or still what
   it last wrote, and the first session says exactly what was added. New CLI
   commands: `config`, `share`, `badge`, `init` (opt-in AGENTS.md note),
-  `statusline`. New `site/badge.svg`. The "no unearned trust signals" rule is
+  `statusline`, and a no-network update notice (`updateNotice`). New `site/badge.svg`. The "no unearned trust signals" rule is
   reworded to cover claims, not distribution marks.
 
 - **A per-page Open Graph card for every companion page.** All 45 pages

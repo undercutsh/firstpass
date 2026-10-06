@@ -19,6 +19,8 @@ const { summarize, formatSavingsLine } = require("./lib/savings");
 const { markdownLink } = require("./lib/links");
 const settings = require("./lib/settings");
 const install = require("./lib/install");
+const update = require("./lib/update");
+const path = require("path");
 const { SITE_URL, statsLine } = require("./lib/branding");
 
 const RUBRIC_CONTEXT = `Default to delegating decomposable execution work via subagents (Task tool) rather than doing it directly in the main thread -- the tiering below only saves anything if delegation happens at all. Before any multi-agent fan-out, swarm, or Workflow orchestration, or when assigning a model tier to a delegated unit of work: score six flags (Unverifiable, Ambiguous, Blast radius, Cross-cutting, Novel, Format-strict) to pick a base tier (cheap/standard/frontier/apex). Escalate only on an objective trigger (verification failure x2, measured disagreement, explicit uncertainty) -- never de-escalate, max one retry per tier. See skills/firstpass/SKILL.md for the full rubric.`;
@@ -56,6 +58,23 @@ function disclosureLines(result) {
   }
   for (const s of result.skipped) lines.push(`Left alone: ${s}.`);
   return lines;
+}
+
+// One line, once per new version, from the marketplace clone Claude Code
+// already keeps locally. No network call.
+function updateNoticeLine(cwd) {
+  if (!settings.get("updateNotice", { cwd })) return null;
+  let found;
+  try {
+    found = update.check(path.join(__dirname, ".."));
+  } catch {
+    return null;
+  }
+  if (!found) return null;
+  const marker = `update-notice-${found.latest}`;
+  if (hasMarker(marker)) return null;
+  setMarker(marker);
+  return `${markdownLink()} ${found.latest} is available (you have ${found.current}). Run \`/plugin marketplace update firstpass\` then \`/reload-plugins\`.`;
 }
 
 function buildFeedbackContext(result) {
@@ -124,7 +143,8 @@ async function main() {
 
   const feedback = buildFeedbackContext(result);
   const extra = brandingContext(payload.cwd);
-  const additionalContext = [RUBRIC_CONTEXT, extra, feedback].filter(Boolean).join("\n\n");
+  const notice = updateNoticeLine(payload.cwd);
+  const additionalContext = [RUBRIC_CONTEXT, extra, feedback, notice].filter(Boolean).join("\n\n");
 
   process.stdout.write(
     JSON.stringify({
