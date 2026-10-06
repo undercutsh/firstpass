@@ -59,6 +59,22 @@ All notable changes to Undercut (firstpass) are documented here. Follows
   or `/mcp` rewrite falls out of sync; `site/api/_lib/mcp.test.js` covers
   the protocol itself.
 
+- **Read-only WebMCP tools on the site.** `site/webmcp.js` (loaded with
+  `defer` on the homepage, `/setup` and `/developers`) registers six tools
+  through `document.modelContext.registerTool()` (falling back to
+  `navigator.modelContext`) for browsers that ship WebMCP:
+  `list_supported_clients`, `get_client_install_instructions`,
+  `get_segment_recommendation`, `get_pricing`, `get_policy_summary` and
+  `get_benchmark_summary`. Each one fetches a static file the site already
+  publishes (`clients.json`, the client's own guide page, `segments.json`,
+  `pricing.md`, `llms.txt`) at call time and returns it, so nothing is
+  copied into the script to drift. All are annotated `readOnlyHint`; none
+  touches the lead forms, trial or checkout. In a browser without WebMCP
+  the script returns before doing anything. The `/setup` segment form is
+  also marked up as a declarative tool (`toolname`/`tooldescription`),
+  since filling it in only changes what that page shows. Covered by
+  `scripts/webmcp.test.js`, which runs every tool against the real files
+  in `site/`; documented in a short section on `/developers`.
 - **A per-page Open Graph card for every companion page.** All 45 pages
   under `site/` shared one `og-image.png`, so every link preview of the
   site looked identical no matter which of the 34 agent guides was
