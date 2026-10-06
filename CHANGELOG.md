@@ -8,6 +8,73 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ### Added
 
+- **A read-only public JSON API over data the repo already publishes.**
+  Nine unauthenticated `GET` endpoints on getundercut.sh: `/api/policy`
+  (SKILL.md), `/api/models` (the tier→model map, structured per tier and
+  vendor), `/api/results` (per-run totals and tiered-vs-baseline deltas
+  computed from the raw files in `testing/results/`, with
+  `testing/README.md`'s standing limitation and caveats attached),
+  `/api/clients` and `/api/clients/{slug}`, `/api/segments`,
+  `/api/pricing`, `/api/teams-availability`, and `/api/health`. JSON with
+  open CORS, cache headers, and one error shape; any non-read method gets
+  a `405` with `Allow`. No write endpoints, no auth flow, no routing or
+  inference endpoint, no SDK. Vercel deploys from `site/`, so the
+  functions read a generated snapshot (`site/api/_lib/snapshot.js`, built
+  by the new `scripts/build-api-data.js`) through a shared, synchronous
+  data layer (`site/api/_lib/data.js`); `build-api-data.js --check` in CI
+  fails when a source file changes without a regenerated snapshot.
+- **`/openapi.json`: an OpenAPI 3.1 description of that API**, written for
+  AI agents (operationIds, schemas derived from the real data shapes,
+  `security: []` because there is no auth). `scripts/validate-openapi.js
+  --check` (new, in CI, unit-tested) fails when a documented path has no
+  handler, a handler is undocumented, or a handler's real response no
+  longer matches its documented schema. Advertised via a
+  `rel="service-desc"` `Link` header on `/`, two new
+  `.well-known/ai-catalog.json` entries, `llms.txt`, and a new API section
+  on `/developers`; AGENTS.md's "no API exists" rule now says exactly
+  what does and doesn't exist. CI now also runs `site/api/**/*.test.js`,
+  which picks up `lead.test.js` for the first time.
+- **A read-only MCP server at `https://getundercut.sh/mcp`.** Streamable
+  HTTP, stateless, hand-rolled with no dependencies (`site/api/mcp.js`,
+  protocol core in `site/api/_lib/mcp.js`): every request is a `POST`
+  answered with one JSON response, no session ID is issued, `GET`/`DELETE`
+  get `405`, and invalid `Origin` headers get `403`. Speaks MCP
+  `2026-07-28` (no handshake, `server/discover`, header/body validation)
+  and the `initialize`-based `2025-11-25`, `2025-06-18`, and `2025-03-26`
+  (JSON-RPC batches only for the last). Eight read-only tools, all
+  annotated `readOnlyHint: true` / `destructiveHint: false` /
+  `openWorldHint: false`: `list_clients`, `get_client`, `get_segments`,
+  `get_policy`, `get_models`, `get_benchmark_results`, `get_pricing`,
+  `get_teams_availability`, each returning exactly what its `/api/*` twin
+  returns (from `_lib/data.js`) as `structuredContent` plus a JSON text
+  block, with an `outputSchema` generated from `site/openapi.json`. No write
+  tools, no auth, no routing or inference. Discovery: a Server Card
+  (SEP-2127 draft shape) at `/mcp/server-card` and
+  `/.well-known/mcp/server-card.json`, a new `.well-known/ai-catalog.json`
+  entry (whose notes no longer say no MCP server exists), and an MCP
+  section on `/developers` with Claude Code, Cursor, and VS Code setup.
+  `scripts/validate-mcp.js --check` (new, in CI, unit-tested) calls every
+  tool through the real handler and fails when a result drifts from the
+  published data or its schema, or when the Server Card, catalog entry,
+  or `/mcp` rewrite falls out of sync; `site/api/_lib/mcp.test.js` covers
+  the protocol itself.
+
+- **Read-only WebMCP tools on the site.** `site/webmcp.js` (loaded with
+  `defer` on the homepage, `/setup` and `/developers`) registers six tools
+  through `document.modelContext.registerTool()` (falling back to
+  `navigator.modelContext`) for browsers that ship WebMCP:
+  `list_supported_clients`, `get_client_install_instructions`,
+  `get_segment_recommendation`, `get_pricing`, `get_policy_summary` and
+  `get_benchmark_summary`. Each one fetches a static file the site already
+  publishes (`clients.json`, the client's own guide page, `segments.json`,
+  `pricing.md`, `llms.txt`) at call time and returns it, so nothing is
+  copied into the script to drift. All are annotated `readOnlyHint`; none
+  touches the lead forms, trial or checkout. In a browser without WebMCP
+  the script returns before doing anything. The `/setup` segment form is
+  also marked up as a declarative tool (`toolname`/`tooldescription`),
+  since filling it in only changes what that page shows. Covered by
+  `scripts/webmcp.test.js`, which runs every tool against the real files
+  in `site/`; documented in a short section on `/developers`.
 - **A per-page Open Graph card for every companion page.** All 45 pages
   under `site/` shared one `og-image.png`, so every link preview of the
   site looked identical no matter which of the 34 agent guides was

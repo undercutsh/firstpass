@@ -33,7 +33,9 @@ Most real requests mix both kinds of work in one session — a planning/judgment
 - [Evaluation results + methodology](https://raw.githubusercontent.com/undercutsh/firstpass/main/testing/README.md)
 - [SKILL (the product)](https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md)
 - [Hooks (optional, local, Claude Code only — session-start narration + a real-data receipt)](https://raw.githubusercontent.com/undercutsh/firstpass/main/hooks/README.md)
-- [Developers (no public API/MCP server yet — what exists today)](https://getundercut.sh/developers)
+- [Developers (read-only public data API and MCP server — what exists today)](https://getundercut.sh/developers)
+- [Public data API (OpenAPI 3.1 — read-only, unauthenticated GET endpoints for the policy, models, results, clients, segments, pricing)](https://getundercut.sh/openapi.json)
+- [MCP Server Card (read-only MCP server at https://getundercut.sh/mcp — Streamable HTTP, no auth, same data as tools)](https://getundercut.sh/mcp/server-card)
 - [Agent instructions for this codebase (AGENTS.md)](https://raw.githubusercontent.com/undercutsh/firstpass/main/AGENTS.md)
 - [Pricing (machine-readable)](https://getundercut.sh/pricing.md)
 - [Which segment are you? (machine-readable — editor + provider-setup segment router)](https://getundercut.sh/setup.md)
@@ -52,5 +54,5 @@ Most real requests mix both kinds of work in one session — a planning/judgment
 - Undercut routes; it does not proxy or enforce at the network layer. It composes with gateways (route first, then compress).
 - It does NOT need a custom flagging model: stock dispatchers hit 90%+ flag accuracy and 100% tier-match under the shipped policy.
 - Open-weight price ladders can invert (standard cheaper than cheap) — check provider pricing.
-- No public API or MCP server exists yet — the free tier is this static skill file, not a running service.
+- The free tier is this static skill file, not a running service. A read-only, unauthenticated JSON API (https://getundercut.sh/openapi.json) serves data already published in the repo — e.g. GET https://getundercut.sh/api/policy returns SKILL.md, /api/models the tier→model map. It has no write endpoints, no auth, and does not route or proxy model calls. The same data is served as read-only MCP tools at https://getundercut.sh/mcp (Streamable HTTP, stateless, no auth): list_clients, get_client, get_segments, get_policy, get_models, get_benchmark_results, get_pricing, get_teams_availability. Add it to Claude Code with `claude mcp add --transport http undercut https://getundercut.sh/mcp`. No write tools.
 - Author: Justin Winter — https://iamjustinwinter.com (LinkedIn: https://www.linkedin.com/in/justincwinter · X: https://x.com/jcwinter · GitHub: https://github.com/justinwinter)

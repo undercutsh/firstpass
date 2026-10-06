@@ -62,6 +62,23 @@ jobs:
         run: node scripts/validate-og-images.js --check
       - name: models.md in sync with evals/src/config.js
         run: node scripts/sync-models-md.js --check
+      # The public read-only API serves a generated snapshot of files in this
+      # repo (Vercel deploys from site/, so functions can't read skills/ or
+      # testing/ at request time). A source edit without a regenerated
+      # snapshot would serve stale data with no visible symptom.
+      - name: Public API snapshot in sync with its source files
+        run: node scripts/build-api-data.js --check
+      # Both directions: every documented path has a handler and every
+      # handler is documented, and each handler's real 200 body is
+      # validated against its documented schema.
+      - name: openapi.json matches site/api/ handlers and their responses
+        run: node scripts/validate-openapi.js --check
+      # The MCP server (/mcp) must serve exactly what the REST API serves:
+      # every tool is called through the real handler and compared with
+      # data.js and its outputSchema, and the generated output schemas,
+      # Server Card, AI Catalog entry, and /mcp rewrite must agree.
+      - name: MCP server tools, Server Card, and ai-catalog in sync with data.js
+        run: node scripts/validate-mcp.js --check
       # Colour contrast is the one design property nobody can eyeball, and
       # the palette lives as literal hex repeated inline across 44 pages, so
       # a value that reads correctly on the light ground silently ships
@@ -75,6 +92,12 @@ jobs:
       # detection logic needs testing too.
       - name: Unit tests (scripts/ guards)
         run: node --test 'scripts/**/*.test.js'
+      # site/api/lead.test.js predates this step and was never run in CI
+      # either; this picks it up alongside the public API's handler tests
+      # (site/api/_lib/api.test.js) and the MCP protocol tests
+      # (site/api/_lib/mcp.test.js).
+      - name: Unit tests (site/api functions)
+        run: node --test 'site/api/**/*.test.js'
       # Heavier eval-harness steps last, cheapest-of-these first: unit tests
       # exercise policy.js/tasks.js in isolation, the mock harness runs the
       # full CLI end-to-end, and the policy-parity run is the slowest/most

@@ -52,7 +52,19 @@ node scripts/generate-changelog-feed.js --check  # site/changelog.xml matches CH
 node scripts/spellcheck.js                    # site copy (site/*.html) against scripts/wordlist.txt
 node scripts/sync-models-md.js --check        # skills/firstpass/models.md matches evals/src/config.js
 node scripts/validate-og-images.js --check    # every companion page's og:image points at its own card
+node scripts/build-api-data.js --check        # site/api/_lib/snapshot.js matches the files the public API serves
+node scripts/validate-openapi.js --check      # site/openapi.json matches site/api/ handlers and their real responses
+node scripts/validate-mcp.js --check          # MCP tools return data.js's data; server card + ai-catalog entry in sync
+node --test 'site/api/**/*.test.js'           # public API + MCP handlers + lead.js
 ```
+
+`build-api-data.js` also regenerates the snapshot when run without
+`--check` — run it after editing any file the public API serves
+(`site/clients.json`, `site/segments.json`, `site/pricing.md`,
+`site/teams-availability.json`, `skills/firstpass/*.md`, `testing/`).
+`validate-mcp.js --write` likewise regenerates the MCP tools' output
+schemas and `site/.well-known/mcp/server-card.json` — run it after
+changing `site/openapi.json` or the package version.
 
 Four of these (`validate-sitemap.js`, `validate-jsonld.js`,
 `generate-changelog-feed.js`, `sync-models-md.js`) also write/fix the file
