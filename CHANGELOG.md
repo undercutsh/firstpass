@@ -34,6 +34,14 @@ All notable changes to Undercut (firstpass) are documented here. Follows
   sharing that exact link.
 
 
+### Fixed
+
+- Eval routing now sends a base tier above its format-work cap directly to
+  the shared apex residue batch, without lowering the base or making per-item
+  apex calls. Dual-run acceptance requires both answers to be grounded;
+  earlier uncertain passing answers cannot mark unresolved residue as passed.
+  Offline regression coverage includes all 64 six-flag assignments.
+
 ## [0.4.0] - 2026-09-17
 
 ### Changed
