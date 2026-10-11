@@ -113,6 +113,15 @@ export function createPolicy(version = 'latest') {
     let payload = null;
     let retriesAtTier = 0;
 
+    // A judgment/ownership base can be above the format-work cap. Do not
+    // lower that base or run outside the cap: hand the unit to the runner's
+    // shared apex batch before making any local attempt.
+    if (TIER_ORDER.indexOf(tier) > TIER_ORDER.indexOf(cap)) {
+      trace.escalated = true;
+      trace.needsApex = true;
+      return trace;
+    }
+
     while (true) {
       const r = await attempt(tier, task, payload);
       trace.attempts.push({ ...r, tier });
@@ -164,7 +173,7 @@ export function createPolicy(version = 'latest') {
     const agree =
       r1.verdict.pass === r2.verdict.pass &&
       JSON.stringify(r1.answer) === JSON.stringify(r2.answer);
-    if (agree && r1.verdict.pass) {
+    if (agree && r1.verdict.pass && r1.status === 'grounded' && r2.status === 'grounded') {
       return {
         attempts: [{ ...r1, tier: lowTier }, { ...r2, tier: lowTier }],
         finalTier: lowTier,

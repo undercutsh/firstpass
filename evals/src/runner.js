@@ -174,7 +174,8 @@ async function runUnitForArm(arm, task, attempt, policy) {
 }
 
 function summarize(task, trace, policy) {
-  const passed = trace.attempts.some((a) => a.verdict.pass);
+  const last = trace.attempts.at(-1);
+  const passed = !trace.needsApex && last?.status === 'grounded' && last.verdict.pass;
   const cost = trace.attempts.reduce((s, a) => s + (a.cost ?? 0), 0);
   const tokensIn = trace.attempts.reduce((s, a) => s + (a.usage?.in ?? 0), 0);
   const tokensOut = trace.attempts.reduce((s, a) => s + (a.usage?.out ?? 0), 0);
