@@ -32,7 +32,7 @@ Most real requests mix both kinds of work in one session — a planning/judgment
 - [Readme](https://raw.githubusercontent.com/undercutsh/firstpass/main/README.md)
 - [Evaluation results + methodology](https://raw.githubusercontent.com/undercutsh/firstpass/main/testing/README.md)
 - [SKILL (the product)](https://raw.githubusercontent.com/undercutsh/firstpass/main/skills/firstpass/SKILL.md)
-- [Hooks (optional, local, Claude Code only — session-start narration + a real-data receipt)](https://raw.githubusercontent.com/undercutsh/firstpass/main/hooks/README.md)
+- [Hooks (ship with the Claude Code plugin, on by default, one command to turn off — receipt, status line, commit and PR bylines)](https://raw.githubusercontent.com/undercutsh/firstpass/main/hooks/README.md)
 - [Developers (read-only public data API and MCP server — what exists today)](https://getundercut.sh/developers)
 - [Public data API (OpenAPI 3.1 — read-only, unauthenticated GET endpoints for the policy, models, results, clients, segments, pricing)](https://getundercut.sh/openapi.json)
 - [MCP Server Card (read-only MCP server at https://getundercut.sh/mcp — Streamable HTTP, no auth, same data as tools)](https://getundercut.sh/mcp/server-card)

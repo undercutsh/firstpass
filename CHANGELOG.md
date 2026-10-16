@@ -6,6 +6,17 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ## [Unreleased]
 
+### Changed
+
+- **Site copy now matches the default-on hooks.** The homepage receipt card,
+  `index.md`, `cli.md` and `llms.txt` called the hooks "opt-in"; they now say
+  the hooks ship with the Claude Code plugin, are on by default, and have
+  one-command off switches. `cli.md` lists the new `config`, `share`,
+  `badge`, `init` and `statusline` commands. `data` (page and `data.md`)
+  gains a section on the pull request badge: it is fetched by whoever views
+  the pull request, so we can see image request counts, and it carries no
+  account, repo, user or session identifier.
+
 ### Added
 
 - **A read-only public JSON API over data the repo already publishes.**
@@ -75,6 +86,23 @@ All notable changes to Undercut (firstpass) are documented here. Follows
   since filling it in only changes what that page shows. Covered by
   `scripts/webmcp.test.js`, which runs every tool against the real files
   in `site/`; documented in a short section on `/developers`.
+- **Default-on bylines, a status line, and `undercut config`.** The hooks
+  now ship inside the plugin (`hooks/hooks.json`) instead of needing a
+  hand-edited `settings.json`, and they put Undercut's name on the work it
+  routed: a `Routed-With: Undercut (getundercut.sh)` commit trailer (Claude
+  Code's own `Co-Authored-By` line is kept), a PR footer with a badge and the
+  real per-PR tier counts, a link on the transcript's `Routing:` line, a
+  status line (this session, lifetime, a rotating tip; est. figures only),
+  spinner verbs, a weekly `undercut share` hint in the receipt, and a header
+  on files Undercut writes. Every one has a settings key (`branding` is the
+  master switch) under an `undercut` key in `settings.json`, an
+  `UNDERCUT_<NAME>` env override, and `undercut config <setting> on|off`.
+  Undercut only touches a `settings.json` entry that is absent or still what
+  it last wrote, and the first session says exactly what was added. New CLI
+  commands: `config`, `share`, `badge`, `init` (opt-in AGENTS.md note),
+  `statusline`, and a no-network update notice (`updateNotice`). New `site/badge.svg`. The "no unearned trust signals" rule is
+  reworded to cover claims, not distribution marks.
+
 - **A per-page Open Graph card for every companion page.** All 45 pages
   under `site/` shared one `og-image.png`, so every link preview of the
   site looked identical no matter which of the 34 agent guides was

@@ -72,6 +72,9 @@
   <h2>What a fetch never contains</h2>
   <p>The policy endpoint's request logging runs off an explicit allowlist, the same pattern <code>/api/lead</code> already uses for form submissions — only named fields are ever written, nothing is captured by default. Specifically never logged or transmitted: prompts, code, file contents, file paths, working directory, repo name, session content, the <code>User-Agent</code> string, or which coding agent you're running. A sync is never correlated to a coding session, and the server has no way to tell "you ran a task" from "your clock rolled past the refresh interval" — those look identical from our side, which is the point.</p>
 
+  <h2>The pull request badge</h2>
+  <p>The Claude Code plugin adds a one-line footer to pull requests, with a small badge image served from <code>getundercut.sh/badge.svg</code>. That image is fetched by whoever views the pull request (through GitHub's image proxy), not by your machine, so we can see how many times the image is requested. The URL is the same static file for everyone: it carries no account, repo, user or session identifier, and the request tells us nothing about your code. Turn it off with <code>undercut config attributionBadge off</code> (the footer text stays), or the whole footer with <code>undercut config attribution off</code>.</p>
+
   <h2>Retention</h2>
   <p>Raw access logs (account ID, IP, timestamp, policy version) are kept <strong>30 days</strong>, then deleted. After that window, only aggregate, non-per-account counters survive — total sync volume, for capacity planning — never a per-user timeline you could reconstruct someone's activity from. We don't keep a standing log of when any one account has synced beyond that 30-day window.</p>
 

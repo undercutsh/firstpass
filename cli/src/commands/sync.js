@@ -10,6 +10,7 @@ import {
 } from "../lib/fs-secure.js";
 import { verifyPolicySignature } from "../lib/verify.js";
 import { PLACEHOLDER_POLICY_URL, POLICY_TTL_MS } from "../lib/config.js";
+import { settings, branding } from "../lib/hooks.js";
 
 // PLACEHOLDER — policy.getundercut.sh does not exist. `fetchPolicy` below
 // never makes a real network call; it returns a locally-fabricated
@@ -35,6 +36,7 @@ async function fetchPolicy(_credentials) {
 
 function renderPolicyMarkdown(policy) {
   const lines = [
+    ...(settings.get("generatedFileHeaders") ? [branding.generatedFileHeader("md"), ""] : []),
     "# Undercut Pro policy (cached)",
     "",
     `- Channel: ${policy.channel ?? "unknown"}`,
