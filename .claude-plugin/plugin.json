@@ -1,6 +1,6 @@
 {
   "name": "firstpass",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Confidence-gated model routing for coding agents \u2014 run every unit of work at the cheapest model that can pass verification.",
   "author": {
     "name": "Justin Winter",

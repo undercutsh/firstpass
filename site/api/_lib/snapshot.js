@@ -3,7 +3,7 @@
 export default {
   "service": {
     "name": "firstpass",
-    "version": "0.4.0"
+    "version": "0.5.0"
   },
   "clients": [
     {
@@ -763,7 +763,7 @@ export default {
   },
   "policy": {
     "name": "firstpass",
-    "version": "0.4.0",
+    "version": "0.5.0",
     "rubricVersion": "v1",
     "description": "Use BEFORE any multi-agent fan-out, swarm, or Workflow orchestration — and when assigning a model tier to any delegated unit of work. Confidence-gated model routing: rubric-based base-tier assignment (cheap→standard→frontier→apex), objective escalation triggers (verification failure, disagreement, uncertainty flags), hysteresis rules, and the structured handoff payload that lets higher tiers resolve only the residue lower tiers couldn't. Triggers on \"fan out\", \"swarm\", \"parallel agents\", \"which model\", \"assign tiers\", \"dispatch\", \"model routing\", \"token cost\".",
     "format": "text/markdown",
