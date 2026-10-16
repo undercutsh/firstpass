@@ -147,9 +147,9 @@ Per-client commands (same set the interactive picker at https://getundercut.sh/#
 
 Client-specific setup guide, one page per agent: [Claude Code](https://getundercut.sh/claude-code) · [Codex CLI](https://getundercut.sh/codex) · [Cursor](https://getundercut.sh/cursor) · [GitHub Copilot](https://getundercut.sh/copilot) · [OpenCode](https://getundercut.sh/opencode) · [Gemini CLI](https://getundercut.sh/gemini-cli) · [Windsurf](https://getundercut.sh/windsurf) · [JetBrains Junie](https://getundercut.sh/junie) · [Amp](https://getundercut.sh/amp) · [Devin](https://getundercut.sh/devin)
 
-### Optional, for Claude Code — hooks
+### For Claude Code — hooks
 
-A local, opt-in package (`hooks/` in the repo) guarantees the rubric is in context every session and prints a session-end receipt with real token/cost data — never a guess. No network calls, no telemetry, nothing leaves your machine. Skip it entirely and the core skill works exactly as described above. Install steps: https://github.com/undercutsh/firstpass/tree/main/hooks (Pro's policy sync is the one network exception to "nothing leaves your machine" — an authenticated licence check, not telemetry about your work: https://getundercut.sh/data)
+A local package (`hooks/` in the repo) ships with the Claude Code plugin and is on by default. It guarantees the rubric is in context every session, prints a session-end receipt with real token/cost data — never a guess — and shows a status line. It also adds a `Routed-With: Undercut` trailer to commits and a one-line footer (with a badge) to pull requests. None of it phones home; the one byline that reaches our servers is the PR badge image, fetched by whoever views the pull request (https://getundercut.sh/data). Every piece has a setting, and `undercut config branding off` turns off every byline and tip at once. Anything you already configured in `~/.claude/settings.json` is left alone. Skip or disable it entirely and the core skill works exactly as described above. Settings: https://github.com/undercutsh/firstpass/tree/main/hooks (Pro's policy sync is the one network exception to "nothing leaves your machine" — an authenticated licence check, not telemetry about your work: https://getundercut.sh/data)
 
 ## Links
 
