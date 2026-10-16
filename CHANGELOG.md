@@ -6,6 +6,8 @@ All notable changes to Undercut (firstpass) are documented here. Follows
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-10-16
+
 ### Changed
 
 - **Site copy now matches the default-on hooks.** The homepage receipt card,
