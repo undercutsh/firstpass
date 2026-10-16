@@ -8,7 +8,7 @@ const fs = require("fs");
 const readline = require("readline");
 const path = require("path");
 const { costForUsage, tierForModel, isKnownModel } = require("./lib/pricing");
-const { appendRow } = require("./lib/ledger");
+const { appendRow, rowsForSession } = require("./lib/ledger");
 
 async function sumUsageByModel(transcriptPath) {
   const totals = new Map();
@@ -75,6 +75,11 @@ async function main() {
     agent_type: agentType,
     agent_transcript_path: transcriptPath,
   } = payload;
+
+  // The hooks ship with the plugin now; if someone also pasted the old
+  // settings-snippet.json into settings.json, this hook fires twice per
+  // subagent. A given (session, agent) pair is only ever recorded once.
+  if (agentId && rowsForSession(sessionId).some((r) => r.agent_id === agentId)) process.exit(0);
 
   const totals = await sumUsageByModel(transcriptPath);
   const ts = new Date().toISOString();

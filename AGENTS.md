@@ -34,8 +34,11 @@ there don't need a build/compile step, just valid HTML/JSON/txt.
 
 ## Hard rules (same ones CONTRIBUTING.md states for humans)
 
-- **No unearned trust signals.** Don't add badges, ratings, "as seen in"
-  rows, or compliance claims not backed by a real, checkable artifact.
+- **No unearned trust signals.** Don't add ratings, "as seen in" rows,
+  certification or "verified" badges, or compliance claims not backed by a
+  real, checkable artifact. The "routed with undercut" badge is a
+  distribution mark, not a trust claim: keep it plain (no scores,
+  checkmarks or benchmark numbers).
 - **Deterministic graders only** in `evals/` — never an LLM judging another
   LLM's output.
 - **Any claim on `site/` or in docs traces to published data.** If you

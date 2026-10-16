@@ -31,6 +31,24 @@ If you're evaluating what's real here, read this file before the code.
   PRD's session-4 addendum as the v1 default, replacing the original
   manual device-code design. See `src/commands/login.js`.
 
+## Byline and status-line commands (all local, no network)
+
+- **`undercut config [setting] [on|off]`** — list, read, or change the
+  byline and status-line settings (`branding` is the master switch). Writes
+  the `undercut` key in `~/.claude/settings.json` and re-applies the managed
+  commit trailer / PR footer / spinner verbs. See `hooks/README.md` for the
+  full list.
+- **`undercut share`** — a copy-paste summary of the last 7 days from the
+  local ledger: real counts, savings only as a labelled estimate.
+- **`undercut badge`** — the README badge markdown.
+- **`undercut init`** — adds a short routing note to this repo's
+  `AGENTS.md`. Explicit only; it edits a tracked file.
+- **`undercut statusline`** — prints the status line, for chaining from your
+  own.
+
+These import the settings and install logic from `../hooks/lib/` so there is
+one copy of the rules; run the CLI from a clone (see Usage).
+
 ## What's stubbed — and will error out on purpose
 
 - **The backend it talks to does not exist.** `app.getundercut.sh` and

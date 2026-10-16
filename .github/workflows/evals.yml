@@ -88,6 +88,11 @@ jobs:
       - name: Policy parity (probe vs v1 vs latest sanity)
         run: node src/main.js --mock --seeds 1 --policy probe
         working-directory: evals
+      - name: Unit tests (hooks bylines/settings)
+        run: node --test hooks/bylines.test.js
+      - name: Install @undercut/cli dependencies (commander, for the CLI command tests)
+        run: npm ci
+        working-directory: cli
       - name: Lint @undercut/cli (syntax check)
         run: npm run lint
         working-directory: cli

@@ -3,6 +3,11 @@ import { login } from "./commands/login.js";
 import { sync } from "./commands/sync.js";
 import { status } from "./commands/status.js";
 import { logout } from "./commands/logout.js";
+import { config } from "./commands/config.js";
+import { share } from "./commands/share.js";
+import { badge } from "./commands/badge.js";
+import { init } from "./commands/init.js";
+import { statusline } from "./commands/statusline.js";
 
 const VERSION = "0.1.0";
 
@@ -53,6 +58,35 @@ export function buildProgram() {
       "Delete local credentials and cached policy; revert to the free static model map."
     )
     .action(logout);
+
+  program
+    .command("config [setting] [value]")
+    .description(
+      "List, read, or change Undercut settings (bylines, status line, tips). `undercut config branding off` turns off every byline and tip."
+    )
+    .action(config);
+
+  program
+    .command("share")
+    .description("Print a copy-paste summary of the last 7 days from the local ledger.")
+    .action(share);
+
+  program
+    .command("badge")
+    .description("Print the README badge markdown.")
+    .action(badge);
+
+  program
+    .command("init")
+    .description("Add a short routing note to this repo's AGENTS.md.")
+    .action(init);
+
+  program
+    .command("statusline")
+    .description("Print the Undercut status line, for chaining from your own.")
+    .action(statusline);
+
+  program.addHelpText("after", "\nUndercut · https://getundercut.sh");
 
   return program;
 }

@@ -220,14 +220,21 @@ succeed. Not yet published to npm — run it from a clone in the meantime.
 Full command reference: [getundercut.sh/cli.md](https://getundercut.sh/cli.md)
 or [`cli/README.md`](cli/README.md).
 
-**Optional, for Claude Code — [`hooks/`](hooks/):** a local, opt-in package
-that guarantees the rubric is in context every session and prints a
-session-end receipt with real token/cost data (never a guess). No network
-calls, no telemetry, nothing leaves your machine. Skip it entirely and the
-core skill works exactly as described above — see [`hooks/README.md`](hooks/README.md)
-for install steps. (Pro's policy sync is the one network exception to
-"nothing leaves your machine" — an authenticated licence check, not
-telemetry about your work: see [getundercut.sh/data](https://getundercut.sh/data).)
+**For Claude Code — [`hooks/`](hooks/):** installed with the plugin
+(`hooks/hooks.json`), on by default, one command to turn off. It guarantees
+the rubric is in context every session, prints a session-end receipt with
+real token/cost data (never a guess), shows a status line, and adds a small
+"Routed-With: Undercut" trailer to commits and a one-line footer with a
+badge to pull requests. None of it phones home: the ledger, the receipt and
+the status line are local files and local output. Turn any piece off with
+`undercut config <setting> off`, or every byline and tip at once with
+`undercut config branding off` — see [`hooks/README.md`](hooks/README.md)
+for the full list. Anything you have already configured in
+`~/.claude/settings.json` (attribution, status line, spinner verbs) is left
+alone. The core skill works exactly as described above whether or not you
+keep any of this. The one byline that reaches our servers is the PR badge
+image, which GitHub's viewers fetch from getundercut.sh; see
+[getundercut.sh/data](https://getundercut.sh/data).
 
 ## What this is and isn't
 

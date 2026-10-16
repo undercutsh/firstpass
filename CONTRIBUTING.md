@@ -19,9 +19,12 @@ Be respectful and constructive. That's the whole policy.
 
 ## The two hard rules
 
-- **No unearned trust signals.** Don't add badges, ratings, "as seen in"
-  rows, or compliance claims that aren't backed by a real artifact. This
-  project's credibility is its raw published data; keep it honest.
+- **No unearned trust signals.** Don't add ratings, "as seen in" rows,
+  certification or "verified" badges, or compliance claims that aren't
+  backed by a real artifact. This project's credibility is its raw published
+  data; keep it honest. (The "routed with undercut" badge is a distribution
+  mark that says where the work was routed, not a claim about quality, and
+  it stays plain: no scores, checkmarks or benchmark numbers.)
 - **Deterministic graders only.** The eval harness never uses an LLM to judge
   another LLM. Keep it that way.
 

@@ -11,7 +11,7 @@ file in testing/results/ if relevant. -->
 ## Verification
 
 - [ ] `node src/main.js --mock` passes (evals/)
-- [ ] No unearned trust signals added (badges, ratings, compliance claims)
+- [ ] No unearned trust signals added (ratings, "verified" badges, compliance claims)
 - [ ] Any doc claim traces to published data
 
 ## Related issues
