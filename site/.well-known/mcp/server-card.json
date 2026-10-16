@@ -1,0 +1,34 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/v1/server-card.schema.json",
+  "name": "sh.getundercut/undercut",
+  "version": "0.4.0",
+  "title": "Undercut public data",
+  "description": "Read-only data Undercut publishes: routing policy, model map, benchmark results, clients, pricing.",
+  "websiteUrl": "https://getundercut.sh/developers",
+  "repository": {
+    "url": "https://github.com/undercutsh/firstpass",
+    "source": "github",
+    "subfolder": "site/api"
+  },
+  "icons": [
+    {
+      "src": "https://getundercut.sh/android-chrome-512x512.png",
+      "mimeType": "image/png",
+      "sizes": [
+        "512x512"
+      ]
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://getundercut.sh/mcp",
+      "supportedProtocolVersions": [
+        "2026-07-28",
+        "2025-11-25",
+        "2025-06-18",
+        "2025-03-26"
+      ]
+    }
+  ]
+}
