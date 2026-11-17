@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-13161b"></a>
-  <a href="CHANGELOG.md"><img alt="version" src="https://img.shields.io/badge/version-0.3.0-00959c"></a>
+  <a href="CHANGELOG.md"><img alt="version" src="https://img.shields.io/badge/version-0.5.0-00959c"></a>
   <a href="https://getundercut.sh"><img alt="getundercut.sh" src="https://img.shields.io/badge/site-getundercut.sh-13161b"></a>
 </p>
 

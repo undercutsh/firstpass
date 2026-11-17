@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "firstpass",
-      "description": "Six-flag rubric assigns a base tier; objective evidence is the only thing allowed to escalate it. Measured up to −95% cost, equal-or-better pass rate.",
+      "description": "Six-flag rubric assigns a base tier; objective evidence is the only thing allowed to escalate it. Measured up to −71% cost on public benchmarks, equal-or-better pass rate.",
       "source": "./",
       "category": "productivity"
     }

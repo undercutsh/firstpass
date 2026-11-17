@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "sh.getundercut/undercut",
+  "title": "Undercut public data",
+  "description": "Read-only Undercut data: routing policy, tier-to-model map, benchmark results, clients, pricing.",
+  "version": "0.5.0",
+  "websiteUrl": "https://getundercut.sh/developers",
+  "repository": {
+    "url": "https://github.com/undercutsh/firstpass",
+    "source": "github"
+  },
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://getundercut.sh/mcp"
+    }
+  ]
+}
